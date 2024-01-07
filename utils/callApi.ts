@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://rowoji9583-001-site1.anytempurl.com/api/";
+const baseURL = "https://rowoji9583-001-site1.anytempurl.com/api/";
 
 const callApi = axios.create({baseURL})
 
