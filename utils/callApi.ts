@@ -9,7 +9,7 @@ export const callApiWithToken = (token:string) => {
         baseURL,
         headers: {
             Authorization: `Bearer ${token}`
-        }
+        },
     })
 }
 
