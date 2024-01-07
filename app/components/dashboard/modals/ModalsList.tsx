@@ -1,8 +1,8 @@
 import React from "react";
-import { IoIosLogOut } from "react-icons/io";
+import { IoIosLogOut, IoIosLogIn } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { useRouter } from "next/navigation";
-import { deleteCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import Loading from "../../Loading";
 
@@ -19,6 +19,8 @@ const ModalsList: React.FC<ModalsListProps> = ({
 }) => {
   const router = useRouter();
 
+  const token = getCookie("token") || null;
+
   const handleLogout = () => {
     deleteCookie("token");
     deleteCookie("role");
@@ -29,34 +31,44 @@ const ModalsList: React.FC<ModalsListProps> = ({
 
   return (
     <div
-      className={`absolute w-32 h-fit rounded-lg bg-white border shadow-lg
+      className={`absolute w-36 h-fit rounded-lg bg-white border shadow-lg
       ${
         borderTop
           ? expanded
             ? "-translate-y-14 translate-x-36"
             : "-translate-y-14 translate-x-1"
           : expanded
-          ? "translate-y-14 -translate-x-20"
+          ? "translate-y-16 right-0"
           : "translate-y-14 translate-x-10"
       }
     ${modalListOpen ? "visible" : "invisible"}
     `}
     >
-      <ul>
+      <ul className="p-2">
         <li className="border-b p-1 hover:bg-gray-100 cursor-pointer">
-          <button className="flex items-center justify-center">
+          <button className="w-full flex items-center justify-left ">
             <CgProfile size={20} />
             <span className="ml-2"> Hồ sơ</span>
           </button>
         </li>
         <li className="p-1 hover:bg-gray-100 cursor-pointer">
-          <button
-            className="flex items-center justify-center"
-            onClick={() => handleLogout()}
-          >
-            <IoIosLogOut size={20} />
-            <span className="ml-2"> Đăng xuất</span>
-          </button>
+          {!token === null ? (
+            <button
+              className="w-full flex items-center justify-center"
+              onClick={() => handleLogout()}
+            >
+              <IoIosLogOut size={20} />
+              <span className="ml-2"> Đăng xuất</span>
+            </button>
+          ) : (
+            <button
+              className="flex items-center justify-center"
+              onClick={() => router.push("/login")}
+            >
+              <IoIosLogIn size={20} />
+              <span className="ml-2"> Đăng nhập</span>
+            </button>
+          )}
         </li>
       </ul>
     </div>
