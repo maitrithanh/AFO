@@ -1,14 +1,45 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse,NextRequest} from 'next/server'
+import { getCookie } from 'cookies-next';
+import { cookies } from 'next/headers';
 
 export function middleware (request: NextRequest) {
-  const hostname = request.headers.get('host')
+  const token = getCookie("token", {cookies}) || null
+  const role = getCookie("role", {cookies}) || null
+  const expiration = getCookie("expiration", {cookies})|| ""  
 
-  // If on beta.example.com, redirect to example.com/beta
-  if (hostname === 'beta.example.com') {
-    const url = request.nextUrl.clone()
-    url.hostname = 'example.com'
-    url.pathname = '/beta' + url.pathname
-    return NextResponse.rewrite(url)
+  var date = expiration;
+  var datearray = date.split("/");
+
+  var newdate = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
+  const dateExpiration = Date.parse(newdate);
+  const dateNow = Date.parse(new Date().toISOString().split('T')[0]);
+
+  if (request.nextUrl.pathname.startsWith('/')) {
+    if(token && role === "Student"){
+      return NextResponse.rewrite(new URL('/', request.url))
+    } else if(token && role === "Admin") {
+      return NextResponse.rewrite(new URL('/admin', request.url))
+    } else {
+      return NextResponse.rewrite(new URL('/login', request.url))
+    }
   }
+
+  if (
+    dateNow > dateExpiration
+  ) {
+    request.cookies.delete("token");
+    request.cookies.delete("role");
+    request.cookies.delete("expiration");
+    const response = NextResponse.redirect(new URL("/login", request.url));
+    response.cookies.delete("token");
+    response.cookies.delete("role");
+    response.cookies.delete("expiration");
+    return response;
+  }
+}
+
+export const config = {
+  matcher: [
+    '/((?!api|_next|.*\\..*).*)'
+]
 }
