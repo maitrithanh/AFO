@@ -2,26 +2,31 @@
 
 import React from "react";
 import { UseFormRegister, FieldValues, FieldErrors } from "react-hook-form";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 interface InputProps {
   id: string;
   label: string;
   type?: string;
+  typePassword?: boolean;
   disabled: boolean;
   required?: boolean;
   borderBottom?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
+  onclick?: () => void;
 }
 const Input: React.FC<InputProps> = ({
   id,
   label,
   type,
+  typePassword,
   disabled,
   required,
   register,
   errors,
   borderBottom,
+  onclick,
 }) => {
   return (
     <div className="w-full relative">
@@ -47,6 +52,16 @@ const Input: React.FC<InputProps> = ({
       >
         {label}
       </label>
+      {label === "Mật khẩu" ? (
+        <div
+          className="absolute -translate-y-4 top-10 z-10 origin-[0] right-4 cursor-pointer"
+          onClick={onclick}
+        >
+          {!typePassword ? <FaRegEye size={20} /> : <FaRegEyeSlash size={20} />}
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
