@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 const LoginForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [typePassword, setTypePassword] = useState(false);
 
   const {
     register,
@@ -50,6 +51,10 @@ const LoginForm = () => {
         setIsLoading(false);
         toast.error("Sai tài khoản hoặc mật khẩu", { id: error });
       });
+  };
+
+  const handleHidePassword = () => {
+    setTypePassword((curr) => !curr);
   };
   return (
     <div className="relative">
@@ -95,10 +100,12 @@ const LoginForm = () => {
                 <Input
                   id="passwordHash"
                   label="Mật khẩu"
-                  type="password"
+                  type={typePassword ? "text" : "password"}
+                  typePassword={typePassword}
                   disabled={isLoading}
                   register={register}
                   errors={errors}
+                  onclick={handleHidePassword}
                   required
                 />
               </div>
