@@ -34,6 +34,7 @@ const LoginForm = () => {
       .then((response) => {
         setCookie("token", response.data.token);
         setCookie("role", response.data.role);
+        setCookie("expiration", response.data.expiration);
         toast.success("Đăng nhập thành công", { id: response.data.role });
         switch (response.data.role) {
           case "Admin":
