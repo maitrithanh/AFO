@@ -13,12 +13,14 @@ const Sidebar = () => {
   const [expanded, setExpanded] = useState(true);
 
   //Expanded sidebar if width screen < 912
-  window.addEventListener("resize", () => {
-    if (window.innerWidth < 912) {
-      setExpanded(false);
-    } else {
-      setExpanded(true);
-    }
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (window.innerWidth < 912) {
+        setExpanded(false);
+      } else {
+        setExpanded(true);
+      }
+    });
   });
 
   return (
