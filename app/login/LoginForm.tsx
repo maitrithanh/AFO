@@ -1,19 +1,59 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../components/inputs/input";
 import Button from "../components/Button";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { useRouter} from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import callApi from "@/utils/callApi";
+import callApi, { callApiWithToken } from "@/utils/callApi";
 import { setCookie } from "cookies-next";
 import toast from "react-hot-toast";
+import { signIn, signOut, useSession } from 'next-auth/react'
+import { AxiosResponse } from "axios";
+import ResponseData from "@/types/ResponseData";
+import LoginRes from "@/types/LoginRes";
 
 const LoginForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  //session nhận data sau khi sign in google hoặc fb và chuyển hướng về
+  const { data: Session } = useSession();
+  useEffect(() => { 
+
+    //login google có token và access_token, fb chỉ có access_token
+    if (Session?.token || Session?.access_token) { 
+
+      var path, token: string;
+      if (Session.token) { 
+        path = 'Auth/LoginGoogle/';
+        token = Session.token;
+      } else {
+        path = 'Auth/LinkFacebook/';
+        token = Session.access_token;
+      }
+
+      setIsLoading(true);
+      callApiWithToken
+        .post<ResponseData<LoginRes>>(path, {
+          token
+      })
+        .then(async (response) => {
+          //logout để clear session
+          //mà chỗ này bị refresh, chưa kiếm dc cách ngon hơn
+          await signOut();
+          onLoginSuccess(response);
+        })
+        .catch((error) => {
+          toast.error("Có lỗi xảy ra", { id: error });
+          signOut();
+        }).finally(() => {
+          setIsLoading(false);
+        })      
+    }
+  }, [Session])
 
   const {
     register,
@@ -22,7 +62,7 @@ const LoginForm = () => {
   } = useForm<FieldValues>({
     defaultValues: {
       username: "",
-      passwordHash: "",
+      password: "",
     },
   });
 
@@ -31,26 +71,35 @@ const LoginForm = () => {
     callApi
       .post(`Auth/login/`, data)
       .then((response) => {
-        setCookie("token", response.data.token);
-        setCookie("role", response.data.role);
-        toast.success("Đăng nhập thành công", { id: response.data.role });
-        switch (response.data.role) {
-          case "Admin":
-            router.push("/admin");
-            break;
-          case "Teacher":
-            router.push("/teacher");
-            break;
-          default:
-            router.push("/");
-            break;
-        }
+        onLoginSuccess(response);
       })
       .catch((error) => {
-        setIsLoading(false);
         toast.error("Sai tài khoản hoặc mật khẩu", { id: error });
-      });
+      }).finally(() => { 
+        setIsLoading(false);
+      })
   };
+
+  const onLoginSuccess = (res: AxiosResponse<ResponseData<LoginRes>>) => { 
+    var role = res.data.data.role
+    var token = res.data.data.token
+    
+    setCookie("token", token);
+    setCookie("role", role);
+    toast.success("Đăng nhập thành công ", { id: role });
+    switch (role) {
+      case "Admin":
+        router.push("/admin");
+        break;
+      case "Teacher":
+        router.push("/teacher");
+        break;
+      default:
+        router.push("/");
+        break;
+    }
+  }
+
   return (
     <div className="relative">
       <div className="brightness-[.4]">
@@ -93,7 +142,7 @@ const LoginForm = () => {
             <div>
               <div className="mt-2">
                 <Input
-                  id="passwordHash"
+                  id="password"
                   label="Mật khẩu"
                   type="password"
                   disabled={isLoading}
@@ -131,15 +180,13 @@ const LoginForm = () => {
               outline
               custom="mr-2"
               icon={FaGoogle}
-              onClick={() => {
-                router.push("/dashboard");
-              }}
+              onClick={() => signIn('google')}
             />
             <Button
               label={"Facebook"}
               outline
               icon={FaFacebook}
-              onClick={() => {}}
+              onClick={() => { signIn('facebook') }}
             />
           </div>
         </div>
