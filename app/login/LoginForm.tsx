@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../components/inputs/input";
 import Button from "../components/Button";
 import { useRouter } from "next/navigation";
@@ -67,11 +67,11 @@ const LoginForm = () => {
           height={1440}
         />
       </div>
-      <div className="flex min-h-full flex-col justify-center px-8 py-12 items-center lg:px-8">
-        <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-[#e8e6e67d] z-10 pt-24 flex justify-center">
+      <div className="flex min-h-full flex-col justify-center px-4 py-12 items-center lg:px-8">
+        <div className="relative mt-24 w-full sm:max-w-[440px] shadow-xl px-6 py-8 rounded-lg bg-white z-10 pt-20 flex justify-center">
           <div className="absolute z-10 top-0 -translate-y-[50%]">
             <Image
-              className="mx-auto h-[120px] w-[120px] rounded-full object-cover"
+              className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-lg"
               src="/Logo.jpg"
               alt="Your Company"
               width={100}
@@ -107,7 +107,7 @@ const LoginForm = () => {
                 />
               </div>
               <div className="flex items-center justify-end">
-                <div className="text-sm mt-2">
+                <div className="text-sm mt-1">
                   <a
                     href="#"
                     className="font-semibold text-[#dc662b] hover:opacity-80"
