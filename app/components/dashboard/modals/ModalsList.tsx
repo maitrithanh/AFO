@@ -1,5 +1,5 @@
 import React from "react";
-import { IoIosLogOut, IoIosLogIn } from "react-icons/io";
+import { IoIosLogOut } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { useRouter } from "next/navigation";
 import { deleteCookie, getCookie } from "cookies-next";
@@ -52,23 +52,13 @@ const ModalsList: React.FC<ModalsListProps> = ({
           </button>
         </li>
         <li className="p-1 hover:bg-gray-100 cursor-pointer">
-          {!token === null ? (
-            <button
-              className="w-full flex items-center justify-center"
-              onClick={() => handleLogout()}
-            >
-              <IoIosLogOut size={20} />
-              <span className="ml-2"> Đăng xuất</span>
-            </button>
-          ) : (
-            <button
-              className="flex items-center justify-center"
-              onClick={() => router.push("/login")}
-            >
-              <IoIosLogIn size={20} />
-              <span className="ml-2"> Đăng nhập</span>
-            </button>
-          )}
+          <button
+            className="w-full flex items-center justify-left"
+            onClick={() => handleLogout()}
+          >
+            <IoIosLogOut size={20} />
+            <span className="ml-2"> Đăng xuất</span>
+          </button>
         </li>
       </ul>
     </div>

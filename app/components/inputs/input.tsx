@@ -2,26 +2,32 @@
 
 import React from "react";
 import { UseFormRegister, FieldValues, FieldErrors } from "react-hook-form";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import { MdOutlineLock, MdOutlineLockOpen } from "react-icons/md";
 
 interface InputProps {
   id: string;
   label: string;
   type?: string;
+  typePassword?: boolean;
   disabled: boolean;
   required?: boolean;
   borderBottom?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
+  onclick?: () => void;
 }
 const Input: React.FC<InputProps> = ({
   id,
   label,
   type,
+  typePassword,
   disabled,
   required,
   register,
   errors,
   borderBottom,
+  onclick,
 }) => {
   return (
     <div className="w-full relative">
@@ -35,8 +41,8 @@ const Input: React.FC<InputProps> = ({
         className={`peer w-full pt-6 outline-none bg-white font-light transition disabled:opacity-70 disabled:cursor-not-allowed 
         ${borderBottom ? "border-b-2 py-2" : "border-2 rounded-md p-4"}
         ${errors[id] ? "border-rose-400" : "border-slate-300"}
-        ${errors[id] ? "focus:border-rose-400" : "focus:border-[#0070f4]"}
-        focus:border-[#0070f4]`}
+        ${errors[id] ? "focus:border-rose-400" : "focus:border-[#F8853E]"}
+        focus:border-[#F8853E]`}
       />
       <label
         htmlFor={id}
@@ -47,6 +53,20 @@ const Input: React.FC<InputProps> = ({
       >
         {label}
       </label>
+      {label === "Mật khẩu" ? (
+        <div
+          className="absolute -translate-y-4 top-10 z-10 origin-[0] right-4 cursor-pointer"
+          onClick={onclick}
+        >
+          {!typePassword ? (
+            <MdOutlineLock size={20} />
+          ) : (
+            <MdOutlineLockOpen size={20} />
+          )}
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

@@ -12,33 +12,36 @@ const Sidebar = () => {
   const pathName = usePathname();
   const [expanded, setExpanded] = useState(true);
 
-  //Expanded sidebar if width screen > 912
+  //Expanded sidebar if width screen < 912
   useEffect(() => {
     window.addEventListener("resize", () => {
       if (window.innerWidth < 912) {
-        console.log(window.innerWidth);
-
         setExpanded(false);
       } else {
         setExpanded(true);
       }
     });
-  }, []);
+  });
 
   return (
-    <div className="h-screen min-h-full">
-      <nav className="h-full flex flex-col bg-white border-r shadow-sm ">
-        <div className="p-4 pb-2 mb-4 flex justify-between items-center">
+    <div
+      className={`relative h-screen min-h-full ${
+        !expanded ? "w-[72px]" : "w-[290px]"
+      }`}
+    >
+      <nav className="h-screen min-h-full flex flex-col bg-white border-r shadow-sm fixed">
+        <div className="p-4 pb-2 mb-2 flex justify-between items-center">
           <Image
             priority
-            src="/logo.png"
+            src="/Logo.jpg"
             alt="Logo"
-            className={`overflow-hidden transition-all ${
-              expanded ? "w-32" : "w-0"
+            className={`overflow-hidden transition-all  ${
+              expanded ? "w-[52px]" : "w-0"
             }`}
             width={200}
             height={200}
           />
+          <p className="text-2xl">{!expanded ? "" : "FourKids"}</p>
           <button
             className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
             onClick={() => {
@@ -82,7 +85,6 @@ const Sidebar = () => {
             expanded={expanded}
           />
         </ul>
-
         <ShortProfile expanded={expanded} borderTop />
       </nav>
     </div>
