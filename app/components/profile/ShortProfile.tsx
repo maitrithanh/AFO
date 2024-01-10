@@ -50,7 +50,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
       >
         <div className="w-full flex items-center">
           <Image
-            src="/user-t.png"
+            src={user?.avatar ? `/${user?.avatar}` : "/avatar.jpg"}
             alt=""
             className={`w-10 h-10 rounded-md cursor-pointer ${
               borderTop ? "mr-2" : ""

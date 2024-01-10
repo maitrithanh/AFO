@@ -4,7 +4,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Input from "../components/inputs/input";
 import Button from "../components/Button";
-import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import callApi from "@/utils/callApi";
@@ -59,30 +58,27 @@ const LoginForm = () => {
   };
   return (
     <div className="relative">
-      <div className="brightness-[.4]">
+      <div className="brightness-[.8]">
         <Image
-          className="absolute h-screen w-full"
-          src="https://www.8newsnow.com/wp-content/uploads/sites/59/2022/06/GettyImages-1069920924.jpg?w=2560&h=1440&crop=1"
+          className="absolute h-screen w-full object-cover sm:object-fill"
+          src="/background.jpg"
           alt="Background Login"
           width={2560}
           height={1440}
         />
       </div>
-      <div className="flex min-h-full flex-col justify-center px-8 py-12 lg:px-8">
-        <div className="mt-16 sm:mx-auto sm:w-full sm:max-w-md shadow-xl p-8 rounded-lg bg-white z-10">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="flex min-h-full flex-col justify-center px-8 py-12 items-center lg:px-8">
+        <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-[#e8e6e67d] z-10 pt-24 flex justify-center">
+          <div className="absolute z-10 top-0 -translate-y-[50%]">
             <Image
-              className="mx-auto h-10 w-auto"
-              src="/Logo.png"
+              className="mx-auto h-[120px] w-[120px] rounded-full object-cover"
+              src="/Logo.jpg"
               alt="Your Company"
-              width={500}
-              height={500}
+              width={100}
+              height={100}
             />
-            <h2 className="my-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Đăng nhập
-            </h2>
           </div>
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6 w-full" action="#" method="POST">
             <div>
               <div className="mt-2">
                 <Input
@@ -114,7 +110,7 @@ const LoginForm = () => {
                 <div className="text-sm mt-2">
                   <a
                     href="#"
-                    className="font-semibold text-[#0070f4] hover:opacity-80"
+                    className="font-semibold text-[#dc662b] hover:opacity-80"
                   >
                     Quên mật khẩu?
                   </a>
@@ -130,26 +126,6 @@ const LoginForm = () => {
               />
             </div>
           </form>
-
-          <hr className="my-3" />
-
-          <div className="flex">
-            <Button
-              label={"Google"}
-              outline
-              custom="mr-2"
-              icon={FaGoogle}
-              onClick={() => {
-                router.push("/dashboard");
-              }}
-            />
-            <Button
-              label={"Facebook"}
-              outline
-              icon={FaFacebook}
-              onClick={() => {}}
-            />
-          </div>
         </div>
       </div>
     </div>

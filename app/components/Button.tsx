@@ -28,10 +28,10 @@ const Button: React.FC<ButtonProps> = ({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`disabled:opacity-70 disabled:cursor-not-allowed rounded-md hover:opacity-80 transition w-full border-[#0070f4] flex items-center justify-center gap-2 ${
-        outline ? "bg-white" : "bg-[#0070f4]"
+      className={`disabled:opacity-70 disabled:cursor-not-allowed rounded-md hover:opacity-80 transition w-full border-[#F8853E] flex items-center justify-center gap-2 ${
+        outline ? "bg-white" : "bg-[#F8853E]"
       } 
-      ${outline ? "text-[#0070f4]" : "text-white"} 
+      ${outline ? "text-[#F8853E]" : "text-white"} 
       ${small ? "text-sm font-light" : "text-md font-semibold"}
       ${small ? "py-1 px-2 border-[1px]" : "py-3 px-4 border-2"}
       ${custom ? custom : ""}
@@ -42,7 +42,7 @@ const Button: React.FC<ButtonProps> = ({
         <div role="status">
           <svg
             aria-hidden="true"
-            className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+            className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-yellow-600	"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
