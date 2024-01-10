@@ -11,7 +11,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex">
         <Sidebar />
       </div>
-      <div className="w-full">
+      <div className="w-full transition-all">
         <div className="border-b shadow-sm">
           <Navbar admin />
         </div>

@@ -1,11 +1,9 @@
 import { LuLayoutDashboard, LuUser2 } from "react-icons/lu";
 import {
   IoAnalyticsSharp,
-  IoSettingsOutline,
-  IoHelpCircleOutline,
 } from "react-icons/io5";
 import { MdOutlineInventory } from "react-icons/md";
-import { CiBoxes, CiMoneyBill } from "react-icons/ci";
+import { CiMoneyBill } from "react-icons/ci";
 import { PiChalkboardTeacherDuotone } from "react-icons/pi";
 import { GiTeacher } from "react-icons/gi";
 import { FaHeart } from "react-icons/fa6";

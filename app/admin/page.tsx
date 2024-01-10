@@ -20,6 +20,7 @@ const Dashboard = () => {
   return (
     <div>
       {isLoading ? <Loading /> : <div>Họ tên: {currentUser?.fullName}</div>}
+      <div className="h-[5000px]">123</div>
     </div>
   );
 };

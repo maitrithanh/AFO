@@ -30,7 +30,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       group
     ${
       active
-        ? "bg-gradient-to-tr from-[#0070f4] to-[#0070f4] text-white"
+        ? "bg-gradient-to-tr from-[#F8853E] to-[#F8853E] text-white"
         : "hover:bg-indigo-50 text-gray-600"
     }`}
     >
@@ -51,7 +51,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           ></div>
         ) : (
           <div
-            className={`absolute right-2 w-2 h-2 rounded bg-[#0070f4] ${
+            className={`absolute right-2 w-2 h-2 rounded bg-[#F8853E] ${
               expanded ? "" : "top-2"
             }`}
           ></div>
@@ -62,7 +62,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
       {!expanded && (
         <div
-          className={`absolute left-full w-fit z-10 rounded-md px-2 py-1 ml-6 bg-[#0070f4] text-white text-sm
+          className={`absolute left-full w-fit z-10 rounded-md px-2 py-1 ml-6 bg-[#F8853E] text-white text-sm
           invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
         >
           {text}
