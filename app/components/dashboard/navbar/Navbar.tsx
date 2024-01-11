@@ -1,5 +1,4 @@
 import React from "react";
-import { IoIosSearch } from "react-icons/io";
 import ShortProfile from "../../profile/ShortProfile";
 
 interface navbarProps {

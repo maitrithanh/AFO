@@ -41,12 +41,14 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
   return (
     <div
       className={`relative ${
-        borderTop ? "border-t p-3" : "border p-1 rounded-full"
+        borderTop
+          ? "border-t p-3"
+          : "border p-1 rounded-full w-[50px] h-[50px] sm:h-full sm:w-full"
       } flex`}
     >
       <div
         ref={dropdown}
-        className={`w-full flex justify-between items-center overflow-hidden transition-all `}
+        className={`w-full flex justify-between items-center overflow-hidden transition-all`}
       >
         <div className="w-full flex items-center">
           <Image
@@ -64,33 +66,30 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
 
           <div
             className={`flex overflow-hidden transition-all justify-between ${
-              expanded ? (borderTop ? "w-full" : "") : "w-0"
+              expanded ? (borderTop ? "w-full" : "sm:w-full") : " w-0"
             }`}
           >
-            {borderTop ? (
-              loading ? (
-                "Đang tải..."
+            <div
+              className="leading-4 cursor-pointer"
+              onClick={() => {
+                setModalListOpen((curr) => !curr);
+              }}
+            >
+              {borderTop ? (
+                loading ? (
+                  "Đang tải..."
+                ) : (
+                  <>
+                    <h4 className="font-semibold">{user?.fullName}</h4>
+                    <span className="text-xs text-gray-600">{user?.email}</span>
+                  </>
+                )
               ) : (
-                <div
-                  className="leading-4 cursor-pointer"
-                  onClick={() => {
-                    setModalListOpen((curr) => !curr);
-                  }}
-                >
-                  <h4 className="font-semibold">{user?.fullName}</h4>
-                  <span className="text-xs text-gray-600">{user?.email}</span>
-                </div>
-              )
-            ) : (
-              <div
-                className="leading-4 cursor-pointer"
-                onClick={() => {
-                  setModalListOpen((curr) => !curr);
-                }}
-              >
-                <h4 className="text-md font-normal mx-1">{user?.fullName}</h4>
-              </div>
-            )}
+                <h4 className="text-md font-normal mx-1 sm:visible invisible">
+                  {user?.fullName}
+                </h4>
+              )}
+            </div>
 
             {borderTop ? (
               <button
