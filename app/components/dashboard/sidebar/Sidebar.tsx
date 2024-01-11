@@ -25,7 +25,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`relative h-screen min-h-full ${
+      className={`relative z-40 h-screen min-h-full ${
         !expanded ? "w-[72px]" : "w-[290px]"
       }`}
     >

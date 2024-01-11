@@ -127,7 +127,7 @@ const LoginForm = () => {
         <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-[#e8e6e67d] z-10 pt-24  justify-center">
           <div className="absolute z-10 top-0 left-0 -translate-y-[50%] justify-center w-full">
             <Image
-              className="mx-auto h-[120px] w-[120px] rounded-full object-cover"
+              className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-lg"
               src="/Logo.jpg"
               alt="Your Company"
               width={100}
@@ -163,7 +163,7 @@ const LoginForm = () => {
                 />
               </div>
               <div className="flex items-center justify-end">
-                <div className="text-sm mt-2">
+                <div className="text-sm mt-1">
                   <a
                     href="#"
                     className="font-semibold text-[#dc662b] hover:opacity-80"
