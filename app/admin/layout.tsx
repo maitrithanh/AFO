@@ -1,6 +1,5 @@
 import React from "react";
 import Sidebar from "../components/dashboard/sidebar/Sidebar";
-import SidebarItem from "../components/dashboard/sidebar/SidebarItem";
 import Navbar from "../components/dashboard/navbar/Navbar";
 import { Toaster } from "react-hot-toast";
 

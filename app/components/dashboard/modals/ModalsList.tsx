@@ -31,7 +31,7 @@ const ModalsList: React.FC<ModalsListProps> = ({
 
   return (
     <div
-      className={`absolute w-36 h-fit rounded-lg bg-white border shadow-lg
+      className={`absolute w-36 h-fit rounded-lg bg-white border shadow-lg z-30
       ${
         borderTop
           ? expanded
@@ -46,7 +46,10 @@ const ModalsList: React.FC<ModalsListProps> = ({
     >
       <ul className="p-2">
         <li className="border-b p-1 hover:bg-gray-100 cursor-pointer">
-          <button className="w-full flex items-center justify-left ">
+          <button
+            className="w-full flex items-center justify-left"
+            onClick={() => router.push("/profile")}
+          >
             <CgProfile size={20} />
             <span className="ml-2"> Hồ sơ</span>
           </button>

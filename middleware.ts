@@ -1,7 +1,6 @@
 import { NextResponse,NextRequest} from 'next/server'
 import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 export function middleware (request: NextRequest) {
   const token = getCookie("token", {cookies}) || null
@@ -41,6 +40,16 @@ export function middleware (request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url))
     }else if(token && role === "Admin") {
       return NextResponse.redirect(new URL('/admin', request.url))
+    }else {
+      return NextResponse.rewrite(new URL('/login', request.url))
+    }
+  }
+
+  if (request.nextUrl.pathname === '/profile') {
+    if(token && role === "Student"){
+      return NextResponse.redirect(new URL('/student/profile', request.url))
+    }else if(token && role === "Admin") {
+      return NextResponse.redirect(new URL('/admin/profile', request.url))
     }else {
       return NextResponse.rewrite(new URL('/login', request.url))
     }
