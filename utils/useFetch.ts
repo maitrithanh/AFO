@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react"
 import callApi, {callApiWithToken} from "./callApi"
+import ResponseData from "@/types/ResponseData"
 
-const useFetch = (path: string, body?: any) => {
-    const [data, setData] = useState<any>(null)
+const useFetch = <T = any>(path: string, body?: any) => {
+    const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
 
@@ -14,8 +15,8 @@ const useFetch = (path: string, body?: any) => {
    const fetchApi = async () => {
     setLoading(true)
     try {
-        const respone = await callApiWithToken.get(path, body)
-        const data = respone.data
+        const respone = await callApiWithToken().get<ResponseData<T>>(path, body)
+        const data = respone.data.data
         if(mounted) {
             setData(data)
         }

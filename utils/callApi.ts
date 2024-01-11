@@ -6,11 +6,14 @@ const baseURL = "https://localhost:7254/api/";
 
 const callApi = axios.create({baseURL})
 
-export const callApiWithToken = axios.create({
-    baseURL,
-    headers: {
-        Authorization: `Bearer ${getCookie('token')}`,
-    },
-})
+export const callApiWithToken = (token: string = '') => { 
+    if (!token) token = getCookie('token') + '';
+    return axios.create({
+        baseURL,
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+}
 
 export default callApi;

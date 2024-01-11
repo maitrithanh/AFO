@@ -18,6 +18,7 @@ import LoginRes from "@/types/LoginRes";
 const LoginForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [typePassword, setTypePassword] = useState(false);
 
   //session nhận data sau khi sign in google hoặc fb và chuyển hướng về
   const { data: Session } = useSession();
@@ -31,12 +32,12 @@ const LoginForm = () => {
         path = 'Auth/LoginGoogle/';
         token = Session.token;
       } else {
-        path = 'Auth/LinkFacebook/';
+        path = 'Auth/LoginFacebook/';
         token = Session.access_token;
       }
 
       setIsLoading(true);
-      callApiWithToken
+      callApiWithToken()
         .post<ResponseData<LoginRes>>(path, {
           token
       })
@@ -54,7 +55,6 @@ const LoginForm = () => {
         })      
     }
   }, [Session])
-  const [typePassword, setTypePassword] = useState(false);
 
   const {
     register,
@@ -87,7 +87,7 @@ const LoginForm = () => {
     
     setCookie("token", token);
     setCookie("role", role);
-        setCookie("expiration", response.data.expiration);
+    setCookie("expiration", res.data.data.expiration);
     toast.success("Đăng nhập thành công ", { id: role });
     switch (role) {
       case "Admin":
@@ -118,8 +118,8 @@ const LoginForm = () => {
         />
       </div>
       <div className="flex min-h-full flex-col justify-center px-8 py-12 items-center lg:px-8">
-        <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-[#e8e6e67d] z-10 pt-24 flex justify-center">
-          <div className="absolute z-10 top-0 -translate-y-[50%]">
+        <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-[#e8e6e67d] z-10 pt-24  justify-center">
+          <div className="absolute z-10 top-0 left-0 -translate-y-[50%] justify-center w-full">
             <Image
               className="mx-auto h-[120px] w-[120px] rounded-full object-cover"
               src="/Logo.jpg"
@@ -185,15 +185,13 @@ const LoginForm = () => {
               outline
               custom="mr-2"
               icon={FaGoogle}
-              onClick={() => {
-                router.push("/dashboard");
-              }}
+              onClick={() => signIn('google')}
             />
             <Button
               label={"Facebook"}
               outline
               icon={FaFacebook}
-              onClick={() => {}}
+              onClick={() => signIn('facebook')}
             />
           </div>
         </div>
