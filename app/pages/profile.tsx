@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import UserData from '@/types/UserData';
 import useFetch from '@/utils/useFetch';
 import Button from '../components/Button';
 import { FaFacebook, FaGoogle, FaRectangleXmark } from 'react-icons/fa6';
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { callApiWithToken } from '@/utils/callApi';
 import ResponseData from '@/types/ResponseData';
 import LoginRes from '@/types/LoginRes';
@@ -14,30 +14,42 @@ import Loading from '../components/Loading';
 import DefaultImage from '../components/defaultImage';
 
 const ProfilePage = () => {
-    const { data: user } = useFetch<UserData>('Auth/current');
+    const [loading, setLoading] = useState(false);
+    const [refresh, setRefresh] = useState(false);
 
+    const { data: user, loading: loadingUser } = useFetch<UserData>('Auth/current', null, refresh);
     const { data: Session } = useSession();
-    useEffect(() => {
-        if (Session?.token || Session?.access_token) {
-            var path, token: string;
-            if (Session.token) {
-                path = 'Auth/LinkGoogle/';
-                token = Session.token;
-            } else {
-                path = 'Auth/LinkFacebook/';
-                token = Session.access_token;
-            }
 
+    useEffect(() => { setLoading(loadingUser) }, [loadingUser])
+
+    //external login redirect
+    useEffect(() => {
+        var external = sessionStorage.getItem('external');
+        
+        if (external) {
+            var path, token: string;
+            if (external === 'google') {
+                path = 'Auth/LinkGoogle/';
+                token = Session?.token;
+            } else if (external == 'facebook') {
+                path = 'Auth/LinkFacebook/';
+                token = Session?.access_token;
+            } else return;
+
+            if (!token) return;
+
+            setLoading(true);
             callApiWithToken()
                 .post<ResponseData<LoginRes>>(path, {token})
                 .then(async (response) => {
                     toast.success("Liên kết thành công");
+                    setRefresh(x => !x)
                 })
                 .catch((error) => {
-                    toast.error("Có lỗi xảy ra");
-                    
-                }).finally(() => { 
-                    signOut();
+                    toast.error("Có lỗi xảy ra");  
+                }).finally(() => {
+                    setLoading(false);
+                    sessionStorage.removeItem('external')
                 })
         }
     }, [Session])
@@ -45,18 +57,28 @@ const ProfilePage = () => {
     const onUnlink = (s: string) => { 
         if (!window.confirm('Hủy liên kết với tài khoản ' + s)) return;
 
+        setLoading(true);
         callApiWithToken().get(`Auth/Unlink${s}`)
             .then(res => { 
                 toast.success("Hủy liên kết thành công");
+                setRefresh(x => !x)
             })
             .catch(err => { 
                 toast.error("Có lỗi xảy ra");
-            })
+            }).finally(() => setLoading(false))
+    }
+
+    const ExternalLogin = (s: string) => {
+        setLoading(true);
+        signIn(s);
+        sessionStorage.setItem('external', s);
     }
 
     return <div>
+        { loading && <Loading /> }
+
         {
-            !user ? <Loading /> :
+            user &&
             <div className="bg-gray-100 px-20 py-4">
 
                 <div className="border-1 shadow-lg shadow-gray-700 rounded-lg">
@@ -175,7 +197,7 @@ const ProfilePage = () => {
                                                             outline
                                                             custom="mr-2"
                                                             icon={FaFacebook}
-                                                            onClick={() => signIn('facebook')}
+                                                            onClick={() => ExternalLogin('facebook')}
                                                         />
                                                     </>
                                                 }
@@ -197,7 +219,7 @@ const ProfilePage = () => {
                                                         outline
                                                         custom="mr-2"
                                                         icon={FaGoogle}
-                                                        onClick={() => signIn('google')}
+                                                            onClick={() => ExternalLogin('google')}
                                                     />
                                                 </>
                                             }

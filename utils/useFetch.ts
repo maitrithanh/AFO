@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import callApi, {callApiWithToken} from "./callApi"
 import ResponseData from "@/types/ResponseData"
 
-const useFetch = <T = any>(path: string, body?: any) => {
+const useFetch = <T = any>(path: string, body?: any, refresh?: any) => {
     const [data, setData] = useState<T | null>(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -32,7 +32,7 @@ const useFetch = <T = any>(path: string, body?: any) => {
     return () => {
         mounted = false
     }
-  }, [path, body])
+  }, [path, body, refresh])
 
   return {data, loading, error}
 }

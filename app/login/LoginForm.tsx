@@ -10,7 +10,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import callApi, { callApiWithToken } from "@/utils/callApi";
 import { setCookie } from "cookies-next";
 import toast from "react-hot-toast";
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { AxiosResponse } from "axios";
 import ResponseData from "@/types/ResponseData";
 import LoginRes from "@/types/LoginRes";
@@ -22,19 +22,21 @@ const LoginForm = () => {
 
   //session nhận data sau khi sign in google hoặc fb và chuyển hướng về
   const { data: Session } = useSession();
+
   useEffect(() => { 
+    const external = sessionStorage.getItem('external');
 
-    //login google có token và access_token, fb chỉ có access_token
-    if (Session?.token || Session?.access_token) { 
-
+    if (external) { 
       var path, token: string;
-      if (Session.token) { 
+      if (external === 'google') {
         path = 'Auth/LoginGoogle/';
-        token = Session.token;
-      } else {
+        token = Session?.token;
+      } else if (external == 'facebook') {
         path = 'Auth/LoginFacebook/';
-        token = Session.access_token;
-      }
+        token = Session?.access_token;
+      } else return;
+
+      if (!token) return;
 
       setIsLoading(true);
       callApiWithToken()
@@ -42,17 +44,15 @@ const LoginForm = () => {
           token
       })
         .then(async (response) => {
-          //logout để clear session
-          //mà chỗ này bị refresh, chưa kiếm dc cách ngon hơn
-          await signOut();
+          sessionStorage.removeItem('external');
           onLoginSuccess(response);
         })
         .catch((error) => {
-          toast.error("Có lỗi xảy ra", { id: error });
-          signOut();
-        }).finally(() => {
+          const data = error.response.data as ResponseData<LoginRes>;
+          toast.error(data.error || 'Đăng nhập thất bại');
           setIsLoading(false);
-        })      
+          sessionStorage.removeItem('external');
+        })    
     }
   }, [Session])
 
@@ -102,10 +102,16 @@ const LoginForm = () => {
     }
   }
 
-
   const handleHidePassword = () => {
     setTypePassword((curr) => !curr);
   };
+
+  const ExternalLogin = (s: string) => {
+    setIsLoading(true);
+    signIn(s);
+    sessionStorage.setItem('external', s);
+  }
+
   return (
     <div className="relative">
       <div className="brightness-[.8]">
@@ -185,13 +191,13 @@ const LoginForm = () => {
               outline
               custom="mr-2"
               icon={FaGoogle}
-              onClick={() => signIn('google')}
+              onClick={() => ExternalLogin('google')}
             />
             <Button
               label={"Facebook"}
               outline
               icon={FaFacebook}
-              onClick={() => signIn('facebook')}
+              onClick={() => ExternalLogin('facebook')}
             />
           </div>
         </div>
