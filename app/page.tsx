@@ -1,5 +1,5 @@
 import Navbar from "./components/dashboard/navbar/Navbar";
-import ProfilePage from "./pages/profile";
+import ProfilePage from "./components/profile/profile";
 
 export default function Home() {
   return (

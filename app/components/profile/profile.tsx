@@ -3,15 +3,15 @@
 import { useEffect, useState } from 'react'
 import UserData from '@/types/UserData';
 import useFetch from '@/utils/useFetch';
-import Button from '../components/Button';
+import Button from '../Button';
 import { FaFacebook, FaGoogle, FaRectangleXmark } from 'react-icons/fa6';
 import { signIn, useSession } from 'next-auth/react'
 import { callApiWithToken } from '@/utils/callApi';
 import ResponseData from '@/types/ResponseData';
 import LoginRes from '@/types/LoginRes';
 import toast from "react-hot-toast";
-import Loading from '../components/Loading';
-import DefaultImage from '../components/defaultImage';
+import Loading from '../Loading';
+import DefaultImage from '../defaultImage';
 
 const ProfilePage = () => {
     const [loading, setLoading] = useState(false);
