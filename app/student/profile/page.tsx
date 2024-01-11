@@ -4,8 +4,8 @@ import React from "react";
 const ProfilePage = () => {
   return (
     <div>
-      {/* <ProfileCard /> */}
-      <ProfilePage />
+      <ProfileCard />
+      {/* <ProfilePage /> */}
     </div>
   );
 };
