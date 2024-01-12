@@ -34,9 +34,9 @@ const ProfileCard = () => {
             ) : (
               <>
                 <Image
-                  src="/avatar.jpg"
+                  src={`/${currentUser?.avatar}`}
                   alt="123"
-                  className={`w-16 h-16 rounded-full cursor-pointer`}
+                  className={`w-16 h-16 rounded-full cursor-pointer border border-[#d7d0d065]`}
                   width={100}
                   height={100}
                   onClick={() => {}}

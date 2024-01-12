@@ -5,12 +5,12 @@ import React, { useEffect, useState } from "react";
 import Input from "../components/inputs/input";
 import Button from "../components/Button";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
-import { useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import callApi, { callApiWithToken } from "@/utils/callApi";
 import { setCookie } from "cookies-next";
 import toast from "react-hot-toast";
-import { signIn, useSession } from 'next-auth/react'
+import { signIn, useSession } from "next-auth/react";
 import { AxiosResponse } from "axios";
 import ResponseData from "@/types/ResponseData";
 import LoginRes from "@/types/LoginRes";
@@ -23,16 +23,16 @@ const LoginForm = () => {
   //session nhận data sau khi sign in google hoặc fb và chuyển hướng về
   const { data: Session } = useSession();
 
-  useEffect(() => { 
-    const external = sessionStorage.getItem('external');
+  useEffect(() => {
+    const external = sessionStorage.getItem("external");
 
-    if (external) { 
+    if (external) {
       var path, token: string;
-      if (external === 'google') {
-        path = 'Auth/LoginGoogle/';
+      if (external === "google") {
+        path = "Auth/LoginGoogle/";
         token = Session?.token;
-      } else if (external == 'facebook') {
-        path = 'Auth/LoginFacebook/';
+      } else if (external == "facebook") {
+        path = "Auth/LoginFacebook/";
         token = Session?.access_token;
       } else return;
 
@@ -41,20 +41,20 @@ const LoginForm = () => {
       setIsLoading(true);
       callApiWithToken()
         .post<ResponseData<LoginRes>>(path, {
-          token
-      })
+          token,
+        })
         .then(async (response) => {
-          sessionStorage.removeItem('external');
+          sessionStorage.removeItem("external");
           onLoginSuccess(response);
         })
         .catch((error) => {
           const data = error.response.data as ResponseData<LoginRes>;
-          toast.error(data.error || 'Đăng nhập thất bại');
+          toast.error(data.error || "Đăng nhập thất bại");
           setIsLoading(false);
-          sessionStorage.removeItem('external');
-        })    
+          sessionStorage.removeItem("external");
+        });
     }
-  }, [Session])
+  }, [Session]);
 
   const {
     register,
@@ -76,15 +76,16 @@ const LoginForm = () => {
       })
       .catch((error) => {
         toast.error("Sai tài khoản hoặc mật khẩu", { id: error });
-      }).finally(() => { 
-        setIsLoading(false);
       })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
-  const onLoginSuccess = (res: AxiosResponse<ResponseData<LoginRes>>) => { 
-    var role = res.data.data.role
-    var token = res.data.data.token
-    
+  const onLoginSuccess = (res: AxiosResponse<ResponseData<LoginRes>>) => {
+    var role = res.data.data.role;
+    var token = res.data.data.token;
+
     setCookie("token", token);
     setCookie("role", role);
     setCookie("expiration", res.data.data.expiration);
@@ -100,7 +101,7 @@ const LoginForm = () => {
         router.push("/");
         break;
     }
-  }
+  };
 
   const handleHidePassword = () => {
     setTypePassword((curr) => !curr);
@@ -109,8 +110,8 @@ const LoginForm = () => {
   const ExternalLogin = (s: string) => {
     setIsLoading(true);
     signIn(s);
-    sessionStorage.setItem('external', s);
-  }
+    sessionStorage.setItem("external", s);
+  };
 
   return (
     <div className="relative">
@@ -124,7 +125,7 @@ const LoginForm = () => {
         />
       </div>
       <div className="flex min-h-full flex-col justify-center px-8 py-12 items-center lg:px-8">
-        <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-[#e8e6e67d] z-10 pt-24  justify-center">
+        <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-white z-10 pt-24  justify-center">
           <div className="absolute z-10 top-0 left-0 -translate-y-[50%] justify-center w-full">
             <Image
               className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-lg"
@@ -191,13 +192,13 @@ const LoginForm = () => {
               outline
               custom="mr-2"
               icon={FaGoogle}
-              onClick={() => ExternalLogin('google')}
+              onClick={() => ExternalLogin("google")}
             />
             <Button
               label={"Facebook"}
               outline
               icon={FaFacebook}
-              onClick={() => ExternalLogin('facebook')}
+              onClick={() => ExternalLogin("facebook")}
             />
           </div>
         </div>

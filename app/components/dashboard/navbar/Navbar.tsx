@@ -1,5 +1,6 @@
 import React from "react";
 import ShortProfile from "../../profile/ShortProfile";
+import Link from "next/link";
 
 interface navbarProps {
   admin?: boolean;
@@ -48,7 +49,9 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
       ) : (
         <div className="border-b">
           <div className="p-2 flex justify-between text-center items-center">
-            <div className="text-2xl font-bold">AFO</div>
+            <div className="text-2xl font-bold">
+              <Link href={"/"}>AFO</Link>
+            </div>
             <div className="flex items-center">
               <div className="mx-2">Menu</div>
               <ShortProfile />
