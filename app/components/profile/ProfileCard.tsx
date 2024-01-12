@@ -12,7 +12,6 @@ import { signIn, useSession } from "next-auth/react";
 import ResponseData from "@/types/ResponseData";
 import LoginRes from "@/types/LoginRes";
 import Loading from "../Loading";
-import DefaultImage from "../defaultImage";
 
 const ProfileCard = () => {
   const { data: currentUser } = useFetch("Auth/current");
@@ -185,13 +184,13 @@ const ProfileCard = () => {
             <div className="text-main sm:text-2xl text-xl font-bold flex border-b mb-4">
               Tài khoản liên kết
             </div>
-            <div className="flex mt-1 gap-4">
+            <div className="block md:flex mt-1 gap-4">
               {user?.loginGoogle ? (
-                <div className="w-full text-main border-main border-[2px] gap-2 rounded-md flex items-center justify-center">
+                <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
                   <FaGoogle size={24} />
                   <p className="font-semibold">{user.loginGoogle}</p>
                   <div
-                    className="ml-5 text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
+                    className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
                     onClick={() => onUnlink("google")}
                   >
                     <IoClose />
@@ -200,16 +199,16 @@ const ProfileCard = () => {
               ) : (
                 <>
                   <Button
-                    label={"Liên kết với Google"}
+                    label={"Liên kết Google"}
                     outline
-                    custom="mr-2"
+                    custom="mr-2 mb-4 md:m-0"
                     icon={FaGoogle}
                     onClick={() => ExternalLogin("google")}
                   />
                 </>
               )}
               <Button
-                label="Liên kết với Facebook"
+                label="Liên kết Facebook"
                 icon={FaFacebook}
                 outline
                 onClick={() => {}}
