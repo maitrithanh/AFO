@@ -14,22 +14,23 @@ export function middleware (request: NextRequest) {
   const dateExpiration = Date.parse(newdate);
   const dateNow = Date.parse(new Date().toISOString().split('T')[0]);
 
-  if (request.nextUrl.pathname === '/') {
+
+  if (request.nextUrl.pathname.includes("/student")) {
     if(token && role === "Student"){
-      return NextResponse.rewrite(new URL('/', request.url))
-    }else if(token && role === "Admin") {
-      return NextResponse.redirect(new URL('/admin', request.url))
+      if(request.nextUrl.pathname !== "/student"){
+        return NextResponse.rewrite(new URL(request.nextUrl.pathname, request.url))
+      }
     }
     else {
       return NextResponse.rewrite(new URL('/login', request.url))
     }
   }
 
-  if (request.nextUrl.pathname === '/admin') {
-    if(token && role === "Student"){
-      return NextResponse.redirect(new URL('/', request.url))
-    }else if(token && role === "Admin") {
-      return NextResponse.rewrite(new URL('/admin', request.url))
+  if ((request.nextUrl.pathname).includes('/admin')) {
+    if(token && role === "Admin") {
+      if(request.nextUrl.pathname !== "/admin"){
+        return NextResponse.rewrite(new URL(request.nextUrl.pathname, request.url))
+      }
     }else {
       return NextResponse.rewrite(new URL('/login', request.url))
     }
@@ -45,15 +46,16 @@ export function middleware (request: NextRequest) {
     }
   }
 
-  if (request.nextUrl.pathname === '/profile') {
+  if ((request.nextUrl.pathname).includes('/profile')) {
     if(token && role === "Student"){
-      return NextResponse.redirect(new URL('/student/profile', request.url))
+      return NextResponse.rewrite(new URL('/student/profile', request.url))
     }else if(token && role === "Admin") {
-      return NextResponse.redirect(new URL('/admin/profile', request.url))
+      return NextResponse.rewrite(new URL('/admin/profile', request.url))
     }else {
       return NextResponse.rewrite(new URL('/login', request.url))
     }
   }
+  
 
   if (
     dateNow > dateExpiration
