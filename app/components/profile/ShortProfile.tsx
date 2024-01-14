@@ -54,7 +54,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
           <Image
             src={user?.avatar ? `/avatar.jpg` : "/avatar.jpg"}
             alt=""
-            className={`w-10 h-10 rounded-md cursor-pointer ${
+            className={`w-10 h-10 rounded-full cursor-pointer ${
               borderTop ? "mr-2" : ""
             }`}
             width={100}
@@ -81,7 +81,9 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
                 ) : (
                   <>
                     <h4 className="font-semibold">{user?.fullName}</h4>
-                    <span className="text-xs text-gray-600">{user?.email}</span>
+                    <span className="text-xs text-gray-600">
+                      {user?.numberID}
+                    </span>
                   </>
                 )
               ) : (

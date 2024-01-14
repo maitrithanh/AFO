@@ -12,6 +12,8 @@ import { signIn, useSession } from "next-auth/react";
 import ResponseData from "@/types/ResponseData";
 import LoginRes from "@/types/LoginRes";
 import Loading from "../Loading";
+import CardInfo from "./card/CardInfo";
+import CardInfoLine from "./card/CardInfoLine";
 
 const ProfileCard = () => {
   const { data: currentUser } = useFetch("Auth/current");
@@ -90,94 +92,84 @@ const ProfileCard = () => {
       <div className="flex justify-center items-center h-full w-full ">
         <div className="relative h-full w-full bg-gradient-to-b sm:max-w-[840px] sm:p-8 rounded-xl">
           <div className="flex items-center mx-2">
-            {loading ? (
-              <div className="flex">
-                <div className="bg-slate-200 flex border-b h-[64px] w-[64px] rounded-full animate-pulse"></div>
-                <div className="ml-4">
-                  <div className="bg-slate-200 flex border-b mb-4 h-[30px] w-[100px] rounded-lg animate-pulse"></div>
-                  <div className="bg-slate-200 flex border-b h-[10px] w-[100px] rounded-lg animate-pulse"></div>
-                </div>
-              </div>
-            ) : (
-              <>
-                <Image
-                  src={`/${currentUser?.avatar}`}
-                  alt="123"
-                  className={`w-16 h-16 rounded-full cursor-pointer border border-[#d7d0d065]`}
-                  width={100}
-                  height={100}
-                  onClick={() => {}}
-                />
-                <div className="ml-4">
-                  <p className="font-bold text-2xl">
-                    {currentUser?.fullName} - #{currentUser?.id}
-                  </p>
-                  <p className="text-main">{currentUser?.level}</p>
-                </div>
-              </>
-            )}
+            <Image
+              src={`/avatar.jpg`}
+              alt="123"
+              className={`w-16 h-16 rounded-full cursor-pointer border border-[#d7d0d065]`}
+              width={100}
+              height={100}
+              onClick={() => {}}
+            />
+            <div className="ml-4">
+              <p className="font-bold text-2xl">
+                {currentUser?.fullName} - #{currentUser?.numberID}
+              </p>
+              <p className="text-main">{currentUser?.level}</p>
+            </div>
           </div>
 
-          {loading ? (
-            <div className="shadow-lg border p-8 pt-4 my-4 rounded-xl bg-white animate-pulse">
-              <div className="bg-slate-200 flex border-b mb-4 h-[30px] rounded-lg"></div>
-              <div className="flex mt-1">
-                <p className="bg-slate-200 h-[20px] rounded-lg w-[120px]"></p>
-                <p className="bg-slate-200 h-[20px] rounded-lg w-full ml-4"></p>
-              </div>
-              <div className="flex mt-4">
-                <p className="bg-slate-200 h-[20px] rounded-lg w-[120px]"></p>
-                <p className="bg-slate-200 h-[20px] rounded-lg w-full ml-4 "></p>
-              </div>
-            </div>
+          <CardInfo cardName="Thông tin cá nhân">
+            <CardInfoLine
+              lineName={"Họ tên"}
+              contentLine={currentUser?.fullName}
+            />
+            <CardInfoLine
+              lineName={"Ngày sinh"}
+              contentLine={currentUser?.birthDay}
+            />
+            <CardInfoLine
+              lineName={"Giới tính"}
+              contentLine={currentUser?.gender == 1 ? "Nam" : "Nữ"}
+            />
+            {currentUser?.classes ? (
+              <CardInfoLine
+                lineName={"Lớp học"}
+                contentLine={currentUser?.classes}
+              />
+            ) : (
+              ""
+            )}
+
+            <CardInfoLine
+              lineName={"Quốc tịch"}
+              contentLine={currentUser?.nation}
+            />
+
+            <CardInfoLine
+              lineName={"Địa chỉ"}
+              contentLine={currentUser?.address}
+            />
+          </CardInfo>
+          {currentUser?.representativeInfos.length !== 0 ? (
+            <CardInfo cardName="Thông tin phụ huynh">
+              {currentUser?.representativeInfos?.map((data: any) => {
+                return (
+                  <>
+                    <div key={data.id}>
+                      <div>
+                        <p className="text-lg font-semibold mt-4">
+                          Thông tin {data?.relationship}:
+                        </p>
+                        <CardInfoLine
+                          lineName={"Họ tên"}
+                          contentLine={data?.fullName}
+                        />
+                        <CardInfoLine
+                          lineName={"SĐT"}
+                          contentLine={data?.phoneNumber}
+                        />
+                        <CardInfoLine
+                          lineName={"Địa chỉ"}
+                          contentLine={data?.address}
+                        />
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
+            </CardInfo>
           ) : (
-            <div className="shadow-lg border p-8 pt-4 my-4 rounded-xl bg-white">
-              <div className="text-main sm:text-2xl text-xl font-bold flex border-b mb-4">
-                Thông tin cá nhân
-              </div>
-              <div className="flex mt-1">
-                <p className="sm:text-lg text-md font-medium w-[120px]">
-                  Họ tên
-                </p>
-                <p className="sm:text-lg text-md font-semibold ml-4 ">
-                  {currentUser?.fullName}
-                </p>
-              </div>
-              <div className="flex mt-2">
-                <p className="sm:text-lg text-md font-medium w-[120px]">
-                  Ngày sinh
-                </p>
-                <p className="sm:text-lg text-md font-semibold ml-4 ">
-                  {currentUser?.birthDay}
-                </p>
-              </div>
-              <div className="flex mt-2">
-                <p className="sm:text-lg text-md font-medium w-[120px]">
-                  Giới tính
-                </p>
-                <p className="sm:text-lg text-md font-semibold ml-4 ">
-                  {currentUser?.gender == 1 ? "Nam" : "Nữ"}
-                </p>
-              </div>
-
-              <div className="flex mt-2">
-                <p className="sm:text-lg text-md font-medium w-[120px]">
-                  Quốc tịch
-                </p>
-                <p className="sm:text-lg text-md font-semibold ml-4 ">
-                  {currentUser?.nation}
-                </p>
-              </div>
-
-              <div className="flex mt-2">
-                <p className="sm:text-lg text-md font-medium w-[120px]">
-                  Địa chỉ
-                </p>
-                <p className="sm:text-lg text-md font-semibold ml-4 ">
-                  {currentUser?.address}
-                </p>
-              </div>
-            </div>
+            ""
           )}
 
           <div className="shadow-lg border p-8 pt-4 my-4 rounded-xl bg-white">
