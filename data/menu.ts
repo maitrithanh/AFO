@@ -48,6 +48,6 @@ export const  menu = [
     {
         text: 'Lớp học',
         icon: GiTeacher,
-        pathname: '/admin/class'
+        pathname: '/admin/classes'
     }
 ]
