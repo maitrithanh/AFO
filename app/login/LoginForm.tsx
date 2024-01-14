@@ -62,7 +62,7 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      username: "",
+      numberID: "",
       password: "",
     },
   });
@@ -139,8 +139,8 @@ const LoginForm = () => {
             <div>
               <div className="mt-2">
                 <Input
-                  id="username"
-                  label="Tài khoản"
+                  id="numberID"
+                  label="Tên đăng nhập"
                   disabled={isLoading}
                   register={register}
                   errors={errors}
@@ -184,9 +184,12 @@ const LoginForm = () => {
             </div>
           </form>
 
-          <hr className="my-3" />
+          <div className="relative flex w-full justify-center my-1">
+            <hr className="my-3 w-full" />
+            <p className="absolute top-0 bg-white px-2 text-gray-500"></p>
+          </div>
 
-          <div className="flex">
+          <div className="grid gap-2 md:grid-cols-2 ">
             <Button
               label={"Google"}
               outline

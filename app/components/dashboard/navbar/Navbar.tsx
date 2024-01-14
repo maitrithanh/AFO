@@ -1,12 +1,16 @@
 import React from "react";
 import ShortProfile from "../../profile/ShortProfile";
 import Link from "next/link";
+import { getCookie } from "cookies-next";
+import { cookies } from "next/headers";
+import Button from "../../Button";
 
 interface navbarProps {
   admin?: boolean;
 }
 
 const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
+  const token = getCookie("token", { cookies });
   return (
     <div className="h-18 w-full">
       {admin ? (
@@ -52,10 +56,23 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
             <div className="text-2xl font-bold">
               <Link href={"/"}>AFO</Link>
             </div>
-            <div className="flex items-center">
-              <div className="mx-2">Menu</div>
-              <ShortProfile />
-            </div>
+            {token ? (
+              <div className="flex items-center">
+                <div className="mx-2">Menu</div>
+                <ShortProfile />
+              </div>
+            ) : (
+              <div className="flex items-center">
+                <div className="mx-2">Menu</div>
+
+                <Link
+                  href={"/login"}
+                  className="border-2 border-main p-2 rounded-full hover:bg-main hover:border-0 hover:border-[#ff7446] hover:border-b-4 hover:border-l-4 hover:text-white transition-all"
+                >
+                  Đăng nhập
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}
