@@ -57,7 +57,6 @@ export function middleware (request: NextRequest) {
       return NextResponse.rewrite(new URL('/login', request.url))
     }
   }
-  
 
   if (
     dateNow > dateExpiration

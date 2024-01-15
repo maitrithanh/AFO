@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { IoMdMore } from "react-icons/io";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 
 import ModalsList from "../dashboard/modals/ModalsList";
 import useFetch from "@/utils/useFetch";
+import DefaultImage from "../defaultImage";
+import { baseURL } from "@/utils/callApi";
+import UserData from "@/types/UserData";
 
 interface ShortProfileProps {
   borderTop?: boolean;
@@ -19,7 +22,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
 }) => {
   const [modalListOpen, setModalListOpen] = useState(false);
   const dropdown = useRef<HTMLInputElement | null>(null);
-  const { data: user, loading } = useFetch("Auth/current");
+  const { data: user, loading } = useFetch<UserData>("Auth/current");
 
   //close modal outside click
   useEffect(() => {
@@ -51,7 +54,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
         className={`w-full flex justify-between items-center overflow-hidden transition-all`}
       >
         <div className="w-full flex items-center">
-          <Image
+          {/* <Image
             src={user?.avatar ? `/avatar.jpg` : "/avatar.jpg"}
             alt=""
             className={`w-10 h-10 rounded-full cursor-pointer ${
@@ -62,7 +65,19 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
             onClick={() => {
               setModalListOpen((curr) => !curr);
             }}
-          />
+          /> */}
+
+          {user?.avatar &&
+            <DefaultImage img={baseURL + 'File/GetFile/' + user?.avatar} fallback="/avatar.jpg"
+              className={`w-10 h-10 rounded-full cursor-pointer ${borderTop ? "mr-2" : ""
+                }`}
+              width={100}
+              height={100}
+              onClick={() => {
+                setModalListOpen((curr) => !curr);
+              }}
+            />
+          }
 
           <div
             className={`flex overflow-hidden transition-all justify-between ${
@@ -94,7 +109,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
             </div>
 
             {borderTop ? (
-              <button
+              <button title="btn"
                 className="p-1.5 hover:opacity-50"
                 onClick={() => {
                   setModalListOpen((curr) => !curr);
