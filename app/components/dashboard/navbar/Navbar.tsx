@@ -3,7 +3,9 @@ import ShortProfile from "../../profile/ShortProfile";
 import Link from "next/link";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
-import Button from "../../Button";
+import { IoIosSearch } from "react-icons/io";
+import { LuMenu } from "react-icons/lu";
+import Menu from "./Menu";
 
 interface navbarProps {
   admin?: boolean;
@@ -51,28 +53,38 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
           </form>
         </div>
       ) : (
-        <div className="border-b">
-          <div className="p-2 flex justify-between text-center items-center">
-            <div className="text-2xl font-bold">
-              <Link href={"/"}>AFO</Link>
-            </div>
-            {token ? (
+        <div className="border-b w-full">
+          <div className="md:mx-20">
+            <div className="p-2 flex justify-between text-center items-center">
               <div className="flex items-center">
-                <div className="mx-2">Menu</div>
-                <ShortProfile />
-              </div>
-            ) : (
-              <div className="flex items-center">
-                <div className="mx-2">Menu</div>
-
-                <Link
-                  href={"/login"}
-                  className="border-2 border-main p-2 rounded-full hover:bg-main hover:border-0 hover:border-[#ff7446] hover:border-b-4 hover:border-l-4 hover:text-white transition-all"
-                >
-                  Đăng nhập
+                <Link href={"/"} className="text-2xl font-bold text-main ">
+                  AFO
                 </Link>
               </div>
-            )}
+              <div className="flex items-center">
+                <div className="mx-1 hidden md:block">
+                  <Menu />
+                </div>
+                <div className="border p-2 rounded-full hover:bg-black/10 cursor-pointer">
+                  <IoIosSearch size={24} />
+                </div>
+                <div className="ml-2 ">
+                  {token ? (
+                    <ShortProfile />
+                  ) : (
+                    <Link
+                      href={"/login"}
+                      className="py-2 px-4 rounded-full bg-main border-[#ff7446] border-b-4 border-l-4 text-white hover:border-[#ad5839] transition-all"
+                    >
+                      Đăng nhập
+                    </Link>
+                  )}
+                </div>
+                <div className="ml-2 md:hidden block p-2 cursor-pointer">
+                  <LuMenu size={24} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
