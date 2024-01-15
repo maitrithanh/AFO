@@ -1,11 +1,12 @@
-import ProfileCard from "@/app/components/profile/ProfileCard";
 import React from "react";
+import ProfileCard from "@/app/components/profile/ProfileCard";
+import Profile from "@/app/components/profile/profile";
 
 const ProfilePage = () => {
   return (
     <div>
+      <Profile />
       <ProfileCard />
-      {/* <ProfilePage /> */}
     </div>
   );
 };
