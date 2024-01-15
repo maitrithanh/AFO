@@ -96,10 +96,10 @@ const LoginForm = () => {
         router.push("/admin");
         break;
       case "Teacher":
-        router.push("/teacher");
+        router.push("/teacher/profile");
         break;
       default:
-        router.push("/");
+        router.push("/profile");
         break;
     }
   };

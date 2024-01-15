@@ -247,12 +247,26 @@ const ProfileCard = () => {
                   />
                 </>
               )}
-              <Button
-                label="Liên kết Facebook"
-                icon={FaFacebook}
-                outline
-                onClick={() => {}}
-              />
+              {user?.facebookName ? (
+                <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
+                  <FaFacebook size={24} />
+                  <p className="font-semibold">{user.facebookName}</p>
+                  <div
+                    className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
+                    onClick={() => onUnlink("facebook")}
+                  >
+                    <IoClose />
+                  </div>
+                </div>
+              ): 
+                <Button
+                  label = "Liên kết Facebook"
+                  icon = { FaFacebook }
+                  outline
+                  onClick = { () => { ExternalLogin("facebook") } }
+                />
+              }
+              
             </div>
           </div>
 
