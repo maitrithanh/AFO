@@ -50,9 +50,10 @@ const LoginForm = () => {
         .catch((error) => {
           const data = error.response.data as ResponseData<LoginRes>;
           toast.error(data.error || "Đăng nhập thất bại");
-          setIsLoading(false);
           sessionStorage.removeItem("external");
-        });
+        }).finally(() => { 
+          setIsLoading(false);
+        })
     }
   }, [Session]);
 
@@ -95,10 +96,10 @@ const LoginForm = () => {
         router.push("/admin");
         break;
       case "Teacher":
-        router.push("/teacher");
+        router.push("/teacher/profile");
         break;
       default:
-        router.push("/");
+        router.push("/profile");
         break;
     }
   };
@@ -154,6 +155,7 @@ const LoginForm = () => {
                 <Input
                   id="password"
                   label="Mật khẩu"
+                  showLockIcon={true}
                   type={typePassword ? "text" : "password"}
                   typePassword={typePassword}
                   disabled={isLoading}

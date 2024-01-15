@@ -1,24 +1,30 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import useFetch from "@/utils/useFetch";
 import Button from "../Button";
-import { FaFacebook, FaGoogle } from "react-icons/fa6";
+import { FaFacebook, FaGoogle, FaPen } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import toast from "react-hot-toast";
-import { callApiWithToken } from "@/utils/callApi";
+import { baseURL, callApiWithToken } from "@/utils/callApi";
 import UserData from "@/types/UserData";
 import { signIn, useSession } from "next-auth/react";
 import ResponseData from "@/types/ResponseData";
 import LoginRes from "@/types/LoginRes";
 import Loading from "../Loading";
+import DefaultImage from "../defaultImage";
+import ChangePwDialog from "./changePwDialog";
 import CardInfo from "./card/CardInfo";
 import CardInfoLine from "./card/CardInfoLine";
+
 
 const ProfileCard = () => {
   const { data: currentUser } = useFetch("Auth/current");
   const [loading, setLoading] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(0);
+  const [openChangePassword, setOpenChangePassword] = useState(false);
+
+  const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
 
   const { data: user, loading: loadingUser } = useFetch<UserData>(
     "Auth/current",
@@ -52,7 +58,7 @@ const ProfileCard = () => {
         .post<ResponseData<LoginRes>>(path, { token })
         .then(async (response) => {
           toast.success("Liên kết thành công");
-          setRefresh((x) => !x);
+          setRefresh((x) => x + 1);
         })
         .catch((error) => {
           toast.error("Có lỗi xảy ra");
@@ -72,7 +78,7 @@ const ProfileCard = () => {
       .get(`Auth/Unlink${s}`)
       .then((res) => {
         toast.success("Hủy liên kết thành công");
-        setRefresh((x) => !x);
+        setRefresh((x) => x + 1);
       })
       .catch((err) => {
         toast.error("Có lỗi xảy ra");
@@ -85,6 +91,30 @@ const ProfileCard = () => {
     signIn(s);
     sessionStorage.setItem("external", s);
   };
+
+  //upload avtar
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    var file: Blob = event.target.files![0]
+    if (!file) return;
+    const formData = new FormData();
+    if (file) formData.append('file', file, undefined);
+
+    setLoading(true);
+    callApiWithToken().put('File/ChangeAvatar',
+      { file },
+      { headers: { 'content-type': 'multipart/form-data' } })
+      .then((res) => { 
+        toast.success('Đã cập nhật');
+        setRefresh(x => x + 1);
+      }).catch((err) => { 
+        toast.error(err.response.data.error)
+      }).finally(() => { 
+        setLoading(false);
+      })
+  };
+  const onUpdateAvatarClick = () => { 
+    uploadAvatarRef.current?.click();
+  }
 
   return (
     <div>
@@ -127,7 +157,33 @@ const ProfileCard = () => {
                 contentLine={currentUser?.classes}
               />
             ) : (
-              ""
+              <>
+                {/* <Image
+                  src={`/$`}
+                  alt="123"
+                  className={`w-16 h-16 rounded-full cursor-pointer border border-[#d7d0d065]`}
+                  width={100}
+                  height={100}
+                  onClick={() => {}}
+                  /> */}
+                  <span className="relative group">
+                    <DefaultImage img={baseURL + 'File/GetFile/' + currentUser?.avatar + '?r='+refresh} fallback="/avatar.jpg"
+                      className={`w-16 h-16 rounded-full cursor-pointer border border-[#d7d0d065]`}
+                      width={100}
+                      height={100}
+                    />
+                    <div title="Đổi ảnh" className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex">
+                      <input type="file" onChange={handleFileChange} className="hidden" title="no" ref={uploadAvatarRef}/>
+                      <FaPen onClick={onUpdateAvatarClick} className='cursor-pointer text-white'/>
+                    </div>
+                  </span>
+                <div className="ml-4">
+                  <p className="font-bold text-2xl">
+                    {currentUser?.fullName} - #{currentUser?.id}
+                  </p>
+                  <p className="text-main">{currentUser?.level}</p>
+                </div>
+              </>
             )}
 
             <CardInfoLine
@@ -199,17 +255,34 @@ const ProfileCard = () => {
                   />
                 </>
               )}
-              <Button
-                label="Liên kết Facebook"
-                icon={FaFacebook}
-                outline
-                onClick={() => {}}
-              />
+              {user?.facebookName ? (
+                <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
+                  <FaFacebook size={24} />
+                  <p className="font-semibold">{user.facebookName}</p>
+                  <div
+                    className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
+                    onClick={() => onUnlink("facebook")}
+                  >
+                    <IoClose />
+                  </div>
+                </div>
+              ): 
+                <Button
+                  label = "Liên kết Facebook"
+                  icon = { FaFacebook }
+                  outline
+                  onClick = { () => { ExternalLogin("facebook") } }
+                />
+              }
+              
             </div>
           </div>
 
-          <Button label="Xem album" onClick={() => {}} custom="mt-4" />
-          <Button label="Đổi mật khẩu" onClick={() => {}} custom="mt-4" />
+          {/* <Button label="Xem album" onClick={() => {}} custom="mt-4" /> */}
+          <Button label="Đổi mật khẩu" onClick={() => { setOpenChangePassword(true) }} custom="mt-4" />
+          {openChangePassword &&
+            <ChangePwDialog onClose={() => { setOpenChangePassword(false) }} />
+          }
         </div>
       </div>
     </div>
