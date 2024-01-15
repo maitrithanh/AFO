@@ -16,6 +16,7 @@ interface InputProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
   onclick?: () => void;
+  showLockIcon?: boolean;
 }
 const Input: React.FC<InputProps> = ({
   id,
@@ -28,6 +29,7 @@ const Input: React.FC<InputProps> = ({
   errors,
   borderBottom,
   onclick,
+  showLockIcon,
 }) => {
   return (
     <div className="w-full relative">
@@ -76,7 +78,7 @@ const Input: React.FC<InputProps> = ({
         {label}
       </label>
 
-      {label === "Mật khẩu" ? (
+      {showLockIcon ? (
         <div
           className="absolute -translate-y-5 top-10 z-10 origin-[0] right-4 cursor-pointer"
           onClick={onclick}

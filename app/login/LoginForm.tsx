@@ -50,9 +50,10 @@ const LoginForm = () => {
         .catch((error) => {
           const data = error.response.data as ResponseData<LoginRes>;
           toast.error(data.error || "Đăng nhập thất bại");
-          setIsLoading(false);
           sessionStorage.removeItem("external");
-        });
+        }).finally(() => { 
+          setIsLoading(false);
+        })
     }
   }, [Session]);
 
@@ -154,6 +155,7 @@ const LoginForm = () => {
                 <Input
                   id="password"
                   label="Mật khẩu"
+                  showLockIcon={true}
                   type={typePassword ? "text" : "password"}
                   typePassword={typePassword}
                   disabled={isLoading}

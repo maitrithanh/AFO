@@ -1,3 +1,5 @@
+"use client"
+
 import { HTMLProps, useState } from "react"
 
 interface Props extends HTMLProps<HTMLImageElement> {
