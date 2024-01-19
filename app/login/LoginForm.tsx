@@ -131,10 +131,10 @@ const LoginForm = () => {
         </div>
         <div className="flex min-h-full flex-col justify-center px-8 py-12 items-center lg:px-8">
           <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-white z-10 pt-24  justify-center">
-            <div className="absolute z-10 top-0 left-0 -translate-y-[50%] justify-center w-full">
+            <div className="absolute z-10 top-0 left-0 -translate-y-[50%] justify-center w-full ">
               <Image
-                className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-lg"
-                src="/Logo.jpg"
+                className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-lg bg-white"
+                src="/Logo.png"
                 alt="Your Company"
                 width={100}
                 height={100}
@@ -196,7 +196,7 @@ const LoginForm = () => {
             </div>
 
             <div className="grid gap-2 md:grid-cols-2 ">
-              <Button
+              {/* <Button
                 label={"Google"}
                 outline
                 custom="mr-2"
@@ -208,7 +208,31 @@ const LoginForm = () => {
                 outline
                 icon={FaFacebook}
                 onClick={() => ExternalLogin("facebook")}
-              />
+              /> */}
+              <button
+                className="bg-[#ec5114] p-3 text-white font-semibold rounded-lg flex items-center justify-center gap-2"
+                onClick={() => ExternalLogin("google")}
+              >
+                <Image
+                  src={"/icons/google.png"}
+                  width={22}
+                  height={22}
+                  alt="Google"
+                />
+                Google
+              </button>
+              <button
+                className="bg-[#2350c1] p-3 text-white font-semibold rounded-lg flex items-center justify-center gap-2"
+                onClick={() => ExternalLogin("facebook")}
+              >
+                <Image
+                  src={"/icons/facebook.png"}
+                  width={22}
+                  height={22}
+                  alt="Facebook"
+                />
+                Facebook
+              </button>
             </div>
           </div>
         </div>

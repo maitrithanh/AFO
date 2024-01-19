@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="absolute bottom-0 w-full h-[80px] bg-[#9cd44c] flex justify-center items-center">
         <p className="text-xl text-white">&copy;AFO</p>
       </div>
-      <div className="absolute left-0 bottom-0">
+      <div className="absolute md:left-0 -left-8 bottom-0 md:w-full w-28">
         <Image
           src={"/icons/footer-left.png"}
           width={150}
@@ -16,12 +16,13 @@ const Footer = () => {
           loading="lazy"
         />
       </div>
-      <div className="absolute right-0 bottom-0">
+      <div className="absolute md:right-0 -right-10 bottom-0">
         <Image
           loading="lazy"
           src={"/icons/footer-right.png"}
           width={150}
           height={150}
+          className="object-cover"
           alt="footer right"
         />
       </div>

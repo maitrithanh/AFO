@@ -53,7 +53,7 @@ const Input: React.FC<InputProps> = ({
         {...register(id, { required })}
         placeholder=""
         type={type}
-        className={`peer w-full pt-4 outline-none bg-white font-light transition disabled:opacity-70 disabled:cursor-not-allowed 
+        className={`peer text-xl w-full pt-4 outline-none bg-white font-light transition disabled:opacity-70 disabled:cursor-not-allowed 
         ${borderBottom ? "border-b-2 py-2" : "border-2 rounded-md p-4"}
         ${errors[id] ? "border-rose-400" : "border-slate-300"}
         ${errors[id] ? "focus:border-rose-400" : "focus:border-[#F8853E]"}

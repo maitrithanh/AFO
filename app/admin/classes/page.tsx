@@ -52,34 +52,29 @@ const ClassesPage = () => {
         })}
       </div> */}
 
-      <div className="grid md:grid-cols-6 grid-cols-1 w-full gap-4">
+      <div className="grid md:grid-cols-4 grid-cols-1 w-full gap-4 ">
         {allClass?.map((data: any) => {
           return (
-            <div key={data.classID}>
+            <div
+              key={data.classID}
+              style={{
+                backgroundImage: `url(${"/bg-noti.jpg"})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+              className="rounded-lg h-36 w-full flex items-center justify-center"
+            >
               <Link href={`/admin/classes/${data.classID}`}>
-                <div className="shadow p-2 rounded-lg  h-full">
+                <div className="p-2 rounded-lg h-full">
                   <div>
                     <div className="flex">
-                      <p className="font-semibold w-[80px]">Lớp: </p>
-                      <p className="ml-1">{data.name}</p>
-                    </div>
-
-                    <div className="flex">
-                      <p className="font-semibold w-[80px]">Mã lớp: </p>
-                      <p className="ml-1">{data.classID}</p>
-                    </div>
-
-                    <div className="flex">
-                      <p className="font-semibold w-[80px]">Giáo viên:</p>
-                      <p className="ml-1">
-                        {data.teacher ? data.teacher : "Null"}
-                      </p>
-                    </div>
-
-                    <div className="flex">
-                      <p className="font-semibold w-[80px]">Học sinh:</p>
-                      <p className="ml-1">
-                        {data.student ? data.student : "Null"}
+                      <p
+                        className={`ml-1 text-2xl font-extrabold text-cool text-white uppercase p-4 rounded-full 
+                        ${data.name.includes("Mầm") && "bg-[#0685897d]"}
+                        ${data.name.includes("Chồi") && "bg-[#fa02027d]"}
+                        ${data.name.includes("Lá") && "bg-[#ff8a057d]"}`}
+                      >
+                        {data.name} - {data.classID}
                       </p>
                     </div>
                   </div>

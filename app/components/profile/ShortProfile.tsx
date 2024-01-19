@@ -45,7 +45,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
     <div
       className={`relative ${
         borderTop
-          ? "border-t p-3"
+          ? "p-3"
           : "border p-1 rounded-full w-[50px] h-[50px] sm:h-full sm:w-full"
       } flex`}
     >

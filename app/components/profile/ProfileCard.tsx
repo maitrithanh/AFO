@@ -17,7 +17,6 @@ import ChangePwDialog from "./changePwDialog";
 import CardInfo from "./card/CardInfo";
 import CardInfoLine from "./card/CardInfoLine";
 
-
 const ProfileCard = () => {
   const { data: currentUser } = useFetch("Auth/current");
   const [loading, setLoading] = useState(false);
@@ -94,27 +93,32 @@ const ProfileCard = () => {
 
   //upload avtar
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    var file: Blob = event.target.files![0]
+    var file: Blob = event.target.files![0];
     if (!file) return;
     const formData = new FormData();
-    if (file) formData.append('file', file, undefined);
+    if (file) formData.append("file", file, undefined);
 
     setLoading(true);
-    callApiWithToken().put('File/ChangeAvatar',
-      { file },
-      { headers: { 'content-type': 'multipart/form-data' } })
-      .then((res) => { 
-        toast.success('Đã cập nhật');
-        setRefresh(x => x + 1);
-      }).catch((err) => { 
-        toast.error(err.response.data.error)
-      }).finally(() => { 
-        setLoading(false);
+    callApiWithToken()
+      .put(
+        "File/ChangeAvatar",
+        { file },
+        { headers: { "content-type": "multipart/form-data" } }
+      )
+      .then((res) => {
+        toast.success("Đã cập nhật");
+        setRefresh((x) => x + 1);
       })
+      .catch((err) => {
+        toast.error(err.response.data.error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
-  const onUpdateAvatarClick = () => { 
+  const onUpdateAvatarClick = () => {
     uploadAvatarRef.current?.click();
-  }
+  };
 
   return (
     <div>
@@ -122,14 +126,34 @@ const ProfileCard = () => {
       <div className="flex justify-center items-center h-full w-full ">
         <div className="relative h-full w-full bg-gradient-to-b sm:max-w-[840px] sm:p-8 rounded-xl">
           <div className="flex items-center mx-2">
-            <Image
-              src={`/avatar.jpg`}
-              alt="123"
-              className={`w-16 h-16 rounded-full cursor-pointer border border-[#d7d0d065]`}
-              width={100}
-              height={100}
-              onClick={() => {}}
-            />
+            <span className="relative group">
+              {user?.avatar && (
+                <DefaultImage
+                  img={baseURL + "File/GetFile/" + user?.avatar}
+                  fallback="/avatar.jpg"
+                  className={`w-14 h-14 rounded-full cursor-pointer`}
+                  width={100}
+                  height={100}
+                />
+              )}
+              <div
+                title="Đổi ảnh"
+                className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
+              >
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  className="hidden"
+                  title="no"
+                  ref={uploadAvatarRef}
+                />
+                <FaPen
+                  onClick={onUpdateAvatarClick}
+                  className="cursor-pointer text-white"
+                />
+              </div>
+            </span>
+
             <div className="ml-4">
               <p className="font-bold text-2xl">
                 {currentUser?.fullName} - #{currentUser?.numberID}
@@ -166,23 +190,6 @@ const ProfileCard = () => {
                   height={100}
                   onClick={() => {}}
                   /> */}
-                  <span className="relative group">
-                    <DefaultImage img={baseURL + 'File/GetFile/' + currentUser?.avatar + '?r='+refresh} fallback="/avatar.jpg"
-                      className={`w-16 h-16 rounded-full cursor-pointer border border-[#d7d0d065]`}
-                      width={100}
-                      height={100}
-                    />
-                    <div title="Đổi ảnh" className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex">
-                      <input type="file" onChange={handleFileChange} className="hidden" title="no" ref={uploadAvatarRef}/>
-                      <FaPen onClick={onUpdateAvatarClick} className='cursor-pointer text-white'/>
-                    </div>
-                  </span>
-                <div className="ml-4">
-                  <p className="font-bold text-2xl">
-                    {currentUser?.fullName} - #{currentUser?.id}
-                  </p>
-                  <p className="text-main">{currentUser?.level}</p>
-                </div>
               </>
             )}
 
@@ -266,23 +273,34 @@ const ProfileCard = () => {
                     <IoClose />
                   </div>
                 </div>
-              ): 
+              ) : (
                 <Button
-                  label = "Liên kết Facebook"
-                  icon = { FaFacebook }
+                  label="Liên kết Facebook"
+                  icon={FaFacebook}
                   outline
-                  onClick = { () => { ExternalLogin("facebook") } }
+                  onClick={() => {
+                    ExternalLogin("facebook");
+                  }}
                 />
-              }
-              
+              )}
             </div>
           </div>
 
           {/* <Button label="Xem album" onClick={() => {}} custom="mt-4" /> */}
-          <Button label="Đổi mật khẩu" onClick={() => { setOpenChangePassword(true) }} custom="mt-4" />
-          {openChangePassword &&
-            <ChangePwDialog onClose={() => { setOpenChangePassword(false) }} />
-          }
+          <Button
+            label="Đổi mật khẩu"
+            onClick={() => {
+              setOpenChangePassword(true);
+            }}
+            custom="mt-4"
+          />
+          {openChangePassword && (
+            <ChangePwDialog
+              onClose={() => {
+                setOpenChangePassword(false);
+              }}
+            />
+          )}
         </div>
       </div>
     </div>
