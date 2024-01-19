@@ -6,6 +6,8 @@ import { cookies } from "next/headers";
 import { IoIosSearch } from "react-icons/io";
 import { LuMenu } from "react-icons/lu";
 import Menu from "./Menu";
+import DropdownNotification from "../../Header/DropdownNotification";
+import DropdownMessage from "../../Header/DropdownMessage";
 
 interface navbarProps {
   admin?: boolean;
@@ -14,10 +16,10 @@ interface navbarProps {
 const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
   const token = getCookie("token", { cookies });
   return (
-    <div className="h-18 w-full">
+    <div className="h-18 w-full bg-white">
       {admin ? (
-        <div className="p-4">
-          <form>
+        <div className="p-4 w-full flex justify-between items-center">
+          <form className="">
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                 <svg
@@ -43,14 +45,18 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
                 placeholder="Từ khoá..."
                 required
               />
-              <button
+              {/* <button
                 type="submit"
                 className="text-white absolute end-2.5 bottom-2.5 bg-[#F8853E] hover:bg-[#e67540] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
               >
                 Tìm kiếm
-              </button>
+              </button> */}
             </div>
           </form>
+          <ul className="flex gap-2">
+            <DropdownNotification />
+            <DropdownMessage />
+          </ul>
         </div>
       ) : (
         <div className="border-b w-full">

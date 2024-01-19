@@ -1,11 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
   text: string;
   pathname: string;
+  img?: string;
   active?: boolean;
   alert?: boolean;
   expanded?: boolean;
@@ -13,6 +15,7 @@ interface SidebarItemProps {
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
   icon,
+  img,
   text,
   active,
   alert,
@@ -26,15 +29,16 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       onClick={() => {
         router.push(pathname);
       }}
-      className={`relative flex items-center py-2 px-3 h-12 my-1 font-medium rounded-md cursor-pointer transition-colors
+      className={`relative flex items-center py-2 px-3 h-12  my-1 font-bold rounded-md cursor-pointer transition-colors bg-[#e8e9eb7d]
       group
     ${
       active
         ? "bg-gradient-to-tr from-[#F8853E] to-[#F8853E] text-white"
-        : "hover:bg-indigo-50 text-gray-600"
+        : "hover:bg-[#ffb07f7d] text-[#7c421e] hover:text-white"
     }`}
     >
-      {icon}
+      {img ? <Image src={img} width={24} height={24} alt="" /> : <>{icon}</>}
+
       <span
         className={`overflow-hidden transition-all ${
           expanded ? "w-52 ml-3" : "w-0"

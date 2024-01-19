@@ -29,11 +29,19 @@ const Sidebar = () => {
         !expanded ? "w-[72px]" : "w-[290px]"
       }`}
     >
-      <nav className="h-screen min-h-full flex flex-col bg-white border-r shadow-sm fixed">
+      <nav
+        style={{
+          backgroundImage: `url("/bg-sidebar.jpg")`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backdropFilter: "sepia(10%)",
+        }}
+        className="h-screen min-h-full flex flex-col bg-white border-r shadow-sm fixed"
+      >
         <div className="p-4 pb-2 mb-2 flex justify-between items-center">
           <Image
             priority
-            src="/Logo.jpg"
+            src="/Logo.png"
             alt="Logo"
             className={`overflow-hidden transition-all  ${
               expanded ? "w-[52px]" : "w-0"
@@ -41,7 +49,7 @@ const Sidebar = () => {
             width={200}
             height={200}
           />
-          <p className="text-2xl">{!expanded ? "" : "FourKids"}</p>
+          <p className="text-2xl">{!expanded ? "" : "AFO"}</p>
           <button
             className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
             onClick={() => {
@@ -61,6 +69,7 @@ const Sidebar = () => {
             return (
               <SidebarItem
                 key={menuItem.text}
+                img={`/icons/${menuItem.img}`}
                 icon={<menuItem.icon size={22} />}
                 text={menuItem.text}
                 pathname={menuItem.pathname}
@@ -72,6 +81,7 @@ const Sidebar = () => {
           <hr className="my-3" />
           <SidebarItem
             icon={<IoSettingsOutline size={22} />}
+            img={"/icons/settings.png"}
             text="Cài đặt"
             pathname={"/dashboard/settings"}
             active={pathName == "/dashboard/settings"}
@@ -80,6 +90,7 @@ const Sidebar = () => {
           <SidebarItem
             icon={<IoHelpCircleOutline size={22} />}
             text="Trợ giúp"
+            img={"/icons/qa.png"}
             pathname={"/dashboard/help"}
             active={pathName == "/dashboard/help"}
             expanded={expanded}

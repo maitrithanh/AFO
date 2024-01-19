@@ -12,42 +12,50 @@ export const  menu = [
     {
         text: 'Tổng quan',
         icon: LuLayoutDashboard,
-        pathname: '/admin'
+        pathname: '/admin',
+        img: "analysis.png"
     },
     {
         text: 'Phân tích',
         icon: IoAnalyticsSharp,
-        pathname: '/admin/statistics'
+        pathname: '/admin/statistics',
+        img: 'bar-chart.png'
     },
     {
         text: 'Người dùng',
         icon: LuUser2,
-        pathname: '/admin/users'
+        pathname: '/admin/users',
+        img: 'user.png'
     },
     {
         text: 'Điểm danh',
         icon: MdOutlineInventory,
-        pathname: '/admin/attendance'
+        pathname: '/admin/attendance',
+        img: 'attendance.png'
     },
     ,
     {
         text: 'Sức Khoẻ',
         icon: FaHeart,
-        pathname: '/admin/health'
+        pathname: '/admin/health',
+        img: "heartbeat.png"
     },
     {
         text: 'Giáo viên',
         icon: PiChalkboardTeacherDuotone,
-        pathname: '/admin/teachers'
+        pathname: '/admin/teachers',
+        img: 'teacher.png'
     },
     {
         text: 'Học phí',
         icon: CiMoneyBill,
-        pathname: '/admin/schoolfee'
+        pathname: '/admin/schoolfee',
+        img: 'scholarship.png'
     },
     {
         text: 'Lớp học',
         icon: GiTeacher,
-        pathname: '/admin/classes'
+        pathname: '/admin/classes',
+        img: 'blackboard.png'
     }
 ]

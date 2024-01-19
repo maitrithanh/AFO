@@ -36,11 +36,13 @@ export function middleware (request: NextRequest) {
     }
   }
 
-  if (request.nextUrl.pathname === '/login') {
+  if (request.nextUrl.pathname.includes('/login')) {
     if(token && role === "Student"){
-      return NextResponse.redirect(new URL('/', request.url))
+      return NextResponse.redirect(new URL('/student', request.url))
     }else if(token && role === "Admin") {
       return NextResponse.redirect(new URL('/admin', request.url))
+    }else if(token && role === "Teacher") {
+      return NextResponse.redirect(new URL('/teacher', request.url))
     }else {
       return NextResponse.rewrite(new URL('/login', request.url))
     }
