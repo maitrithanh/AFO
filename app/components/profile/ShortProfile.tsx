@@ -67,17 +67,20 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
             }}
           /> */}
 
-          {user?.avatar &&
-            <DefaultImage img={baseURL + 'File/GetFile/' + user?.avatar} fallback="/avatar.jpg"
-              className={`w-10 h-10 rounded-full cursor-pointer ${borderTop ? "mr-2" : ""
-                }`}
+          {user?.avatar && (
+            <DefaultImage
+              img={baseURL + "File/GetFile/" + user?.avatar}
+              fallback="/avatar.jpg"
+              className={`w-10 h-10 rounded-full cursor-pointer ${
+                borderTop ? "mr-2" : ""
+              }`}
               width={100}
               height={100}
               onClick={() => {
                 setModalListOpen((curr) => !curr);
               }}
             />
-          }
+          )}
 
           <div
             className={`flex overflow-hidden transition-all justify-between ${
@@ -109,7 +112,8 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
             </div>
 
             {borderTop ? (
-              <button title="btn"
+              <button
+                title="btn"
                 className="p-1.5 hover:opacity-50"
                 onClick={() => {
                   setModalListOpen((curr) => !curr);

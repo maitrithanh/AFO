@@ -13,7 +13,7 @@ export function middleware (request: NextRequest) {
   var newdate = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
   const dateExpiration = Date.parse(newdate);
   const dateNow = Date.parse(new Date().toISOString().split('T')[0]);
-
+  
 
   if (request.nextUrl.pathname.includes("/student")) {
     if(token && role === "Student"){

@@ -13,4 +13,8 @@ body {
     background-color: #f4ffff;
 }
 
+.clipPath {
+    clip-path: polygon(0 0, 100% 0%, 100% 100%, 15px 100%);
+}
+
 

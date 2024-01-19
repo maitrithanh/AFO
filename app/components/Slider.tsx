@@ -23,12 +23,6 @@ const Slider = () => {
     setCurrentIndex(slideIndex);
   };
 
-  useEffect(() => {
-    setInterval(() => {
-      nextSlide();
-    }, 3000);
-  });
-
   return (
     <div className="md:h-[600px] h-[200px] w-full mt-auto relative group">
       <div

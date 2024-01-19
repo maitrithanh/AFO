@@ -8,6 +8,7 @@ import { LuMenu } from "react-icons/lu";
 import Menu from "./Menu";
 import DropdownNotification from "../../Header/DropdownNotification";
 import DropdownMessage from "../../Header/DropdownMessage";
+import Image from "next/image";
 
 interface navbarProps {
   admin?: boolean;
@@ -60,10 +61,23 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
         </div>
       ) : (
         <div className="border-b w-full">
+          <div className="relative h-[33px] w-full bg-blue-600 mb-1">
+            <div className="absolute bg-main w-[480px] h-[39px] right-0 top-0 clipPath"></div>
+          </div>
           <div className="md:mx-20">
             <div className="p-2 flex justify-between text-center items-center">
               <div className="flex items-center">
-                <Link href={"/"} className="text-2xl font-bold text-main ">
+                <Link
+                  href={"/"}
+                  className="text-2xl font-bold text-main flex items-center"
+                >
+                  <Image
+                    src={"/Logo.png"}
+                    width={50}
+                    height={50}
+                    alt="Logo"
+                    loading="lazy"
+                  />
                   AFO
                 </Link>
               </div>

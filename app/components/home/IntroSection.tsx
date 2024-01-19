@@ -3,8 +3,24 @@ import React from "react";
 
 const IntroSection = () => {
   return (
-    <div className="my-2">
-      <div className="h-fit w-full flex items-center justify-center p-8">
+    <div className="relative my-2">
+      <Image
+        src={"/icons/cloud.png"}
+        width={200}
+        height={100}
+        alt="cloud"
+        loading="lazy"
+        className="absolute animate-bounce duration-500 hidden md:block"
+      />
+      <Image
+        src={"/icons/cloud.png"}
+        width={200}
+        height={100}
+        alt="cloud"
+        loading="lazy"
+        className="absolute right-28 top-10 animate-bounce hidden md:block"
+      />
+      {/* <div className="h-fit w-full flex items-center justify-center p-8">
         <div className="grid md:grid-cols-6 grid-cols-1 gap-2 max-w-[1120px]">
           <div className=" flex justify-center items-center md:col-span-2">
             <Image src="/Logo.jpg" alt="" width={200} height={200} />
@@ -52,7 +68,7 @@ const IntroSection = () => {
             <Image src="/target.png" alt="" width={500} height={500} />
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="flex justify-center w-full py-8">
         <div>
@@ -64,7 +80,13 @@ const IntroSection = () => {
           <div className="grid md:grid-cols-3 gap-4 max-w-[1120px] mx-4 text-justify">
             <div>
               <div className="flex items-center">
-                <Image src="/fire.svg" alt="" width={30} height={30} />
+                <Image
+                  src="/fire.svg"
+                  alt="fire"
+                  width={30}
+                  height={30}
+                  loading="lazy"
+                />
                 <h1 className="text-xl font-bold ml-1">Tiến bộ nhanh chóng</h1>
               </div>
               <p className="text-justify text-lg">
@@ -74,7 +96,13 @@ const IntroSection = () => {
             </div>
             <div>
               <div className="flex items-center">
-                <Image src="/check.svg" alt="" width={30} height={30} />
+                <Image
+                  src="/check.svg"
+                  alt="check"
+                  width={30}
+                  height={30}
+                  loading="lazy"
+                />
                 <h1 className="text-xl font-bold ml-1">
                   Kết nối với nhiều bạn bè
                 </h1>
@@ -86,7 +114,13 @@ const IntroSection = () => {
             </div>
             <div>
               <div className="flex items-center">
-                <Image src="/earth.svg" alt="" width={30} height={30} />
+                <Image
+                  src="/earth.svg"
+                  alt="earth"
+                  width={30}
+                  height={30}
+                  loading="lazy"
+                />
                 <h1 className="text-xl font-bold ml-1">Tiến bộ nhanh chóng</h1>
               </div>
               <p className="text-justify text-lg">

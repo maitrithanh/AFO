@@ -37,7 +37,11 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         : "hover:bg-[#ffb07f7d] text-[#7c421e] hover:text-white"
     }`}
     >
-      {img ? <Image src={img} width={24} height={24} alt="" /> : <>{icon}</>}
+      {img ? (
+        <Image src={img} width={24} height={24} alt={img} loading="lazy" />
+      ) : (
+        <>{icon}</>
+      )}
 
       <span
         className={`overflow-hidden transition-all ${
