@@ -10,7 +10,7 @@ interface InputProps {
   label: string;
   type?: string;
   typePassword?: boolean;
-  disabled: boolean;
+  disabled?: boolean;
   required?: boolean;
   borderBottom?: boolean;
   register: UseFormRegister<FieldValues>;

@@ -43,7 +43,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
 
   return (
     <div
-      className={`relative ${
+      className={`relative hover:scale-105 transition-all bg-white duration-300 ${
         borderTop
           ? "p-3"
           : "border p-1 rounded-full w-[50px] h-[50px] sm:h-full sm:w-full"

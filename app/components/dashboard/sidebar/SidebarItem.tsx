@@ -29,12 +29,12 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       onClick={() => {
         router.push(pathname);
       }}
-      className={`relative flex items-center py-2 px-3 h-12  my-1 font-bold rounded-md cursor-pointer transition-colors bg-[#e8e9eb7d]
+      className={`relative flex items-center py-2 px-3 h-12  my-1 font-bold rounded-md cursor-pointer duration-300 hover:scale-105 transition-all bg-[#e8e9eb7d]
       group
     ${
       active
         ? "bg-gradient-to-tr from-[#F8853E] to-[#F8853E] text-white"
-        : "hover:bg-[#ffb07f7d] text-[#7c421e] hover:text-white"
+        : "hover:bg-[#ffb07f7d] text-[#7c421e]  "
     }`}
     >
       {img ? (

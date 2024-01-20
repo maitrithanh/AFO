@@ -8,9 +8,11 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <Slider />
-      <IntroSection />
-      <Footer />
+      <div className="mt-28">
+        <Slider />
+        <IntroSection />
+        <Footer />
+      </div>
     </div>
   );
 }
