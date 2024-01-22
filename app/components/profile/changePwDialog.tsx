@@ -51,7 +51,7 @@ const ChangePwDialog = ({ onClose }: Prop) => {
   return (
     <div
       onClick={onClickOut}
-      className="fixed top-0 left-0 w-full h-full flex items-center bg-black bg-opacity-40 justify-center"
+      className="fixed z-50 top-0 left-0 w-full h-full flex items-center bg-black bg-opacity-40 justify-center"
     >
       <form
         className="space-y-6 p-10 bg-white rounded-3xl w-[440px] mx-2"
