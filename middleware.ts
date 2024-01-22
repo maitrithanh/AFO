@@ -12,12 +12,19 @@ export function middleware (request: NextRequest) {
 
   var newdate = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
   const dateExpiration = Date.parse(newdate);
-  const dateNow = Date.parse(new Date().toISOString().split('T')[0]);
+  const dateNow = Date.now();
   
+  // const protectedRoutes = ['parent', 'admin', 'teacher'];
+  // var path: string = request.nextUrl.pathname.toLowerCase();
+  // if (protectedRoutes.some(x => path.startsWith('/' + x.toLowerCase()))) { 
+    
+  // }
+  //protect routes
+  //redirect routes
 
-  if (request.nextUrl.pathname.includes("/student")) {
-    if(token && role === "Student"){
-      if(request.nextUrl.pathname !== "/student"){
+  if (request.nextUrl.pathname.includes("/parent")) {
+    if(token && role === "Parent"){
+      if(request.nextUrl.pathname !== "/parent"){
         return NextResponse.rewrite(new URL(request.nextUrl.pathname, request.url))
       }
     }
@@ -37,8 +44,8 @@ export function middleware (request: NextRequest) {
   }
 
   if (request.nextUrl.pathname.includes('/login')) {
-    if(token && role === "Student"){
-      return NextResponse.redirect(new URL('/student', request.url))
+    if(token && role === "Parent"){
+      return NextResponse.redirect(new URL('/parent', request.url))
     }else if(token && role === "Admin") {
       return NextResponse.redirect(new URL('/admin', request.url))
     }else if(token && role === "Teacher") {
@@ -49,8 +56,8 @@ export function middleware (request: NextRequest) {
   }
 
   if ((request.nextUrl.pathname).includes('/profile')) {
-    if(token && role === "Student"){
-      return NextResponse.rewrite(new URL('/student/profile', request.url))
+    if(token && role === "Parent"){
+      return NextResponse.rewrite(new URL('/parent/profile', request.url))
     }else if(token && role === "Admin") {
       return NextResponse.rewrite(new URL('/admin/profile', request.url))
     }else if(token && role === "Teacher") {

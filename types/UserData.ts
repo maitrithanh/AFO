@@ -3,14 +3,18 @@ export default interface UserData {
     avatar: string,
     fullName: string,
     birthDay: string,
-    gender: number,
+    gender: string,
+    phoneNumber: string,
+    relationship: string, //hơi sai sai
+    //quên ngày sinh rồi
+    idNumber: string,
+    job: string,
     nation: string,
+    note: string, //kh hiện
     address: string,
     joinDate: string,
-    numberID: string,
-    level: string,
     //"status": true, ??
-    loginGoogle: string,
+    googleName: string,
     facebookName: string,
     id: string,
     userName: string,

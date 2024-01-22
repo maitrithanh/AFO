@@ -16,16 +16,16 @@ import DefaultImage from "../defaultImage";
 import ChangePwDialog from "./changePwDialog";
 import CardInfo from "./card/CardInfo";
 import CardInfoLine from "./card/CardInfoLine";
+import { getImageUrl } from "@/utils/image";
 
 const ProfileCard = () => {
-  const { data: currentUser } = useFetch("Auth/current");
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [openChangePassword, setOpenChangePassword] = useState(false);
 
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
 
-  const { data: user, loading: loadingUser } = useFetch<UserData>(
+  const { data: currentUser, loading: loadingUser } = useFetch<UserData>(
     "Auth/current",
     null,
     refresh
@@ -107,7 +107,8 @@ const ProfileCard = () => {
       )
       .then((res) => {
         toast.success("Đã cập nhật");
-        setRefresh((x) => x + 1);
+        //setRefresh((x) => x + 1);
+        window.location.reload();
       })
       .catch((err) => {
         toast.error(err.response.data.error);
@@ -127,15 +128,14 @@ const ProfileCard = () => {
         <div className="relative h-full w-full bg-gradient-to-b sm:max-w-[840px] sm:p-8 rounded-xl">
           <div className="flex items-center mx-2">
             <span className="relative group">
-              {user?.avatar && (
-                <DefaultImage
-                  img={baseURL + "File/GetFile/" + user?.avatar}
-                  fallback="/avatar.jpg"
-                  className={`w-14 h-14 rounded-full cursor-pointer`}
-                  width={100}
-                  height={100}
-                />
-              )}
+              <DefaultImage
+                key={currentUser?.avatar}
+                img={getImageUrl(currentUser?.avatar)}
+                fallback="/avatar.jpg"
+                className={`w-14 h-14 rounded-full cursor-pointer`}
+                width={100}
+                height={100}
+              />  
               <div
                 title="Đổi ảnh"
                 className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
@@ -156,9 +156,8 @@ const ProfileCard = () => {
 
             <div className="ml-4">
               <p className="font-bold text-2xl">
-                {currentUser?.fullName} - #{currentUser?.numberID}
+                {currentUser?.fullName}
               </p>
-              <p className="text-main">{currentUser?.level}</p>
             </div>
           </div>
 
@@ -173,29 +172,19 @@ const ProfileCard = () => {
             />
             <CardInfoLine
               lineName={"Giới tính"}
-              contentLine={currentUser?.gender == 1 ? "Nam" : "Nữ"}
+              contentLine={currentUser?.gender}
             />
-            {currentUser?.classes ? (
-              <CardInfoLine
-                lineName={"Lớp học"}
-                contentLine={currentUser?.classes}
-              />
-            ) : (
-              <>
-                {/* <Image
-                  src={`/$`}
-                  alt="123"
-                  className={`w-16 h-16 rounded-full cursor-pointer border border-[#d7d0d065]`}
-                  width={100}
-                  height={100}
-                  onClick={() => {}}
-                  /> */}
-              </>
-            )}
-
             <CardInfoLine
-              lineName={"Quốc tịch"}
-              contentLine={currentUser?.nation}
+              lineName={"Số điện thoại"}
+              contentLine={currentUser?.phoneNumber}
+            />
+            <CardInfoLine
+              lineName={"Số CCCD"}
+              contentLine={currentUser?.idNumber}
+            />
+            <CardInfoLine
+              lineName={"Nghề nghiệp"}
+              contentLine={currentUser?.job}
             />
 
             <CardInfoLine
@@ -203,7 +192,7 @@ const ProfileCard = () => {
               contentLine={currentUser?.address}
             />
           </CardInfo>
-          {currentUser?.representativeInfos.length !== 0 ? (
+          {/* {currentUser?.representativeInfos?.length !== 0 ? (
             <CardInfo cardName="Thông tin phụ huynh">
               {currentUser?.representativeInfos?.map((data: any) => {
                 return (
@@ -233,17 +222,17 @@ const ProfileCard = () => {
             </CardInfo>
           ) : (
             ""
-          )}
+          )} */}
 
           <div className="shadow-lg border p-8 pt-4 my-4 rounded-xl bg-white">
             <div className="text-main sm:text-2xl text-xl font-bold flex border-b mb-4">
               Tài khoản liên kết
             </div>
             <div className="block md:flex mt-1 gap-4">
-              {user?.loginGoogle ? (
+              {currentUser?.googleName ? (
                 <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
                   <FaGoogle size={24} />
-                  <p className="font-semibold">{user.loginGoogle}</p>
+                  <p className="font-semibold">{currentUser.googleName}</p>
                   <div
                     className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
                     onClick={() => onUnlink("google")}
@@ -262,10 +251,10 @@ const ProfileCard = () => {
                   />
                 </>
               )}
-              {user?.facebookName ? (
+              {currentUser?.facebookName ? (
                 <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
                   <FaFacebook size={24} />
-                  <p className="font-semibold">{user.facebookName}</p>
+                  <p className="font-semibold">{currentUser.facebookName}</p>
                   <div
                     className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
                     onClick={() => onUnlink("facebook")}
