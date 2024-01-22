@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={`${font.className}`}>
         <div className="relative">
           <Toaster />
         </div>

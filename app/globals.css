@@ -17,4 +17,20 @@ body {
     clip-path: polygon(0 0, 100% 0%, 100% 100%, 15px 100%);
 }
 
+.body-content {
+    animation: fadeTop 1s;
+}
+
+@keyframes fadeTop {
+    0% {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
