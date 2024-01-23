@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <div className="mt-28">
+      <div className="mt-[4rem]">
         <Slider />
         <IntroSection />
         <Footer />
