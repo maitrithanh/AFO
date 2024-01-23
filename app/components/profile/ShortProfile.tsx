@@ -71,8 +71,9 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
             key={user?.avatar}
             img={baseURL + "File/GetFile/" + user?.avatar}
             fallback="/avatar.jpg"
-            className={`w-10 h-10 rounded-full cursor-pointer ${borderTop ? "mr-2" : ""
-              }`}
+            className={`w-10 h-10 rounded-full cursor-pointer ${
+              borderTop ? "mr-2" : ""
+            }`}
             width={100}
             height={100}
             onClick={() => {
@@ -97,9 +98,9 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
                 ) : (
                   <>
                     <h4 className="font-semibold">{user?.fullName}</h4>
-                    <span className="text-xs text-gray-600">
+                    {/* <span className="text-xs text-gray-600">
                       {user?.numberID}
-                    </span>
+                    </span> */}
                   </>
                 )
               ) : (

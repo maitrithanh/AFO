@@ -52,38 +52,42 @@ const ClassesPage = () => {
         })}
       </div> */}
 
-      <div className="grid md:grid-cols-4 grid-cols-1 w-full gap-4 ">
-        {allClass?.map((data: any) => {
-          return (
-            <div
-              key={data.classID}
-              style={{
-                backgroundImage: `url(${"/bg-noti.jpg"})`,
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-              }}
-              className="rounded-lg h-36 w-full flex items-center justify-center"
-            >
-              <Link href={`/admin/classes/${data.classID}`}>
-                <div className="p-2 rounded-lg h-full">
-                  <div>
-                    <div className="flex">
-                      <p
-                        className={`ml-1 text-2xl font-extrabold text-cool text-white uppercase p-4 rounded-full 
+      {allClass ? (
+        <div className="grid md:grid-cols-4 grid-cols-1 w-full gap-4 ">
+          {allClass?.map((data: any) => {
+            return (
+              <div
+                key={data.classID}
+                style={{
+                  backgroundImage: `url(${"/bg-noti.jpg"})`,
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                }}
+                className="rounded-lg h-36 w-full flex items-center justify-center"
+              >
+                <Link href={`/admin/classes/${data.classID}`}>
+                  <div className="p-2 rounded-lg h-full">
+                    <div>
+                      <div className="flex">
+                        <p
+                          className={`ml-1 text-2xl font-extrabold text-cool text-white uppercase p-4 rounded-full 
                         ${data.name.includes("Mầm") && "bg-[#0685897d]"}
                         ${data.name.includes("Chồi") && "bg-[#fa02027d]"}
                         ${data.name.includes("Lá") && "bg-[#ff8a057d]"}`}
-                      >
-                        {data.name} - {data.classID}
-                      </p>
+                        >
+                          {data.name} - {data.classID}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </div>
-          );
-        })}
-      </div>
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        "Không có lớp nào!"
+      )}
     </>
   );
 };
