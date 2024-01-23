@@ -65,7 +65,7 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      numberID: "",
+      phone: "",
       password: "",
     },
   });
@@ -144,8 +144,8 @@ const LoginForm = () => {
               <div>
                 <div className="mt-2">
                   <Input
-                    id="numberID"
-                    label="Tên đăng nhập"
+                    id="phone"
+                    label="Số điện thoại"
                     disabled={isLoading}
                     register={register}
                     errors={errors}
