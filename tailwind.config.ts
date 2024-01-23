@@ -18,6 +18,7 @@ const config: Config = {
       },
       colors: {
         main: "#F8853E",
+        mainBlur: "#F8853E7D",
       },
     },
     

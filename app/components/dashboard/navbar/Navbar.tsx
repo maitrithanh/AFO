@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 import ShortProfile from "../../profile/ShortProfile";
 import Link from "next/link";
 import { getCookie } from "cookies-next";
-import { cookies } from "next/headers";
 import { IoIosSearch } from "react-icons/io";
 import { LuMenu } from "react-icons/lu";
 import Menu from "./Menu";
 import DropdownNotification from "../../Header/DropdownNotification";
 import DropdownMessage from "../../Header/DropdownMessage";
 import Image from "next/image";
-import Input from "../../inputs/input";
+import FunctionMenu from "./FunctionMenu";
+import { usePathname } from "next/navigation";
 
 interface navbarProps {
   admin?: boolean;
@@ -18,8 +18,10 @@ interface navbarProps {
 
 const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
   const token = getCookie("token");
+  const role = getCookie("role")?.toLocaleLowerCase();
   const [login, setLogin] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const pathName = usePathname();
 
   useEffect(() => {
     if (token) {
@@ -75,19 +77,24 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
           </ul>
         </div>
       ) : (
-        <div className="w-full text-white font-bold uppercase fixed z-30 top-0">
-          <div className="relative h-[33px] w-full bg-blue-600 mb-1">
-            <div className="absolute bg-main md:w-[480px] w-full h-[39px] right-0 top-0 clipPath flex items-center">
+        <div
+          style={{ backgroundImage: `url(/bg-big.jpg)` }}
+          className="w-full text-white font-bold uppercase fixed z-30 top-0"
+        >
+          {/* <div className="relative h-[38px] w-full bg-blue-600 mb-1 flex items-center">
+            <FunctionMenu />
+            <div className="absolute bg-main md:w-[480px] w-full h-[43px] right-0 top-0 clipPath flex items-center">
               <div className="absolute ml-4 w-fit p-1 flex left-0 cursor-pointer items-center rounded-full hover:bg-[#ffffff7d] hover:text-gray-700">
                 <IoIosSearch size={24} />
               </div>
             </div>
-          </div>
+          </div> */}
+
           <div className="md:mx-20">
             <div className="p-2 flex justify-between text-center items-center">
               <div className="flex items-center">
                 <Link
-                  href={"/"}
+                  href={role ? `/${role}` : "/"}
                   className="text-2xl font-bold text-main flex items-center"
                 >
                   <Image
@@ -101,9 +108,7 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
                 </Link>
               </div>
               <div className="flex items-center">
-                <div
-                  className={`mx-2 p-1 hidden md:block bg-main rounded-full`}
-                >
+                <div className={`mx-2 p-1 hidden md:block  rounded-full `}>
                   <Menu />
                 </div>
                 <div className="ml-2 text-black bg-white rounded-full">

@@ -102,7 +102,7 @@ const LoginForm = () => {
         router.push("/teacher");
         break;
       default:
-        router.push("/student");
+        router.push("/parent");
         break;
     }
   };

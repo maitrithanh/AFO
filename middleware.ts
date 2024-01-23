@@ -57,15 +57,16 @@ export function middleware (request: NextRequest) {
 
   if ((request.nextUrl.pathname).includes('/profile')) {
     if(token && role === "Parent"){
-      return NextResponse.rewrite(new URL('/parent/profile', request.url))
+      return NextResponse.redirect(new URL('/parent/profile', request.url))
     }else if(token && role === "Admin") {
-      return NextResponse.rewrite(new URL('/admin/profile', request.url))
+      return NextResponse.redirect(new URL('/admin/profile', request.url))
     }else if(token && role === "Teacher") {
-      return NextResponse.rewrite(new URL('/teacher/profile', request.url))
+      return NextResponse.redirect(new URL('/teacher/profile', request.url))
     }else {
       return NextResponse.rewrite(new URL('/login', request.url))
     }
   }
+
 
   if (
     dateNow > dateExpiration
