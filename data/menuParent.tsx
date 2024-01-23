@@ -2,7 +2,7 @@ export const menuParent = [
   {
     name: "Lịch học",
     image: "weekly.png",
-    path: "/",
+    path: "/parent/calendar",
   },
   {
     name: "Sức khoẻ",

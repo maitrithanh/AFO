@@ -71,10 +71,15 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
               </button>
             </div>
           </form>
-          <ul className="flex gap-2 mx-2">
-            <DropdownNotification />
-            <DropdownMessage />
-          </ul>
+          <div className="flex items-center">
+            <ul className="flex gap-2 mx-2 ">
+              <DropdownNotification />
+              <DropdownMessage />
+            </ul>
+            <div>
+              <ShortProfile />
+            </div>
+          </div>
         </div>
       ) : (
         <div

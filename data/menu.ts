@@ -10,52 +10,79 @@ import { FaHeart } from "react-icons/fa6";
 
 export const  menu = [
     {
-        text: 'Tổng quan',
+        text: 'Thống kê',
         icon: LuLayoutDashboard,
         pathname: '/admin',
         img: "analysis.png"
     },
     {
-        text: 'Phân tích',
+        text: 'Quản lý tài khoản',
         icon: IoAnalyticsSharp,
-        pathname: '/admin/statistics',
-        img: 'bar-chart.png'
-    },
-    {
-        text: 'Người dùng',
-        icon: LuUser2,
-        pathname: '/admin/users',
+        pathname: '/admin/account',
         img: 'user.png'
     },
     {
-        text: 'Điểm danh',
+        text: 'Lớp học',
+        icon: LuUser2,
+        pathname: '/admin/classes',
+        img: 'blackboard.png'
+    },
+    {
+        text: 'Lịch học',
         icon: MdOutlineInventory,
-        pathname: '/admin/attendance',
+        pathname: '/admin/schedule',
         img: 'attendance.png'
     },
     ,
     {
-        text: 'Sức Khoẻ',
+        text: 'Môn học',
         icon: FaHeart,
-        pathname: '/admin/health',
+        pathname: '/admin/subject',
         img: "heartbeat.png"
     },
     {
-        text: 'Giáo viên',
+        text: 'Đưa đón',
         icon: PiChalkboardTeacherDuotone,
-        pathname: '/admin/teachers',
-        img: 'teacher.png'
+        pathname: '/admin/bus',
+        img: 'bus.png'
     },
+    {
+        text: 'Sức khoẻ',
+        icon: CiMoneyBill,
+        pathname: '/admin/health',
+        img: 'heartbeat.png'
+    },
+    {
+        text: 'Thực đơn',
+        icon: GiTeacher,
+        pathname: '/admin/menu',
+        img: 'menu.png'
+    }
+    ,
+    {
+        text: 'Album',
+        icon: GiTeacher,
+        pathname: '/admin/album',
+        img: 'album.png'
+    }
+    ,
     {
         text: 'Học phí',
-        icon: CiMoneyBill,
+        icon: GiTeacher,
         pathname: '/admin/schoolfee',
-        img: 'scholarship.png'
+        img: 'cost.png'
     },
     {
-        text: 'Lớp học',
+        text: 'Thông báo',
         icon: GiTeacher,
-        pathname: '/admin/classes',
-        img: 'blackboard.png'
+        pathname: '/admin/notification',
+        img: 'notification.png'
+    }
+    ,
+    {
+        text: 'Góp ý',
+        icon: GiTeacher,
+        pathname: '/admin/feedback',
+        img: 'feedback.png'
     }
 ]
