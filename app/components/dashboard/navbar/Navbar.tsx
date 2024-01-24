@@ -3,13 +3,11 @@ import React, { useEffect, useState } from "react";
 import ShortProfile from "../../profile/ShortProfile";
 import Link from "next/link";
 import { getCookie } from "cookies-next";
-import { IoIosSearch } from "react-icons/io";
 import { LuMenu } from "react-icons/lu";
 import Menu from "./Menu";
 import DropdownNotification from "../../Header/DropdownNotification";
 import DropdownMessage from "../../Header/DropdownMessage";
 import Image from "next/image";
-import FunctionMenu from "./FunctionMenu";
 import { usePathname } from "next/navigation";
 
 interface navbarProps {
@@ -86,15 +84,6 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
           style={{ backgroundImage: `url(/bg-big.webp)` }}
           className="w-full text-white font-bold uppercase fixed z-30 top-0"
         >
-          {/* <div className="relative h-[38px] w-full bg-blue-600 mb-1 flex items-center">
-            <FunctionMenu />
-            <div className="absolute bg-main md:w-[480px] w-full h-[43px] right-0 top-0 clipPath flex items-center">
-              <div className="absolute ml-4 w-fit p-1 flex left-0 cursor-pointer items-center rounded-full hover:bg-[#ffffff7d] hover:text-gray-700">
-                <IoIosSearch size={24} />
-              </div>
-            </div>
-          </div> */}
-
           <div className="md:mx-20">
             <div className="p-2 flex justify-between text-center items-center">
               <div className="flex items-center">
