@@ -16,7 +16,7 @@ const Footer = () => {
           loading="lazy"
         />
       </div>
-      <div className="absolute md:right-0 -right-10 bottom-0">
+      <div className="absolute right-0 bottom-0">
         <Image
           loading="lazy"
           src={"/icons/footer-right.webp"}

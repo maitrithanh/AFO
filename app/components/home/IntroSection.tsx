@@ -10,7 +10,7 @@ const IntroSection = () => {
         height={100}
         alt="cloud"
         loading="lazy"
-        className="absolute animate-bounce duration-500 hidden md:block"
+        className="absolute duration-500 hidden md:block"
       />
       <Image
         src={"/icons/cloud.webp"}
@@ -18,57 +18,8 @@ const IntroSection = () => {
         height={100}
         alt="cloud"
         loading="lazy"
-        className="absolute right-28 top-10 animate-bounce hidden md:block"
+        className="absolute right-28 top-10 hidden md:block"
       />
-      {/* <div className="h-fit w-full flex items-center justify-center p-8">
-        <div className="grid md:grid-cols-6 grid-cols-1 gap-2 max-w-[1120px]">
-          <div className=" flex justify-center items-center md:col-span-2">
-            <Image src="/Logo.jpg" alt="" width={200} height={200} />
-          </div>
-          <div className="md:col-span-4">
-            <h1 className="text-3xl font-bold text-main text-cool">
-              TỔNG QUAN
-            </h1>
-            <p className="mt-2 text-justify text-lg">
-              Hãy cùng trải nghiệm các khóa học tại TDKT Online. Với chính sách
-              tận dụng được sự phát triển của các ứng dụng Online, nguồn học
-              liệu từ giáo sư các trường Đại học hàng đầu thế giới, được giảng
-              dạy và dẫn dắt bởi những chuyên gia, luôn cập nhập đầy đủ các khóa
-              học từ trung học cơ sở đến Đại Học.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="h-fit w-full flex items-center justify-center p-8 bg-main">
-        <div className="grid md:grid-cols-8 grid-cols-1 gap-2 max-w-[1120px]">
-          <div className="md:col-span-5 text-white">
-            <div>
-              <h1 className="text-3xl font-bold text-cool">CHỨNG CHỈ</h1>
-              <p className="mt-2 text-justify text-lg">
-                Hãy cùng trải nghiệm các khóa học tại TDKT Online. Với chính
-                sách tận dụng được sự phát triển của các ứng dụng Online, nguồn
-                học liệu từ giáo sư các trường Đại học hàng đầu thế giới, được
-                giảng dạy và dẫn dắt bởi những chuyên gia, luôn cập nhập đầy đủ
-                các khóa học từ trung học cơ sở đến Đại Học.
-              </p>
-            </div>
-            <div className="mt-8">
-              <h1 className="text-3xl font-bold text-cool">MỤC TIÊU</h1>
-              <p className="mt-2 text-justify text-lg">
-                Mục tiêu dạy học là trạng thái phát triển nhân cách được dự kiến
-                trước của học viên sau một quá trình đào tạo, dựa trên yêu cầu
-                phát triển của đất nước, của thị trường lao động. Trạng thái
-                phát triển nhân cách được thể hiện ở phẩm chất và năng lực của
-                người được đào tạo.
-              </p>
-            </div>
-          </div>
-          <div className="flex justify-center items-center md:col-span-3 pl-4">
-            <Image src="/target.png" alt="" width={500} height={500} />
-          </div>
-        </div>
-      </div> */}
 
       <div className="flex justify-center w-full py-8">
         <div>
