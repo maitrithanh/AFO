@@ -5,7 +5,7 @@ const IntroSection = () => {
   return (
     <div className="relative my-2">
       <Image
-        src={"/icons/cloud.png"}
+        src={"/icons/cloud.webp"}
         width={200}
         height={100}
         alt="cloud"
@@ -13,7 +13,7 @@ const IntroSection = () => {
         className="absolute animate-bounce duration-500 hidden md:block"
       />
       <Image
-        src={"/icons/cloud.png"}
+        src={"/icons/cloud.webp"}
         width={200}
         height={100}
         alt="cloud"

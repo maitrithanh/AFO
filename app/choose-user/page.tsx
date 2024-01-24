@@ -5,7 +5,7 @@ const ChooseUserPage = () => {
   return (
     <div
       style={{
-        backgroundImage: `url(/bg-sky.jpg)`,
+        backgroundImage: `url(/bg-sky.webp)`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
       }}
@@ -21,7 +21,7 @@ const ChooseUserPage = () => {
               <div className="">
                 <Image
                   className="rounded-full"
-                  src={"/avatar.jpg"}
+                  src={"/avatar.webp"}
                   width={200}
                   height={200}
                   alt="User"
@@ -37,7 +37,7 @@ const ChooseUserPage = () => {
               <div className="">
                 <Image
                   className="rounded-full"
-                  src={"/avatar.jpg"}
+                  src={"/avatar.webp"}
                   width={200}
                   height={200}
                   alt="User"

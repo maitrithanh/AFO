@@ -55,15 +55,14 @@ const DropdownMessage = () => {
           <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
         </span>
 
-        <Image src={"/icons/chat.png"} width={24} height={24} alt="" />
+        <Image src={"/icons/chat.webp"} width={24} height={24} alt="" />
       </Link>
 
       {/* <!-- Dropdown Start --> */}
       <div
         ref={dropdown}
         style={{
-          background:
-            "url(https://png.pngtree.com/background/20210710/original/pngtree-childlike-cartoon-children-s-training-class-enrollment-poster-background-material-picture-image_1034003.jpg)",
+          background: "url(/bg-chat.webp)",
           backgroundSize: "cover",
         }}
         onFocus={() => setDropdownOpen(true)}
@@ -88,7 +87,7 @@ const DropdownMessage = () => {
                 <Image
                   width={55}
                   height={55}
-                  src={"/avatar.jpg"}
+                  src={"/avatar.webp"}
                   alt="User"
                   className="rounded-full"
                 />
@@ -114,7 +113,7 @@ const DropdownMessage = () => {
                 <Image
                   width={55}
                   height={55}
-                  src={"/avatar.jpg"}
+                  src={"/avatar.webp"}
                   alt="User"
                   className="rounded-full"
                 />
@@ -140,7 +139,7 @@ const DropdownMessage = () => {
                 <Image
                   width={55}
                   height={55}
-                  src={"/avatar.jpg"}
+                  src={"/avatar.webp"}
                   alt="User"
                   className="rounded-full"
                 />
@@ -166,7 +165,7 @@ const DropdownMessage = () => {
                 <Image
                   width={55}
                   height={55}
-                  src={"/avatar.jpg"}
+                  src={"/avatar.webp"}
                   alt="User"
                   className="rounded-full"
                 />
@@ -192,7 +191,7 @@ const DropdownMessage = () => {
                 <Image
                   width={55}
                   height={55}
-                  src={"/avatar.jpg"}
+                  src={"/avatar.webp"}
                   alt="User"
                   className="rounded-full"
                 />
@@ -218,7 +217,7 @@ const DropdownMessage = () => {
                 <Image
                   width={55}
                   height={55}
-                  src={"/avatar.jpg"}
+                  src={"/avatar.jpwebpg"}
                   alt="User"
                   className="rounded-full"
                 />
@@ -244,7 +243,7 @@ const DropdownMessage = () => {
                 <Image
                   width={55}
                   height={55}
-                  src={"/avatar.jpg"}
+                  src={"/avatar.webp"}
                   alt="User"
                   className="rounded-full"
                 />
@@ -270,7 +269,7 @@ const DropdownMessage = () => {
                 <Image
                   width={55}
                   height={55}
-                  src={"/avatar.jpg"}
+                  src={"/avatar.webp"}
                   alt="User"
                   className="rounded-full"
                 />
@@ -296,7 +295,7 @@ const DropdownMessage = () => {
                 <Image
                   width={55}
                   height={55}
-                  src={"/avatar.jpg"}
+                  src={"/avatar.webp"}
                   alt="User"
                   className="rounded-full"
                 />

@@ -18,7 +18,7 @@ const MenuSection = () => {
             className="relative hover:scale-105 cursor-pointer transition-all"
           >
             <Image
-              src={`/bg-card.png`}
+              src={`/bg-card.webp`}
               className="p-2"
               alt=""
               width={200}

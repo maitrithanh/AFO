@@ -54,7 +54,7 @@ const DropdownNotification = () => {
           <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
         </span>
 
-        <Image src={"/icons/notification.png"} width={24} height={24} alt="" />
+        <Image src={"/icons/notification.webp"} width={24} height={24} alt="" />
       </Link>
 
       <div
@@ -62,7 +62,7 @@ const DropdownNotification = () => {
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
         style={{
-          backgroundImage: `url("/bg-noti.jpg")`,
+          backgroundImage: `url("/bg-noti.webp")`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}

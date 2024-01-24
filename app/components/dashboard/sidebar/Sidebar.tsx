@@ -31,7 +31,7 @@ const Sidebar = () => {
     >
       <nav
         style={{
-          backgroundImage: `url("/bg-sidebar.jpg")`,
+          backgroundImage: `url("/bg-sidebar.webp")`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backdropFilter: "sepia(10%)",
@@ -41,7 +41,7 @@ const Sidebar = () => {
         <div className="p-4 pb-2 mb-2 flex justify-between items-center">
           <Image
             priority
-            src="/Logo.png"
+            src="/Logo.webp"
             alt="Logo"
             className={`overflow-hidden transition-all  ${
               expanded ? "w-[52px]" : "w-0"
@@ -81,7 +81,7 @@ const Sidebar = () => {
           <hr className="my-3" />
           <SidebarItem
             icon={<IoSettingsOutline size={22} />}
-            img={"/icons/settings.png"}
+            img={"/icons/settings.webp"}
             text="Cài đặt"
             pathname={"/dashboard/settings"}
             active={pathName == "/dashboard/settings"}
@@ -90,7 +90,7 @@ const Sidebar = () => {
           <SidebarItem
             icon={<IoHelpCircleOutline size={22} />}
             text="Trợ giúp"
-            img={"/icons/qa.png"}
+            img={"/icons/qa.webp"}
             pathname={"/dashboard/help"}
             active={pathName == "/dashboard/help"}
             expanded={expanded}

@@ -131,11 +131,11 @@ const ProfileCard = () => {
               <DefaultImage
                 key={currentUser?.avatar}
                 img={getImageUrl(currentUser?.avatar)}
-                fallback="/avatar.jpg"
+                fallback="/avatar.webp"
                 className={`w-14 h-14 rounded-full cursor-pointer`}
                 width={100}
                 height={100}
-              />  
+              />
               <div
                 title="Đổi ảnh"
                 className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
@@ -155,9 +155,7 @@ const ProfileCard = () => {
             </span>
 
             <div className="ml-4">
-              <p className="font-bold text-2xl">
-                {currentUser?.fullName}
-              </p>
+              <p className="font-bold text-2xl">{currentUser?.fullName}</p>
             </div>
           </div>
 
@@ -190,6 +188,11 @@ const ProfileCard = () => {
             <CardInfoLine
               lineName={"Địa chỉ"}
               contentLine={currentUser?.address}
+            />
+
+            <CardInfoLine
+              lineName={"Ghi chú"}
+              contentLine={currentUser?.note}
             />
           </CardInfo>
           {/* {currentUser?.representativeInfos?.length !== 0 ? (

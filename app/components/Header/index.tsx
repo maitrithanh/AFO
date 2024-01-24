@@ -3,7 +3,6 @@ import Link from "next/link";
 import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownMessage from "./DropdownMessage";
 import DropdownNotification from "./DropdownNotification";
-import DropdownUser from "./DropdownUser";
 import Image from "next/image";
 
 const Header = () => {
@@ -12,7 +11,7 @@ const Header = () => {
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
           <Link className="block flex-shrink-0 lg:hidden" href="/">
-            <Image width={32} height={32} src={"/avatar.jpg"} alt="Logo" />
+            <Image width={32} height={32} src={"/avatar.webp"} alt="Logo" />
           </Link>
         </div>
 
@@ -66,10 +65,6 @@ const Header = () => {
             <DropdownMessage />
             {/* <!-- Chat Notification Area --> */}
           </ul>
-
-          {/* <!-- User Area --> */}
-          <DropdownUser />
-          {/* <!-- User Area --> */}
         </div>
       </div>
     </header>
