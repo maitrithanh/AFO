@@ -3,7 +3,7 @@ import React from "react";
 import { slides } from "@/data/slides";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 const Slider = () => {
   return (
@@ -18,13 +18,13 @@ const Slider = () => {
     >
       {slides.map((item: any) => {
         return (
-          <div key={item.url} className="h-[600px]">
+          <div key={item.url} className="h-[600px] relative">
             <Image
               src={item.url}
-              objectFit="cover"
-              fill
-              alt=""
-              className="md:max-h-[600px] max-h-[200px]"
+              layout="fill"
+              alt={item.url}
+              priority
+              className="md:max-h-[600px] max-h-[200px] relative"
             />
           </div>
         );

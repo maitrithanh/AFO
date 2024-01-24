@@ -81,8 +81,11 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
         </div>
       ) : (
         <div
-          style={{ backgroundImage: `url(/bg-big.webp)` }}
-          className="w-full text-white font-bold uppercase fixed z-30 top-0"
+          className={`w-full font-bold uppercase fixed z-30 top-0  ${
+            pathName == "/"
+              ? "bg-white text-black"
+              : "bg-[url(/bg-big.webp)] text-white"
+          }`}
         >
           <div className="md:mx-20">
             <div className="p-2 flex justify-between text-center items-center">
