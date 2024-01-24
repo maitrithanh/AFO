@@ -1,14 +1,14 @@
 export const slides = [
     {
-        url: "https://communityimpact.com/uploads/images/2023/01/10/235860.jpg"
+        url: "/slides/1.webp"
     }, 
     {
-        url: "https://www.hellokids.co.in/blog/wp-content/uploads/2023/01/Requirements-to-Start-a-Preschool.jpeg"
+        url: "/slides/2.webp"
     }, 
     {
-        url: "https://www.firstfiveyears.org.au/kenticoimage.axd/media/86535859-9531-4b4e-9a99-bbd38705e07b/Preschool-iStock-473032112-1500x900.jpg"
+        url: "/slides/3.webp"
     }, 
     {
-        url: "https://novakdjokovicfoundation.org/wp-content/uploads/2023/01/preschooler-children-boys-play-with-counter-toy-3.jpg"
+        url: "/slides/4.webp"
     }
 ]

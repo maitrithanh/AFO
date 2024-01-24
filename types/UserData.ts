@@ -19,4 +19,7 @@ export default interface UserData {
     id: string,
     userName: string,
     email: string,
+    numberID: string,
+    level: string,
+    loginGoogle: any
 }

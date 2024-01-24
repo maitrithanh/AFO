@@ -1,37 +1,37 @@
 export const menuParent = [
   {
     name: "Lịch học",
-    image: "weekly.png",
+    image: "weekly.webp",
     path: "/parent/calendar",
   },
   {
     name: "Sức khoẻ",
-    image: "heartbeat.png",
+    image: "heartbeat.webp",
     path: "/",
   },
   {
     name: "Học phí",
-    image: "cost.png",
+    image: "cost.webp",
     path: "/",
   },
   {
     name: "Thực đơn",
-    image: "menu.png",
+    image: "menu.webp",
     path: "/",
   },
   {
     name: "Đưa đón",
-    image: "bus.png",
+    image: "bus.webp",
     path: "/",
   },
   {
     name: "Liên hệ",
-    image: "telephone.png",
+    image: "telephone.webp",
     path: "/",
   },
   {
     name: "Điểm danh",
-    image: "calendar.png",
+    image: "calendar.webp",
     path: "/",
   },
 ];

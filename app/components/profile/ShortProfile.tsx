@@ -70,7 +70,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
           <DefaultImage
             key={user?.avatar}
             img={baseURL + "File/GetFile/" + user?.avatar}
-            fallback="/avatar.jpg"
+            fallback="/avatar.webp"
             className={`w-10 h-10 rounded-full cursor-pointer ${
               borderTop ? "mr-2" : ""
             }`}

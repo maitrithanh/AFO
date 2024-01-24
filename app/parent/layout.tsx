@@ -5,7 +5,7 @@ import Navbar from "../components/dashboard/navbar/Navbar";
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
-      style={{ backgroundImage: `url(/bg-big.jpg)` }}
+      style={{ backgroundImage: `url(/bg-big.webp)` }}
       className="max-h-screen h-screen w-screen overflow-y-auto"
     >
       <Toaster />

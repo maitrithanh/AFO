@@ -59,7 +59,7 @@ const ClassesPage = () => {
               <div
                 key={data.classID}
                 style={{
-                  backgroundImage: `url(${"/bg-noti.jpg"})`,
+                  backgroundImage: `url(${"/bg-noti.webp"})`,
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
                 }}

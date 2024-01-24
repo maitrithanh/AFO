@@ -83,7 +83,7 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
         </div>
       ) : (
         <div
-          style={{ backgroundImage: `url(/bg-big.jpg)` }}
+          style={{ backgroundImage: `url(/bg-big.webp)` }}
           className="w-full text-white font-bold uppercase fixed z-30 top-0"
         >
           {/* <div className="relative h-[38px] w-full bg-blue-600 mb-1 flex items-center">
@@ -103,7 +103,7 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
                   className="text-2xl font-bold text-main flex items-center"
                 >
                   <Image
-                    src={"/Logo.png"}
+                    src={"/Logo.webp"}
                     width={50}
                     height={50}
                     alt="Logo"

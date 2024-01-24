@@ -13,76 +13,76 @@ export const  menu = [
         text: 'Thống kê',
         icon: LuLayoutDashboard,
         pathname: '/admin',
-        img: "analysis.png"
+        img: "analysis.webp"
     },
     {
         text: 'Quản lý tài khoản',
         icon: IoAnalyticsSharp,
         pathname: '/admin/account',
-        img: 'user.png'
+        img: 'user.webp'
     },
     {
         text: 'Lớp học',
         icon: LuUser2,
         pathname: '/admin/classes',
-        img: 'blackboard.png'
+        img: 'blackboard.webp'
     },
     {
         text: 'Lịch học',
         icon: MdOutlineInventory,
         pathname: '/admin/schedule',
-        img: 'attendance.png'
+        img: 'attendance.webp'
     },
     ,
     {
         text: 'Môn học',
         icon: FaHeart,
         pathname: '/admin/subject',
-        img: "heartbeat.png"
+        img: "heartbeat.webp"
     },
     {
         text: 'Đưa đón',
         icon: PiChalkboardTeacherDuotone,
         pathname: '/admin/bus',
-        img: 'bus.png'
+        img: 'bus.webp'
     },
     {
         text: 'Sức khoẻ',
         icon: CiMoneyBill,
         pathname: '/admin/health',
-        img: 'heartbeat.png'
+        img: 'heartbeat.webp'
     },
     {
         text: 'Thực đơn',
         icon: GiTeacher,
         pathname: '/admin/menu',
-        img: 'menu.png'
+        img: 'menu.webp'
     }
     ,
     {
         text: 'Album',
         icon: GiTeacher,
         pathname: '/admin/album',
-        img: 'album.png'
+        img: 'album.webp'
     }
     ,
     {
         text: 'Học phí',
         icon: GiTeacher,
         pathname: '/admin/schoolfee',
-        img: 'cost.png'
+        img: 'cost.webp'
     },
     {
         text: 'Thông báo',
         icon: GiTeacher,
         pathname: '/admin/notification',
-        img: 'notification.png'
+        img: 'notification.webp'
     }
     ,
     {
         text: 'Góp ý',
         icon: GiTeacher,
         pathname: '/admin/feedback',
-        img: 'feedback.png'
+        img: 'feedback.webp'
     }
 ]

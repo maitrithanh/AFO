@@ -9,7 +9,7 @@ const Footer = () => {
       </div>
       <div className="absolute md:left-0 -left-8 bottom-0 md:w-full w-28">
         <Image
-          src={"/icons/footer-left.png"}
+          src={"/icons/footer-left.webp"}
           width={150}
           height={150}
           alt="footer left"
@@ -19,7 +19,7 @@ const Footer = () => {
       <div className="absolute md:right-0 -right-10 bottom-0">
         <Image
           loading="lazy"
-          src={"/icons/footer-right.png"}
+          src={"/icons/footer-right.webp"}
           width={150}
           height={150}
           className="object-cover"

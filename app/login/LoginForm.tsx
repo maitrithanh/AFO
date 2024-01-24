@@ -123,7 +123,7 @@ const LoginForm = () => {
         <div className="brightness-[.8]">
           <Image
             className="absolute h-screen w-full object-cover sm:object-fill"
-            src="/background.jpg"
+            src="/background.webp"
             alt="Background Login"
             width={2560}
             height={1440}
@@ -134,7 +134,7 @@ const LoginForm = () => {
             <div className="absolute z-10 top-0 left-0 -translate-y-[50%] justify-center w-full ">
               <Image
                 className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-lg bg-white"
-                src="/Logo.png"
+                src="/Logo.webp"
                 alt="Your Company"
                 width={100}
                 height={100}
@@ -214,7 +214,7 @@ const LoginForm = () => {
                 onClick={() => ExternalLogin("google")}
               >
                 <Image
-                  src={"/icons/google.png"}
+                  src={"/icons/google.webp"}
                   width={22}
                   height={22}
                   alt="Google"
@@ -226,7 +226,7 @@ const LoginForm = () => {
                 onClick={() => ExternalLogin("facebook")}
               >
                 <Image
-                  src={"/icons/facebook.png"}
+                  src={"/icons/facebook.webp"}
                   width={22}
                   height={22}
                   alt="Facebook"

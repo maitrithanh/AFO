@@ -24,7 +24,7 @@ const FunctionMenu = () => {
           backAction();
         }}
       >
-        <Image src="/icons/back.png" alt="" width={26} height={26} />
+        <Image src="/icons/back.webp" alt="" width={26} height={26} />
       </div>
 
       <div
@@ -33,7 +33,7 @@ const FunctionMenu = () => {
           router.push(`/${role}`);
         }}
       >
-        <Image src="/icons/home.png" alt="" width={26} height={26} />
+        <Image src="/icons/home.webp" alt="" width={26} height={26} />
       </div>
 
       <div
@@ -43,7 +43,7 @@ const FunctionMenu = () => {
         }}
       >
         <Image
-          src="/icons/search.png"
+          src="/icons/search.webp"
           className=""
           alt=""
           width={26}
