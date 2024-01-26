@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      transitionDuration: {
+        '5000': '5000ms',
+      },
       colors: {
         main: "#F8853E",
         mainBlur: "#F8853E7D",

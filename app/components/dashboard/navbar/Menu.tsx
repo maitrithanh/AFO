@@ -7,9 +7,11 @@ import FunctionMenu from "./FunctionMenu";
 
 const Menu = () => {
   const pathName = usePathname();
+  const isRole = pathName.includes("/parent") || pathName.includes("/teacher");
+
   return (
     <div className="flex justify-center items-center ">
-      {!pathName.includes("/parent") ? (
+      {!isRole ? (
         <ul className="md:flex">
           {globalMenu.map((item: any) => {
             return (

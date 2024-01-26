@@ -18,7 +18,10 @@ const Slider = () => {
     >
       {slides.map((item: any) => {
         return (
-          <div key={item.url} className="h-[600px] relative">
+          <div
+            key={item.url}
+            className="md:h-[600px] h-[200px] relative transition-all"
+          >
             <Image
               src={item.url}
               layout="fill"

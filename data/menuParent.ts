@@ -34,4 +34,29 @@ export const menuParent = [
     image: "calendar.webp",
     path: "/",
   },
+  {
+    name: "Góp ý",
+    image: "feedback.webp",
+    path: "/",
+  },
+  {
+    name: "Kết quả học tập",
+    image: "report-study.webp",
+    path: "/",
+  },
+  {
+    name: "Album",
+    image: "album-folder.webp",
+    path: "/",
+  },
+  {
+    name: "Chuyển lớp",
+    image: "change-class.webp",
+    path: "/",
+  },
+  {
+    name: "Xin nghỉ",
+    image: "burnout.webp",
+    path: "/",
+  },
 ];

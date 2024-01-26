@@ -1,7 +1,15 @@
+"use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { setCookie } from "cookies-next";
 
 const ChooseUserPage = () => {
+  const router = useRouter();
+  const saveIdChild = (id: string) => {
+    setCookie("child", id);
+    router.push("/parent");
+  };
   return (
     <div
       style={{
@@ -16,8 +24,8 @@ const ChooseUserPage = () => {
           VUI LÒNG CHỌN THÔNG TIN BÉ?
         </div>
         <div className="flex gap-4 mx-2 justify-center items-center">
-          <div className="group">
-            <div className="relative cursor-pointer rounded-full hover:border-main border-4 ">
+          <div className="group" onClick={() => saveIdChild("123123")}>
+            <div className="relative cursor-pointer rounded-full hover:border-main border-4">
               <div className="">
                 <Image
                   className="rounded-full"
@@ -32,7 +40,8 @@ const ChooseUserPage = () => {
               Họ Và Tên
             </div>
           </div>
-          <div className="group">
+
+          <div className="group" onClick={() => saveIdChild("99999999")}>
             <div className="relative cursor-pointer rounded-full hover:border-main border-4 ">
               <div className="">
                 <Image

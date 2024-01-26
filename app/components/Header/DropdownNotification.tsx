@@ -44,7 +44,7 @@ const DropdownNotification = () => {
           setDropdownOpen(!dropdownOpen);
         }}
         href="#"
-        className="relative p-2 flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] bg-gray-50 border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
+        className="relative p-2 flex h-8.5 w-8.5 items-center justify-center rounded-full group bg-[#ffffff50] hover:text-primary"
       >
         <span
           className={`absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1 ${
@@ -54,7 +54,13 @@ const DropdownNotification = () => {
           <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
         </span>
 
-        <Image src={"/icons/notification.webp"} width={24} height={24} alt="" />
+        <Image
+          src={"/icons/notification.webp"}
+          width={24}
+          height={24}
+          alt=""
+          className="group-hover:scale-105 group-hover:rotate-6 transition-all"
+        />
       </Link>
 
       <div

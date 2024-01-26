@@ -1,7 +1,13 @@
 import React from "react";
+import MenuSection from "../components/MenuSection";
+import { menuTeacher } from "@/data/menuTeacher";
 
 const page = () => {
-  return <div>page</div>;
+  return (
+    <div className="flex justify-center items-center">
+      <MenuSection dataMenu={menuTeacher} />
+    </div>
+  );
 };
 
 export default page;

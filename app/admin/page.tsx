@@ -18,11 +18,7 @@ const Dashboard = () => {
     loadingPage();
   }, [loading]);
 
-  return (
-    <div>
-      {isLoading ? <Loading /> : <div>Họ tên: {currentUser?.fullName}</div>}
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Dashboard;
