@@ -5,18 +5,18 @@ export const globalMenu = [
     },
     {
         name: "Giới thiệu",
-        path: "/about"
+        path: "/home/about"
     },
     {
         name: "Giáo dục",
-        path: "/edu"
+        path: "/home/edu"
     },
     {
         name: "Liên hệ",
-        path: "/contact"
+        path: "/home/contact"
     },
     {
         name: "Tin tức",
-        path: "/news"
+        path: "/home/news"
     },
 ]

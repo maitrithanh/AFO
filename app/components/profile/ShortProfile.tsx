@@ -54,19 +54,6 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
         className={`w-full flex justify-between items-center overflow-hidden transition-all`}
       >
         <div className="w-full flex items-center">
-          {/* <Image
-            src={user?.avatar ? `/avatar.jpg` : "/avatar.jpg"}
-            alt=""
-            className={`w-10 h-10 rounded-full cursor-pointer ${
-              borderTop ? "mr-2" : ""
-            }`}
-            width={100}
-            height={100}
-            onClick={() => {
-              setModalListOpen((curr) => !curr);
-            }}
-          /> */}
-
           <DefaultImage
             key={user?.avatar}
             img={baseURL + "File/GetFile/" + user?.avatar}
@@ -98,9 +85,6 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
                 ) : (
                   <>
                     <h4 className="font-semibold">{user?.fullName}</h4>
-                    {/* <span className="text-xs text-gray-600">
-                      {user?.numberID}
-                    </span> */}
                   </>
                 )
               ) : (

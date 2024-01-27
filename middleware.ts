@@ -61,7 +61,7 @@ export function middleware (request: NextRequest) {
     }else if(token && role === "Admin") {
       return NextResponse.redirect(new URL('/admin/profile', request.url))
     }else if(token && role === "Teacher") {
-      return NextResponse.redirect(new URL('/teacher/profile', request.url))
+      return NextResponse.rewrite(new URL('/teacher/profile', request.url))
     }else {
       return NextResponse.rewrite(new URL('/login', request.url))
     }

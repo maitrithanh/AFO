@@ -1,14 +1,17 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { menuParent } from "@/data/menuParent";
 import { useRouter } from "next/navigation";
 
-const MenuSection = () => {
+interface MenuSectionProps {
+  dataMenu: any;
+}
+
+const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
   const router = useRouter();
   return (
     <div className="mt-14 grid md:grid-cols-4 grid-cols-1 gap-4 h-full">
-      {menuParent.map((item: any) => {
+      {dataMenu.map((item: any) => {
         return (
           <div
             onClick={() => {

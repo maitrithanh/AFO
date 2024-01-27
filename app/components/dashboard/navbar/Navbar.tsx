@@ -12,11 +12,11 @@ import { usePathname } from "next/navigation";
 
 interface navbarProps {
   admin?: boolean;
+  home?: boolean;
 }
 
-const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
+const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
   const token = getCookie("token");
-  const role = getCookie("role")?.toLocaleLowerCase();
   const [login, setLogin] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const pathName = usePathname();
@@ -82,16 +82,14 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
       ) : (
         <div
           className={`w-full font-bold uppercase fixed z-30 top-0  ${
-            pathName == "/"
-              ? "bg-white text-black"
-              : "bg-[url(/bg-big.webp)] text-white"
+            home ? "bg-white text-black" : "bg-[url(/bg-big.webp)] text-white"
           }`}
         >
           <div className="md:mx-20">
             <div className="p-2 flex justify-between text-center items-center">
               <div className="flex items-center">
                 <Link
-                  href={role ? `/${role}` : "/"}
+                  href={`/`}
                   className="text-2xl font-bold text-main flex items-center"
                 >
                   <Image
@@ -108,6 +106,16 @@ const Navbar: React.FC<navbarProps> = ({ admin = false }) => {
                 <div className={`mx-2 p-1 hidden md:block  rounded-full `}>
                   <Menu />
                 </div>
+
+                {!home ? (
+                  <div className="flex gap-2 mx-2 text-black list-none">
+                    <DropdownNotification />
+                    <DropdownMessage />
+                  </div>
+                ) : (
+                  ""
+                )}
+
                 <div className="ml-2 text-black bg-white rounded-full">
                   {login ? (
                     <ShortProfile />

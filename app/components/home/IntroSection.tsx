@@ -83,7 +83,7 @@ const IntroSection = () => {
         <div
           style={{
             background: "#ec1460",
-            clipPath: "polygon(0 0, 100% 5%, 100% 100%, 0% 100%);",
+            clipPath: "polygon(0 0, 100% 5%, 100% 100%, 0% 100%)",
           }}
           className="p-[15px] pt-[30px] rounded-sm max-w-[370px]"
         >
@@ -105,7 +105,7 @@ const IntroSection = () => {
         <div
           style={{
             background: "#2e68a0",
-            clipPath: "polygon(0 0, 100% 5%, 100% 100%, 0% 100%);",
+            clipPath: "polygon(0 0, 100% 5%, 100% 100%, 0% 100%)",
           }}
           className="p-[15px] pt-[30px] rounded-sm max-w-[370px]"
         >
@@ -127,7 +127,7 @@ const IntroSection = () => {
         <div
           style={{
             background: "#5f2f99",
-            clipPath: "polygon(0 0, 100% 5%, 100% 100%, 0% 100%);",
+            clipPath: "polygon(0 0, 100% 5%, 100% 100%, 0% 100%)",
           }}
           className="p-[15px] pt-[30px] rounded-sm max-w-[370px] relative"
         >
@@ -154,7 +154,7 @@ const IntroSection = () => {
             background: "#5f2f99",
             clipPath: "polygon(0 5%, 100% 0, 100% 100%, 0% 100%)",
           }}
-          className="p-[15px] ml-8 pt-[30px] rounded-sm max-w-[370px]"
+          className="p-[15px] md:ml-8 ml-0 pt-[30px] rounded-sm max-w-[370px]"
         >
           <h4 className="text-2xl text-white font-bold">Video Clip</h4>
           <Image
@@ -175,7 +175,7 @@ const IntroSection = () => {
             background: "#2e68a0",
             clipPath: "polygon(0 5%, 100% 0, 100% 100%, 0% 100%)",
           }}
-          className="p-[15px] ml-8 pt-[30px] rounded-sm max-w-[370px]"
+          className="p-[15px] md:ml-8 ml-0 pt-[30px] rounded-sm max-w-[370px]"
         >
           <h4 className="text-2xl text-white font-bold">Hoạt động tuần</h4>
           <Image
@@ -183,8 +183,7 @@ const IntroSection = () => {
             alt=""
             width={340}
             height={192}
-            priority
-            className="rounded-md max-h-[192px]"
+            className="rounded-md "
           />
           <p className="text-justify my-2 text-white">
             Hoạt động được thiết kế phù hợp cho từng lứa tuổi, trẻ được hoạt
@@ -197,7 +196,7 @@ const IntroSection = () => {
             background: "#ec1460",
             clipPath: "polygon(0 5%, 100% 0, 100% 100%, 0% 100%)",
           }}
-          className="p-[15px] ml-8 pt-[30px] rounded-sm max-w-[370px]"
+          className="p-[15px] md:ml-8 ml-0 pt-[30px] rounded-sm max-w-[370px]"
         >
           <h4 className="text-2xl text-white font-bold">Tài liệu</h4>
           <Image

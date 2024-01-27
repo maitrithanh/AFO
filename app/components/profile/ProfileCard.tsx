@@ -17,11 +17,14 @@ import ChangePwDialog from "./changePwDialog";
 import CardInfo from "./card/CardInfo";
 import CardInfoLine from "./card/CardInfoLine";
 import { getImageUrl } from "@/utils/image";
+import { useRouter } from "next/navigation";
+import { MdOutlineChangeCircle } from "react-icons/md";
 
 const ProfileCard = () => {
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [openChangePassword, setOpenChangePassword] = useState(false);
+  const router = useRouter();
 
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
 
@@ -154,8 +157,16 @@ const ProfileCard = () => {
               </div>
             </span>
 
-            <div className="ml-4">
+            <div className="ml-4 flex">
               <p className="font-bold text-2xl">{currentUser?.fullName}</p>
+              <button
+                className="mx-4 bg-main p-2 rounded-full text-white flex justify-center items-center"
+                onClick={() => {
+                  router.push("/choose-user");
+                }}
+              >
+                <p> Đổi hồ sơ</p>
+              </button>
             </div>
           </div>
 

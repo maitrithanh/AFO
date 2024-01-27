@@ -19,11 +19,10 @@ const ModalsList: React.FC<ModalsListProps> = ({
 }) => {
   const router = useRouter();
 
-  const token = getCookie("token") || null;
-
   const handleLogout = () => {
     deleteCookie("token");
     deleteCookie("role");
+    deleteCookie("child");
     <Loading />;
     toast.success("Đăng xuất thành công");
     router.push("/login");

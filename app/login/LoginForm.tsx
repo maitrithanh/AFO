@@ -4,7 +4,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Input from "../components/inputs/input";
 import Button from "../components/Button";
-import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import callApi, { callApiWithToken } from "@/utils/callApi";
@@ -14,7 +13,7 @@ import { signIn, useSession } from "next-auth/react";
 import { AxiosResponse } from "axios";
 import ResponseData from "@/types/ResponseData";
 import LoginRes from "@/types/LoginRes";
-import Loading from "../components/Loading";
+import Link from "next/link";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -102,7 +101,7 @@ const LoginForm = () => {
         router.push("/teacher");
         break;
       default:
-        router.push("/parent");
+        router.push("/choose-user");
         break;
     }
   };
@@ -132,13 +131,15 @@ const LoginForm = () => {
         <div className="flex min-h-full flex-col justify-center px-8 py-12 items-center lg:px-8">
           <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-white z-10 pt-24  justify-center">
             <div className="absolute z-10 top-0 left-0 -translate-y-[50%] justify-center w-full ">
-              <Image
-                className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-lg bg-white"
-                src="/Logo.webp"
-                alt="Your Company"
-                width={100}
-                height={100}
-              />
+              <Link href={"/"}>
+                <Image
+                  className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-lg bg-white"
+                  src="/Logo.webp"
+                  alt="Your Company"
+                  width={100}
+                  height={100}
+                />
+              </Link>
             </div>
             <form className="space-y-6 w-full" action="#" method="POST">
               <div>
@@ -196,19 +197,6 @@ const LoginForm = () => {
             </div>
 
             <div className="grid gap-2 md:grid-cols-2 ">
-              {/* <Button
-                label={"Google"}
-                outline
-                custom="mr-2"
-                icon={FaGoogle}
-                onClick={() => ExternalLogin("google")}
-              />
-              <Button
-                label={"Facebook"}
-                outline
-                icon={FaFacebook}
-                onClick={() => ExternalLogin("facebook")}
-              /> */}
               <button
                 className="bg-[#ec5114] p-3 text-white font-semibold rounded-lg flex items-center justify-center gap-2"
                 onClick={() => ExternalLogin("google")}
