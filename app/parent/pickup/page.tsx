@@ -8,13 +8,18 @@ import { useState } from "react";
 import { FaPen } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
 import PutPickupDialog from "./putDialog";
+import { callApiWithToken } from "@/utils/callApi";
+import toast from "react-hot-toast";
 
 const PickUpPage = () => { 
     const [openDialog, SetOpenDialog] = useState("");
+    const [refresh, setRefresh] = useState(false);
+    const [currData, setCurrData] = useState<PickUpListRes | null>(null) // data of selected pickup
 
-    const { data: pickups } = useFetch<PickUpListRes[]>('parent/pickuplist');
+    const { data: pickups } = useFetch<PickUpListRes[]>('parent/pickuplist', null, refresh);
 
-    const OnEdit = () => { 
+    const OnEdit = (x: PickUpListRes) => { 
+        setCurrData(x)
         SetOpenDialog('edt')
     }
 
@@ -22,8 +27,26 @@ const PickUpPage = () => {
         SetOpenDialog('add')
     }
 
-    const OnDelete = () => { 
-        alert('del')
+    const OnDelete = (x: PickUpListRes) => {
+        if (!confirm(`Xác nhận xóa ${x.fullName} khỏi danh sách đón hộ?`)) return;
+        callApiWithToken()
+            .delete('parent/deletepickup/' + x.id)
+            .then(() => {
+                toast.success('Đã xóa');
+                setRefresh(x => !x);
+            }).catch(() => {
+                toast.error('Có lỗi xảy ra');
+            })
+    }
+
+    const onToggleStatus = (id: number) => { 
+        callApiWithToken()
+            .get('parent/togglepickup/' + id)
+            .then(() => {
+                setRefresh(x => !x);
+            }).catch(() => {
+                toast.error('Có lỗi xảy ra');
+            })
     }
 
     //TODO:
@@ -42,8 +65,8 @@ const PickUpPage = () => {
         <ul role="list" className="divide-y divide-gray">
             {
                 pickups && pickups.map(x => <>
-                    <li className="flex justify-between gap-x-6 py-5 group" key={x.id}>
-                        <div className="flex min-w-0 gap-x-4">
+                    <li className="flex gap-x-6 py-5 group" key={x.id}>
+                        <div className="w-5/12 flex min-w-0 gap-x-4">
                             <DefaultImage
                                 key={x?.avatar}
                                 img={getImageUrl(x?.avatar)}
@@ -57,20 +80,20 @@ const PickUpPage = () => {
                             </div>
                         </div>
 
-                        <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end justify-evenly">
+                        <div className="w-5/12 hidden shrink-0 sm:flex sm:flex-col sm:items-end justify-evenly">
                             <p className="text-xl leading-6 text-gray-900">đ/c: {x.address}</p>
                             <div className="mt-1 flex items-center gap-x-1.5">
                                 {
                                     x.status ?
                                     <>
-                                        <div className="flex-none rounded-full bg-emerald-500/20 p-1">
+                                        <div className="cursor-pointer flex-none rounded-full bg-emerald-500/20 p-1" title="Hủy bỏ" onClick={() => onToggleStatus(x.id)}>
                                             <div className="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
                                         </div>
                                         <p className="text-l leading-5 text-gray-500">Được đón hộ</p>       
                                     </>
                                     :
                                     <>
-                                        <div className="flex-none rounded-full bg-red-500/20 p-1">
+                                        <div className="cursor-pointer flex-none rounded-full bg-red-500/20 p-1" title="Cho phép" onClick={() => onToggleStatus(x.id)}>
                                             <div className="h-1.5 w-1.5 rounded-full bg-red-500"></div>
                                         </div>
                                             <p className="text-l leading-5 text-gray-500"><del>Được đón hộ</del></p>
@@ -80,11 +103,11 @@ const PickUpPage = () => {
                         </div>
 
                         <div className="invisible group-hover:visible flex flex-col justify-evenly">
-                            <div className="rounded-full p-2 text-blue-600 border-blue-600 border-solid border-2 cursor-pointer" onClick={OnEdit}>
+                            <div className="rounded-full p-2 text-blue-600 border-blue-600 border-solid border-2 cursor-pointer" onClick={() => OnEdit(x)}>
                                 <FaPen />
                             </div>
 
-                            <div className="rounded-full p-2 text-red-600 border-red-600 border-solid border-2 cursor-pointer" onClick={OnDelete}>
+                            <div className="rounded-full p-2 text-red-600 border-red-600 border-solid border-2 cursor-pointer" onClick={() => OnDelete(x)}>
                                 <FaDeleteLeft />
                             </div>
                         </div>
@@ -95,7 +118,7 @@ const PickUpPage = () => {
         </ul>
 
         {/* put dialog */}
-        {openDialog && <PutPickupDialog onClose={() => { SetOpenDialog("") }} mode={openDialog} /> }
+        {openDialog && <PutPickupDialog onClose={() => { SetOpenDialog("") }} onSuccess={() => { setRefresh(x => !x) }} mode={openDialog} defaultData={currData} /> }
     </div>
 }
 

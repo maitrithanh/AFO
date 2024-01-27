@@ -7,45 +7,86 @@ import toast from "react-hot-toast";
 import Input from "@/app/components/inputs/input";
 import Button from "@/app/components/Button";
 import PickUpListRes from "@/types/PickUpListRes";
+import { toYMD } from "@/utils/dateTime";
+import { getImageUrl } from "@/utils/image";
 
 interface Prop {
-    onClose: () => void;
+    onClose: () => void
+    onSuccess: () => void
     mode: string,
-    defaultData?: PickUpListRes
+    defaultData: PickUpListRes | null
 }
 
-const PutPickupDialog = ({ onClose, mode, defaultData }: Prop) => {
+const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [currAvatar, setCurrAvatar] = useState<File | null>(null);
 
+    if (defaultData) {
+        defaultData.birthDay = toYMD(defaultData?.birthDay);
+    }
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<FieldValues>({
-        defaultValues: defaultData ?? {
-            FullName: '',
-            PhoneNumber: '',
-            BirthDay: '',
-            Address: '',
-            Note: '',
+        defaultValues: (defaultData && mode == 'edt') ? defaultData : {
+            fullName: '',
+            phoneNumber: '',
+            birthDay: '',
+            address: '',
+            note: '',
+            avatar: null
         },
     });
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log('datatata', data);
-        // setIsLoading(true);
-        // callApiWithToken()
-        //     .put("Auth/ChangePassword", data)
-        //     .then((res) => {
-        //         toast.success("Đã cập nhật");
-        //         onClose();
-        //     })
-        //     .catch((err) => {
-        //         toast.error(err?.response?.data?.error);
-        //     })
-        //     .finally(() => {
-        //         setIsLoading(false);
-        //     });
+        setIsLoading(true);
+        const formData = new FormData();
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+
+        if (currAvatar) {
+            formData.append("avatar", currAvatar);
+        }
+
+        if (mode === 'add') {
+            callApiWithToken()
+                .post("parent/addpickup", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data", // Specify content type
+                    },
+                })
+                .then((res) => {
+                    toast.success("Đã cập nhật");
+                    onClose();
+                    onSuccess();
+                })
+                .catch((err) => {
+                    toast.error(err?.response?.data?.error);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        } else if (mode === 'edt') { 
+            callApiWithToken()
+                .put("parent/editpickup/" + defaultData?.id, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data", // Specify content type
+                    },
+                })
+                .then((res) => {
+                    toast.success("Đã cập nhật");
+                    onClose();
+                    onSuccess();
+                })
+                .catch((err) => {
+                    toast.error(err?.response?.data?.error);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        }
     };
 
     const onClickOut = (e: any) => {
@@ -59,21 +100,43 @@ const PutPickupDialog = ({ onClose, mode, defaultData }: Prop) => {
             className="fixed z-50 top-0 left-0 w-full h-full flex items-center bg-black bg-opacity-40 justify-center"
         >
             <form
-                className="space-y-6 p-10 bg-white rounded-3xl w-[440px] mx-2"
+                className="space-y-6 p-10 bg-white rounded-3xl w-[440px] mx-2 max-h-[80%] overflow-auto"
                 action="#"
                 method="POST"
             >
-                <h3 className="text-2xl text-justify">
+                <h3 className="text-2xl text-justify font-bold">
                     {
                         mode === 'add' ? 'Thêm người đưa đón'
                             : 
                         mode == 'edt' ? 'Sửa thông tin người đưa đón' : '???'
                     }
                 </h3>
+
+                <div className="mt-2 border-slate-300 border-2 rounded-md p-4">
+                    <div className="flex items-center mb-4"> 
+                        <span className="mr-4 text-slate-500">Avatar: </span>
+                        {!currAvatar && defaultData?.avatar && mode === 'edt' &&
+                            <img src={getImageUrl(defaultData.avatar)} alt="" className="w-14 h-14 rounded-full" />
+                        }
+
+                        {currAvatar && (
+                            <img src={URL.createObjectURL(currAvatar)} alt="Current Avatar"
+                                className="w-14 h-14 rounded-full"/>
+                        )}
+                    </div>
+
+                    <input
+                        id={'avatar'}
+                        {...register('avatar', { required: mode === 'add' })} 
+                        type={'file'}
+                        onChange={(e) => setCurrAvatar(e.target.files![0])}
+                    />
+                </div>
+
                 <div>
                     <div className="mt-2">
                         <Input
-                            id="FullName"
+                            id="fullName"
                             label="Họ tên"
                             type={'text'}
                             disabled={isLoading}
@@ -87,7 +150,7 @@ const PutPickupDialog = ({ onClose, mode, defaultData }: Prop) => {
                 <div>
                     <div className="mt-2">
                         <Input
-                            id="PhoneNumber"
+                            id="phoneNumber"
                             label="Số điện thoại"
                             type={'text'}
                             disabled={isLoading}
@@ -101,7 +164,7 @@ const PutPickupDialog = ({ onClose, mode, defaultData }: Prop) => {
                 <div>
                     <div className="mt-2">
                         <Input
-                            id="BirthDay"
+                            id="birthDay"
                             label="Ngày sinh"
                             type={'date'}
                             disabled={isLoading}
@@ -115,7 +178,7 @@ const PutPickupDialog = ({ onClose, mode, defaultData }: Prop) => {
                 <div>
                     <div className="mt-2">
                         <Input
-                            id="Address"
+                            id="address"
                             label="Địa chỉ"
                             type={'text'}
                             disabled={isLoading}
@@ -129,7 +192,7 @@ const PutPickupDialog = ({ onClose, mode, defaultData }: Prop) => {
                 <div>
                     <div className="mt-2">
                         <Input
-                            id="Note"
+                            id="note"
                             label="Chú thích"
                             type={'text'}
                             disabled={isLoading}
