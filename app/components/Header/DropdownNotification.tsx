@@ -85,7 +85,7 @@ const DropdownNotification = () => {
         <ul className="flex flex-col overflow-y-auto h-[300px]">
           <li>
             <Link
-              className="flex mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg flex-col gap-1  py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 "
+              className="flex mx-4 text-left my-2 p-2 bg-[#ffffff68] rounded-lg flex-col gap-1  py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 "
               href="#"
             >
               <p className="font-semibold text-gray-500 ">Tên thông báo</p>
@@ -96,7 +96,7 @@ const DropdownNotification = () => {
           </li>
           <li>
             <Link
-              className="flex mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg flex-col gap-1  py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 "
+              className="flex mx-4 text-left my-2 p-2 bg-[#ffffff68] rounded-lg flex-col gap-1  py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 "
               href="#"
             >
               <p className="font-semibold text-gray-500 ">Tên thông báo</p>
@@ -107,7 +107,7 @@ const DropdownNotification = () => {
           </li>
           <li>
             <Link
-              className="flex mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg flex-col gap-1  py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 "
+              className="flex mx-4 text-left my-2 p-2 bg-[#ffffff68] rounded-lg flex-col gap-1  py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 "
               href="#"
             >
               <p className="font-semibold text-gray-500 ">Tên thông báo</p>
