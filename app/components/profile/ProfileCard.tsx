@@ -19,11 +19,15 @@ import CardInfoLine from "./card/CardInfoLine";
 import { getImageUrl } from "@/utils/image";
 import { useRouter } from "next/navigation";
 import { MdOutlineChangeCircle } from "react-icons/md";
+import { getCookie } from "cookies-next";
+import Link from "next/link";
+import Slider from "../Slider";
 
 const ProfileCard = () => {
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [openChangePassword, setOpenChangePassword] = useState(false);
+  const child = getCookie("child");
   const router = useRouter();
 
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
@@ -33,6 +37,8 @@ const ProfileCard = () => {
     null,
     refresh
   );
+  const { data: listChild } = useFetch("parent/childrenlist");
+  const infoChild = listChild?.find((x: any) => x.id == child);
   const { data: Session } = useSession();
 
   useEffect(() => {
@@ -128,117 +134,154 @@ const ProfileCard = () => {
     <div>
       {loading && <Loading />}
       <div className="flex justify-center items-center h-full w-full ">
-        <div className="relative h-full w-full bg-gradient-to-b sm:max-w-[840px] sm:p-8 rounded-xl">
-          <div className="flex items-center mx-2">
-            <span className="relative group">
-              <DefaultImage
-                key={currentUser?.avatar}
-                img={getImageUrl(currentUser?.avatar)}
-                fallback="/avatar.webp"
-                className={`w-14 h-14 rounded-full cursor-pointer`}
-                width={100}
-                height={100}
-              />
-              <div
-                title="Đổi ảnh"
-                className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
-              >
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  className="hidden"
-                  title="no"
-                  ref={uploadAvatarRef}
-                />
-                <FaPen
-                  onClick={onUpdateAvatarClick}
-                  className="cursor-pointer text-white"
-                />
-              </div>
-            </span>
+        <div className="relative h-full w-full bg-gradient-to-b sm:max-w-[1280px] sm:p-8 rounded-xl">
+          {/* parent */}
 
-            <div className="ml-4 flex">
-              <p className="font-bold text-2xl">{currentUser?.fullName}</p>
-              <button
-                className="mx-4 bg-main p-2 rounded-full text-white flex justify-center items-center"
-                onClick={() => {
-                  router.push("/choose-user");
-                }}
-              >
-                <p> Đổi hồ sơ</p>
-              </button>
-            </div>
+          <div className=" grid md:grid-cols-2 grid-cols-1 md:gap-4">
+            <CardInfo cardName="Thông tin người giám hộ">
+              <div className="absolute right-4 -top-10">
+                <span className="relative group">
+                  <DefaultImage
+                    key={currentUser?.avatar}
+                    img={getImageUrl(currentUser?.avatar)}
+                    fallback="/avatar.webp"
+                    className={`w-14 h-14 rounded-full cursor-pointer`}
+                    custom="w-[80px] h-[80px]"
+                  />
+                  <div
+                    title="Đổi ảnh"
+                    className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
+                  >
+                    <input
+                      type="file"
+                      onChange={handleFileChange}
+                      className="hidden"
+                      title="no"
+                      ref={uploadAvatarRef}
+                    />
+                    <FaPen
+                      onClick={onUpdateAvatarClick}
+                      className="cursor-pointer text-white"
+                    />
+                  </div>
+                </span>
+              </div>
+              <CardInfoLine
+                lineName={"Họ tên"}
+                contentLine={currentUser?.fullName}
+              />
+              <CardInfoLine
+                lineName={"Ngày sinh"}
+                contentLine={currentUser?.birthDay}
+              />
+              <CardInfoLine
+                lineName={"Giới tính"}
+                contentLine={currentUser?.gender}
+              />
+              <CardInfoLine
+                lineName={"SĐT"}
+                contentLine={currentUser?.phoneNumber}
+              />
+              <CardInfoLine
+                lineName={"Số CCCD"}
+                contentLine={currentUser?.idNumber}
+              />
+              <CardInfoLine
+                lineName={"Nghề nghiệp"}
+                contentLine={currentUser?.job}
+              />
+
+              <CardInfoLine
+                lineName={"Địa chỉ"}
+                contentLine={currentUser?.address}
+              />
+
+              <CardInfoLine
+                lineName={"Ghi chú"}
+                contentLine={currentUser?.note}
+              />
+            </CardInfo>
+            {/* children */}
+            <CardInfo cardName="Thông tin trẻ">
+              <div className="absolute right-4 -top-10">
+                <span className="relative group">
+                  <DefaultImage
+                    key={infoChild?.avatar}
+                    img={getImageUrl(infoChild?.avatar)}
+                    fallback="/avatar.webp"
+                    className={`w-14 h-14 rounded-full cursor-pointer`}
+                    custom="w-[80px] h-[80px]"
+                  />
+                  <div
+                    title="Đổi ảnh"
+                    className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
+                  >
+                    <input
+                      type="file"
+                      onChange={handleFileChange}
+                      className="hidden"
+                      title="no"
+                      ref={uploadAvatarRef}
+                    />
+                    <FaPen
+                      onClick={onUpdateAvatarClick}
+                      className="cursor-pointer text-white"
+                    />
+                  </div>
+                </span>
+              </div>
+              <CardInfoLine
+                lineName={"Họ tên"}
+                contentLine={infoChild?.fullName}
+              />
+              <CardInfoLine
+                lineName={"Ngày sinh"}
+                contentLine={infoChild?.birthDay}
+              />
+              <CardInfoLine
+                lineName={"Giới tính"}
+                contentLine={infoChild?.gender}
+              />
+              <CardInfoLine
+                lineName={"Nhập học"}
+                contentLine={infoChild?.joinDate}
+              />
+              <CardInfoLine
+                lineName={"Quốc tịch"}
+                contentLine={infoChild?.nation}
+              />
+              <CardInfoLine
+                lineName={"Tình trạng"}
+                contentLine={infoChild?.status ? "Đang học" : "Đã nghỉ"}
+              />
+
+              <CardInfoLine
+                lineName={"Địa chỉ"}
+                contentLine={infoChild?.address}
+              />
+
+              <CardInfoLine
+                lineName={"Ghi chú"}
+                contentLine={infoChild?.note}
+              />
+            </CardInfo>
           </div>
 
-          <CardInfo cardName="Thông tin cá nhân">
-            <CardInfoLine
-              lineName={"Họ tên"}
-              contentLine={currentUser?.fullName}
-            />
-            <CardInfoLine
-              lineName={"Ngày sinh"}
-              contentLine={currentUser?.birthDay}
-            />
-            <CardInfoLine
-              lineName={"Giới tính"}
-              contentLine={currentUser?.gender}
-            />
-            <CardInfoLine
-              lineName={"Số điện thoại"}
-              contentLine={currentUser?.phoneNumber}
-            />
-            <CardInfoLine
-              lineName={"Số CCCD"}
-              contentLine={currentUser?.idNumber}
-            />
-            <CardInfoLine
-              lineName={"Nghề nghiệp"}
-              contentLine={currentUser?.job}
-            />
-
-            <CardInfoLine
-              lineName={"Địa chỉ"}
-              contentLine={currentUser?.address}
-            />
-
-            <CardInfoLine
-              lineName={"Ghi chú"}
-              contentLine={currentUser?.note}
-            />
-          </CardInfo>
-          {/* {currentUser?.representativeInfos?.length !== 0 ? (
-            <CardInfo cardName="Thông tin phụ huynh">
-              {currentUser?.representativeInfos?.map((data: any) => {
-                return (
-                  <>
-                    <div key={data.id}>
-                      <div>
-                        <p className="text-lg font-semibold mt-4">
-                          Thông tin {data?.relationship}:
-                        </p>
-                        <CardInfoLine
-                          lineName={"Họ tên"}
-                          contentLine={data?.fullName}
-                        />
-                        <CardInfoLine
-                          lineName={"SĐT"}
-                          contentLine={data?.phoneNumber}
-                        />
-                        <CardInfoLine
-                          lineName={"Địa chỉ"}
-                          contentLine={data?.address}
-                        />
-                      </div>
-                    </div>
-                  </>
-                );
-              })}
+          <div>
+            <CardInfo cardName="Album ảnh">
+              <div className="absolute right-4 top-4">
+                <Link
+                  href={"#"}
+                  className="text-main font-bold hover:opacity-80 hover:mr-2 transition-all"
+                >
+                  Xem thêm
+                </Link>
+              </div>
+              <Slider showThumbs />
             </CardInfo>
-          ) : (
-            ""
-          )} */}
+          </div>
 
-          <div className="shadow-lg border p-8 pt-4 my-4 rounded-xl bg-white">
+          <div className="shadow-lg border p-8 pt-4 my-4 rounded-xl bg-[#fffc]">
             <div className="text-main sm:text-2xl text-xl font-bold flex border-b mb-4">
               Tài khoản liên kết
             </div>
@@ -281,6 +324,7 @@ const ProfileCard = () => {
                   label="Liên kết Facebook"
                   icon={FaFacebook}
                   outline
+                  custom="bg-[#ffffff7d]"
                   onClick={() => {
                     ExternalLogin("facebook");
                   }}

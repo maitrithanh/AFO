@@ -11,7 +11,7 @@ const CardInfoLine: React.FC<CardInfoLineProps> = ({
 }) => {
   return (
     <div className="flex mt-1">
-      <p className="sm:text-lg text-md font-medium md:w-[120px] w-[150px]">
+      <p className="sm:text-lg text-md font-medium md:w-[140px] w-[150px]">
         {lineName}
       </p>
       <p className="sm:text-lg text-md font-semibold ml-4 w-full text-justify">
