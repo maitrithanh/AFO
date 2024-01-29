@@ -3,9 +3,14 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { setCookie } from "cookies-next";
+import useFetch from "@/utils/useFetch";
+import DefaultImage from "../components/defaultImage";
 
 const ChooseUserPage = () => {
   const router = useRouter();
+
+  const { data: listChild } = useFetch("parent/childrenlist");
+
   const saveIdChild = (id: string) => {
     setCookie("child", id);
     router.push("/parent");
@@ -24,39 +29,28 @@ const ChooseUserPage = () => {
           VUI LÒNG CHỌN THÔNG TIN BÉ?
         </div>
         <div className="flex gap-4 mx-2 justify-center items-center">
-          <div className="group" onClick={() => saveIdChild("123123")}>
-            <div className="relative cursor-pointer rounded-full hover:border-main border-4">
-              <div className="">
-                <Image
-                  className="rounded-full"
-                  src={"/avatar.webp"}
-                  width={200}
-                  height={200}
-                  alt="User"
-                />
+          {listChild?.map((childInfo: any) => {
+            return (
+              <div
+                key={childInfo.id}
+                className="group"
+                onClick={() => saveIdChild(childInfo.id)}
+              >
+                <div className="relative cursor-pointer rounded-full hover:border-main border-4">
+                  <div className="">
+                    <DefaultImage
+                      img={childInfo.avatar}
+                      fallback="/avatar.webp"
+                      custom="w-[200px] h-[200px]"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-center items-center p-2 text-xl group-hover:font-bold">
+                  {childInfo.fullName}
+                </div>
               </div>
-            </div>
-            <div className="flex justify-center items-center p-2 text-xl group-hover:font-bold">
-              Họ Và Tên
-            </div>
-          </div>
-
-          <div className="group" onClick={() => saveIdChild("99999999")}>
-            <div className="relative cursor-pointer rounded-full hover:border-main border-4 ">
-              <div className="">
-                <Image
-                  className="rounded-full"
-                  src={"/avatar.webp"}
-                  width={200}
-                  height={200}
-                  alt="User"
-                />
-              </div>
-            </div>
-            <div className="flex justify-center items-center p-2 text-xl group-hover:font-bold">
-              Họ Và Tên
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </div>

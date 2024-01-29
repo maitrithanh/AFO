@@ -22,7 +22,7 @@ export const menuParent = [
   {
     name: "Đưa đón",
     image: "bus.webp",
-    path: "/",
+    path: "/parent/pickup",
   },
   {
     name: "Liên hệ",

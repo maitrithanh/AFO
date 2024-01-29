@@ -67,6 +67,12 @@ export function middleware (request: NextRequest) {
     }
   }
 
+  if ((request.nextUrl.pathname).includes('/choose-user')) {
+    if(token == null){
+      return NextResponse.rewrite(new URL('/login', request.url))
+    }
+  }
+
 
   if (
     dateNow > dateExpiration
