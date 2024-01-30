@@ -12,7 +12,7 @@ export const menuParent = [
   {
     name: "Học phí",
     image: "cost.webp",
-    path: "/",
+    path: "/parent/schoolfee",
   },
   {
     name: "Thực đơn",
