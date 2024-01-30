@@ -48,6 +48,7 @@ const PickUpPage = () => {
     callApiWithToken()
       .get("parent/togglepickup/" + id)
       .then(() => {
+        toast.success("Đã cập nhật");
         setRefresh((x) => !x);
       })
       .catch(() => {

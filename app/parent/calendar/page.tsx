@@ -2,14 +2,13 @@ import React from "react";
 
 const CalendarPage = () => {
   return (
-    <>
-      <div className="flex justify-between items-center w-full">
-        <div className="flex">
+    <div className="md:w-2/3 w-full m-auto">
+      <div className="flex justify-between items-center w-full ">
+        <div className="flex items-center">
           <select
-            id="week"
-            className="bg-gray-50 border cursor-pointer outline-none border-gray-300 my-2 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5"
+            id="month"
+            className="bg-gray-50 border cursor-pointer outline-none border-gray-300 my-2 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
           >
-            <option selected>Chọn tháng</option>
             <option value="thang1">Tháng 1</option>
             <option value="thang2">Tháng 2</option>
             <option value="thang3">Tháng 3</option>
@@ -28,7 +27,6 @@ const CalendarPage = () => {
             id="week"
             className="bg-gray-50 border cursor-pointer outline-none border-gray-300 mx-2 my-2 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           >
-            <option selected>Chọn tuần</option>
             <option value="1">Tuần 1</option>
             <option value="2">Tuần 2</option>
             <option value="3">Tuần 3</option>
@@ -39,7 +37,7 @@ const CalendarPage = () => {
       <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default h-full">
         <table className="w-full">
           <thead>
-            <tr className="grid grid-cols-7 rounded-t-sm bg-main text-white">
+            <tr className="grid grid-cols-6 rounded-t-sm bg-main text-white">
               <th className="flex h-15 items-center justify-center rounded-tl-sm p-1 text-xs font-semibold sm:text-base xl:p-5">
                 <span className="hidden lg:block"> Thứ hai </span>
                 <span className="block lg:hidden"> T2 </span>
@@ -64,210 +62,177 @@ const CalendarPage = () => {
                 <span className="hidden lg:block"> Thứ 7 </span>
                 <span className="block lg:hidden"> T7 </span>
               </th>
-              <th className="flex h-15 items-center justify-center rounded-tr-sm p-1 text-xs font-semibold sm:text-base xl:p-5">
-                <span className="hidden lg:block"> Chủ nhật </span>
-                <span className="block lg:hidden"> CN </span>
-              </th>
             </tr>
           </thead>
           <tbody>
             {/* <!-- Line 1 --> */}
-            <tr className="grid grid-cols-7">
-              <td className="col-span-6 ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <div className="group h-16 w-full flex-grow cursor-pointer py-1 md:h-40">
-                  <span className="group-hover:text-primary md:hidden">
-                    Xem thêm
-                  </span>
-                  <div className="event invisible absolute bg-[#eff4fb] left-2 z-30 mb-1 flex w-[200%] flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left opacity-0 group-hover:visible group-hover:opacity-100 dark:bg-meta-4 md:visible md:w-[98%] md:opacity-100">
+            <tr className="grid grid-cols-6">
+              <td className="col-span-6 ease flex items-center relative h-24 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer ">
+                  <div className="event bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100">
                     <span className="event-name text-sm font-semibold text-black dark:text-white">
                       Đón trẻ
                     </span>
                     <span className="time text-sm font-medium text-black dark:text-white">
-                      7 giờ - 7 giờ 40
+                      7 giờ - 8 giờ
                     </span>
                   </div>
                 </div>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  7
-                </span>
               </td>
             </tr>
             {/* <!-- Line 1 --> */}
             {/* <!-- Line 2 --> */}
-            <tr className="grid grid-cols-7">
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  8
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  9
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  10
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  11
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  12
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  13
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  14
-                </span>
-              </td>
-            </tr>
-            {/* <!-- Line 2 --> */}
-            {/* <!-- Line 3 --> */}
-            <tr className="grid grid-cols-7">
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  15
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  16
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  17
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  18
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  19
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  20
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  21
-                </span>
-              </td>
-            </tr>
-            {/* <!-- Line 3 --> */}
-            {/* <!-- Line 4 --> */}
-            <tr className="grid grid-cols-7">
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  22
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  23
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  24
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  25
-                </span>
-                <div className="group h-16 w-full flex-grow cursor-pointer py-1 md:h-30">
-                  <span className="group-hover:text-primary md:hidden">
-                    More
-                  </span>
-                  <div className="event invisible absolute bg-[#eff4fb] left-2 z-30 mb-1 flex w-[300%] flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left opacity-0 group-hover:visible group-hover:opacity-100 dark:bg-meta-4 md:visible md:w-[290%] md:opacity-100">
+            <tr className="grid grid-cols-6">
+              <td className="col-span-6 ease flex items-center relative h-24 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer ">
+                  <div className="event bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 md:visible  w-full md:opacity-100">
                     <span className="event-name text-sm font-semibold text-black dark:text-white">
-                      Hoạt động ngoại khoá
+                      Ăn sáng
                     </span>
                     <span className="time text-sm font-medium text-black dark:text-white">
-                      15 giờ 15 - 16 giờ 15
+                      8 giờ - 8 giờ 45
                     </span>
                   </div>
                 </div>
               </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  26
-                </span>
+            </tr>
+            {/* <!-- Line 2 --> */}
+            {/* <!-- Line 3 --> */}
+            <tr className="grid grid-cols-6">
+              <td className="col-span-6 ease flex items-center relative h-24 ursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer">
+                  <div className="event bg-[#eff4fb] left-2 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 md:visible  w-full md:opacity-100">
+                    <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      Thực hành
+                    </span>
+                    <span className="time text-sm font-medium text-black dark:text-white">
+                      8 giờ 45 - 10 giờ 30
+                    </span>
+                  </div>
+                </div>
               </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  27
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  28
-                </span>
+            </tr>
+            {/* <!-- Line 3 --> */}
+            {/* <!-- Line 4 --> */}
+            <tr className="grid grid-cols-24">
+              <td className="col-span-6 ease flex items-center relative h-24 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer ">
+                  <div className="event bg-[#eff4fb] left-2 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 md:visible  w-full md:opacity-100">
+                    <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      Hoạt động thể chất / vận động
+                    </span>
+                    <span className="time text-sm font-medium text-black dark:text-white">
+                      10 giờ 30 - 11 giờ
+                    </span>
+                  </div>
+                </div>
               </td>
             </tr>
             {/* <!-- Line 4 --> */}
             {/* <!-- Line 5 --> */}
-            <tr className="grid grid-cols-7">
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  29
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  30
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  31
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  1
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  2
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  3
-                </span>
-              </td>
-              <td className="ease relative h-32 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <span className="font-medium text-black dark:text-white">
-                  4
-                </span>
+            <tr className="grid grid-cols-24">
+              <td className="col-span-6 ease flex items-center relative h-24 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer ">
+                  <div className="event bg-[#eff4fb] left-2 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 md:visible  w-full md:opacity-100">
+                    <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      Ăn trưa
+                    </span>
+                    <span className="time text-sm font-medium text-black dark:text-white">
+                      11 giờ - 11 giờ 30
+                    </span>
+                  </div>
+                </div>
               </td>
             </tr>
             {/* <!-- Line 5 --> */}
+            <tr className="grid grid-cols-6">
+              <td className="col-span-6 ease flex items-center relative h-24 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer ">
+                  <div className="event bg-[#eff4fb] left-2 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left  dark:bg-meta-4 md:visible w-full md:opacity-100">
+                    <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      Ngủ trưa
+                    </span>
+                    <span className="time text-sm font-medium text-black dark:text-white">
+                      11 giờ 30 - 13 giờ 45
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr className="grid grid-cols-6">
+              <td className="col-span-6 ease flex items-center relative h-24 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer ">
+                  <div className="event bg-[#eff4fb] left-2 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left dark:bg-meta-4 md:visible w-full md:opacity-100">
+                    <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      Vận động nhẹ với âm nhạc
+                    </span>
+                    <span className="time text-sm font-medium text-black dark:text-white">
+                      13 giờ 45 - 14 giờ
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr className="grid grid-cols-6">
+              <td className="col-span-6 ease flex items-center relative h-24 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer ">
+                  <div className="event bg-[#eff4fb] left-2 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left dark:bg-meta-4 md:visible w-full md:opacity-100">
+                    <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      Ăn nhẹ chiều
+                    </span>
+                    <span className="time text-sm font-medium text-black dark:text-white">
+                      14 giờ - 14 giờ 30
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr className="grid grid-cols-6">
+              <td className="col-span-6 ease flex items-center relative h-24 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer ">
+                  <div className="event bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left dark:bg-meta-4 md:visible w-full md:opacity-100">
+                    <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      Chương trình tiếng việt
+                    </span>
+                    <span className="time text-sm font-medium text-black dark:text-white">
+                      14 giờ 30 - 15 giờ
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr className="grid grid-cols-6">
+              <td className="col-span-6 ease flex items-center relative h-24 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer">
+                  <div className="event bg-[#eff4fb] left-2 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left dark:bg-meta-4 md:visible w-full md:opacity-100">
+                    <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      Âm nhạc, mỹ thuật, ngoại khoá, làm vườn
+                    </span>
+                    <span className="time text-sm font-medium text-black dark:text-white">
+                      15 giờ - 16 giờ
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr className="grid grid-cols-6">
+              <td className="col-span-6 ease flex items-center relative h-24 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                <div className="group w-full flex-grow cursor-pointer">
+                  <div className="event bg-[#eff4fb] left-2 flex flex-col rounded-sm border-l-[3px] border-main bg-gray px-3 py-1 text-left dark:bg-meta-4 md:visible w-full md:opacity-100">
+                    <span className="event-name text-sm font-semibold text-black dark:text-white">
+                      Trả trẻ
+                    </span>
+                    <span className="time text-sm font-medium text-black dark:text-white">
+                      16 giờ - 17 giờ
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 
