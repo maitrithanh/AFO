@@ -10,14 +10,14 @@ const Banner = () => {
         <div className="h-full flex md:items-center items-start mt-20 xl:mt-0">
           <div>
             <p className="text-6xl text-[#00224a] font-bold uppercase drop-shadow-xl">
-              Web App chuyển đổi số trường tiểu học
+              Web App chuyển đổi số trường mầm non
             </p>
             <div className="bottom-0 group my-2 md:flex">
               <button className="duration-5000 bg-main m-2 p-4 rounded-full text-white flex items-center justify-center">
                 <span className="mx-2 group-hover:scale-125 transition-all duration-500">
                   <FaPhoneVolume />
                 </span>
-                Hotline: 1234567890
+                Hotline: 1900 8080
               </button>
               <button className="transition-all duration-500  m-2 border-main hover:scale-105 border-[2px] p-4 rounded-full text-main font-bold uppercase flex items-center justify-center">
                 Khám phá ngay

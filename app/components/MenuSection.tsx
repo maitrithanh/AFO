@@ -12,7 +12,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
   const router = useRouter();
   const { t } = useTranslation();
   return (
-    <div className="mt-14 grid md:grid-cols-4 grid-cols-1 gap-4 h-full">
+    <div className="mt-14 grid md:grid-cols-4 grid-cols-3 gap-4 h-full">
       {dataMenu.map((item: any) => {
         return (
           <div
@@ -24,7 +24,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
           >
             <Image
               src={`/bg-card.webp`}
-              className="p-2"
+              className="p-2 "
               alt=""
               width={200}
               height={200}
@@ -33,13 +33,13 @@ const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
               <div className="flex justify-center items-center h-full">
                 <Image
                   src={`/icons/${item.image}`}
-                  className="p-2"
+                  className="p-2 mt-4 md:w-[100px] w-[55px]"
                   alt=""
                   width={100}
                   height={100}
                 />
               </div>
-              <div className="absolute flex top-6 w-full justify-center h-full text-lg font-semibold">
+              <div className="absolute flex md:top-6 top-4 w-full justify-center h-full md:text-lg text-sm font-semibold">
                 {t(item.name)}
               </div>
             </div>
