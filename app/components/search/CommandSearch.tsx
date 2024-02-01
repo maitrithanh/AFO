@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   CommandEmpty,
@@ -6,14 +7,16 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { useTranslation } from "react-i18next";
 
 const CommandSearch = () => {
+  const { t } = useTranslation();
   return (
     <div>
-      <CommandInput placeholder="Nhập từ khoá tìm kiếm..." />
+      <CommandInput placeholder={t("keyword" + "...")} />
       <CommandList>
-        <CommandEmpty>Không có gợi ý.</CommandEmpty>
-        <CommandGroup heading="Gợi ý">
+        <CommandEmpty>{t("thereAreNoSuggestions")}</CommandEmpty>
+        <CommandGroup heading={t("suggestions")}>
           <CommandItem>Lịch học</CommandItem>
           <CommandItem>Sức khoẻ</CommandItem>
           <CommandItem>Học phi</CommandItem>

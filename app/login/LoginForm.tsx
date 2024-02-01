@@ -14,11 +14,14 @@ import { AxiosResponse } from "axios";
 import ResponseData from "@/types/ResponseData";
 import LoginRes from "@/types/LoginRes";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 const LoginForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [typePassword, setTypePassword] = useState(false);
+  //translate
+  const { t } = useTranslation();
 
   //session nhận data sau khi sign in google hoặc fb và chuyển hướng về
   const { data: Session } = useSession();
@@ -49,7 +52,7 @@ const LoginForm = () => {
         })
         .catch((error) => {
           const data = error.response.data as ResponseData<LoginRes>;
-          toast.error(data.error || "Đăng nhập thất bại");
+          toast.error(data.error || t("toastLoginFail"));
           sessionStorage.removeItem("external");
         })
         .finally(() => {
@@ -78,7 +81,7 @@ const LoginForm = () => {
       })
       .catch((error) => {
         setIsLoading(false);
-        toast.error("Sai tài khoản hoặc mật khẩu", { id: error });
+        toast.error(t("toastLoginWrong"), { id: error });
       })
       .finally(() => {
         setIsLoading(false);
@@ -92,7 +95,7 @@ const LoginForm = () => {
     setCookie("token", token);
     setCookie("role", role);
     setCookie("expiration", res.data.data.expiration);
-    toast.success("Đăng nhập thành công ", { id: role });
+    toast.success(t("toastLoginSuccess"), { id: role });
     switch (role) {
       case "Admin":
         router.push("/admin");
@@ -135,7 +138,7 @@ const LoginForm = () => {
                 <Image
                   className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-lg bg-white"
                   src="/Logo.webp"
-                  alt="Your Company"
+                  alt="AFO"
                   width={100}
                   height={100}
                 />
@@ -146,7 +149,7 @@ const LoginForm = () => {
                 <div className="mt-2">
                   <Input
                     id="phone"
-                    label="Số điện thoại"
+                    label={t("phoneNumberLogin")}
                     disabled={isLoading}
                     register={register}
                     errors={errors}
@@ -159,7 +162,7 @@ const LoginForm = () => {
                 <div className="mt-2">
                   <Input
                     id="password"
-                    label="Mật khẩu"
+                    label={t("password")}
                     showLockIcon={true}
                     type={typePassword ? "text" : "password"}
                     typePassword={typePassword}
@@ -176,7 +179,7 @@ const LoginForm = () => {
                       href="#"
                       className="font-semibold text-[#dc662b] hover:opacity-80"
                     >
-                      Quên mật khẩu?
+                      {t("forgetPassword")}
                     </a>
                   </div>
                 </div>
@@ -185,7 +188,7 @@ const LoginForm = () => {
               <div>
                 <Button
                   loading={isLoading}
-                  label={"Đăng nhập"}
+                  label={t("login")}
                   onClick={handleSubmit(onSubmit)}
                 />
               </div>

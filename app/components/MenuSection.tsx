@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 interface MenuSectionProps {
   dataMenu: any;
@@ -9,6 +10,7 @@ interface MenuSectionProps {
 
 const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   return (
     <div className="mt-14 grid md:grid-cols-4 grid-cols-1 gap-4 h-full">
       {dataMenu.map((item: any) => {
@@ -38,7 +40,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
                 />
               </div>
               <div className="absolute flex top-6 w-full justify-center h-full text-lg font-semibold">
-                {item.name}
+                {t(item.name)}
               </div>
             </div>
           </div>

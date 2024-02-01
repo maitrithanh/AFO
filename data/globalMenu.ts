@@ -1,22 +1,22 @@
 export const globalMenu = [
     {
-        name: "Trang chủ",
+        name: "home",
         path: "/"
     },
     {
-        name: "Giới thiệu",
+        name: "about",
         path: "/home/about"
     },
     {
-        name: "Giáo dục",
+        name: "education",
         path: "/home/edu"
     },
     {
-        name: "Liên hệ",
+        name: "contact",
         path: "/home/contact"
     },
     {
-        name: "Tin tức",
+        name: "news",
         path: "/home/news"
     },
 ]

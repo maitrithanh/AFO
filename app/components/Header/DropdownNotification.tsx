@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -35,6 +36,7 @@ const DropdownNotification = () => {
     return () => document.removeEventListener("keydown", keyHandler);
   });
 
+  const { t } = useTranslation();
   return (
     <div className="relative">
       <Link
@@ -78,7 +80,7 @@ const DropdownNotification = () => {
       >
         <div className="px-4.5 py-2 flex justify-center">
           <h5 className="px-2 py-1 text-xl font-bold flex justify-center items-center bg-main w-fit rounded-full text-white text-cool">
-            Thông báo
+            {t("notification")}
           </h5>
         </div>
 

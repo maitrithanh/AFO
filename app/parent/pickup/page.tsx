@@ -10,6 +10,7 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import PutPickupDialog from "./putDialog";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const PickUpPage = () => {
   const [openDialog, SetOpenDialog] = useState("");
@@ -32,15 +33,18 @@ const PickUpPage = () => {
   };
 
   const OnDelete = (x: PickUpListRes) => {
-    if (!confirm(`Xác nhận xóa ${x.fullName} khỏi danh sách đón hộ?`)) return;
+    if (
+      !confirm(`${t("confirmRemovalOf")} ${x.fullName} ${t("fromPickupList")}`)
+    )
+      return;
     callApiWithToken()
       .delete("parent/deletepickup/" + x.id)
       .then(() => {
-        toast.success("Đã xóa");
+        toast.success(t("toastDelete"));
         setRefresh((x) => !x);
       })
       .catch(() => {
-        toast.error("Có lỗi xảy ra");
+        toast.error(t("somethingWentWrong"));
       });
   };
 
@@ -48,11 +52,11 @@ const PickUpPage = () => {
     callApiWithToken()
       .get("parent/togglepickup/" + id)
       .then(() => {
-        toast.success("Đã cập nhật");
+        toast.success(t("toastUpdate"));
         setRefresh((x) => !x);
       })
       .catch(() => {
-        toast.error("Có lỗi xảy ra");
+        toast.error(t("somethingWentWrong"));
       });
   };
 
@@ -61,16 +65,18 @@ const PickUpPage = () => {
   //toggle status
   //delete button
 
+  //translate
+  const { t } = useTranslation();
   return (
     <div className="bg-white md:w-2/3 m-auto px-10 pt-10 rounded-xl">
-      <h2 className="text-2xl font-bold">Danh sách người đón hộ</h2>
-      <p>Những người được cấp quyền đưa đón trẻ thay cho người giám hộ</p>
+      <h2 className="text-2xl font-bold">{t("listOfPeoplePickup")}</h2>
+      <p>{t("subListOfPeoplePickup")}</p>
 
       <button
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5"
         onClick={OnAdd}
       >
-        + Thêm mới
+        + {t("addNew")}
       </button>
 
       <ul role="list" className="divide-y divide-gray">
@@ -92,40 +98,40 @@ const PickUpPage = () => {
                       {x.fullName}
                     </p>
                     <p className="mt-1 truncate text-l leading-5 text-gray-500">
-                      SĐT: {x.phoneNumber}
+                      {t("phoneNumber")}: {x.phoneNumber}
                     </p>
                   </div>
                 </div>
 
                 <div className="md:w-6/12 hidden shrink-0 sm:flex sm:flex-col sm:items-end justify-evenly">
                   <p className="text-xl leading-6 text-gray-900">
-                    Địa chỉ: {x.address}
+                    {t("address")}: {x.address}
                   </p>
                   <div className="mt-1 flex items-center gap-x-1.5">
                     {x.status ? (
                       <>
                         <div
                           className="cursor-pointer flex-none rounded-full bg-emerald-500/20 p-1"
-                          title="Hủy bỏ"
+                          title={t("cancel")}
                           onClick={() => onToggleStatus(x.id)}
                         >
                           <div className="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
                         </div>
                         <p className="text-l leading-5 text-gray-500">
-                          Được đón hộ
+                          {t("allowedToPickUp")}
                         </p>
                       </>
                     ) : (
                       <>
                         <div
                           className="cursor-pointer flex-none rounded-full bg-red-500/20 p-1"
-                          title="Cho phép"
+                          title={t("allow")}
                           onClick={() => onToggleStatus(x.id)}
                         >
                           <div className="h-1.5 w-1.5 rounded-full bg-red-500"></div>
                         </div>
                         <p className="text-l leading-5 text-gray-500">
-                          <del>Được đón hộ</del>
+                          <del> {t("allowedToPickUp")}</del>
                         </p>
                       </>
                     )}

@@ -18,10 +18,11 @@ import CardInfo from "./card/CardInfo";
 import CardInfoLine from "./card/CardInfoLine";
 import { getImageUrl } from "@/utils/image";
 import { useRouter } from "next/navigation";
-import { MdOutlineChangeCircle } from "react-icons/md";
 import { getCookie } from "cookies-next";
 import Link from "next/link";
 import Slider from "../Slider";
+import { useTranslation } from "react-i18next";
+import { MdChangeCircle } from "react-icons/md";
 
 const ProfileCard = () => {
   const [loading, setLoading] = useState(false);
@@ -85,11 +86,11 @@ const ProfileCard = () => {
     callApiWithToken()
       .get(`Auth/Unlink${s}`)
       .then((res) => {
-        toast.success("Hủy liên kết thành công");
+        toast.success(t("unlinkSuccess"));
         setRefresh((x) => x + 1);
       })
       .catch((err) => {
-        toast.error("Có lỗi xảy ra");
+        toast.error(t("somethingWentWrong"));
       })
       .finally(() => setLoading(false));
   };
@@ -130,6 +131,9 @@ const ProfileCard = () => {
     uploadAvatarRef.current?.click();
   };
 
+  //Translate
+  const { t } = useTranslation();
+
   return (
     <div>
       {loading && <Loading />}
@@ -138,7 +142,7 @@ const ProfileCard = () => {
           {/* parent */}
 
           <div className=" grid md:grid-cols-2 grid-cols-1 md:gap-4">
-            <CardInfo cardName="Thông tin người giám hộ">
+            <CardInfo cardName={t("infoParent")}>
               <div className="absolute right-4 -top-10">
                 <span className="relative group">
                   <DefaultImage
@@ -167,42 +171,52 @@ const ProfileCard = () => {
                 </span>
               </div>
               <CardInfoLine
-                lineName={"Họ tên"}
+                lineName={t("fullName")}
                 contentLine={currentUser?.fullName}
               />
               <CardInfoLine
-                lineName={"Ngày sinh"}
+                lineName={t("dateOfBirth")}
                 contentLine={currentUser?.birthDay}
               />
               <CardInfoLine
-                lineName={"Giới tính"}
+                lineName={t("gender")}
                 contentLine={currentUser?.gender}
               />
               <CardInfoLine
-                lineName={"SĐT"}
+                lineName={t("phoneNumber")}
                 contentLine={currentUser?.phoneNumber}
               />
               <CardInfoLine
-                lineName={"Số CCCD"}
+                lineName={t("idNumber")}
                 contentLine={currentUser?.idNumber}
               />
               <CardInfoLine
-                lineName={"Nghề nghiệp"}
+                lineName={t("job")}
                 contentLine={currentUser?.job}
               />
 
               <CardInfoLine
-                lineName={"Địa chỉ"}
+                lineName={t("address")}
                 contentLine={currentUser?.address}
               />
 
               <CardInfoLine
-                lineName={"Ghi chú"}
+                lineName={t("note")}
                 contentLine={currentUser?.note}
               />
             </CardInfo>
             {/* children */}
-            <CardInfo cardName="Thông tin trẻ">
+            <CardInfo cardName={t("infoChild")}>
+              <div className="absolute right-6 ">
+                <Link href={"/choose-user"}>
+                  <p className="text-main flex items-center">
+                    <span className="m-1">
+                      <MdChangeCircle size={20} />
+                    </span>
+                    {t("changeProfile")}
+                  </p>
+                </Link>
+              </div>
               <div className="absolute right-4 -top-10">
                 <span className="relative group">
                   <DefaultImage
@@ -231,50 +245,50 @@ const ProfileCard = () => {
                 </span>
               </div>
               <CardInfoLine
-                lineName={"Họ tên"}
+                lineName={t("fullName")}
                 contentLine={infoChild?.fullName}
               />
               <CardInfoLine
-                lineName={"Ngày sinh"}
+                lineName={t("dateOfBirth")}
                 contentLine={infoChild?.birthDay}
               />
               <CardInfoLine
-                lineName={"Giới tính"}
+                lineName={t("gender")}
                 contentLine={infoChild?.gender}
               />
               <CardInfoLine
-                lineName={"Nhập học"}
+                lineName={t("joinDate")}
                 contentLine={infoChild?.joinDate}
               />
               <CardInfoLine
-                lineName={"Quốc tịch"}
+                lineName={t("nationality")}
                 contentLine={infoChild?.nation}
               />
               <CardInfoLine
-                lineName={"Tình trạng"}
+                lineName={t("status")}
                 contentLine={infoChild?.status ? "Đang học" : "Đã nghỉ"}
               />
 
               <CardInfoLine
-                lineName={"Địa chỉ"}
+                lineName={t("address")}
                 contentLine={infoChild?.address}
               />
 
               <CardInfoLine
-                lineName={"Ghi chú"}
+                lineName={t("note")}
                 contentLine={infoChild?.note}
               />
             </CardInfo>
           </div>
 
           <div>
-            <CardInfo cardName="Album ảnh">
+            <CardInfo cardName={t("albumImages")}>
               <div className="absolute right-4 top-4">
                 <Link
                   href={"#"}
                   className="text-main font-bold hover:opacity-80 hover:mr-2 transition-all"
                 >
-                  Xem thêm
+                  {t("more")}
                 </Link>
               </div>
               <Slider showThumbs />
@@ -283,7 +297,7 @@ const ProfileCard = () => {
 
           <div className="shadow-lg border p-8 pt-4 my-4 rounded-xl bg-[#fffc]">
             <div className="text-main sm:text-2xl text-xl font-bold flex border-b mb-4">
-              Tài khoản liên kết
+              {t("link") + " " + t("account")}
             </div>
             <div className="block md:flex mt-1 gap-4">
               {currentUser?.googleName ? (
@@ -300,7 +314,7 @@ const ProfileCard = () => {
               ) : (
                 <>
                   <Button
-                    label={"Liên kết Google"}
+                    label={t("link") + " Google"}
                     outline
                     custom="mr-2 mb-4 md:m-0"
                     icon={FaGoogle}
@@ -321,7 +335,7 @@ const ProfileCard = () => {
                 </div>
               ) : (
                 <Button
-                  label="Liên kết Facebook"
+                  label={t("link") + " Facebook"}
                   icon={FaFacebook}
                   outline
                   custom="bg-[#ffffff7d]"
@@ -335,7 +349,7 @@ const ProfileCard = () => {
 
           {/* <Button label="Xem album" onClick={() => {}} custom="mt-4" /> */}
           <Button
-            label="Đổi mật khẩu"
+            label={t("changePass")}
             onClick={() => {
               setOpenChangePassword(true);
             }}

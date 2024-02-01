@@ -9,6 +9,7 @@ import Button from "@/app/components/Button";
 import PickUpListRes from "@/types/PickUpListRes";
 import { toYMD } from "@/utils/dateTime";
 import { getImageUrl } from "@/utils/image";
+import { useTranslation } from "react-i18next";
 
 interface Prop {
   onClose: () => void;
@@ -20,6 +21,7 @@ interface Prop {
 const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currAvatar, setCurrAvatar] = useState<File | null>(null);
+  const { t } = useTranslation();
 
   if (defaultData) {
     defaultData.birthDay = toYMD(defaultData?.birthDay);
@@ -61,7 +63,7 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
           },
         })
         .then((res) => {
-          toast.success("Đã cập nhật");
+          toast.success(t("toastUpdate"));
           onClose();
           onSuccess();
         })
@@ -79,7 +81,7 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
           },
         })
         .then((res) => {
-          toast.success("Đã cập nhật");
+          toast.success(t("toastUpdate"));
           onClose();
           onSuccess();
         })
@@ -109,9 +111,9 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
       >
         <h3 className="text-2xl text-justify font-bold">
           {mode === "add"
-            ? "Thêm người đưa đón"
+            ? t("addPeoplePickup")
             : mode == "edt"
-            ? "Sửa thông tin người đưa đón"
+            ? t("editInfoPeoplePickup")
             : "???"}
         </h3>
 
@@ -161,7 +163,7 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
           <div className="mt-2">
             <Input
               id="phoneNumber"
-              label="Số điện thoại"
+              label={t("phoneNumberLogin")}
               type={"text"}
               disabled={isLoading}
               register={register}
@@ -175,7 +177,7 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
           <div className="mt-2">
             <Input
               id="birthDay"
-              label="Ngày sinh"
+              label={t("dateOfBirth")}
               type={"date"}
               disabled={isLoading}
               register={register}
@@ -189,7 +191,7 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
           <div className="mt-2">
             <Input
               id="address"
-              label="Địa chỉ"
+              label={t("address")}
               type={"text"}
               disabled={isLoading}
               register={register}
@@ -203,7 +205,7 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
           <div className="mt-2">
             <Input
               id="note"
-              label="Chú thích"
+              label={t("note")}
               type={"text"}
               disabled={isLoading}
               register={register}
@@ -216,12 +218,12 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
         <div>
           <Button
             loading={isLoading}
-            label={"Xác nhận"}
+            label={t("confirm")}
             onClick={handleSubmit(onSubmit)}
           />
         </div>
         <div className="block md:hidden">
-          <Button loading={isLoading} label={"Thoát"} onClick={onClose} />
+          <Button loading={isLoading} label={t("close")} onClick={onClose} />
         </div>
       </form>
     </div>

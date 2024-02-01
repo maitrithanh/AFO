@@ -5,9 +5,11 @@ import React from "react";
 import { setCookie } from "cookies-next";
 import useFetch from "@/utils/useFetch";
 import DefaultImage from "../components/defaultImage";
+import { useTranslation } from "react-i18next";
 
 const ChooseUserPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const { data: listChild } = useFetch("parent/childrenlist");
 
@@ -25,8 +27,8 @@ const ChooseUserPage = () => {
       className="w-screen h-screen flex justify-center items-center"
     >
       <div className="">
-        <div className="flex items-center justify-center m-4 text-[50px] font-bold text-main italic text-cool px-4 ">
-          VUI LÒNG CHỌN THÔNG TIN BÉ?
+        <div className="flex items-center justify-center m-4 text-[50px] font-bold text-main italic text-cool px-4 uppercase">
+          {t("chooseUser")}
         </div>
         <div className="flex gap-4 mx-2 justify-center items-center">
           {listChild?.map((childInfo: any) => {
