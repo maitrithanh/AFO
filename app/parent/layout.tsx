@@ -1,6 +1,7 @@
 import React from "react";
 import { Toaster } from "react-hot-toast";
 import Navbar from "../components/dashboard/navbar/Navbar";
+import FunctionMenu from "../components/dashboard/navbar/FunctionMenu";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -11,6 +12,9 @@ const layout = ({ children }: { children: React.ReactNode }) => {
       <Toaster />
       <div>
         <Navbar />
+      </div>
+      <div className="absolute w-full md:translate-y-full translate-y-0 md:hidden transition-all bottom-0 z-20 bg-white overflow-hidden">
+        <FunctionMenu />
       </div>
       <div className="m-4 mt-24 body-content">{children}</div>
     </div>

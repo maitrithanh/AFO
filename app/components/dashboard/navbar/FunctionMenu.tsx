@@ -35,7 +35,7 @@ const FunctionMenu = () => {
     history.back();
   };
   return (
-    <div className="mx-2 hover:cursor-pointer p-1 flex">
+    <div className="mx-2 hover:cursor-pointer p-1 flex justify-between w-full">
       <div
         className="flex items-center hover:scale-110 transition-all rounded-full p-2 mx-1"
         onClick={() => {

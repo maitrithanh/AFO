@@ -26,7 +26,7 @@ const ModalsList: React.FC<ModalsListProps> = ({
     deleteCookie("child");
     <Loading />;
     toast.success("Đăng xuất thành công");
-    router.push("/login");
+    router.push("/");
   };
   //Translate
   const { t } = useTranslation();

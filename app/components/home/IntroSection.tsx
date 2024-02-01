@@ -21,7 +21,7 @@ const IntroSection = () => {
           loading="lazy"
           className="absolute right-28 top-10 hidden md:block"
         />
-        <div>
+        <div className="bg-white">
           <div className="flex w-full items-center justify-center">
             <h1 className="text-5xl font-semibold text-cool-main">TẠI AFO</h1>
           </div>

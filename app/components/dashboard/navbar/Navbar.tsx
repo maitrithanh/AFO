@@ -144,14 +144,16 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                   ) : (
                     <Link
                       href={"/login"}
-                      className="py-2 px-4 rounded-full bg-main border-[#ff7446] border-b-4 border-l-4 text-white hover:border-[#ad5839] transition-all"
+                      className="py-2 md:px-4 px-2 rounded-full bg-main border-[#ff7446] border-b-4 border-l-4 text-white hover:border-[#ad5839] transition-all"
                     >
                       {t("login")}
                     </Link>
                   )}
                 </div>
                 <div
-                  className="relative ml-2 xl:hidden block p-2 cursor-pointer"
+                  className={`relative ml-2 xl:hidden block p-2 cursor-pointer ${
+                    home ? "" : "hidden"
+                  }`}
                   onClick={() => handleMobileMenu()}
                 >
                   <div className="text-main">
