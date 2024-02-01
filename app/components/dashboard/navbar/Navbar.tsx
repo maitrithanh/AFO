@@ -9,6 +9,9 @@ import DropdownNotification from "../../Header/DropdownNotification";
 import DropdownMessage from "../../Header/DropdownMessage";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import Languages from "../../Languages";
+import { useTranslation } from "react-i18next";
+import { IoClose } from "react-icons/io5";
 
 interface navbarProps {
   admin?: boolean;
@@ -20,6 +23,8 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
   const [login, setLogin] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const pathName = usePathname();
+  const [isStickyNav, setIsStickyNav] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (token) {
@@ -29,6 +34,17 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
 
   const handleMobileMenu = () => {
     setMobileMenu((curr) => !curr);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", isSticky);
+    return () => {
+      window.removeEventListener("scroll", isSticky);
+    };
+  });
+  const isSticky = (e: any) => {
+    const scrollTop = window.scrollY;
+    scrollTop >= 20 ? setIsStickyNav(true) : setIsStickyNav(false);
   };
 
   return (
@@ -58,14 +74,14 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                 type="search"
                 id="default-search"
                 className="block md:w-[300px] w-full p-4 ps-10 border-gray-100 border outline-none text-sm text-gray-900 rounded-full shadow-md bg-gray-50 focus:ring-[#F8853E] focus:border-[#F8853E] "
-                placeholder="Từ khoá..."
+                placeholder={t("keyword") + "..."}
                 required
               />
               <button
                 type="submit"
                 className="text-white absolute end-2.5 bottom-2 bg-[#F8853E] hover:bg-[#e67540 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2"
               >
-                Tìm
+                {t("search")}
               </button>
             </div>
           </form>
@@ -81,8 +97,14 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
         </div>
       ) : (
         <div
-          className={`w-full font-bold uppercase fixed z-30 top-0  ${
-            home ? "bg-white text-black" : "bg-[url(/bg-big.webp)] text-white"
+          className={`w-full  uppercase transition-all duration-300 ${
+            isStickyNav ? "fixed" : "absolute"
+          }  z-30 top-0  ${
+            home
+              ? isStickyNav
+                ? "bg-[#ffffffb3] backdrop-blur-xl shadow-lg"
+                : " "
+              : "bg-[url(/bg-big.webp)] "
           }`}
         >
           <div className="md:mx-20">
@@ -101,9 +123,10 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                   />
                   AFO
                 </Link>
+                <Languages />
               </div>
               <div className="flex items-center">
-                <div className={`mx-2 p-1 hidden md:block  rounded-full `}>
+                <div className={`mx-2 p-1 hidden xl:block rounded-full `}>
                   <Menu />
                 </div>
 
@@ -124,23 +147,16 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                       href={"/login"}
                       className="py-2 px-4 rounded-full bg-main border-[#ff7446] border-b-4 border-l-4 text-white hover:border-[#ad5839] transition-all"
                     >
-                      Đăng nhập
+                      {t("login")}
                     </Link>
                   )}
                 </div>
                 <div
-                  className="relative ml-2 md:hidden block p-2 cursor-pointer"
+                  className="relative ml-2 xl:hidden block p-2 cursor-pointer"
                   onClick={() => handleMobileMenu()}
                 >
                   <div className="text-main">
                     <LuMenu size={24} />
-                  </div>
-                  <div
-                    className={`absolute right-0 p-1 bg-main rounded-lg w-[200px] ${
-                      mobileMenu ? "block" : "hidden md:block"
-                    }`}
-                  >
-                    <Menu />
                   </div>
                 </div>
               </div>
@@ -148,6 +164,23 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
           </div>
         </div>
       )}
+      <div
+        className={`fixed text-main transition-all top-0 bg-white flex items-start duration-500 text-4xl rounded-lg w-screen h-screen z-50 ${
+          mobileMenu ? " translate-x-0 " : "w-0 translate-x-full"
+        }`}
+      >
+        <div
+          className="absolute right-4 top-4 text-rose-600"
+          onClick={() => {
+            setMobileMenu(false);
+          }}
+        >
+          <IoClose />
+        </div>
+        <div className="p-12">
+          <Menu />
+        </div>
+      </div>
     </div>
   );
 };

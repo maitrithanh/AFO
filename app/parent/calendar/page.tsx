@@ -1,37 +1,55 @@
+"use client"; // dùng tạm
 import React from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useTranslation } from "react-i18next";
 
 const CalendarPage = () => {
+  const { t } = useTranslation();
   return (
     <div className="md:w-2/3 w-full m-auto">
       <div className="flex justify-between items-center w-full ">
-        <div className="flex items-center">
-          <select
-            id="month"
-            className="bg-gray-50 border cursor-pointer outline-none border-gray-300 my-2 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
-          >
-            <option value="thang1">Tháng 1</option>
-            <option value="thang2">Tháng 2</option>
-            <option value="thang3">Tháng 3</option>
-            <option value="thang4">Tháng 4</option>
-            <option value="thang5">Tháng 5</option>
-            <option value="thang6">Tháng 6</option>
-            <option value="thang7">Tháng 7</option>
-            <option value="thang8">Tháng 8</option>
-            <option value="thang9">Tháng 9</option>
-            <option value="thang10">Tháng 10</option>
-            <option value="thang11">Tháng 11</option>
-            <option value="thang12">Tháng 12</option>
-          </select>
+        <div className="flex items-center gap-2 mb-2">
+          <div className="bg-white rounded-sm">
+            <Select>
+              <SelectTrigger className="w-[100px]">
+                <SelectValue placeholder={t("month")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="thang1">{t("month")} 1</SelectItem>
+                <SelectItem value="thang2">{t("month")} 2</SelectItem>
+                <SelectItem value="thang3">{t("month")} 3</SelectItem>
+                <SelectItem value="thang4">{t("month")} 4</SelectItem>
+                <SelectItem value="thang5">{t("month")} 5</SelectItem>
+                <SelectItem value="thang6">{t("month")} 6</SelectItem>
+                <SelectItem value="thang7">{t("month")} 7</SelectItem>
+                <SelectItem value="thang8">{t("month")} 8</SelectItem>
+                <SelectItem value="thang9">{t("month")} 9</SelectItem>
+                <SelectItem value="thang10">{t("month")} 10</SelectItem>
+                <SelectItem value="thang11">{t("month")} 11</SelectItem>
+                <SelectItem value="thang12">{t("month")} 12</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-          <select
-            id="week"
-            className="bg-gray-50 border cursor-pointer outline-none border-gray-300 mx-2 my-2 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-          >
-            <option value="1">Tuần 1</option>
-            <option value="2">Tuần 2</option>
-            <option value="3">Tuần 3</option>
-            <option value="4">Tuần 4</option>
-          </select>
+          <div className="bg-white rounded-sm">
+            <Select>
+              <SelectTrigger className="w-[100px]">
+                <SelectValue placeholder={t("week")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">{t("week")} 1</SelectItem>
+                <SelectItem value="2">{t("week")} 2</SelectItem>
+                <SelectItem value="3">{t("week")} 3</SelectItem>
+                <SelectItem value="4">{t("week")} 4</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
       <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default h-full">
@@ -39,27 +57,27 @@ const CalendarPage = () => {
           <thead>
             <tr className="grid grid-cols-6 rounded-t-sm bg-main text-white">
               <th className="flex h-15 items-center justify-center rounded-tl-sm p-1 text-xs font-semibold sm:text-base xl:p-5">
-                <span className="hidden lg:block"> Thứ hai </span>
+                <span className="hidden lg:block"> {t("monday")} </span>
                 <span className="block lg:hidden"> T2 </span>
               </th>
               <th className="flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5">
-                <span className="hidden lg:block"> Thứ ba </span>
+                <span className="hidden lg:block">{t("tuesday")} </span>
                 <span className="block lg:hidden"> T3 </span>
               </th>
               <th className="flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5">
-                <span className="hidden lg:block"> Thứ tư </span>
+                <span className="hidden lg:block"> {t("wednesday")} </span>
                 <span className="block lg:hidden"> T4 </span>
               </th>
               <th className="flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5">
-                <span className="hidden lg:block"> Thứ 5 </span>
+                <span className="hidden lg:block"> {t("thursday")} </span>
                 <span className="block lg:hidden"> T5 </span>
               </th>
               <th className="flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5">
-                <span className="hidden lg:block"> Thứ 6 </span>
+                <span className="hidden lg:block"> {t("friday")} </span>
                 <span className="block lg:hidden"> T6 </span>
               </th>
               <th className="flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5">
-                <span className="hidden lg:block"> Thứ 7 </span>
+                <span className="hidden lg:block"> {t("saturday")} </span>
                 <span className="block lg:hidden"> T7 </span>
               </th>
             </tr>

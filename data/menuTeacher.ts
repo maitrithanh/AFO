@@ -1,21 +1,21 @@
 export const menuTeacher = [
     {
-      name: "Học sinh",
+      name: "student",
       image: "kids-card.webp",
       path: "/teacher/calendar",
     },
     {
-      name: "Lịch dạy",
+      name: "teacherSchedule",
       image: "calendar.webp",
       path: "/",
     },
     {
-      name: "Xin nghỉ",
+      name: "off",
       image: "burnout.webp",
       path: "/",
     },
     {
-      name: "Liên lạc",
+      name: "contact",
       image: "telephone.webp",
       path: "/",
     }

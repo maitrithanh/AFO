@@ -1,46 +1,46 @@
 export const menuParent = [
   {
-    name: "Lịch học",
+    name: "studySchedule",
     image: "weekly.webp",
     path: "/parent/calendar",
   },
   {
-    name: "Sức khoẻ",
+    name: "helth",
     image: "heartbeat.webp",
     path: "/",
   },
   {
-    name: "Học phí",
+    name: "schoolFee",
     image: "cost.webp",
     path: "/parent/schoolfee",
   },
   {
-    name: "Thực đơn",
+    name: "menu",
     image: "menu.webp",
     path: "/",
   },
   {
-    name: "Đưa đón",
+    name: "pickup",
     image: "bus.webp",
     path: "/parent/pickup",
   },
   {
-    name: "Liên hệ",
+    name: "contact",
     image: "telephone.webp",
     path: "/",
   },
   {
-    name: "Điểm danh",
+    name: "attendance",
     image: "calendar.webp",
     path: "/",
   },
   {
-    name: "Góp ý",
+    name: "feedback",
     image: "feedback.webp",
     path: "/",
   },
   {
-    name: "Kết quả học tập",
+    name: "learningOutcomes",
     image: "report-study.webp",
     path: "/",
   },
@@ -50,12 +50,12 @@ export const menuParent = [
     path: "/",
   },
   {
-    name: "Chuyển lớp",
+    name: "changeClasses",
     image: "change-class.webp",
     path: "/",
   },
   {
-    name: "Xin nghỉ",
+    name: "off",
     image: "burnout.webp",
     path: "/",
   },

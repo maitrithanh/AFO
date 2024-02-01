@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { deleteCookie, getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import Loading from "../../Loading";
+import { useTranslation } from "react-i18next";
 
 interface ModalsListProps {
   modalListOpen: boolean;
@@ -27,7 +28,8 @@ const ModalsList: React.FC<ModalsListProps> = ({
     toast.success("Đăng xuất thành công");
     router.push("/login");
   };
-
+  //Translate
+  const { t } = useTranslation();
   return (
     <div
       className={`absolute w-36 h-fit rounded-lg bg-white border shadow-lg z-30
@@ -50,7 +52,7 @@ const ModalsList: React.FC<ModalsListProps> = ({
             onClick={() => router.push("/profile")}
           >
             <CgProfile size={20} />
-            <span className="ml-2"> Hồ sơ</span>
+            <span className="ml-2"> {t("profile")}</span>
           </button>
         </li>
         <li className="p-1 hover:bg-gray-100 cursor-pointer">
@@ -59,7 +61,7 @@ const ModalsList: React.FC<ModalsListProps> = ({
             onClick={() => handleLogout()}
           >
             <IoIosLogOut size={20} />
-            <span className="ml-2"> Đăng xuất</span>
+            <span className="ml-2"> {t("logout")}</span>
           </button>
         </li>
       </ul>
