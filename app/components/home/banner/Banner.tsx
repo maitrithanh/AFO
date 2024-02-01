@@ -7,7 +7,7 @@ const Banner = () => {
   return (
     <div className="relative h-screen grid xl:grid-cols-2 grid-cols-1 bg-[url(/banner-homepage.webp)] bg-no-repeat bg-cover">
       <div className="md:mx-24 mx-8">
-        <div className="h-full flex items-center mt-20 xl:mt-0">
+        <div className="h-full flex md:items-center items-start mt-20 xl:mt-0">
           <div>
             <p className="text-6xl text-[#00224a] font-bold uppercase drop-shadow-xl">
               Web App chuyển đổi số trường tiểu học
