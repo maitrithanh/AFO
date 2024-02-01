@@ -22,7 +22,6 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
   const token = getCookie("token");
   const [login, setLogin] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
-  const pathName = usePathname();
   const [isStickyNav, setIsStickyNav] = useState(false);
   const { t } = useTranslation();
 
@@ -98,8 +97,8 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
       ) : (
         <div
           className={`w-full  uppercase transition-all duration-300 ${
-            isStickyNav ? "fixed" : "absolute"
-          }  z-30 top-0  ${
+            home ? "" : "text-white"
+          } ${isStickyNav ? "fixed" : "absolute"}  z-30 top-0  ${
             home
               ? isStickyNav
                 ? "bg-[#ffffffb3] backdrop-blur-xl shadow-lg"
@@ -139,7 +138,7 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                   ""
                 )}
 
-                <div className="ml-2 text-black bg-white rounded-full">
+                <div className=" text-black bg-white rounded-full">
                   {login ? (
                     <ShortProfile />
                   ) : (
