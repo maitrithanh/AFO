@@ -78,3 +78,21 @@
 customCard {
   clip-path: polygon(0 0, 100% 10%, 100% 100%, 0% 100%);
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #aaaaaa4d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #fc8853;
+  border-radius: 2px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+ opacity: 0.5;
+}
