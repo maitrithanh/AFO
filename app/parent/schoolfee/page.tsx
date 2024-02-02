@@ -30,7 +30,7 @@ const SchoolFeePage = () => {
         </div>
         <div>
           <h3 className="text-lg">
-            Học phí tháng 12/2023: <strong>1.500.000</strong>
+            Học phí 12/2023: <strong>1.500.000</strong>
           </h3>
           <p className="text-sm">Hạn nộp: từ 01/12/2023</p>
         </div>
@@ -40,7 +40,7 @@ const SchoolFeePage = () => {
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle className="flex items-center">
-                  Chi tiết học phí tháng 12/2023
+                  Chi tiết học phí 12/2023
                   <p className="text-sm font-normal ml-4 bg-green-500 text-white p-1 rounded-full">
                     Đã thanh toán
                   </p>

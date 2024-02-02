@@ -72,8 +72,10 @@ const DropdownMessage = () => {
         {/* <!-- Dropdown Start --> */}
       </div>
       <div
-        className={`fixed w-screen h-screen right-0 top-0 z-50 ${
-          dropdownOpen === true ? "bg-[#18181875]" : "hidden"
+        className={`fixed w-screen h-screen right-0 top-0 z-50 transition-all duration-300 ${
+          dropdownOpen === true
+            ? "bg-[#18181875] translate-x-0"
+            : "w-0 -translate-x-full"
         }`}
       >
         <div
@@ -85,9 +87,7 @@ const DropdownMessage = () => {
           }}
           onFocus={() => setDropdownOpen(true)}
           onBlur={() => setDropdownOpen(false)}
-          className={`absolute md:w-[400px] md:right-0 top-0 inset-0 h-screen overflow-hidden z-50  ${
-            dropdownOpen === true ? "block" : "hidden"
-          }`}
+          className={`absolute md:w-[400px] md:right-0 top-0 inset-0 h-screen overflow-hidden z-50 `}
         >
           <div className="w-full flex justify-end p-2 text-rose-600 hover:cursor-pointer">
             <div
@@ -108,7 +108,7 @@ const DropdownMessage = () => {
           <ul className="flex flex-col overflow-y-auto h-[90%]">
             <li className="text-left">
               <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 href="/messages"
               >
                 <div className="h-12.5 w-12.5 rounded-full mr-2">
@@ -134,7 +134,7 @@ const DropdownMessage = () => {
             </li>
             <li className="text-left">
               <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 href="/messages"
               >
                 <div className="h-12.5 w-12.5 rounded-full mr-2">
@@ -160,7 +160,7 @@ const DropdownMessage = () => {
             </li>
             <li className="text-left">
               <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 href="/messages"
               >
                 <div className="h-12.5 w-12.5 rounded-full mr-2">
@@ -186,7 +186,7 @@ const DropdownMessage = () => {
             </li>
             <li className="text-left">
               <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 href="/messages"
               >
                 <div className="h-12.5 w-12.5 rounded-full mr-2">
@@ -212,7 +212,7 @@ const DropdownMessage = () => {
             </li>
             <li className="text-left">
               <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 href="/messages"
               >
                 <div className="h-12.5 w-12.5 rounded-full mr-2">
@@ -238,7 +238,7 @@ const DropdownMessage = () => {
             </li>
             <li className="text-left">
               <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 href="/messages"
               >
                 <div className="h-12.5 w-12.5 rounded-full mr-2">
@@ -264,7 +264,7 @@ const DropdownMessage = () => {
             </li>
             <li className="text-left">
               <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 href="/messages"
               >
                 <div className="h-12.5 w-12.5 rounded-full mr-2">
@@ -290,7 +290,7 @@ const DropdownMessage = () => {
             </li>
             <li className="text-left">
               <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 href="/messages"
               >
                 <div className="h-12.5 w-12.5 rounded-full mr-2">
@@ -316,7 +316,7 @@ const DropdownMessage = () => {
             </li>
             <li className="text-left">
               <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#ffffff68] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 href="/messages"
               >
                 <div className="h-12.5 w-12.5 rounded-full mr-2">
