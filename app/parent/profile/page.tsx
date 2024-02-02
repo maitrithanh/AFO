@@ -4,7 +4,7 @@ import ProfileCard from "@/app/components/profile/ProfileCard";
 const ProfilePage = () => {
   return (
     <div>
-      <ProfileCard />
+      <ProfileCard parent />
     </div>
   );
 };

@@ -67,7 +67,7 @@ const Languages = () => {
           changeLanguage(value);
         }}
       >
-        <SelectTrigger className="md:w-[140px] w-[80px]">
+        <SelectTrigger className="md:w-[140px] w-[20px]">
           {renderSwitch()}
         </SelectTrigger>
         <SelectContent>
