@@ -99,7 +99,7 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
         </div>
       ) : (
         <div
-          className={`w-full  uppercase transition-all duration-300 ${
+          className={`w-full uppercase transition-all duration-300 ${
             home ? "" : "text-white"
           } ${isStickyNav ? "fixed" : "absolute"}  z-30 top-0  ${
             home

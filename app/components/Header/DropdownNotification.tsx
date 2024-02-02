@@ -70,8 +70,10 @@ const DropdownNotification = () => {
         </div>
       </div>
       <div
-        className={`fixed w-screen h-screen right-0 top-0 z-50 ${
-          dropdownOpen === true ? "bg-[#18181875]" : "hidden"
+        className={`fixed w-screen h-screen right-0 top-0 z-50 transition-all duration-300 ${
+          dropdownOpen === true
+            ? "bg-[#18181875] translate-x-0"
+            : "w-0 -translate-x-full"
         }`}
       >
         <div
@@ -83,11 +85,7 @@ const DropdownNotification = () => {
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
           }}
-          className={`absolute md:w-[400px] transition-all duration-500 md:right-0 top-0 inset-0 h-screen z-50 hover:cursor-pointer overflow-hidden ${
-            dropdownOpen === true
-              ? "block translate-x-0"
-              : "hidden translate-x-full"
-          }`}
+          className={`absolute md:w-[400px] transition-all duration-500 md:right-0 top-0 inset-0 h-screen z-50 hover:cursor-pointer overflow-hidden `}
         >
           <div className="w-full flex justify-end p-2 text-rose-600 ">
             <div
