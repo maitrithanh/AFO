@@ -10,50 +10,50 @@ import { FaHeart } from "react-icons/fa6";
 
 export const  menu = [
     {
-        text: 'Thống kê',
+        text: 'statistical',
         icon: LuLayoutDashboard,
         pathname: '/admin',
         img: "analysis.webp"
     },
     {
-        text: 'Quản lý tài khoản',
+        text: 'accountManagement',
         icon: IoAnalyticsSharp,
         pathname: '/admin/account',
         img: 'user.webp'
     },
     {
-        text: 'Lớp học',
+        text: 'classes',
         icon: LuUser2,
         pathname: '/admin/classes',
         img: 'blackboard.webp'
     },
     {
-        text: 'Lịch học',
+        text: 'studySchedule',
         icon: MdOutlineInventory,
         pathname: '/admin/schedule',
         img: 'attendance.webp'
     },
     ,
     {
-        text: 'Môn học',
+        text: 'subject',
         icon: FaHeart,
         pathname: '/admin/subject',
-        img: "heartbeat.webp"
+        img: "book.webp"
     },
     {
-        text: 'Đưa đón',
+        text: 'pickup',
         icon: PiChalkboardTeacherDuotone,
         pathname: '/admin/bus',
         img: 'bus.webp'
     },
     {
-        text: 'Sức khoẻ',
+        text: 'helth',
         icon: CiMoneyBill,
         pathname: '/admin/health',
         img: 'heartbeat.webp'
     },
     {
-        text: 'Thực đơn',
+        text: 'menu',
         icon: GiTeacher,
         pathname: '/admin/menu',
         img: 'menu.webp'
@@ -67,20 +67,20 @@ export const  menu = [
     }
     ,
     {
-        text: 'Học phí',
+        text: 'schoolFee',
         icon: GiTeacher,
         pathname: '/admin/schoolfee',
         img: 'cost.webp'
     },
     {
-        text: 'Thông báo',
+        text: 'notification',
         icon: GiTeacher,
         pathname: '/admin/notification',
         img: 'notification.webp'
     }
     ,
     {
-        text: 'Góp ý',
+        text: 'feedback',
         icon: GiTeacher,
         pathname: '/admin/feedback',
         img: 'feedback.webp'

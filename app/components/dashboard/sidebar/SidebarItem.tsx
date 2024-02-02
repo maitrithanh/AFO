@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -23,7 +24,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   pathname,
 }) => {
   const router = useRouter();
-
+  const { t } = useTranslation();
   return (
     <li
       onClick={() => {
@@ -48,7 +49,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           expanded ? "w-52 ml-3" : "w-0"
         }`}
       >
-        {text}
+        {t(text)}
       </span>
       {alert ? (
         active ? (

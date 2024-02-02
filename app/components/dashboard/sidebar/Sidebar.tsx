@@ -7,11 +7,12 @@ import { menu } from "@/data/menu";
 import { usePathname } from "next/navigation";
 import { IoSettingsOutline, IoHelpCircleOutline } from "react-icons/io5";
 import ShortProfile from "../../profile/ShortProfile";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
   const pathName = usePathname();
   const [expanded, setExpanded] = useState(true);
-
+  const { t } = useTranslation();
   //Expanded sidebar if width screen < 912
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -82,14 +83,14 @@ const Sidebar = () => {
           <SidebarItem
             icon={<IoSettingsOutline size={22} />}
             img={"/icons/settings.webp"}
-            text="Cài đặt"
+            text={t("setting")}
             pathname={"/dashboard/settings"}
             active={pathName == "/dashboard/settings"}
             expanded={expanded}
           />
           <SidebarItem
             icon={<IoHelpCircleOutline size={22} />}
-            text="Trợ giúp"
+            text={t("support")}
             img={"/icons/qa.webp"}
             pathname={"/dashboard/help"}
             active={pathName == "/dashboard/help"}

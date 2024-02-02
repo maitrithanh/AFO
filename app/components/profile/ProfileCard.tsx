@@ -1,12 +1,11 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import useFetch from "@/utils/useFetch";
 import Button from "../Button";
 import { FaFacebook, FaGoogle, FaPen } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import toast from "react-hot-toast";
-import { baseURL, callApiWithToken } from "@/utils/callApi";
+import { callApiWithToken } from "@/utils/callApi";
 import UserData from "@/types/UserData";
 import { signIn, useSession } from "next-auth/react";
 import ResponseData from "@/types/ResponseData";
@@ -24,7 +23,11 @@ import Slider from "../Slider";
 import { useTranslation } from "react-i18next";
 import { MdChangeCircle } from "react-icons/md";
 
-const ProfileCard = () => {
+interface ProfileCardProps {
+  parent?: boolean;
+}
+
+const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(0);
   const [openChangePassword, setOpenChangePassword] = useState(false);
@@ -141,8 +144,12 @@ const ProfileCard = () => {
         <div className="relative h-full w-full bg-gradient-to-b sm:max-w-[1280px] sm:p-8 rounded-xl">
           {/* parent */}
 
-          <div className=" grid md:grid-cols-2 grid-cols-1 md:gap-4">
-            <CardInfo cardName={t("infoParent")}>
+          <div
+            className={`grid ${
+              parent ? "md:grid-cols-2" : ""
+            } grid-cols-1 md:gap-4`}
+          >
+            <CardInfo cardName={parent ? t("infoParent") : "Thông tin"}>
               <div className="absolute right-4 -top-10">
                 <span className="relative group">
                   <DefaultImage
@@ -206,79 +213,85 @@ const ProfileCard = () => {
               />
             </CardInfo>
             {/* children */}
-            <CardInfo cardName={t("infoChild")}>
-              <div className="absolute right-6 ">
-                <Link href={"/choose-user"}>
-                  <p className="text-main flex items-center">
-                    <span className="m-1">
-                      <MdChangeCircle size={20} />
-                    </span>
-                    {t("changeProfile")}
-                  </p>
-                </Link>
-              </div>
-              <div className="absolute right-4 -top-10">
-                <span className="relative group">
-                  <DefaultImage
-                    key={infoChild?.avatar}
-                    img={getImageUrl(infoChild?.avatar)}
-                    fallback="/avatar.webp"
-                    className={`w-14 h-14 rounded-full cursor-pointer`}
-                    custom="w-[80px] h-[80px]"
-                  />
-                  <div
-                    title="Đổi ảnh"
-                    className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
-                  >
-                    <input
-                      type="file"
-                      onChange={handleFileChange}
-                      className="hidden"
-                      title="no"
-                      ref={uploadAvatarRef}
-                    />
-                    <FaPen
-                      onClick={onUpdateAvatarClick}
-                      className="cursor-pointer text-white"
-                    />
+            {parent ? (
+              <>
+                <CardInfo cardName={t("infoChild")}>
+                  <div className="absolute right-6 ">
+                    <Link href={"/choose-user"}>
+                      <p className="text-main flex items-center">
+                        <span className="m-1">
+                          <MdChangeCircle size={20} />
+                        </span>
+                        {t("changeProfile")}
+                      </p>
+                    </Link>
                   </div>
-                </span>
-              </div>
-              <CardInfoLine
-                lineName={t("fullName")}
-                contentLine={infoChild?.fullName}
-              />
-              <CardInfoLine
-                lineName={t("dateOfBirth")}
-                contentLine={infoChild?.birthDay}
-              />
-              <CardInfoLine
-                lineName={t("gender")}
-                contentLine={infoChild?.gender}
-              />
-              <CardInfoLine
-                lineName={t("joinDate")}
-                contentLine={infoChild?.joinDate}
-              />
-              <CardInfoLine
-                lineName={t("nationality")}
-                contentLine={infoChild?.nation}
-              />
-              <CardInfoLine
-                lineName={t("status")}
-                contentLine={infoChild?.status ? "Đang học" : "Đã nghỉ"}
-              />
+                  <div className="absolute right-4 -top-10">
+                    <span className="relative group">
+                      <DefaultImage
+                        key={infoChild?.avatar}
+                        img={getImageUrl(infoChild?.avatar)}
+                        fallback="/avatar.webp"
+                        className={`w-14 h-14 rounded-full cursor-pointer`}
+                        custom="w-[80px] h-[80px]"
+                      />
+                      <div
+                        title="Đổi ảnh"
+                        className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
+                      >
+                        <input
+                          type="file"
+                          onChange={handleFileChange}
+                          className="hidden"
+                          title="no"
+                          ref={uploadAvatarRef}
+                        />
+                        <FaPen
+                          onClick={onUpdateAvatarClick}
+                          className="cursor-pointer text-white"
+                        />
+                      </div>
+                    </span>
+                  </div>
+                  <CardInfoLine
+                    lineName={t("fullName")}
+                    contentLine={infoChild?.fullName}
+                  />
+                  <CardInfoLine
+                    lineName={t("dateOfBirth")}
+                    contentLine={infoChild?.birthDay}
+                  />
+                  <CardInfoLine
+                    lineName={t("gender")}
+                    contentLine={infoChild?.gender}
+                  />
+                  <CardInfoLine
+                    lineName={t("joinDate")}
+                    contentLine={infoChild?.joinDate}
+                  />
+                  <CardInfoLine
+                    lineName={t("nationality")}
+                    contentLine={infoChild?.nation}
+                  />
+                  <CardInfoLine
+                    lineName={t("status")}
+                    contentLine={infoChild?.status ? "Đang học" : "Đã nghỉ"}
+                  />
 
-              <CardInfoLine
-                lineName={t("address")}
-                contentLine={infoChild?.address}
-              />
+                  <CardInfoLine
+                    lineName={t("address")}
+                    contentLine={infoChild?.address}
+                  />
 
-              <CardInfoLine
-                lineName={t("note")}
-                contentLine={infoChild?.note}
-              />
-            </CardInfo>
+                  <CardInfoLine
+                    lineName={t("note")}
+                    contentLine={infoChild?.note}
+                  />
+                </CardInfo>
+              </>
+            ) : (
+              ""
+            )}
           </div>
 
           <div>

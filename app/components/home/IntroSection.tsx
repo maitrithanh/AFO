@@ -1,7 +1,10 @@
+"use client";
 import Image from "next/image";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const IntroSection = () => {
+  const { t } = useTranslation();
   return (
     <div className="my-2">
       <div className="relative flex justify-center w-full py-8">
@@ -23,7 +26,9 @@ const IntroSection = () => {
         />
         <div className="bg-white">
           <div className="flex w-full items-center justify-center">
-            <h1 className="text-5xl font-semibold text-cool-main">TẠI AFO</h1>
+            <h1 className="text-5xl font-semibold text-cool-main uppercase">
+              {t("atAFO")}
+            </h1>
           </div>
           <div className="grid md:grid-cols-3 gap-4 max-w-[1120px] mx-4 text-justify">
             <div>
@@ -35,12 +40,9 @@ const IntroSection = () => {
                   height={30}
                   loading="lazy"
                 />
-                <h1 className="text-xl font-bold ml-1">Tiến bộ nhanh chóng</h1>
+                <h1 className="text-xl font-bold ml-1">{t("rapidProgress")}</h1>
               </div>
-              <p className="text-justify text-lg">
-                Các bé sẽ được trải nghiệm các hoạt động thực tế và việc học mỗi
-                ngày.
-              </p>
+              <p className="text-justify text-lg">{t("rapidProgressDes")}</p>
             </div>
             <div>
               <div className="flex items-center">
@@ -52,11 +54,11 @@ const IntroSection = () => {
                   loading="lazy"
                 />
                 <h1 className="text-xl font-bold ml-1">
-                  Kết nối với nhiều bạn bè
+                  {t("connectWithManyFriends")}
                 </h1>
               </div>
               <p className="text-justify text-lg">
-                Khi học vui chơi với nhiều bạn bè thêm nhiều niềm vui cho bé.
+                {t("connectWithManyFriendsDes")}
               </p>
             </div>
             <div>
@@ -68,12 +70,11 @@ const IntroSection = () => {
                   height={30}
                   loading="lazy"
                 />
-                <h1 className="text-xl font-bold ml-1">Giáo viên ưu tú</h1>
+                <h1 className="text-xl font-bold ml-1">
+                  {t("excellentTeacher")}
+                </h1>
               </div>
-              <p className="text-justify text-lg">
-                Giáo viên của chúng tôi luôn là những giáo viên ưu tú có trình
-                độ từ thạc sỹ trở lên.
-              </p>
+              <p className="text-justify text-lg">{t("excellentTeacherDes")}</p>
             </div>
           </div>
         </div>
@@ -87,7 +88,9 @@ const IntroSection = () => {
           }}
           className="p-[15px] pt-[30px] rounded-sm max-w-[370px]"
         >
-          <h4 className="text-2xl text-white font-bold">Chương trình tuần</h4>
+          <h4 className="text-2xl text-white font-bold">
+            {t("weeklyProgram")}
+          </h4>
           <Image
             src={"/home/home_block1.webp"}
             alt=""
@@ -97,9 +100,7 @@ const IntroSection = () => {
             className="rounded-md"
           />
           <p className="text-justify my-2 text-white">
-            Chương trình học được thiết kế phù hợp cho từng lứa tuổi, trẻ được
-            học trong môi trường khuyến khích sự sáng tạo,chú trọng chăm sóc,
-            phát triển từng cá nhân và những khả năng khác biệt của các em.
+            {t("weeklyProgramDes")}
           </p>
         </div>
         <div
@@ -109,7 +110,7 @@ const IntroSection = () => {
           }}
           className="p-[15px] pt-[30px] rounded-sm max-w-[370px]"
         >
-          <h4 className="text-2xl text-white font-bold">Thực đơn tuần</h4>
+          <h4 className="text-2xl text-white font-bold">{t("weeklyMenu")}</h4>
           <Image
             src={"/home/home_block2.webp"}
             alt=""
@@ -118,11 +119,7 @@ const IntroSection = () => {
             priority
             className="rounded-md"
           />
-          <p className="text-justify my-2 text-white">
-            Thực đơn được sự kiểm tra và phê duyệt của bác sĩ dinh dưỡng. Thức
-            ăn được chế biến tại trường để bảo đảm dinh dưỡng, vệ sinh và khẩu
-            phần ăn được thiết kế theo nhu cầu các cá nhân trẻ.
-          </p>
+          <p className="text-justify my-2 text-white">{t("weeklyMenuDes")}</p>
         </div>
         <div
           style={{
@@ -131,7 +128,7 @@ const IntroSection = () => {
           }}
           className="p-[15px] pt-[30px] rounded-sm max-w-[370px] relative"
         >
-          <h4 className="text-2xl text-white font-bold">Thư viện ảnh</h4>
+          <h4 className="text-2xl text-white font-bold">{t("photoLibary")}</h4>
           <Image
             src={"/home/home_block3.webp"}
             alt=""
@@ -140,11 +137,7 @@ const IntroSection = () => {
             priority
             className="rounded-md relative"
           />
-          <p className="text-justify my-2 text-white">
-            Những hình ảnh hoạt động của Trường Mầm non Vĩnh Thạnh, những góc
-            hình ngộ nghĩnh dễ thương của các bé trong các hoạt động tại trường,
-            ghi dấu lại những kỷ niệm tại ngôi trường thân yêu.
-          </p>
+          <p className="text-justify my-2 text-white">{t("photoLibaryDes")}</p>
         </div>
       </div>
       {/* section 2 */}
@@ -164,11 +157,7 @@ const IntroSection = () => {
             height={192}
             className="rounded-md"
           />
-          <p className="text-justify my-2 text-white">
-            Những đoạn clip quay hoạt động của Trường Mầm non Vĩnh Thạnh, những
-            góc hình ngộ nghĩnh dễ thương của các bé trong các hoạt động tại
-            trường, ghi dấu lại những kỷ niệm tại ngôi trường thân yêu.
-          </p>
+          <p className="text-justify my-2 text-white">{t("videoClips")}</p>
         </div>
         <div
           style={{
@@ -177,7 +166,9 @@ const IntroSection = () => {
           }}
           className="p-[15px] md:ml-8 ml-0 pt-[30px] rounded-sm max-w-[370px]"
         >
-          <h4 className="text-2xl text-white font-bold">Hoạt động tuần</h4>
+          <h4 className="text-2xl text-white font-bold">
+            {t("weeklyActivities")}
+          </h4>
           <Image
             src={"/home/home_block6.webp"}
             alt=""
@@ -186,9 +177,7 @@ const IntroSection = () => {
             className="rounded-md "
           />
           <p className="text-justify my-2 text-white">
-            Hoạt động được thiết kế phù hợp cho từng lứa tuổi, trẻ được hoạt
-            động trong môi trường khuyến khích sự sáng tạo,chú trọng chăm sóc,
-            phát triển từng cá nhân và những khả năng khác biệt của các em.
+            {t("weeklyActivitiesDes")}
           </p>
         </div>
         <div
@@ -198,7 +187,7 @@ const IntroSection = () => {
           }}
           className="p-[15px] md:ml-8 ml-0 pt-[30px] rounded-sm max-w-[370px]"
         >
-          <h4 className="text-2xl text-white font-bold">Tài liệu</h4>
+          <h4 className="text-2xl text-white font-bold">{t("document")}</h4>
           <Image
             src={"/home/home_block5.webp"}
             alt=""
@@ -207,10 +196,7 @@ const IntroSection = () => {
             priority
             className="rounded-md"
           />
-          <p className="text-justify my-2 text-white">
-            Tài liệu học tập của Trường Mầm non Vĩnh Thạnh, những bài tập vẽ của
-            các bé trong các giờ học trên lớp.
-          </p>
+          <p className="text-justify my-2 text-white">{t("documentSub")}</p>
         </div>
       </div>
     </div>

@@ -50,7 +50,7 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
     <div className="h-18 w-full">
       {admin ? (
         <div className="p-4 w-full flex justify-between items-center bg-white">
-          <form className="">
+          {/* <form className="">
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                 <svg
@@ -83,7 +83,10 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                 {t("search")}
               </button>
             </div>
-          </form>
+          </form> */}
+          <div>
+            <Languages />
+          </div>
           <div className="flex items-center">
             <ul className="flex gap-2 mx-2 ">
               <DropdownNotification />
