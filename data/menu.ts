@@ -12,7 +12,7 @@ export const  menu = [
     {
         text: 'statistical',
         icon: LuLayoutDashboard,
-        pathname: '/admin',
+        pathname: '/admin/statistical',
         img: "analysis.webp"
     },
     {

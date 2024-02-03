@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        '3xl': '0 4px 80px 0 rgba(0,41,87,.08)',
+      },
       transitionDuration: {
         '5000': '5000ms',
       },
