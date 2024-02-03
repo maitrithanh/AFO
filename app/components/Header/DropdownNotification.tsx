@@ -73,7 +73,7 @@ const DropdownNotification = () => {
         className={`fixed w-screen h-screen right-0 top-0 z-50 transition-all duration-300 ${
           dropdownOpen === true
             ? "bg-[#18181875] translate-x-0"
-            : "w-0 -translate-x-full hidden"
+            : "w-0 -translate-x-full"
         }`}
       >
         <div

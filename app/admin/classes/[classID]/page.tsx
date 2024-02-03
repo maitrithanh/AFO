@@ -25,6 +25,7 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { Input } from "@/components/ui/input";
 
 import useFetch from "@/utils/useFetch";
+import DefaultImage from "@/app/components/defaultImage";
 
 const ClassPage = ({ params }: any) => {
   const { data: classData, loading } = useFetch(`ClassRoom/${params.classID}`);
@@ -45,7 +46,9 @@ const ClassPage = ({ params }: any) => {
           <div className="">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-2xl">Danh sách học sinh - Lớp Mầm 1</p>
+                <p className="text-2xl font-bold">
+                  Danh sách học sinh - Lớp Mầm 1
+                </p>
                 <p className="text-xl">Số học sinh: 30</p>
               </div>
               <div className="flex">
@@ -112,11 +115,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Mầm 1
+                    1
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Nguyễn Thị A, Bùi Thị B</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Nguyễn Thị A</td>
+                  <td className="px-6 py-4">01/01/2019</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">
@@ -141,11 +146,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Mầm 2
+                    2
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Lê Thị C</td>
+                  <td className="px-6 py-4">01/01/2019</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">
@@ -171,11 +178,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Chồi 1
+                    3
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Cao Nguyễn D</td>
+                  <td className="px-6 py-4">01/01/2019</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">
@@ -200,11 +209,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Chồi 2
+                    4
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Lê Thị C</td>
+                  <td className="px-6 py-4">01/01/2019</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">
@@ -229,11 +240,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Lá 1
+                    5
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Lê Thị C</td>
+                  <td className="px-6 py-4">01/01/2019</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">
@@ -258,11 +271,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Lá 2
+                    6
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Lê Thị C</td>
+                  <td className="px-6 py-4">01/01/2019</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">
@@ -287,11 +302,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Lá 2
+                    7
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Lê Thị C</td>
+                  <td className="px-6 py-4">01/01/2019</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">
@@ -316,11 +333,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Lá 2
+                    8
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Lê Thị C</td>
+                  <td className="px-6 py-4">01/01/2019</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">
@@ -345,11 +364,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Lá 2
+                    9
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Lê Thị C</td>
+                  <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">
@@ -374,11 +395,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Lá 2
+                    10
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Lê Thị C</td>
+                  <td className="px-6 py-4">01/01/2019</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">
@@ -403,11 +426,13 @@ const ClassPage = ({ params }: any) => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Lớp Lá 2
+                    11
                   </th>
-                  <td className="px-6 py-4">30</td>
-                  <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
-                  <td className="px-6 py-4">Không có</td>
+                  <td className="px-6 py-4">
+                    <DefaultImage img="/avatar.webp" fallback="/avatar.webp" />
+                  </td>
+                  <td className="px-6 py-4">Lê Thị C</td>
+                  <td className="px-6 py-4">01/01/2019</td>
                   <td className="px-6 py-4">0123456789</td>
                   <td className="px-6 py-4">Nguyễn Văn A</td>
                   <td className="px-6 py-4">

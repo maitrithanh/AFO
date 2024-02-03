@@ -11,8 +11,14 @@ import { useTranslation } from "next-i18next";
 
 const Sidebar = () => {
   const pathName = usePathname();
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const { t } = useTranslation();
+  const [showSidebarBg, setShowSidebarBg] = useState(false);
+
+  useEffect(() => {
+    setShowSidebarBg(localStorage.getItem("bgSidebar") === "true");
+  }, []);
+
   //Expanded sidebar if width screen < 912
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -27,7 +33,7 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className="md:hidden block fixed top-24 right-2 bg-white p-2 rounded-full z-40 shadow-lg"
+        className="md:hidden block fixed top-24 right-2 bg-white p-2 rounded-full z-40 shadow-lg transition-all"
         onClick={() => {
           setExpanded((curr) => !curr);
         }}
@@ -43,12 +49,14 @@ const Sidebar = () => {
         className={`relative z-40 h-screen min-h-full transition-all ${
           !expanded
             ? "md:w-[72px] w-0 md:block hidden"
-            : "md:w-[290px] md:block"
+            : "md:w-[290px] md:block "
         }`}
       >
         <nav
           style={{
-            backgroundImage: `url("/bg-sidebar.webp")`,
+            backgroundImage: ` ${
+              showSidebarBg ? `url("/bg-sidebar.webp")` : ""
+            }`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backdropFilter: "sepia(10%)",
@@ -81,7 +89,12 @@ const Sidebar = () => {
             </button>
           </div>
 
-          <ul className="flex-1 px-3 overflow-y-auto">
+          <ul
+            className="flex-1 px-3 overflow-y-auto overflow-x-hidden"
+            onClick={() => {
+              setExpanded((curr) => !curr);
+            }}
+          >
             {menu.map((menuItem: any) => {
               return (
                 <SidebarItem
@@ -101,7 +114,7 @@ const Sidebar = () => {
               img={"/icons/settings.webp"}
               text={t("setting")}
               pathname={"/admin/settings"}
-              active={pathName == "/dashboard/settings"}
+              active={pathName == "/admin/settings"}
               expanded={expanded}
             />
             <SidebarItem
@@ -109,7 +122,7 @@ const Sidebar = () => {
               text={t("support")}
               img={"/icons/qa.webp"}
               pathname={"/admin/help"}
-              active={pathName == "/dashboard/help"}
+              active={pathName == "/admin/help"}
               expanded={expanded}
             />
           </ul>
