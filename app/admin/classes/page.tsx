@@ -29,7 +29,7 @@ const ClassesPage = () => {
       <div className="h-[600px]">
         <div className="bg-white p-2 shadow-3xl">
           <div>
-            <p className="text-2xl">Danh sách lớp học</p>
+            <p className="text-2xl font-bold">Danh sách lớp học</p>
           </div>
           <div className="flex justify-between items-center">
             <div>

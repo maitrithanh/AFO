@@ -17,8 +17,8 @@ const SettingPage = () => {
   };
 
   useEffect(() => {
-    setShowSidebarBg(localStorage.getItem("bgSidebar") === "true");
-  }, []);
+    setShowSidebarBg(localStorage.getItem("bgSidebar") == "true");
+  }, [sidebarBg]);
 
   return (
     <div className="md:mx-20">
@@ -29,7 +29,7 @@ const SettingPage = () => {
             <div className="flex items-center">
               <p className="mr-2">Sidebar: </p>
               <div className="border bg-white w-[80px] h-[40px] rounded-md">
-                {sidebarBg ? (
+                {showSidebarBg ? (
                   <Image
                     src={"/bg-big.webp"}
                     width={80}
