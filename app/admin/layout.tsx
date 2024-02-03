@@ -1,12 +1,13 @@
+"use client";
+
 import React from "react";
 import Sidebar from "../components/dashboard/sidebar/Sidebar";
 import Navbar from "../components/dashboard/navbar/Navbar";
 import { Toaster } from "react-hot-toast";
-import Header from "../components/Header";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex">
+    <div className="flex overflow-x-hidden h-screen">
       <Toaster />
       <div className="flex">
         <Sidebar />
