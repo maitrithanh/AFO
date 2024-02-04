@@ -81,7 +81,7 @@ const ClassesPage = () => {
                   <td className="px-6 py-4">Nguyễn Thị A, Bùi Thị B</td>
                   <td className="px-6 py-4">Không có</td>
                   <td
-                    className="px-6 py-4"
+                    className="md:px-6 md:py-4"
                     onClick={() => {
                       router.push("");
                     }}
@@ -112,7 +112,7 @@ const ClassesPage = () => {
                   <td className="px-6 py-4">30</td>
                   <td className="px-6 py-4">Lê Thị C, Cao Nguyễn D</td>
                   <td className="px-6 py-4">Không có</td>
-                  <td className="px-6 py-4">
+                  <td className="md:px-6 md:py-4">
                     <a
                       href="#"
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"

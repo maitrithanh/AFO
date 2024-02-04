@@ -11,7 +11,7 @@ import { useTranslation } from "next-i18next";
 
 const Sidebar = () => {
   const pathName = usePathname();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const { t } = useTranslation();
   const [showSidebarBg, setShowSidebarBg] = useState(false);
 
@@ -21,7 +21,7 @@ const Sidebar = () => {
 
   //Expanded sidebar if width screen < 912
   useEffect(() => {
-    window.addEventListener("resize", () => {
+    window.addEventListener("load", () => {
       if (window.innerWidth <= 912) {
         setExpanded(false);
       } else {
@@ -29,6 +29,13 @@ const Sidebar = () => {
       }
     });
   });
+
+  //handle expanded for mobile when click auto close menu
+  const handleExpanedMobile = () => {
+    if (window.innerWidth <= 912) {
+      setExpanded((curr) => !curr);
+    }
+  };
 
   return (
     <>
@@ -92,7 +99,7 @@ const Sidebar = () => {
           <ul
             className="flex-1 px-3 overflow-y-auto overflow-x-hidden"
             onClick={() => {
-              setExpanded((curr) => !curr);
+              handleExpanedMobile();
             }}
           >
             {menu.map((menuItem: any) => {

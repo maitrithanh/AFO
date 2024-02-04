@@ -12,7 +12,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex">
         <Sidebar />
       </div>
-      <div className="w-full transition-all delay-300">
+      <div className="w-full h-screen overflow-hidden transition-all delay-300">
         <div className="border-b shadow-sm">
           <Navbar admin />
         </div>
