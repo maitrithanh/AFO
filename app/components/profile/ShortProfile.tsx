@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
+import { getImageUrl } from "@/utils/image";
 import { IoMdMore } from "react-icons/io";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 
@@ -56,7 +56,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
         <div className="w-full flex items-center">
           <DefaultImage
             key={user?.avatar}
-            img={baseURL + "File/GetFile/" + user?.avatar}
+            img={getImageUrl(user?.avatar)}
             fallback="/avatar.webp"
             className={`w-10 h-10 rounded-full cursor-pointer ${
               borderTop ? "mr-2" : ""

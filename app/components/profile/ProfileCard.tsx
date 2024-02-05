@@ -32,7 +32,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
   const [refresh, setRefresh] = useState(0);
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const child = getCookie("child");
-  const router = useRouter();
 
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
 
@@ -138,7 +137,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
   const { t } = useTranslation();
 
   return (
-    <div>
+    <div className="overflow-auto">
       {loading && <Loading />}
       <div className="flex justify-center items-center h-full w-full ">
         <div className="relative h-full w-full bg-gradient-to-b sm:max-w-[1280px] sm:p-8 rounded-xl">
@@ -149,7 +148,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
               parent ? "md:grid-cols-2" : ""
             } grid-cols-1 md:gap-4`}
           >
-            <CardInfo cardName={parent ? t("infoParent") : "Thông tin"}>
+            <CardInfo
+              cardName={parent ? t("infoParent") : "Thông tin"}
+              parent={parent}
+            >
               <div className="absolute right-4 -top-10">
                 <span className="relative group">
                   <DefaultImage
