@@ -12,7 +12,15 @@ interface MealDetail {
     foods: FoodRes[]
 }
 
+export interface DetailMenuItem { 
+    idMeal: number,
+    day: number,
+    idFood: number,
+    nameFood: string,
+}
+
 export default interface DetailMenuRes { 
     menu: MenuRes,
-    items: DayDetail[]
+    //items: DayDetail[]
+    items: DetailMenuItem[]
 }

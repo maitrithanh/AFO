@@ -1,22 +1,21 @@
 "use client"
 
-import DetailMenuRes from "@/types/DetailMenuRes"
+import DetailMenuRes, { DetailMenuItem } from "@/types/DetailMenuRes"
 import MealRes from "@/types/MealRes";
 import useFetch from "@/utils/useFetch"
 import { useState } from "react";
+import moment from 'moment'
 
 const MenuPage = () => { 
-    const [week, setWeek] = useState("2024-W01")
+    const [week, setWeek] = useState(moment().format('YYYY') + '-W' + moment().format('WW'))
 
     const { data: dataMenu, loading } = useFetch<DetailMenuRes>('Menu/MenuOfWeek/' + week, null, week);
     const { data: dataMeal } = useFetch<MealRes[]>('Menu/ListMeal');
 
     const days = ["T2", "T3", "T4", "T5", "T6", "T7"];
 
-    const getListFood = (day: number, meal: number): MealRes[] => { 
-        var dayDetail = dataMenu?.items.find(x => x.day === day);
-        var mealDetail = dayDetail?.meals.find(x => x.meal.id === meal);
-        return mealDetail?.foods ?? []
+    const getListFood = (day: number, meal: number): DetailMenuItem[] => { 
+        return dataMenu?.items.filter(x => x.day === day && x.idMeal === meal) || []
     }
 
     const getWeekName = (week: string = '') => { 
@@ -26,7 +25,13 @@ const MenuPage = () => {
 
     return <div>
         <div>
-            <input type="week" value={week} onChange={(e) => {setWeek(e.currentTarget.value)}} placeholder="Chọn tuần" />
+            <input type="week" value={week} onChange={(e) => { setWeek(e.currentTarget.value) }} placeholder="Chọn tuần" />
+            <i> 
+                {
+                    " (" + moment(week, 'YYYY-WWW').isoWeekday(1).format('DD/MM/YYYY') + '-'
+                    + moment(week, 'YYYY-WWW').isoWeekday(7).format('DD/MM/YYYY') + ')'
+                } 
+            </i>
         </div>
 
         {
@@ -59,7 +64,7 @@ const MenuPage = () => {
                             <th className="px-6 py-4">{x.name}</th>
                             {days.map((y, i) => <td className="px-6 py-4">
                                 {getListFood(i, x.id).map(z => <div>
-                                    {z.name}
+                                    {z.nameFood}
                                 </div>)}
                             </td>)}
                         </tr>)}
