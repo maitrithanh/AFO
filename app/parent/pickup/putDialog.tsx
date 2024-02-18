@@ -105,7 +105,7 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
       className="fixed z-50 top-0 left-0 w-full h-full flex items-center bg-black bg-opacity-40 justify-center"
     >
       <form
-        className="space-y-6 p-10 bg-white md:rounded-lg md:h-fit h-full w-[640px] mx-2 overflow-none"
+        className="space-y-6 p-10 bg-white md:rounded-lg h-[90vh] w-[640px] mx-2 overflow-auto"
         action="#"
         method="POST"
       >
