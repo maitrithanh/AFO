@@ -17,7 +17,7 @@ export const menuParent = [
   {
     name: "menu",
     image: "menu.webp",
-    path: "/",
+    path: "/parent/menu",
   },
   {
     name: "pickup",
