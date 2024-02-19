@@ -50,7 +50,7 @@ const DropdownMessage = () => {
             setDropdownOpen(!dropdownOpen);
           }}
           href="#"
-          className="relative p-2 flex h-8.5 w-8.5 items-center justify-center rounded-full bg-[#ffffff50] group"
+          className="relative p-2 flex h-8.5 w-8.5 items-center justify-center rounded-full bg-[#ffffff50] group shadow-sm"
         >
           <span
             className={`absolute -top-0.5 right-0 bg-rose-600 z-1 h-2 w-2 rounded-full bg-meta-1 ${

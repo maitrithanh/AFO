@@ -39,7 +39,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
                   height={100}
                 />
               </div>
-              <div className="absolute flex md:top-6 top-4 w-full justify-center h-full md:text-lg text-sm font-semibold">
+              <div className="absolute flex md:top-6 top-4 w-full justify-center h-full md:text-lg text-sm font-thin">
                 {t(item.name)}
               </div>
             </div>
