@@ -1,5 +1,6 @@
 "use client";
 
+//kiểm tra tuần không trùng những tuần đã có
 import DetailMenuRes, { DetailMenuItem } from "@/types/DetailMenuRes";
 import MealRes from "@/types/MealRes";
 import useFetch from "@/utils/useFetch";
@@ -17,10 +18,11 @@ import { MdModeEditOutline } from "react-icons/md";
 
 import AddItem from "./addItem";
 import FoodRes from "@/types/FoodRes";
+import { callApiWithToken } from "@/utils/callApi";
+import { useRouter } from "next/navigation";
 
 interface Props {
-  id: string;
-  edit?: boolean;
+  id?: string;
 }
 
 interface CopyItem {
@@ -28,8 +30,10 @@ interface CopyItem {
   day?: number;
 }
 
-const DetailMenu = ({ edit = true, id }: Props) => {
+const DetailMenu = ({id }: Props) => {
   console.log(id);
+  const router = useRouter();
+  const edit = id ? true : false;
 
   const [weekStart, setWeekStart] = useState(
     moment().format("YYYY") + "-W" + moment().format("WW")
@@ -43,11 +47,12 @@ const DetailMenu = ({ edit = true, id }: Props) => {
   const [editNameMenu, setEditNameMenu] = useState(false);
   const [editDescMenu, setEditDescMenu] = useState(false);
 
-  const { data: dataMenu, loading } = useFetch<DetailMenuRes>(
+  const { data: dataMenu, loading } = edit ? useFetch<DetailMenuRes>(
     "Menu/Detail/" + id,
     null,
     weekStart
-  );
+  ) : {data: null, loading: false};
+  
   const [menuName, setMenuName] = useState("");
   const [menuDesc, setDescMenu] = useState("");
   const { data: dataMeal } = useFetch<MealRes[]>("Menu/ListMeal");
@@ -186,19 +191,56 @@ const DetailMenu = ({ edit = true, id }: Props) => {
     );
   };
 
+  const onSubmit = () => { 
+    if(weekEnd < weekStart) alert('Tuần kết thúc phải >= tuần bắt đầu')
+
+    const obj: DetailMenuRes = {
+      menu: {
+        name: menuName,
+        desc: menuDesc,
+        start: weekStart,
+        end: weekEnd
+      },
+      items: menuItems
+    }
+
+    if (edit) {
+      callApiWithToken().put('Menu/update/' + id, obj)
+        .then(() => { alert('Thành công'); router.push('/admin/menu/') })
+        .catch(() => { alert('Thất bại'); })
+    } else { 
+      //add
+      callApiWithToken().post('Menu/Add', obj)
+        .then(() => { alert('Thành công'); router.push('/admin/menu/') })
+        .catch(() => { alert('Thất bại'); })
+    }
+  }
+
+  const onDelete = () => { 
+    if (!window.confirm('Xóa menu này nha')) return;
+
+    callApiWithToken().delete('Menu/delete/' + id)
+      .then(() => { alert('Thành công'); router.push('/admin/menu/') })
+      .catch(() => { alert('Thất bại'); })
+  }
+
   return (
     <>
+      <h2 className="pl-2 text-3xl">
+        {edit ? "Chỉnh sửa Menu": "Thêm Menu"}
+      </h2>
       <div className="bg-white shadow-sm m-auto md:px-2 px-4 pt-4 rounded-xl">
         {/* top */}
         <div className="w-full ">
-          {dataMenu && (
+          {(dataMenu || !edit) && (
             <div className="">
-              <div className="flex group">
-                {editNameMenu ? (
+              <div className="flex group items-baseline" >
+                <span className="mr-2 italic"> Tên menu:</span>
+                {editNameMenu || !edit ? (
                   <input
                     type="text"
                     value={menuName}
-                    placeholder={dataMenu?.menu.name}
+                    placeholder={dataMenu?.menu?.name}
                     onChange={(e) => {
                       setMenuName(e.currentTarget.value);
                     }}
@@ -208,25 +250,26 @@ const DetailMenu = ({ edit = true, id }: Props) => {
                   <h2 className="text-2xl p-2">{menuName}</h2>
                 )}
 
-                <button
-                  title="Sửa tên menu"
-                  className={`${
-                    editNameMenu ? "text-green-600" : "invisible"
-                  } ml-2 group-hover:visible`}
-                  onClick={() => setEditNameMenu((curr) => !curr)}
-                >
-                  {editNameMenu ? (
-                    <FaCheck size={20} />
-                  ) : (
-                    <MdModeEditOutline size={20} />
-                  )}
-                </button>
+                {edit &&
+                  <button
+                    title="Sửa tên menu"
+                    className={`${editNameMenu ? "text-green-600" : "invisible"
+                      } ml-2 group-hover:visible`}
+                    onClick={() => setEditNameMenu((curr) => !curr)}
+                  >
+                    {editNameMenu ? (
+                      <FaCheck size={20} />
+                    ) : (
+                      <MdModeEditOutline size={20} />
+                    )}
+                  </button>
+                }
               </div>
-              <div className="group px-2 w-full">
+              <div className="group pr-2 w-full">
                 <p className=" italic ">
                   <span className="mr-2"> Mô tả:</span>
-                  {editDescMenu ? (
-                    <textarea
+                  {editDescMenu || !edit ? (
+                    <textarea title="Mô tả"
                       value={menuDesc}
                       onChange={(e) => {
                         setDescMenu(e.currentTarget.value);
@@ -236,19 +279,20 @@ const DetailMenu = ({ edit = true, id }: Props) => {
                   ) : (
                     <span className="text-gray-600">{menuDesc}</span>
                   )}
-                  <button
-                    title="Sửa mô tả menu"
-                    className={`${
-                      editDescMenu ? "text-green-600" : "invisible"
-                    } ml-2 group-hover:visible`}
-                    onClick={() => setEditDescMenu((curr) => !curr)}
-                  >
-                    {editDescMenu ? (
-                      <FaCheck size={20} />
-                    ) : (
-                      <MdModeEditOutline size={20} />
-                    )}
-                  </button>
+                  {edit &&
+                    <button
+                      title="Sửa mô tả menu"
+                      className={`${editDescMenu ? "text-green-600" : "invisible"
+                        } ml-2 group-hover:visible`}
+                      onClick={() => setEditDescMenu((curr) => !curr)}
+                    >
+                      {editDescMenu ? (
+                        <FaCheck size={20} />
+                      ) : (
+                        <MdModeEditOutline size={20} />
+                      )}
+                    </button>
+                  }
                 </p>
               </div>
             </div>
@@ -299,7 +343,7 @@ const DetailMenu = ({ edit = true, id }: Props) => {
                     key={x.id}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   >
-                    <th className="md:px-6 md:mr-8 py-4 relative group w-[10px]">
+                    <th className="md:px-6 md:mr-8 py-10 relative group w-[10px]">
                       <p className=" font-thin md:text-[18px]  -rotate-90 w-[10px]">
                         {x.name}
                       </p>
@@ -336,16 +380,14 @@ const DetailMenu = ({ edit = true, id }: Props) => {
                           </div>
                         ))}
 
-                        {edit && (
-                          <div>
-                            <AddItem
-                              onAdd={(food) => {
-                                onAddItem(x.id, i, food.id, food.name);
-                              }}
-                              dataSource={dataFood || []}
-                            />
-                          </div>
-                        )}
+                        <div>
+                          <AddItem
+                            onAdd={(food) => {
+                              onAddItem(x.id, i, food.id, food.name);
+                            }}
+                            dataSource={dataFood || []}
+                          />
+                        </div>
                       </td>
                     ))}
                   </tr>
@@ -356,28 +398,42 @@ const DetailMenu = ({ edit = true, id }: Props) => {
         )}
       </div>
       <div className="p-4 flex items-center">
-        <label htmlFor="" className="mr-2">
-          Áp dụng từ tuần:
-        </label>
-        <input
-          type="week"
-          value={weekStart}
-          className="bg-gray-100 p-2 focus:border-main focus:outline-main rounded-md"
-          onChange={(e) => {
-            setWeekStart(e.currentTarget.value);
-          }}
-          placeholder="Chọn tuần"
-        />
-        <span className="mx-2"> đến tuần:</span>
-        <input
-          type="week"
-          value={weekEnd}
-          className="bg-gray-100 p-2 focus:border-main focus:outline-main rounded-md"
-          onChange={(e) => {
-            setWeekEnd(e.currentTarget.value);
-          }}
-          placeholder="Chọn tuần"
-        />
+        <div>
+          <label htmlFor="" className="mr-2">
+            Áp dụng từ tuần:
+          </label>
+          <input
+            type="week"
+            value={weekStart}
+            className="bg-gray-100 p-2 focus:border-main focus:outline-main rounded-md"
+            onChange={(e) => {
+              setWeekStart(e.currentTarget.value);
+            }}
+            placeholder="Chọn tuần"
+          />
+          <span className="mx-2"> đến tuần:</span>
+          <input
+            type="week"
+            value={weekEnd}
+            className="bg-gray-100 p-2 focus:border-main focus:outline-main rounded-md"
+            onChange={(e) => {
+              setWeekEnd(e.currentTarget.value);
+            }}
+            placeholder="Chọn tuần"
+          />
+        </div>
+        <div className="flex-1"></div>
+        <div>
+          <button className="bg-blue-500 text-white font-bold py-1 px-2 rounded mr-4" onClick={onSubmit}>
+            {edit ? "Cập nhật" : "Thêm"}
+          </button>
+
+          {edit &&
+            <button className="bg-red-500 text-white font-bold py-1 px-2 rounded" onClick={onDelete}>
+              Xóa
+            </button>
+          }
+        </div>
       </div>
     </>
   );

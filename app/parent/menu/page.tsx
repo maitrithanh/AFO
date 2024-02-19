@@ -3,33 +3,14 @@
 import DetailMenuRes, { DetailMenuItem } from "@/types/DetailMenuRes";
 import MealRes from "@/types/MealRes";
 import useFetch from "@/utils/useFetch";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import moment from "moment";
-import {
-  FaBan,
-  FaClipboard,
-  FaCopy,
-  FaDeleteLeft,
-  FaTrashCan,
-} from "react-icons/fa6";
-import AddItem from "../../components/admin/menu/addItem";
-import FoodRes from "@/types/FoodRes";
 
-interface Props {
-  edit?: boolean;
-}
+const MenuPage = () => {
 
-interface CopyItem {
-  idMeal?: number;
-  day?: number;
-}
-
-const MenuPage = ({ edit = true }: Props) => {
   const [week, setWeek] = useState(
     moment().format("YYYY") + "-W" + moment().format("WW")
   );
-  const [menuItems, setMenuItems] = useState<DetailMenuItem[]>([]);
-  const [copyItem, setCopyItem] = useState<CopyItem | null>(null);
 
   const { data: dataMenu, loading } = useFetch<DetailMenuRes>(
     "Menu/MenuOfWeek/" + week,
@@ -37,16 +18,13 @@ const MenuPage = ({ edit = true }: Props) => {
     week
   );
   const { data: dataMeal } = useFetch<MealRes[]>("Menu/ListMeal");
-  const { data: dataFood } = useFetch<FoodRes[]>("Menu/ListFood");
-
-  useEffect(() => {
-    if (dataMenu?.items) setMenuItems(dataMenu?.items);
-  }, [dataMenu]);
 
   const days = ["T2", "T3", "T4", "T5", "T6", "T7"];
+  const mealTime = [10, 14, 24] //tg kết thúc các bữa ăn (giả định)
+  const colorMeal = "#FFC694"; 
 
   const getListFood = (day: number, meal: number): DetailMenuItem[] => {
-    return menuItems.filter((x) => x.day === day && x.idMeal === meal) || [];
+    return dataMenu?.items.filter((x) => x.day === day && x.idMeal === meal) || [];
   };
 
   const getWeekName = (week: string = "") => {
@@ -54,77 +32,22 @@ const MenuPage = ({ edit = true }: Props) => {
     return "Tuần " + arr[1] + " - " + arr[0];
   };
 
-  const onRemove = (idMeal?: number, day?: number, idFood?: number) => {
-    setMenuItems((x) =>
-      x.filter(
-        (y) =>
-          (idMeal != null && y.idMeal != idMeal) ||
-          (day != null && y.day != day) ||
-          (idFood != null && y.idFood != idFood)
-      )
-    );
-  };
+  const isCurrentMeal = (day?: number, idMeal?: number): boolean => { 
+    if (day != undefined && moment().isoWeekday() - 1 !== day) return false;
+    if (idMeal != undefined) { 
+      var i = dataMeal?.findIndex(x => x.id === idMeal);
+      if (i == undefined || i < 0 || i > mealTime.length) return false;
 
-  const onAddItem = (
-    idMeal: number,
-    day: number,
-    idFood: number,
-    nameFood: string
-  ) => {
-    var newItem: DetailMenuItem = { idMeal, day, idFood, nameFood };
-    if (
-      menuItems.find(
-        (x) => x.idMeal == idMeal && x.day == day && x.idFood == idFood
-      )
-    )
-      return;
-    setMenuItems((x) => [...x, newItem]);
-  };
+      var time = moment().hour();
+      var j = mealTime.findIndex(x => time < x);
+      if (i !== j) return false;
+    }
 
-  const compareNull = (a: any, b: any): boolean => {
-    if (a == null && b == null) return true;
-    if (a != null && b != null) return true;
-
-    return false;
-  };
-
-  const checkPaste = (item: CopyItem): number => {
-    //mark cells to paste: 0 => hidden, 1 => paster, 2 => cancel
-    if (item.day == copyItem?.day && item.idMeal == copyItem?.idMeal) return 2;
-
-    if (!compareNull(item.day, copyItem?.day)) return 0;
-    if (!compareNull(item.idMeal, copyItem?.idMeal)) return 0;
-
-    return 1;
-  };
-
-  const onPaste = (item: CopyItem) => {
-    //delete old items
-    var curr = menuItems.filter(
-      (x) =>
-        (item.day != null && x.day != item.day) ||
-        (item.idMeal != null && x.idMeal != item.idMeal)
-    );
-
-    //paste new items
-    console.log(menuItems);
-    var pasteItems = menuItems.filter(
-      (x) =>
-        (copyItem?.day == null || x.day == copyItem?.day) &&
-        (copyItem?.idMeal == null || x.idMeal == copyItem.idMeal)
-    );
-
-    pasteItems = pasteItems.map((x) => {
-      return { ...x, idMeal: item.idMeal ?? x.idMeal, day: item.day ?? x.day };
-    });
-    curr = [...curr, ...pasteItems];
-
-    setMenuItems(curr);
-    setCopyItem(null);
-  };
+    return true;
+  }
 
   return (
-    <div className="bg-white md:w-2/3 m-auto md:px-10 px-4 py-10 rounded-xl">
+    <div className="bg-white md:w-[75vw] m-auto md:px-10 px-4 py-10 rounded-xl">
       <div className="flex justify-between items-center w-full">
         {dataMenu && (
           <div>
@@ -179,13 +102,13 @@ const MenuPage = ({ edit = true }: Props) => {
         </div>
       ) : (
         <div>
-          <table className="w-full text-gray-500 dark:text-gray-400 text-center text-md">
+          <table className="w-full text-gray-500 dark:text-gray-400 text-center text-md mt-3">
             <thead className="text-xs text-gray-700 uppercase bg-[#FFD9BF] dark:bg-gray-700 dark:text-gray-400">
               <tr className="">
                 <th className="rounded-tl-[12px]"></th>
                 {days.map((x, i) => (
                   <th
-                    className="md:px-6 py-3 text-lg font-thin relative hover:bg-gray-100 group last:rounded-tr-[12px]"
+                    className={`${isCurrentMeal(i) ? `bg-[${colorMeal}]`: ''} md:px-6 py-3 text-lg font-thin relative last:rounded-tr-[12px]`}
                     key={x}
                   >
                     {x}
@@ -199,28 +122,23 @@ const MenuPage = ({ edit = true }: Props) => {
                   key={x.id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 md:border"
                 >
-                  <th className="md:px-6 py-4 relative group hover:bg-gray-100 w-[10px]">
-                    <p className=" font-thin md:text-[18px] -rotate-90 w-[10px]">
+                  <th className= {`${isCurrentMeal(undefined, x.id) ? `bg-[${colorMeal}]` : ''} md:px-6 py-4 relative w-[10px]`}>
+                    <p className= "font-thin md:text-[18px] -rotate-90 w-[10px]">
                       {x.name}
                     </p>
-                    {/* <div className="absolute right-0 top-[10%] mr-2 invisible group-hover:visible">
-                                    <button title="Xóa hàng" onClick={() => onRemove(x.id)}>
-                                        <FaTrashCan />
-                                    </button>
-                                </div> */}
                   </th>
 
                   {days.map((y, i) => (
                     <td
                       key={`${x.id}-${i}`}
-                      className="md:px-6 pt-2 min-h-[200px] group border md:p-2"
+                      className={`${isCurrentMeal(i, x.id) ? `text-[${colorMeal}]` : ''} md:px-6 pt-2 min-h-[200px] border md:p-2`}
                     >
                       {getListFood(i, x.id).map((z, j) => (
                         <div
                           key={`${x.id}-${i}-${j}`}
-                          className="group/item flex md:p-1"
+                          className="flex md:p-1"
                         >
-                          <span className="group-hover/item:text-blue-400 ">
+                          <span>
                             {z.nameFood}
                           </span>
                         </div>
