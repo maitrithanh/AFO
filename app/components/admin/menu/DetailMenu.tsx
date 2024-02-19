@@ -1,144 +1,383 @@
 "use client";
-import React, { useState } from "react";
-import Image from "next/image";
+
+import DetailMenuRes, { DetailMenuItem } from "@/types/DetailMenuRes";
+import MealRes from "@/types/MealRes";
 import useFetch from "@/utils/useFetch";
-import { useTranslation } from "react-i18next";
-import { MdArrowBackIosNew } from "react-icons/md";
+import { useEffect, useState } from "react";
+import moment from "moment";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useSearchParams } from "next/navigation";
-import DialogProfile from "../../profile/DialogProfile";
+  FaBan,
+  FaClipboard,
+  FaCopy,
+  FaDeleteLeft,
+  FaTrashCan,
+  FaCheck,
+} from "react-icons/fa6";
+import { MdModeEditOutline } from "react-icons/md";
 
-const DetailMenu = (id: any) => {
-  const { t } = useTranslation();
-  const [closeDialog, setCloseDialog] = useState(false);
+import AddItem from "./addItem";
+import FoodRes from "@/types/FoodRes";
 
-  const { data: detailMenuData } = useFetch(`/Menu/Detail/${id.id}`);
+interface Props {
+  id: string;
+  edit?: boolean;
+}
 
-  const handleDialog = () => {
-    setCloseDialog((currState) => !currState);
+interface CopyItem {
+  idMeal?: number;
+  day?: number;
+}
+
+const DetailMenu = ({ edit = true, id }: Props) => {
+  console.log(id);
+
+  const [weekStart, setWeekStart] = useState(
+    moment().format("YYYY") + "-W" + moment().format("WW")
+  );
+  const [weekEnd, setWeekEnd] = useState(
+    moment().format("YYYY") + "-W" + moment().format("WW")
+  );
+  const [menuItems, setMenuItems] = useState<DetailMenuItem[]>([]);
+  const [copyItem, setCopyItem] = useState<CopyItem | null>(null);
+
+  const [editNameMenu, setEditNameMenu] = useState(false);
+  const [editDescMenu, setEditDescMenu] = useState(false);
+
+  const { data: dataMenu, loading } = useFetch<DetailMenuRes>(
+    "Menu/Detail/" + id,
+    null,
+    weekStart
+  );
+  const [menuName, setMenuName] = useState("");
+  const [menuDesc, setDescMenu] = useState("");
+  const { data: dataMeal } = useFetch<MealRes[]>("Menu/ListMeal");
+  const { data: dataFood } = useFetch<FoodRes[]>("Menu/ListFood");
+  console.log(menuName);
+
+  useEffect(() => {
+    if (dataMenu?.items) {
+      setMenuItems(dataMenu?.items);
+      setMenuName(dataMenu?.menu.name);
+      setDescMenu(dataMenu?.menu.desc);
+      setWeekStart(dataMenu?.menu.start);
+      setWeekEnd(dataMenu?.menu.end);
+    }
+  }, [dataMenu]);
+
+  const days = ["T2", "T3", "T4", "T5", "T6", "T7"];
+
+  const getListFood = (day: number, meal: number): DetailMenuItem[] => {
+    return menuItems.filter((x) => x.day === day && x.idMeal === meal) || [];
+  };
+
+  const getWeekName = (week: string = "") => {
+    var arr: string[] = week.split("-W");
+    return "Tuần " + arr[1] + " - " + arr[0];
+  };
+
+  const onRemove = (idMeal?: number, day?: number, idFood?: number) => {
+    setMenuItems((x) =>
+      x.filter(
+        (y) =>
+          (idMeal != null && y.idMeal != idMeal) ||
+          (day != null && y.day != day) ||
+          (idFood != null && y.idFood != idFood)
+      )
+    );
+  };
+
+  const onAddItem = (
+    idMeal: number,
+    day: number,
+    idFood: number,
+    nameFood: string
+  ) => {
+    var newItem: DetailMenuItem = { idMeal, day, idFood, nameFood };
+    if (
+      menuItems.find(
+        (x) => x.idMeal == idMeal && x.day == day && x.idFood == idFood
+      )
+    )
+      return;
+    setMenuItems((x) => [...x, newItem]);
+  };
+
+  const compareNull = (a: any, b: any): boolean => {
+    if (a == null && b == null) return true;
+    if (a != null && b != null) return true;
+
+    return false;
+  };
+
+  const checkPaste = (item: CopyItem): number => {
+    //mark cells to paste: 0 => hidden, 1 => paster, 2 => cancel
+    if (item.day == copyItem?.day && item.idMeal == copyItem?.idMeal) return 2;
+
+    if (!compareNull(item.day, copyItem?.day)) return 0;
+    if (!compareNull(item.idMeal, copyItem?.idMeal)) return 0;
+
+    return 1;
+  };
+
+  const onPaste = (item: CopyItem) => {
+    //delete old items
+    var curr = menuItems.filter(
+      (x) =>
+        (item.day != null && x.day != item.day) ||
+        (item.idMeal != null && x.idMeal != item.idMeal)
+    );
+
+    //paste new items
+    console.log(menuItems);
+    var pasteItems = menuItems.filter(
+      (x) =>
+        (copyItem?.day == null || x.day == copyItem?.day) &&
+        (copyItem?.idMeal == null || x.idMeal == copyItem.idMeal)
+    );
+
+    pasteItems = pasteItems.map((x) => {
+      return { ...x, idMeal: item.idMeal ?? x.idMeal, day: item.day ?? x.day };
+    });
+    curr = [...curr, ...pasteItems];
+
+    setMenuItems(curr);
+    setCopyItem(null);
+  };
+
+  const Actions = ({ day, idMeal }: CopyItem) => {
+    return copyItem ? (
+      <span className="flex">
+        {checkPaste({ day, idMeal }) == 1 ? (
+          <button
+            title="Dán"
+            className="mr-2"
+            onClick={() => onPaste({ day, idMeal })}
+          >
+            <FaClipboard />
+          </button>
+        ) : checkPaste({ day, idMeal }) == 2 ? (
+          <button
+            title="Hủy"
+            className="mr-2"
+            onClick={() => setCopyItem(null)}
+          >
+            <FaBan />
+          </button>
+        ) : (
+          //placeholder
+          <button title="Hủy" className="mr-2 invisible">
+            <FaBan />
+          </button>
+        )}
+      </span>
+    ) : (
+      <span className="flex invisible group-hover:visible">
+        <button
+          title="Sao chép"
+          className="mr-2"
+          onClick={() => setCopyItem({ day, idMeal })}
+        >
+          <FaCopy />
+        </button>
+        <button title="Xóa cột" onClick={() => onRemove(idMeal, day)}>
+          <FaTrashCan />
+        </button>
+      </span>
+    );
   };
 
   return (
     <>
-      <div className="h-[600px]">
-        <a href="/admin/menu" className="text-main  w-fit group ">
-          <div className="flex items-center">
-            <div className="group-hover:-translate-x-2 transition-all ">
-              <MdArrowBackIosNew />
-            </div>
-            {t("menu")}
-          </div>
-        </a>
-        <div className="relative overflow-x-auto shadow-3xl sm:rounded-lg p-2 ">
-          <div className="">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="md:text-2xl font-bold">
-                  {detailMenuData?.menu?.name}
-                </p>
-                <p className="">
-                  Bắt đầu từ: {detailMenuData?.menu?.start} đến{" "}
-                  {detailMenuData?.menu?.end}
-                </p>
-              </div>
-            </div>
-            <div className="md:flex justify-between items-center mb-4">
-              <div>
-                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5">
-                  + {t("addNew")}
+      <div className="bg-white shadow-sm m-auto md:px-2 px-4 pt-4 rounded-xl">
+        {/* top */}
+        <div className="w-full ">
+          {dataMenu && (
+            <div className="">
+              <div className="flex group">
+                {editNameMenu ? (
+                  <input
+                    type="text"
+                    value={menuName}
+                    placeholder={dataMenu?.menu.name}
+                    onChange={(e) => {
+                      setMenuName(e.currentTarget.value);
+                    }}
+                    className="outline-main border-main bg-gray-100 p-2 text-2xl w-fit rounded-md"
+                  />
+                ) : (
+                  <h2 className="text-2xl p-2">{menuName}</h2>
+                )}
+
+                <button
+                  title="Sửa tên menu"
+                  className={`${
+                    editNameMenu ? "text-green-600" : "invisible"
+                  } ml-2 group-hover:visible`}
+                  onClick={() => setEditNameMenu((curr) => !curr)}
+                >
+                  {editNameMenu ? (
+                    <FaCheck size={20} />
+                  ) : (
+                    <MdModeEditOutline size={20} />
+                  )}
                 </button>
               </div>
+              <div className="group px-2 w-full">
+                <p className=" italic ">
+                  <span className="mr-2"> Mô tả:</span>
+                  {editDescMenu ? (
+                    <textarea
+                      value={menuDesc}
+                      onChange={(e) => {
+                        setDescMenu(e.currentTarget.value);
+                      }}
+                      className="outline-main border-main bg-gray-100 p-2 w-full rounded-md"
+                    />
+                  ) : (
+                    <span className="text-gray-600">{menuDesc}</span>
+                  )}
+                  <button
+                    title="Sửa mô tả menu"
+                    className={`${
+                      editDescMenu ? "text-green-600" : "invisible"
+                    } ml-2 group-hover:visible`}
+                    onClick={() => setEditDescMenu((curr) => !curr)}
+                  >
+                    {editDescMenu ? (
+                      <FaCheck size={20} />
+                    ) : (
+                      <MdModeEditOutline size={20} />
+                    )}
+                  </button>
+                </p>
+              </div>
             </div>
+          )}
+        </div>
+        {/* table */}
+        {loading ? (
+          <div>
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill"
+              />
+            </svg>
           </div>
-
-          <div className="overflow-y-auto max-h-[590px]">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px] ">
+        ) : (
+          <div>
+            <table className="w-full text-sm text-gray-500 dark:text-gray-400 text-center">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" className="px-6 py-3">
-                    Ngày
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Món ăn
-                  </th>
-
-                  {/* <th scope="col" className="px-6 py-3"></th> */}
+                  <th className=""></th>
+                  {days.map((x, i) => (
+                    <th
+                      className="md:px-6 py-3 relative hover:bg-gray-100 group"
+                      key={x}
+                    >
+                      {x}
+                      <div className="absolute right-0 top-[50%] translate-y-[-50%] mr-2">
+                        <Actions day={i} />
+                      </div>
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {detailMenuData?.items?.map((dataMeal: any) => {
-                  return (
-                    <tr
-                      key={dataMeal.id}
-                      className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
-                    >
-                      <td className="px-6 py-4">Thứ {dataMeal.day + 2}</td>
-                      <td className="px-6 py-4">{dataMeal.nameFood}</td>
+                {dataMeal?.map((x) => (
+                  <tr
+                    key={x.id}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                  >
+                    <th className="md:px-6 md:mr-8 py-4 relative group w-[10px]">
+                      <p className=" font-thin md:text-[18px]  -rotate-90 w-[10px]">
+                        {x.name}
+                      </p>
+                    </th>
 
-                      {/* <td
-                        className="md:px-6 md:py-4"
-                        onClick={() => {
-                          setDataStudentDetail({
-                            fullName: dataStudent.fullName,
-                          });
-                          setCloseDialog(true);
-                        }}
+                    {days.map((y, i) => (
+                      <td
+                        key={`${x.id}-${i}`}
+                        className="md:px-6 pt-2 min-h-[200px] group border"
                       >
-                        <Image
-                          title="Chi tiết lớp học"
-                          src={"/icons/more.webp"}
-                          alt="Detail"
-                          width={26}
-                          height={26}
-                          priority
-                          className="hover:scale-110 transition-all"
-                        />
-                      </td> */}
-                    </tr>
-                  );
-                })}
+                        <div className="flex mb-2">
+                          <div className="w-full"></div>
+
+                          <Actions day={i} idMeal={x.id} />
+                        </div>
+
+                        {getListFood(i, x.id).map((z, j) => (
+                          <div
+                            key={`${x.id}-${i}-${j}`}
+                            className="group/item md:flex "
+                          >
+                            <span className="group-hover/item:text-blue-400 ">
+                              {z.nameFood}
+                            </span>
+                            <button
+                              title="Xóa món"
+                              className="invisible ml-2 group-hover/item:visible hover:text-black"
+                              onClick={() =>
+                                onRemove(z.idMeal, z.day, z.idFood)
+                              }
+                            >
+                              <FaDeleteLeft />
+                            </button>
+                          </div>
+                        ))}
+
+                        {edit && (
+                          <div>
+                            <AddItem
+                              onAdd={(food) => {
+                                onAddItem(x.id, i, food.id, food.name);
+                              }}
+                              dataSource={dataFood || []}
+                            />
+                          </div>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-        </div>
-        <div className="p-4 flex">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious href="#" />
-              </PaginationItem>
-              <PaginationItem className="flex">
-                <PaginationLink href="#">1</PaginationLink>
-                <PaginationLink href="#">2</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem className="flex">
-                <PaginationLink href="#">4</PaginationLink>
-                <PaginationLink href="#">5</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
+        )}
+      </div>
+      <div className="p-4 flex items-center">
+        <label htmlFor="" className="mr-2">
+          Áp dụng từ tuần:
+        </label>
+        <input
+          type="week"
+          value={weekStart}
+          className="bg-gray-100 p-2 focus:border-main focus:outline-main rounded-md"
+          onChange={(e) => {
+            setWeekStart(e.currentTarget.value);
+          }}
+          placeholder="Chọn tuần"
+        />
+        <span className="mx-2"> đến tuần:</span>
+        <input
+          type="week"
+          value={weekEnd}
+          className="bg-gray-100 p-2 focus:border-main focus:outline-main rounded-md"
+          onChange={(e) => {
+            setWeekEnd(e.currentTarget.value);
+          }}
+          placeholder="Chọn tuần"
+        />
       </div>
     </>
   );

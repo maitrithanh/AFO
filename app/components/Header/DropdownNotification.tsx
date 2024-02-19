@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { IoClose } from "react-icons/io5";
+import { IoNotifications } from "react-icons/io5";
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -49,7 +50,7 @@ const DropdownNotification = () => {
               setDropdownOpen(!dropdownOpen);
             }}
             href="#"
-            className="p-2 flex h-8.5 w-8.5 items-center justify-center rounded-full group bg-[#ffffff50] hover:text-primary"
+            className="p-2 flex h-8.5 w-8.5 items-center justify-center rounded-full group bg-[#ffffff50] hover:text-primary shadow-sm"
           >
             <span
               className={`absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1 ${

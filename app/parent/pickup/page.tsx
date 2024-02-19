@@ -60,11 +60,6 @@ const PickUpPage = () => {
       });
   };
 
-  //TODO:
-  //Dialog edit
-  //toggle status
-  //delete button
-
   //translate
   const { t } = useTranslation();
   return (

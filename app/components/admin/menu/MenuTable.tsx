@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
+import moment from "moment";
 
 import {
   Pagination,
@@ -21,6 +22,10 @@ const MenuTable = () => {
   const router = useRouter();
   const { data: MenuData } = useFetch(`/Menu/List`);
 
+  const getWeekName = (week: string = "") => {
+    var arr: string[] = week.split("-W");
+    return "Tuần " + arr[1] + " - " + arr[0];
+  };
   return (
     <div className="h-[600px] ">
       <div className="bg-white p-2 shadow-3xl">
@@ -71,7 +76,8 @@ const MenuTable = () => {
                       {allMenu.desc}
                     </td>
                     <td className="px-6 py-4">
-                      {allMenu.start} - {allMenu.end}
+                      {getWeekName(allMenu.start)} đến{" "}
+                      {getWeekName(allMenu.end)}
                     </td>
 
                     <td
