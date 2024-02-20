@@ -16,6 +16,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import useFetch from "@/utils/useFetch";
+import Link from "next/link";
 
 const MenuTable = () => {
   const { t } = useTranslation();
@@ -34,7 +35,12 @@ const MenuTable = () => {
         </div>
         <div className="flex justify-between items-center">
           <div>
-            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5" onClick={() => { router.push('/admin/menu/add') }}>
+            <button
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5"
+              onClick={() => {
+                router.push("/admin/menu/add");
+              }}
+            >
               + {t("addNew")}
             </button>
           </div>
@@ -80,13 +86,8 @@ const MenuTable = () => {
                       {getWeekName(allMenu.end)}
                     </td>
 
-                    <td
-                      className="md:px-6 md:py-4"
-                      onClick={() => {
-                        router.push("");
-                      }}
-                    >
-                      <a
+                    <td className="md:px-6 md:py-4">
+                      <Link
                         href={`/admin/menu/${allMenu.id}`}
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
@@ -99,7 +100,7 @@ const MenuTable = () => {
                           priority
                           className="hover:scale-110 transition-all"
                         />
-                      </a>
+                      </Link>
                     </td>
                   </tr>
                 );
