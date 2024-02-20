@@ -22,6 +22,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import useFetch from "@/utils/useFetch";
+import Link from "next/link";
 
 const TableClasses = () => {
   const { t } = useTranslation();
@@ -97,13 +98,8 @@ const TableClasses = () => {
                     <td className="px-6 py-4">
                       {allClass.note ? allClass.note : "Không có"}
                     </td>
-                    <td
-                      className="md:px-6 md:py-4"
-                      onClick={() => {
-                        router.push("");
-                      }}
-                    >
-                      <a
+                    <td className="md:px-6 md:py-4">
+                      <Link
                         href={`/admin/classes/${allClass.id}?&year=${year}`}
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
@@ -116,7 +112,7 @@ const TableClasses = () => {
                           priority
                           className="hover:scale-110 transition-all"
                         />
-                      </a>
+                      </Link>
                     </td>
                   </tr>
                 );
