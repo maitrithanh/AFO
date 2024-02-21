@@ -32,7 +32,7 @@ const TableClasses = () => {
   const { data: classData } = useFetch(`/ClassRoom/List/${year}`);
 
   return (
-    <div className="h-[600px] ">
+    <div className="pb-5">
       <div className="bg-white p-2 shadow-3xl">
         <div>
           <p className="text-2xl font-bold">Danh sách lớp học</p>
@@ -61,7 +61,7 @@ const TableClasses = () => {
             </Select>
           </div>
         </div>
-        <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
+        <div className="relative shadow-3xl sm:rounded-lg ">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
@@ -121,7 +121,7 @@ const TableClasses = () => {
           </table>
         </div>
       </div>
-      <div className="p-4 flex">
+      {/* <div className="p-4 flex">
         <Pagination>
           <PaginationContent>
             <PaginationItem>
@@ -143,7 +143,7 @@ const TableClasses = () => {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </div>
+      </div> */}
     </div>
   );
 };

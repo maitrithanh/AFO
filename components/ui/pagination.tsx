@@ -7,6 +7,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { ButtonProps, buttonVariants } from "@/components/ui/button";
+import { useState } from "react"
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
@@ -109,6 +110,82 @@ const PaginationEllipsis = ({
   </span>
 );
 PaginationEllipsis.displayName = "PaginationEllipsis";
+
+const MyPagination = (p: { page: number, setPage: React.Dispatch<React.SetStateAction<number>>, PageCount: number }) => { 
+  const { page, setPage, PageCount } = p;
+
+  const MaxLeft = 3, MaxMid = 5, MaxRight = 3;
+  const RightStart = PageCount - MaxRight + 1;
+  const MidStart = React.useMemo(() => { //start of mid range
+    var s = page - Math.ceil(MaxMid / 2) + 1 //relative to curr page
+    s = Math.min(s, RightStart - 2 - MaxMid + 1) //endLimit - rightStart - 2 => startLimit = endLimit - (max -1)
+    s = Math.max(s, MaxLeft + 2) // start from Max left + gap + 1
+    return s
+  }, [page, PageCount])
+  const MidEnd = React.useMemo(() => {
+    return MidStart + MaxMid - 1
+  }, [MidStart])
+
+  const Pages = (p: { x: number, y: number }) => {
+    var { x, y } = p;
+    const arr = [];
+    if (x <= PageCount) for (let i = x; i <= Math.min(PageCount, y); i++) {
+      arr.push(i);    
+    }
+
+    return <PaginationItem>
+      {arr.map(p => <PaginationLink isActive={p == page}
+        onClick={() => setPage(p)}>
+        {p}
+      </PaginationLink>)}
+    </PaginationItem>
+  }
+
+  return <div className="p-4 flex">
+    <Pagination>
+      <PaginationContent>
+        {/* previous */}
+        <PaginationItem className={`${page > 1 ? '' : 'invisible'}`}>
+          <PaginationPrevious onClick={() => setPage(x => x - 1)} />
+        </PaginationItem>
+
+        {/* left */}
+        <Pages x={1} y={MaxLeft} />
+        {/* gap */}
+        {
+          page <= MaxLeft + 1 + Math.ceil(MaxMid / 2) ? //left + gap + 1/2 mid
+            <Pages x={MaxLeft + 1} y={MaxLeft + 1} />
+            :
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+        }
+
+        {/* middle */}
+        <Pages x={MidStart} y={MidEnd} />
+
+        {/* gap */}
+        { // 14 15 16 ... 18
+          (page >= RightStart - 1 - Math.floor(MaxMid / 2) - 1) || (PageCount <= MidEnd + 1 + MaxRight) ?
+            <Pages x={MidEnd + 1} y={MidEnd + 1} />
+            :
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+        }
+        {/* right */}
+        <Pages x={Math.max(RightStart, MidEnd + 2)} y={PageCount} />
+
+        {/* next */}
+        <PaginationItem className={`${page < PageCount ? '' : 'invisible'}`}>
+          <PaginationNext onClick={() => setPage(x => x + 1)} />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  </div>
+}
+
+export default MyPagination;
 
 export {
   Pagination,

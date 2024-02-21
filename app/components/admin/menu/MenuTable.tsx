@@ -28,7 +28,7 @@ const MenuTable = () => {
     return "Tuần " + arr[1] + " - " + arr[0];
   };
   return (
-    <div className="h-[600px] ">
+    <div className="pb-5">
       <div className="bg-white p-2 shadow-3xl">
         <div>
           <p className="text-2xl font-bold">Danh sách thực đơn</p>
@@ -44,11 +44,11 @@ const MenuTable = () => {
               + {t("addNew")}
             </button>
           </div>
-          <div className="">
+          {/* <div className="">
             <SelectWeek />
-          </div>
+          </div> */}
         </div>
-        <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
+        <div className="relative shadow-3xl sm:rounded-lg ">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
@@ -78,7 +78,7 @@ const MenuTable = () => {
                     >
                       {allMenu.name}
                     </th>
-                    <td className="px-6 py-4 md:max-w-[660px]">
+                    <td className="px-6 py-4 md:max-w-[600px]">
                       {allMenu.desc}
                     </td>
                     <td className="px-6 py-4">
@@ -109,7 +109,7 @@ const MenuTable = () => {
           </table>
         </div>
       </div>
-      <div className="p-4 flex">
+      {/* <div className="p-4 flex">
         <Pagination>
           <PaginationContent>
             <PaginationItem>
@@ -131,7 +131,7 @@ const MenuTable = () => {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </div>
+      </div> */}
     </div>
   );
 };
