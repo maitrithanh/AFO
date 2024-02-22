@@ -21,7 +21,6 @@ const MenuPage = () => {
 
   const days = ["T2", "T3", "T4", "T5", "T6", "T7"];
   const mealTime = [10, 14, 24] //tg kết thúc các bữa ăn (giả định)
-  const colorMeal = "#FFC694"; 
 
   const getListFood = (day: number, meal: number): DetailMenuItem[] => {
     return dataMenu?.items.filter((x) => x.day === day && x.idMeal === meal) || [];
@@ -108,7 +107,7 @@ const MenuPage = () => {
                 <th className="rounded-tl-[12px]"></th>
                 {days.map((x, i) => (
                   <th
-                    className={`${isCurrentMeal(i) ? `bg-[${colorMeal}]`: ''} md:px-6 py-3 text-lg font-thin relative last:rounded-tr-[12px]`}
+                    className={`${isCurrentMeal(i) ? `bg-[#FFC694]`: ''} md:px-6 py-3 text-lg font-thin relative last:rounded-tr-[12px]`}
                     key={x}
                   >
                     {x}
@@ -122,7 +121,7 @@ const MenuPage = () => {
                   key={x.id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 md:border"
                 >
-                  <th className= {`${isCurrentMeal(undefined, x.id) ? `bg-[${colorMeal}]` : ''} md:px-6 py-4 relative w-[10px]`}>
+                  <th className={`${isCurrentMeal(undefined, x.id) ? `bg-[#FFC694]` : ''} md:px-6 py-4 relative w-[10px]`}>
                     <p className= "font-thin md:text-[18px] -rotate-90 w-[10px]">
                       {x.name}
                     </p>
@@ -131,7 +130,7 @@ const MenuPage = () => {
                   {days.map((y, i) => (
                     <td
                       key={`${x.id}-${i}`}
-                      className={`${isCurrentMeal(i, x.id) ? `text-[${colorMeal}]` : ''} md:px-6 pt-2 min-h-[200px] border md:p-2`}
+                      className={`${isCurrentMeal(i, x.id) ? `text-[#FFC694] font-bold` : ''} md:px-6 pt-2 min-h-[200px] border md:p-2`}
                     >
                       {getListFood(i, x.id).map((z, j) => (
                         <div

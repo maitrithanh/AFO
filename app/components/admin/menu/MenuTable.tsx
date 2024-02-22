@@ -28,29 +28,17 @@ const MenuTable = () => {
     return "Tuần " + arr[1] + " - " + arr[0];
   };
   return (
-    <div className="h-[600px] ">
-      <div className="bg-white shadow-3xl rounded-md">
-        <div className="p-2">
+    <div className="pb-5">
+      <div className="bg-white p-2 shadow-3xl rounded-md">
+        <div>
+          <p className="text-2xl font-bold">Danh sách thực đơn</p>
+        </div>
+        <div className="flex justify-between items-center">
           <div>
             <p className="text-2xl ">Danh sách thực đơn</p>
           </div>
-          <div className="flex justify-between items-center">
-            <div>
-              <button
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5"
-                onClick={() => {
-                  router.push("/admin/menu/add");
-                }}
-              >
-                + {t("addNew")}
-              </button>
-            </div>
-            <div className="">
-              <SelectWeek />
-            </div>
-          </div>
         </div>
-        <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
+        <div className="relative shadow-3xl sm:rounded-lg ">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
             <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
@@ -80,7 +68,7 @@ const MenuTable = () => {
                     >
                       {allMenu.name}
                     </th>
-                    <td className="px-6 py-4 md:max-w-[660px]">
+                    <td className="px-6 py-4 md:max-w-[600px]">
                       {allMenu.desc}
                     </td>
                     <td className="px-6 py-4">
@@ -111,7 +99,7 @@ const MenuTable = () => {
           </table>
         </div>
       </div>
-      <div className="p-4 flex">
+      {/* <div className="p-4 flex">
         <Pagination>
           <PaginationContent>
             <PaginationItem>
@@ -133,7 +121,7 @@ const MenuTable = () => {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </div>
+      </div> */}
     </div>
   );
 };

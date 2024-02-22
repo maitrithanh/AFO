@@ -49,18 +49,16 @@ const DetailMenu = ({ id }: Props) => {
   const [editDescMenu, setEditDescMenu] = useState(false);
   const [dataMenu, setDataMenu] = useState(Object);
 
-  const { data: menuData, loading } = useFetch<DetailMenuRes>(
+  const [dataMenu, setDataMenu] = useState<DetailMenuRes | null>(null)
+  const { data: _dataMenu, loading } = useFetch<DetailMenuRes>(
     "Menu/Detail/" + id,
     null,
     weekStart
-  );
-
-  useEffect(() => {
-    edit ? setDataMenu(menuData) : { data: null, loading: false };
-  }, [menuData]);
-
-  console.log(dataMenu);
-
+  )
+  useEffect(() => { 
+    if(edit) setDataMenu(_dataMenu)
+  }, [_dataMenu])
+  
   const [menuName, setMenuName] = useState("");
   const [menuDesc, setDescMenu] = useState("");
   const { data: dataMeal } = useFetch<MealRes[]>("Menu/ListMeal");
