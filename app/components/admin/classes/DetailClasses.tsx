@@ -51,8 +51,8 @@ const DetailClasses = (id: any) => {
       )}
       <div className="h-[600px]">
         <BackAction />
-        <div className="relative overflow-x-auto shadow-3xl sm:rounded-lg">
-          <div className="p-2 ">
+        <div className="relative overflow-x-auto shadow-sm bg-white pt-2 sm:rounded-lg">
+          <div className="px-2">
             <div className="flex items-center justify-between">
               <div>
                 <p className="md:text-3xl">
@@ -69,7 +69,7 @@ const DetailClasses = (id: any) => {
                 </p>
               </div>
             </div>
-            <div className="md:flex justify-between items-center mb-4">
+            <div className="md:flex justify-between items-center">
               <div>
                 <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5">
                   + {t("addNew")}
@@ -146,7 +146,7 @@ const DetailClasses = (id: any) => {
                         <td className="px-6 py-4">{dataStudent.phone}</td>
                         <td className="px-6 py-4">{dataStudent.parentName}</td>
                         <td
-                          className="md:px-6 md:py-4"
+                          className="md:px-6 md:py-4 hover"
                           onClick={() => {
                             setDataStudentDetail({
                               fullName: dataStudent.fullName,
@@ -171,29 +171,6 @@ const DetailClasses = (id: any) => {
               </tbody>
             </table>
           </div>
-        </div>
-        <div className="p-4 flex">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious href="#" />
-              </PaginationItem>
-              <PaginationItem className="flex">
-                <PaginationLink href="#">1</PaginationLink>
-                <PaginationLink href="#">2</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem className="flex">
-                <PaginationLink href="#">4</PaginationLink>
-                <PaginationLink href="#">5</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
         </div>
       </div>
     </>

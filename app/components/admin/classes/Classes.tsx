@@ -12,31 +12,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import useFetch from "@/utils/useFetch";
-import Link from "next/link";
 
 const TableClasses = () => {
   const { t } = useTranslation();
+  const router = useRouter();
   const [year, setYear] = useState(new Date().getFullYear().toString());
 
   const { data: classData } = useFetch(`/ClassRoom/List/${year}`);
 
   return (
-    <div className="pb-5">
-      <div className="bg-white p-2 shadow-3xl rounded-md">
-        <div>
-          <p className="text-2xl font-bold">Danh sách lớp học</p>
-        </div>
-        <div className="flex justify-between items-center">
+    <div className="">
+      <div className="rounded-md">
+        <div className="px-2">
           <div>
             <p className="text-3xl">Danh sách lớp học</p>
           </div>
@@ -48,7 +36,7 @@ const TableClasses = () => {
             </div>
             <div className="bg-gray-100 shadow-sm rounded-lg">
               <Select
-                onValueChange={(value) => {
+                onValueChange={(value: any) => {
                   setYear(value);
                 }}
               >
@@ -102,21 +90,23 @@ const TableClasses = () => {
                     <td className="px-6 py-4">
                       {allClass.note ? allClass.note : "Không có"}
                     </td>
-                    <td className="md:px-6 md:py-4">
-                      <Link
-                        href={`/admin/classes/${allClass.id}?&year=${year}`}
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        <Image
-                          title="Chi tiết"
-                          src={"/icons/detail.webp"}
-                          alt="Detail"
-                          width={26}
-                          height={26}
-                          priority
-                          className="hover:scale-110 transition-all"
-                        />
-                      </Link>
+                    <td
+                      className="md:px-6 md:py-4 hover"
+                      onClick={() =>
+                        router.push(
+                          `/admin/classes/${allClass.id}?&year=${year}`
+                        )
+                      }
+                    >
+                      <Image
+                        title="Chi tiết"
+                        src={"/icons/detail.webp"}
+                        alt="Detail"
+                        width={26}
+                        height={26}
+                        priority
+                        className="hover:scale-110 transition-all"
+                      />
                     </td>
                   </tr>
                 );
@@ -125,29 +115,6 @@ const TableClasses = () => {
           </table>
         </div>
       </div>
-      {/* <div className="p-4 flex">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem className="flex">
-              <PaginationLink href="#">1</PaginationLink>
-              <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem className="flex">
-              <PaginationLink href="#">4</PaginationLink>
-              <PaginationLink href="#">5</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div> */}
     </div>
   );
 };
