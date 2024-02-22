@@ -87,6 +87,10 @@ button:hover {
   cursor: url('/icons/cursorLink.webp'), default;
 }
 
+.hover:hover {
+  cursor: url('/icons/cursorLink.webp'), default;
+}
+
 customCard {
   clip-path: polygon(0 0, 100% 10%, 100% 100%, 0% 100%);
 }

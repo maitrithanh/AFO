@@ -25,17 +25,22 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
+  const [showSidebarBg, setShowSidebarBg] = useState(false);
+
+  useEffect(() => {
+    setShowSidebarBg(localStorage.getItem("bgSidebar") === "true");
+  }, []);
   return (
     <li
       onClick={() => {
         router.push(pathname);
       }}
-      className={`relative flex items-center py-2 px-3 h-12  my-1 font-bold rounded-xl cursor-pointer duration-300 hover:scale-105 transition-all bg-[#e8e9eb7d]
-      group
+      className={`relative flex items-center py-2 px-3 h-12  my-1 font-thin rounded-xl cursor-pointer duration-300 hover:scale-105 transition-all 
+      group ${showSidebarBg ? "bg-[#dad9d963]" : ""}
     ${
       active
         ? "bg-gradient-to-tr from-[#F8853E] to-[#F8853E] text-white"
-        : "hover:bg-[#ffb07f7d] text-[#7c421e]  "
+        : "hover:bg-[#ffb07f7d]"
     }`}
     >
       {img ? (

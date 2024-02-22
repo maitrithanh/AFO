@@ -29,28 +29,18 @@ const MenuTable = () => {
   };
   return (
     <div className="pb-5">
-      <div className="bg-white p-2 shadow-3xl">
+      <div className="bg-white p-2 shadow-3xl rounded-md">
         <div>
           <p className="text-2xl font-bold">Danh sách thực đơn</p>
         </div>
         <div className="flex justify-between items-center">
           <div>
-            <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5"
-              onClick={() => {
-                router.push("/admin/menu/add");
-              }}
-            >
-              + {t("addNew")}
-            </button>
+            <p className="text-2xl ">Danh sách thực đơn</p>
           </div>
-          {/* <div className="">
-            <SelectWeek />
-          </div> */}
         </div>
         <div className="relative shadow-3xl sm:rounded-lg ">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Tên thực đơn

@@ -62,8 +62,8 @@ const DropdownMessage = () => {
 
           <Image
             src={"/icons/chat.webp"}
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             alt=""
             className="group-hover:scale-105 group-hover:rotate-6 transition-all"
           />
@@ -72,9 +72,9 @@ const DropdownMessage = () => {
         {/* <!-- Dropdown Start --> */}
       </div>
       <div
-        className={`fixed w-screen h-screen right-0 top-0 z-50 transition-all duration-300 ${
+        className={`fixed w-screen h-screen right-0 top-0 opacity-0 z-50 transition-all duration-300 ${
           dropdownOpen === true
-            ? "bg-[#18181875] translate-x-0"
+            ? "bg-[#18181875] translate-x-0 opacity-100"
             : "w-0 -translate-x-full"
         }`}
       >

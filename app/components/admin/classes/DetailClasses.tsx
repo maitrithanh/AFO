@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input";
 import DefaultImage from "@/app/components/defaultImage";
 import { useSearchParams } from "next/navigation";
 import DialogProfile from "../../profile/DialogProfile";
+import Link from "next/link";
+import BackAction from "../BackAction";
 
 const DetailClasses = (id: any) => {
   const { t } = useTranslation();
@@ -48,19 +50,12 @@ const DetailClasses = (id: any) => {
         ""
       )}
       <div className="h-[600px]">
-        <a href="/admin/classes" className="text-main  w-fit group ">
-          <div className="flex items-center">
-            <div className="group-hover:-translate-x-2 transition-all ">
-              <MdArrowBackIosNew />
-            </div>
-            Tất cả lớp
-          </div>
-        </a>
-        <div className="relative overflow-x-auto shadow-3xl sm:rounded-lg p-2 ">
-          <div className="">
+        <BackAction />
+        <div className="relative overflow-x-auto shadow-3xl sm:rounded-lg">
+          <div className="p-2 ">
             <div className="flex items-center justify-between">
               <div>
-                <p className="md:text-2xl font-bold">
+                <p className="md:text-3xl">
                   Danh sách học sinh - Lớp {detailClassData?.name}
                 </p>
                 <p className="md:text-xl">
@@ -69,7 +64,8 @@ const DetailClasses = (id: any) => {
               </div>
               <div className="flex">
                 <p className="md:text-xl">
-                  Giáo viên chủ nhiệm: {detailClassData?.teachers}
+                  Giáo viên chủ nhiệm:{" "}
+                  <span className="italic">{detailClassData?.teachers}</span>
                 </p>
               </div>
             </div>
@@ -102,7 +98,7 @@ const DetailClasses = (id: any) => {
 
           <div className="overflow-y-auto max-h-[590px]">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px] ">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-6 py-3">
                     STT
@@ -159,8 +155,8 @@ const DetailClasses = (id: any) => {
                           }}
                         >
                           <Image
-                            title="Chi tiết lớp học"
-                            src={"/icons/more.webp"}
+                            title="Chi tiết"
+                            src={"/icons/detail.webp"}
                             alt="Detail"
                             width={26}
                             height={26}

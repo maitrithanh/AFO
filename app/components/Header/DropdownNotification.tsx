@@ -62,8 +62,8 @@ const DropdownNotification = () => {
 
             <Image
               src={"/icons/notification.webp"}
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               alt=""
               className="group-hover:scale-105 group-hover:rotate-6 transition-all"
             />
@@ -71,9 +71,9 @@ const DropdownNotification = () => {
         </div>
       </div>
       <div
-        className={`fixed w-screen h-screen right-0 top-0 z-50 transition-all duration-300 ${
+        className={`fixed w-screen h-screen right-0 opacity-0 top-0 z-50 transition-all duration-300 ${
           dropdownOpen === true
-            ? "bg-[#18181875] translate-x-0"
+            ? "bg-[#18181875] opacity-100"
             : "w-0 -translate-x-full"
         }`}
       >
@@ -86,7 +86,7 @@ const DropdownNotification = () => {
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
           }}
-          className={`absolute md:w-[400px] transition-all duration-500 md:right-0 top-0 inset-0 h-screen z-50 hover:cursor-pointer overflow-hidden `}
+          className={`absolute md:w-[400px] transition-all duration-500 md:right-0 top-0 inset-0 left-0 h-screen z-50 hover:cursor-pointer overflow-hidden `}
         >
           <div className="w-full flex justify-end p-2 text-rose-600 ">
             <div
