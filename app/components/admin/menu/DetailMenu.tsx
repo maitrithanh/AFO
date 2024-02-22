@@ -55,7 +55,7 @@ const DetailMenu = ({ id }: Props) => {
   );
   useEffect(() => {
     if (edit) setDataMenu(_dataMenu);
-  }, [_dataMenu]);
+  }, [_dataMenu, edit]);
 
   const [menuName, setMenuName] = useState("");
   const [menuDesc, setDescMenu] = useState("");
