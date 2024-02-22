@@ -26,44 +26,45 @@ import Link from "next/link";
 
 const TableClasses = () => {
   const { t } = useTranslation();
-  const router = useRouter();
   const [year, setYear] = useState(new Date().getFullYear().toString());
 
   const { data: classData } = useFetch(`/ClassRoom/List/${year}`);
 
   return (
     <div className="h-[600px] ">
-      <div className="bg-white p-2 shadow-3xl">
-        <div>
-          <p className="text-2xl font-bold">Danh sách lớp học</p>
-        </div>
-        <div className="flex justify-between items-center">
+      <div className="bg-white shadow-3xl rounded-md">
+        <div className="p-2">
           <div>
-            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5">
-              + {t("addNew")}
-            </button>
+            <p className="text-3xl">Danh sách lớp học</p>
           </div>
-          <div className="bg-white shadow-lg rounded-lg">
-            <Select
-              onValueChange={(value) => {
-                setYear(value);
-              }}
-            >
-              <SelectTrigger className="w-[180px] text-lg">
-                <p>Năm học:</p>
-                <SelectValue placeholder={year} defaultValue={year} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="2022">2022</SelectItem>
-                <SelectItem value="2023">2023</SelectItem>
-                <SelectItem value="2024">2024</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="flex justify-between items-center">
+            <div>
+              <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5">
+                + {t("addNew")}
+              </button>
+            </div>
+            <div className="bg-gray-100 shadow-sm rounded-lg">
+              <Select
+                onValueChange={(value) => {
+                  setYear(value);
+                }}
+              >
+                <SelectTrigger className="w-[180px] text-lg">
+                  <p>Năm học:</p>
+                  <SelectValue placeholder={year} defaultValue={year} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="2022">2022</SelectItem>
+                  <SelectItem value="2023">2023</SelectItem>
+                  <SelectItem value="2024">2024</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
         <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Tên lớp
@@ -104,8 +105,8 @@ const TableClasses = () => {
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
                         <Image
-                          title="Chi tiết lớp học"
-                          src={"/icons/info-file.webp"}
+                          title="Chi tiết"
+                          src={"/icons/detail.webp"}
                           alt="Detail"
                           width={26}
                           height={26}

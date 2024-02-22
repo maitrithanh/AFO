@@ -15,11 +15,12 @@ import {
   FaCheck,
 } from "react-icons/fa6";
 import { MdModeEditOutline } from "react-icons/md";
-
 import AddItem from "./addItem";
 import FoodRes from "@/types/FoodRes";
 import { callApiWithToken } from "@/utils/callApi";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import BackAction from "../BackAction";
 
 interface Props {
   id?: string;
@@ -30,7 +31,7 @@ interface CopyItem {
   day?: number;
 }
 
-const DetailMenu = ({id }: Props) => {
+const DetailMenu = ({ id }: Props) => {
   console.log(id);
   const router = useRouter();
   const edit = id ? true : false;
@@ -46,13 +47,20 @@ const DetailMenu = ({id }: Props) => {
 
   const [editNameMenu, setEditNameMenu] = useState(false);
   const [editDescMenu, setEditDescMenu] = useState(false);
+  const [dataMenu, setDataMenu] = useState(Object);
 
-  const { data: dataMenu, loading } = edit ? useFetch<DetailMenuRes>(
+  const { data: menuData, loading } = useFetch<DetailMenuRes>(
     "Menu/Detail/" + id,
     null,
     weekStart
-  ) : {data: null, loading: false};
-  
+  );
+
+  useEffect(() => {
+    edit ? setDataMenu(menuData) : { data: null, loading: false };
+  }, [menuData]);
+
+  console.log(dataMenu);
+
   const [menuName, setMenuName] = useState("");
   const [menuDesc, setDescMenu] = useState("");
   const { data: dataMeal } = useFetch<MealRes[]>("Menu/ListMeal");
@@ -191,50 +199,67 @@ const DetailMenu = ({id }: Props) => {
     );
   };
 
-  const onSubmit = () => { 
-    if(weekEnd < weekStart) alert('Tuần kết thúc phải >= tuần bắt đầu')
+  const onSubmit = () => {
+    if (weekEnd < weekStart) alert("Tuần kết thúc phải >= tuần bắt đầu");
 
     const obj: DetailMenuRes = {
       menu: {
         name: menuName,
         desc: menuDesc,
         start: weekStart,
-        end: weekEnd
+        end: weekEnd,
       },
-      items: menuItems
-    }
+      items: menuItems,
+    };
 
     if (edit) {
-      callApiWithToken().put('Menu/update/' + id, obj)
-        .then(() => { alert('Thành công'); router.push('/admin/menu/') })
-        .catch(() => { alert('Thất bại'); })
-    } else { 
+      callApiWithToken()
+        .put("Menu/update/" + id, obj)
+        .then(() => {
+          alert("Thành công");
+          router.push("/admin/menu/");
+        })
+        .catch(() => {
+          alert("Thất bại");
+        });
+    } else {
       //add
-      callApiWithToken().post('Menu/Add', obj)
-        .then(() => { alert('Thành công'); router.push('/admin/menu/') })
-        .catch(() => { alert('Thất bại'); })
+      callApiWithToken()
+        .post("Menu/Add", obj)
+        .then(() => {
+          alert("Thành công");
+          router.push("/admin/menu/");
+        })
+        .catch(() => {
+          alert("Thất bại");
+        });
     }
-  }
+  };
 
-  const onDelete = () => { 
-    if (!window.confirm('Xóa menu này nha')) return;
+  const onDelete = () => {
+    if (!window.confirm("Xóa menu này nha")) return;
 
-    callApiWithToken().delete('Menu/delete/' + id)
-      .then(() => { alert('Thành công'); router.push('/admin/menu/') })
-      .catch(() => { alert('Thất bại'); })
-  }
+    callApiWithToken()
+      .delete("Menu/delete/" + id)
+      .then(() => {
+        alert("Thành công");
+        router.push("/admin/menu/");
+      })
+      .catch(() => {
+        alert("Thất bại");
+      });
+  };
 
   return (
     <>
-      <h2 className="pl-2 text-3xl">
-        {edit ? "Chỉnh sửa Menu": "Thêm Menu"}
-      </h2>
+      <BackAction />
+      <h2 className="pl-2 text-3xl">{edit ? "Chỉnh sửa Menu" : "Thêm Menu"}</h2>
       <div className="bg-white shadow-sm m-auto md:px-2 px-4 pt-4 rounded-xl">
         {/* top */}
         <div className="w-full ">
           {(dataMenu || !edit) && (
             <div className="">
-              <div className="flex group items-baseline" >
+              <div className="flex group items-baseline">
                 <span className="mr-2 italic"> Tên menu:</span>
                 {editNameMenu || !edit ? (
                   <input
@@ -250,11 +275,12 @@ const DetailMenu = ({id }: Props) => {
                   <h2 className="text-2xl p-2">{menuName}</h2>
                 )}
 
-                {edit &&
+                {edit && (
                   <button
                     title="Sửa tên menu"
-                    className={`${editNameMenu ? "text-green-600" : "invisible"
-                      } ml-2 group-hover:visible`}
+                    className={`${
+                      editNameMenu ? "text-green-600" : "invisible"
+                    } ml-2 group-hover:visible`}
                     onClick={() => setEditNameMenu((curr) => !curr)}
                   >
                     {editNameMenu ? (
@@ -263,13 +289,14 @@ const DetailMenu = ({id }: Props) => {
                       <MdModeEditOutline size={20} />
                     )}
                   </button>
-                }
+                )}
               </div>
               <div className="group pr-2 w-full">
                 <p className=" italic ">
                   <span className="mr-2"> Mô tả:</span>
                   {editDescMenu || !edit ? (
-                    <textarea title="Mô tả"
+                    <textarea
+                      title="Mô tả"
                       value={menuDesc}
                       onChange={(e) => {
                         setDescMenu(e.currentTarget.value);
@@ -279,11 +306,12 @@ const DetailMenu = ({id }: Props) => {
                   ) : (
                     <span className="text-gray-600">{menuDesc}</span>
                   )}
-                  {edit &&
+                  {edit && (
                     <button
                       title="Sửa mô tả menu"
-                      className={`${editDescMenu ? "text-green-600" : "invisible"
-                        } ml-2 group-hover:visible`}
+                      className={`${
+                        editDescMenu ? "text-green-600" : "invisible"
+                      } ml-2 group-hover:visible`}
                       onClick={() => setEditDescMenu((curr) => !curr)}
                     >
                       {editDescMenu ? (
@@ -292,7 +320,7 @@ const DetailMenu = ({id }: Props) => {
                         <MdModeEditOutline size={20} />
                       )}
                     </button>
-                  }
+                  )}
                 </p>
               </div>
             </div>
@@ -321,7 +349,7 @@ const DetailMenu = ({id }: Props) => {
         ) : (
           <div>
             <table className="w-full text-sm text-gray-500 dark:text-gray-400 text-center">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th className=""></th>
                   {days.map((x, i) => (
@@ -424,15 +452,21 @@ const DetailMenu = ({id }: Props) => {
         </div>
         <div className="flex-1"></div>
         <div>
-          <button className="bg-blue-500 text-white font-bold py-1 px-2 rounded mr-4" onClick={onSubmit}>
+          <button
+            className="bg-blue-500 text-white font-bold py-1 px-2 rounded mr-4"
+            onClick={onSubmit}
+          >
             {edit ? "Cập nhật" : "Thêm"}
           </button>
 
-          {edit &&
-            <button className="bg-red-500 text-white font-bold py-1 px-2 rounded" onClick={onDelete}>
+          {edit && (
+            <button
+              className="bg-red-500 text-white font-bold py-1 px-2 rounded"
+              onClick={onDelete}
+            >
               Xóa
             </button>
-          }
+          )}
         </div>
       </div>
     </>

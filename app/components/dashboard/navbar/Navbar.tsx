@@ -135,8 +135,8 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
         </div>
       )}
       <div
-        className={`fixed text-main transition-all top-0 bg-white flex items-start duration-500 text-4xl rounded-lg w-screen h-screen z-50 ${
-          mobileMenu ? " translate-x-0 " : "w-0 translate-x-full"
+        className={`fixed text-main transition-all top-0 opacity-0 bg-white flex items-start duration-500 text-4xl rounded-lg w-screen h-screen z-50 ${
+          mobileMenu ? " translate-x-0 opacity-100" : "w-0 translate-x-full"
         }`}
       >
         <div

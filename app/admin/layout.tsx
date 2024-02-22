@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex overflow-x-hidden h-screen">
+    <div className="flex overflow-x-hidden h-screen bg-[#fafafb] ">
       <Toaster />
       <div className="flex">
         <Sidebar />
