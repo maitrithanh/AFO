@@ -15,9 +15,9 @@ import {
 import { checkNameInclude, compareName } from "@/utils/compare"
 import { ChildrenData } from "@/types/ChildrenData"
 import { t } from "i18next"
-import DefaultImage from "@/app/components/shared/defaultImage"
-import SearchBar from "@/app/components/shared/searchBar";
 import { getImageUrl } from "@/utils/image";
+import DefaultImage from "@/app/components/shared/defaultImage";
+import SearchBar from "@/app/components/shared/searchBar";
 
 const ParentPage = () => {
 
