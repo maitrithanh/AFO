@@ -1,4 +1,4 @@
-import Languages from "../components/Languages";
+import Languages from "../components/shared/Languages";
 import LoginForm from "./LoginForm";
 
 const LoginPage = () => {

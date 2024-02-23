@@ -2,7 +2,7 @@
 
 import useFetch from "@/utils/useFetch";
 import React, { useEffect, useState } from "react";
-import Loading from "../components/Loading";
+import Loading from "../components/shared/Loading";
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);

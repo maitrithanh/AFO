@@ -10,5 +10,7 @@ export interface ChildrenData {
     joinDate: string,
     status: boolean,
     note: string,
-    classRoom: string
+    classRoom: string,
+    parentName: string,
+    phone: string,
 }

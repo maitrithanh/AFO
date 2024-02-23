@@ -1,5 +1,5 @@
 import React from "react";
-import Slider from "../components/Slider";
+import Slider from "../components/shared/Slider";
 import Navbar from "../components/dashboard/navbar/Navbar";
 import Footer from "../components/home/Footer";
 const layout = ({ children }: { children: React.ReactNode }) => {

@@ -118,5 +118,7 @@
     "accountManagement": "Account management",
     "classes": "Classes",
     "subject": "Subject",
-    "previous": "Previous"
+    "previous": "Previous",
+    "parentlist": "Guardians",
+    "childrenlist": "Children"
 }

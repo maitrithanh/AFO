@@ -1,5 +1,5 @@
 import React from "react";
-import MenuSection from "../components/MenuSection";
+import MenuSection from "../components/shared/MenuSection";
 import { menuTeacher } from "@/data/menuTeacher";
 
 const page = () => {

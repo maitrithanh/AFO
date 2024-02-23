@@ -1,4 +1,4 @@
-import Slider from "./components/Slider";
+import Slider from "./components/shared/Slider";
 import Navbar from "./components/dashboard/navbar/Navbar";
 import Footer from "./components/home/Footer";
 import IntroSection from "./components/home/IntroSection";

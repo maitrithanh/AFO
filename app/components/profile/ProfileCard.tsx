@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import useFetch from "@/utils/useFetch";
-import Button from "../Button";
+import Button from "../shared/Button";
 import { FaFacebook, FaGoogle, FaPen } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import toast from "react-hot-toast";
@@ -10,8 +10,8 @@ import UserData from "@/types/UserData";
 import { signIn, useSession } from "next-auth/react";
 import ResponseData from "@/types/ResponseData";
 import LoginRes from "@/types/LoginRes";
-import Loading from "../Loading";
-import DefaultImage from "../defaultImage";
+import Loading from "../shared/Loading";
+import DefaultImage from "../shared/defaultImage";
 import ChangePwDialog from "./changePwDialog";
 import CardInfo from "./card/CardInfo";
 import CardInfoLine from "./card/CardInfoLine";
@@ -19,7 +19,7 @@ import { getImageUrl } from "@/utils/image";
 import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import Link from "next/link";
-import Slider from "../Slider";
+import Slider from "../shared/Slider";
 import { useTranslation } from "react-i18next";
 import { MdChangeCircle } from "react-icons/md";
 

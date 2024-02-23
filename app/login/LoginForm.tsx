@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Input from "../components/inputs/input";
-import Button from "../components/Button";
+import Button from "../components/shared/Button";
 import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import callApi, { callApiWithToken } from "@/utils/callApi";

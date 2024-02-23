@@ -24,19 +24,20 @@ const AddItem = ({ onAdd, dataSource }: Props) => {
         setKeyword('');
     }
 
-    return <div className={`${keyword == '' ? 'invisible': ''} group-hover:visible relative group/search`}>
-        <div className="flex">
-            <input type="text" name="food" placeholder="Thêm món" className={`${hints?.length > 0? '' : 'text-red-400'} w-full outline-none`}
+    return <div className={`${keyword == '' ? 'invisible': ''} group-hover:visible`}>
+        <div className="flex relative group/search">
+            <input type="text" name="food" placeholder="Thêm món" className={`${hints?.length > 0? '' : 'text-red-400'} w-full outline-none peer`}
                 onChange={(e) => setKeyword(e.currentTarget.value)} value={keyword} onKeyDown={e => { if(e.key === 'Enter') onSubmit()}}
             />
+            <div className="absolute left-0 bottom-0 translate-y-[100%] w-full bg-gray-200 max-h-[100px] overflow-auto invisible peer-focus:visible group-hover/search:visible">
+                {keyword && hints.map(x => <div key={x.id} className="hover:bg-white py-[2px] cursor-pointer" onClick={() => setKeyword(x.name)}>
+                    {x.name}
+                </div>)}
+            </div>
+
             <button onClick={onSubmit} className={`${hints?.length > 0 ? 'bg-blue-500' : 'bg-gray-500'}  text-white font-bold py-1 px-2 rounded`}>
                 Thêm
             </button>
-        </div>
-        <div className="absolute left-0 bottom-0 translate-y-[100%] w-full bg-gray-200 max-h-[100px] overflow-auto invisible group-hover/search:visible">
-            {hints.map(x => <div key={x.id} className="hover:bg-white py-[2px] cursor-pointer" onClick={() => setKeyword(x.name)}>  
-                {x.name}
-            </div>)}
         </div>
     </div>
 }

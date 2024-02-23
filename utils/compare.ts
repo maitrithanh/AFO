@@ -1,3 +1,4 @@
+import removeVietnameseTones from "./removeTones";
 
 const formatName = (s?: string): string => {
     if (!s) return '';
@@ -13,4 +14,8 @@ const formatName = (s?: string): string => {
 export const compareName = (a: string = '', b: string = ''): number => { 
     if (a === b) return 0;
     return formatName(a) < formatName(b) ? -1 : 1
+}
+
+export const checkNameInclude = (src: string, key: string): boolean => { 
+    return removeVietnameseTones(src).toLowerCase().includes(removeVietnameseTones(key).toLowerCase())
 }

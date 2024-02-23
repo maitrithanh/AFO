@@ -1,6 +1,5 @@
 "use client"
 
-import ParentListRes from "@/types/ParentListRes"
 import useFetch from "@/utils/useFetch"
 import Image from "next/image"
 import Link from "next/link"
@@ -14,67 +13,71 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { checkNameInclude, compareName } from "@/utils/compare"
-import SearchBar from "@/app/components/shared/searchBar"
+import { ChildrenData } from "@/types/ChildrenData"
+import { t } from "i18next"
+import DefaultImage from "@/app/components/shared/defaultImage"
+import SearchBar from "@/app/components/shared/searchBar";
+import { getImageUrl } from "@/utils/image";
 
-const ParentPage = () => { 
+const ParentPage = () => {
 
     const [page, setPage] = useState(1)
     const [sort, setSort] = useState('new')
     const [keyword, setKeyword] = useState(''); //searching
 
-    const { data: dataParent } = useFetch<ParentListRes[]>('Parent/GetList')
+    const { data: dataChildren } = useFetch<ChildrenData[]>('Child/GetList')
 
     const RowPerPage = 20;
 
-    const searchParent = (c: ParentListRes): boolean => {
-        const matchName: boolean = checkNameInclude(c.fullName || '', keyword)
-        const matchPhone: boolean = (c.phoneNumber || '').includes(keyword);
+    const searchChild = (c: ChildrenData): boolean => {
+        const matchName: boolean = checkNameInclude(c.fullName, keyword)
+        const matchPhone: boolean = c.phone.includes(keyword);
         return matchName || matchPhone
     }
 
-    const PageCount = useMemo(() => { 
-        return Math.ceil((dataParent?.filter(searchParent).length ?? 0) / RowPerPage)
-    }, [dataParent, keyword])
+    const PageCount = useMemo(() => {
+        return Math.ceil((dataChildren?.filter(searchChild).length ?? 0) / RowPerPage)
+    }, [dataChildren, keyword])
 
-    const getJoinDate = (a: ParentListRes): string => { 
-        return a.children.reduce((res, curr) => curr.joinDate > res.joinDate ? curr : res).joinDate;
-    }
-
-    const compareParent = (a: ParentListRes, b: ParentListRes): number => { 
+    const compareChild = (a: ChildrenData, b: ChildrenData): number => {
         //-1 => a < b
-        switch (sort) { 
+        switch (sort) {
             case 'new':
-                return getJoinDate(a) <= getJoinDate(b) ? 1 : -1
+                return a.joinDate <= b.joinDate ? 1 : -1
             case 'az':
                 return compareName(a.fullName, b.fullName)
             case 'za':
                 return -compareName(a.fullName, b.fullName)
             default: return -1;
         }
-        
     }
-
-    const searchHints = useMemo(() => {
-        var names = dataParent?.map(x => x.fullName || '') || [];
-        var phones = dataParent?.map(x => x.phoneNumber || '') || [];
+    const searchHints = useMemo(() => { 
+        var names = dataChildren?.map(x => x.fullName) || [];
+        var phones = dataChildren?.map(x => x.phone) || [];
         return [...names, ...phones]
-    }, [dataParent])
+    }, [dataChildren])
 
-    const onSearch = (s: string) => {
+    const onSearch = (s: string) => { 
         setKeyword(s);
         setPage(1);
     }
 
-
     return <>
-        <div className="flex justify-between items-center mb-5">
-            <div>
-                <h2 className="text-2xl font-bold mb-5">Danh sách phụ huynh</h2>
-            </div>
+        <div>
+            <h2 className="text-2xl font-bold">Danh sách trẻ</h2>
+        </div>
 
+        <div className="flex justify-between items-center mb-5">
+            <Link href={'/admin/children/add'}>
+                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5">
+                    + {t("addNew")}
+                </button>
+            </Link>
+
+            
             <div className="flex items-center">
                 <p className="text-xl">Tìm kiếm: </p>
-                <div className="w-[250px]">
+                <div className="w-[250]">
                     <SearchBar dataSource={searchHints} placeholder="Nhập tên hoặc sđt..." onSearch={onSearch} />
                 </div>
             </div>
@@ -103,36 +106,43 @@ const ParentPage = () => {
                 `Tìm kiếm "${keyword}": `
             }
         </div>
-
         <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th></th>
                         <th scope="col" className="px-6 py-3">
-                            Tên Phụ Huynh
+                            
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Sđt
+                            
                         </th>
                         <th scope="col" className="px-6 py-3">
+                            Họ tên
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            Lớp
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                            {t("dateOfBirth")}
+                        </th>
+                        <th>
                             Giới tính
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Ngày sinh
+                            Người giám hộ
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Địa chỉ
-                        </th>
-                        <th>
-                            Tên Trẻ
+                            {t("phoneNumber")}
                         </th>
 
                         <th scope="col" className="px-6 py-3"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {[...dataParent || []]?.filter(searchParent).sort(compareParent).slice((page - 1) * RowPerPage, page * RowPerPage).map((x, i) => {
+                    {[...dataChildren || []]
+                        .filter(searchChild)
+                        .sort(compareChild).slice((page - 1) * RowPerPage, page * RowPerPage)
+                        .map((x, i) => {
                         return (
                             <tr
                                 key={x.id}
@@ -144,24 +154,28 @@ const ParentPage = () => {
                                 <th
                                     scope="row"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {x.fullName}
+                                    <DefaultImage
+                                        img={getImageUrl(x.avatar)}
+                                        fallback="/avatar.webp"
+                                    />
                                 </th>
-                                <td className="px-6 py-4 md:max-w-[660px]">
-                                    {x.phoneNumber}
+                                <td className="px-6 py-4">
+                                    {x.fullName}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {x.gender === 1? "Nam": "Nữ"}
+                                    {x.classRoom}
                                 </td>
                                 <td className="px-6 py-4">
                                     {x.birthDay}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {x.address}
+                                    {x.gender}
                                 </td>
-                                <td>
-                                    <pre>
-                                        {x.children.map(x => x.fullName).join(',\n')}
-                                    </pre>
+                                <td className="px-6 py-4">
+                                    {x.parentName}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {x.phone}
                                 </td>
 
                                 <td className="md:px-6 md:py-4">
@@ -187,7 +201,7 @@ const ParentPage = () => {
             </table>
         </div>
 
-        <MyPagination page={page} setPage={setPage} PageCount={PageCount}/>
+        <MyPagination page={page} setPage={setPage} PageCount={PageCount} />
     </>
 }
 

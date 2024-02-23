@@ -1,6 +1,6 @@
 "use client";
 
-import DefaultImage from "@/app/components/defaultImage";
+import DefaultImage from "@/app/components/shared/defaultImage";
 import PickUpListRes from "@/types/PickUpListRes";
 import { getImageUrl } from "@/utils/image";
 import useFetch from "@/utils/useFetch";

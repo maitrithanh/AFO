@@ -22,6 +22,18 @@ export const  menu = [
         img: 'user.webp'
     },
     {
+        text: 'parentlist',
+        icon: IoAnalyticsSharp,
+        pathname: '/admin/listparent',
+        img: 'user.webp'
+    },
+    {
+        text: 'childrenlist',
+        icon: IoAnalyticsSharp,
+        pathname: '/admin/children',
+        img: 'user.webp'
+    },
+    {
         text: 'classes',
         icon: LuUser2,
         pathname: '/admin/classes',

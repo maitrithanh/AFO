@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { setCookie } from "cookies-next";
 import useFetch from "@/utils/useFetch";
-import DefaultImage from "../components/defaultImage";
+import DefaultImage from "../components/shared/defaultImage";
 import { useTranslation } from "react-i18next";
 
 const ChooseUserPage = () => {

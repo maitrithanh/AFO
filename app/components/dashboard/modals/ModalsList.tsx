@@ -4,7 +4,7 @@ import { CgProfile } from "react-icons/cg";
 import { useRouter } from "next/navigation";
 import { deleteCookie, getCookie } from "cookies-next";
 import toast from "react-hot-toast";
-import Loading from "../../Loading";
+import Loading from "../../shared/Loading";
 import { useTranslation } from "react-i18next";
 
 interface ModalsListProps {

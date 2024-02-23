@@ -7,7 +7,7 @@ import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 
 import ModalsList from "../dashboard/modals/ModalsList";
 import useFetch from "@/utils/useFetch";
-import DefaultImage from "../defaultImage";
+import DefaultImage from "../shared/defaultImage";
 import { baseURL } from "@/utils/callApi";
 import UserData from "@/types/UserData";
 

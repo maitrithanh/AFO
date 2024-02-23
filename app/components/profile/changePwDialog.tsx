@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Button from "../Button";
+import Button from "../shared/Button";
 import Input from "../inputs/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { callApiWithToken } from "@/utils/callApi";

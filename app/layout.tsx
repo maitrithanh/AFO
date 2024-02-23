@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import Provider from "./components/sessionProvider";
+import Provider from "./components/shared/sessionProvider";
 import { Baloo_Bhaijaan_2 } from "next/font/google";
 
 const font = Baloo_Bhaijaan_2({

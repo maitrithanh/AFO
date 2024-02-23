@@ -5,7 +5,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
 import Input from "@/app/components/inputs/input";
-import Button from "@/app/components/Button";
+import Button from "@/app/components/shared/Button";
 import PickUpListRes from "@/types/PickUpListRes";
 import { toYMD } from "@/utils/dateTime";
 import { getImageUrl } from "@/utils/image";

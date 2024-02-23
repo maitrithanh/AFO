@@ -3,7 +3,7 @@ import CardInfo from "./card/CardInfo";
 import Link from "next/link";
 import { MdChangeCircle } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import DefaultImage from "../defaultImage";
+import DefaultImage from "../shared/defaultImage";
 import { getImageUrl } from "@/utils/image";
 import { FaPen } from "react-icons/fa6";
 import CardInfoLine from "./card/CardInfoLine";

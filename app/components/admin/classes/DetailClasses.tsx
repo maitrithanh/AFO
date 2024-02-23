@@ -21,7 +21,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
-import DefaultImage from "@/app/components/defaultImage";
+import DefaultImage from "@/app/components/shared/defaultImage";
 import { useSearchParams } from "next/navigation";
 import DialogProfile from "../../profile/DialogProfile";
 
