@@ -36,7 +36,7 @@ const SearchBar = ({ dataSource, onSearch, placeholder }: Props) => {
             className={`peer ${hints.length > 0 ? '': 'text-red-500'}`}
             onChange={(e) => setSearch(e.currentTarget.value)} onKeyDown={onSearchKeyDown} />
         <div className="absolute left-0 bottom-0 z-10 translate-y-[100%] w-full max-h-[150px] overflow-y-auto bg-white shadow-lg rounded-lg invisible peer-focus:visible group-hover:visible">
-            {search && hints.map(x => <div className="py-2 px-3 hover:bg-gray-200" onClick={ () => onChooseHint(x) }>
+            {search && hints.map(x => <div key={x} className="py-2 px-3 hover:bg-gray-200" onClick={ () => onChooseHint(x) }>
                 {x}
             </div>)}
         </div>
