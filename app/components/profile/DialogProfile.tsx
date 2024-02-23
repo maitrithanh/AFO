@@ -8,10 +8,9 @@ import CardInfoLine from "./card/CardInfoLine";
 import toast from "react-hot-toast";
 import { callApiWithToken } from "@/utils/callApi";
 import useFetch from "@/utils/useFetch";
-import { CiEdit } from "react-icons/ci";
-import Button from "../Button";
 import Input from "../inputs/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import Button from "../shared/Button";
 
 interface DialogProfileProps {
   handleDialog: () => void;
