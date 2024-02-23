@@ -29,6 +29,7 @@ interface ProfileCardProps {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
   const [loading, setLoading] = useState(false);
+
   const [refresh, setRefresh] = useState(0);
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const child = getCookie("child");
@@ -129,6 +130,35 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
         setLoading(false);
       });
   };
+
+  //upload avtar child
+  const handleFileChangeChild = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    var file: Blob = event.target.files![0];
+    if (!file) return;
+    const formData = new FormData();
+    if (file) formData.append("file", file, undefined);
+
+    setLoading(true);
+    callApiWithToken()
+      .put(
+        "File/ChangeChildAvatar?Id=" + child,
+        { file },
+        { headers: { "content-type": "multipart/form-data" } }
+      )
+      .then((res) => {
+        toast.success("Đã cập nhật");
+        //setRefresh((x) => x + 1);
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err.response.data.error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
   const onUpdateAvatarClick = () => {
     uploadAvatarRef.current?.click();
   };
@@ -138,11 +168,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
 
   return (
     <div className="overflow-auto">
-      {loading && <Loading />}
       <div className="flex justify-center items-center h-full w-full ">
         <div className="relative h-full w-full bg-gradient-to-b sm:max-w-[1280px] sm:p-8 rounded-xl">
           {/* parent */}
-
           <div
             className={`grid ${
               parent ? "md:grid-cols-2" : ""
@@ -243,7 +271,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
                       >
                         <input
                           type="file"
-                          onChange={handleFileChange}
+                          onChange={handleFileChangeChild}
                           className="hidden"
                           title="no"
                           ref={uploadAvatarRef}

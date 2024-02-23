@@ -20,9 +20,13 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useTranslation } from "react-i18next";
+import useFetch from "@/utils/useFetch";
 
 const HealthTable = () => {
   const { t } = useTranslation();
+  const { data: healthEvent } = useFetch("Healthy/getListEvent");
+  console.log(healthEvent);
+
   return (
     <div className="h-[600px] ">
       <div className="bg-white shadow-3xl rounded-md">
@@ -86,52 +90,19 @@ const HealthTable = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="md:px-6 md:py-4">4/2024</td>
-                <td className="md:px-6 md:py-4">
-                  <Link
-                    href={`/admin/classes/`}
-                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    <Image
-                      title="Chi tiết"
-                      src={"/icons/detail.webp"}
-                      alt="Detail"
-                      width={26}
-                      height={26}
-                      priority
-                      className="hover:scale-110 transition-all"
-                    />
-                  </Link>
-                </td>
-              </tr>
+              {healthEvent?.map((eventHealth: any) => {
+                return (
+                  <tr key={eventHealth.examDate}>
+                    <td className="md:px-6 md:py-4">{eventHealth.examDate}</td>
+                    <td className="md:px-6 md:py-4">{eventHealth.content}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </div>
-      <div className="p-4 flex">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem className="flex">
-              <PaginationLink href="#">1</PaginationLink>
-              <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem className="flex">
-              <PaginationLink href="#">4</PaginationLink>
-              <PaginationLink href="#">5</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      <div className="p-4 flex"></div>
     </div>
   );
 };

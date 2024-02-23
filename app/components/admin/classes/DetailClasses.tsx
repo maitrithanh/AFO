@@ -26,6 +26,7 @@ import { useSearchParams } from "next/navigation";
 import DialogProfile from "../../profile/DialogProfile";
 import Link from "next/link";
 import BackAction from "../BackAction";
+import { getImageUrl } from "@/utils/image";
 
 const DetailClasses = (id: any) => {
   const { t } = useTranslation();
@@ -137,7 +138,9 @@ const DetailClasses = (id: any) => {
                         </th>
                         <td className="px-6 py-4">
                           <DefaultImage
-                            img={dataStudent.avatar}
+                            img={getImageUrl(dataStudent.avatar)}
+                            className={`w-10 h-10 rounded-full cursor-pointer`}
+                            custom="w-[50px] h-[50px]"
                             fallback="/avatar.webp"
                           />
                         </td>
@@ -149,7 +152,8 @@ const DetailClasses = (id: any) => {
                           className="md:px-6 md:py-4 hover"
                           onClick={() => {
                             setDataStudentDetail({
-                              fullName: dataStudent.fullName,
+                              avatar: dataStudent.avatar,
+                              id: dataStudent.id,
                             });
                             setCloseDialog(true);
                           }}
