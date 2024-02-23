@@ -1,20 +1,8 @@
 "use client";
-import SelectWeek from "@/app/components/admin/menu/SelectWeek";
-import React, { useState } from "react";
+
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
-import moment from "moment";
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import useFetch from "@/utils/useFetch";
 import Link from "next/link";
 
@@ -29,28 +17,23 @@ const MenuTable = () => {
   };
   return (
     <div className="pb-5">
-      <div className="bg-white p-2 shadow-3xl">
-        <div>
-          <p className="text-2xl font-bold">Danh sách thực đơn</p>
-        </div>
+      <div className="rounded-md">
         <div className="flex justify-between items-center">
-          <div>
-            <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5"
-              onClick={() => {
-                router.push("/admin/menu/add");
-              }}
-            >
-              + {t("addNew")}
-            </button>
+          <div className="p-2">
+            <p className="text-2xl ">Danh sách thực đơn</p>
           </div>
-          {/* <div className="">
-            <SelectWeek />
-          </div> */}
+        </div>
+        <div>
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-2"
+            onClick={() => router.push("/admin/menu/add")}
+          >
+            + {t("addNew")}
+          </button>
         </div>
         <div className="relative shadow-3xl sm:rounded-lg ">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   Tên thực đơn
@@ -86,21 +69,19 @@ const MenuTable = () => {
                       {getWeekName(allMenu.end)}
                     </td>
 
-                    <td className="md:px-6 md:py-4">
-                      <Link
-                        href={`/admin/menu/${allMenu.id}`}
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        <Image
-                          title="Chi tiết"
-                          src={"/icons/detail.webp"}
-                          alt="Detail"
-                          width={26}
-                          height={26}
-                          priority
-                          className="hover:scale-110 transition-all"
-                        />
-                      </Link>
+                    <td
+                      className="md:px-6 md:py-4 hover"
+                      onClick={() => router.push(`/admin/menu/${allMenu.id}`)}
+                    >
+                      <Image
+                        title="Chi tiết"
+                        src={"/icons/detail.webp"}
+                        alt="Detail"
+                        width={26}
+                        height={26}
+                        priority
+                        className="hover:scale-110 transition-all"
+                      />
                     </td>
                   </tr>
                 );
@@ -109,29 +90,6 @@ const MenuTable = () => {
           </table>
         </div>
       </div>
-      {/* <div className="p-4 flex">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem className="flex">
-              <PaginationLink href="#">1</PaginationLink>
-              <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem className="flex">
-              <PaginationLink href="#">4</PaginationLink>
-              <PaginationLink href="#">5</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div> */}
     </div>
   );
 };

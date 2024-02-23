@@ -24,6 +24,9 @@ import { Input } from "@/components/ui/input";
 import DefaultImage from "@/app/components/shared/defaultImage";
 import { useSearchParams } from "next/navigation";
 import DialogProfile from "../../profile/DialogProfile";
+import Link from "next/link";
+import BackAction from "../BackAction";
+import { getImageUrl } from "@/utils/image";
 
 const DetailClasses = (id: any) => {
   const { t } = useTranslation();
@@ -48,19 +51,12 @@ const DetailClasses = (id: any) => {
         ""
       )}
       <div className="h-[600px]">
-        <a href="/admin/classes" className="text-main  w-fit group ">
-          <div className="flex items-center">
-            <div className="group-hover:-translate-x-2 transition-all ">
-              <MdArrowBackIosNew />
-            </div>
-            Tất cả lớp
-          </div>
-        </a>
-        <div className="relative overflow-x-auto shadow-3xl sm:rounded-lg p-2 ">
-          <div className="">
+        <BackAction />
+        <div className="relative overflow-x-auto shadow-sm bg-white pt-2 sm:rounded-lg">
+          <div className="px-2">
             <div className="flex items-center justify-between">
               <div>
-                <p className="md:text-2xl font-bold">
+                <p className="md:text-3xl">
                   Danh sách học sinh - Lớp {detailClassData?.name}
                 </p>
                 <p className="md:text-xl">
@@ -69,11 +65,12 @@ const DetailClasses = (id: any) => {
               </div>
               <div className="flex">
                 <p className="md:text-xl">
-                  Giáo viên chủ nhiệm: {detailClassData?.teachers}
+                  Giáo viên chủ nhiệm:{" "}
+                  <span className="italic">{detailClassData?.teachers}</span>
                 </p>
               </div>
             </div>
-            <div className="md:flex justify-between items-center mb-4">
+            <div className="md:flex justify-between items-center">
               <div>
                 <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded my-5">
                   + {t("addNew")}
@@ -102,7 +99,7 @@ const DetailClasses = (id: any) => {
 
           <div className="overflow-y-auto max-h-[590px]">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px] ">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-6 py-3">
                     STT
@@ -141,7 +138,9 @@ const DetailClasses = (id: any) => {
                         </th>
                         <td className="px-6 py-4">
                           <DefaultImage
-                            img={dataStudent.avatar}
+                            img={getImageUrl(dataStudent.avatar)}
+                            className={`w-10 h-10 rounded-full cursor-pointer`}
+                            custom="w-[50px] h-[50px]"
                             fallback="/avatar.webp"
                           />
                         </td>
@@ -150,17 +149,18 @@ const DetailClasses = (id: any) => {
                         <td className="px-6 py-4">{dataStudent.phone}</td>
                         <td className="px-6 py-4">{dataStudent.parentName}</td>
                         <td
-                          className="md:px-6 md:py-4"
+                          className="md:px-6 md:py-4 hover"
                           onClick={() => {
                             setDataStudentDetail({
-                              fullName: dataStudent.fullName,
+                              avatar: dataStudent.avatar,
+                              id: dataStudent.id,
                             });
                             setCloseDialog(true);
                           }}
                         >
                           <Image
-                            title="Chi tiết lớp học"
-                            src={"/icons/more.webp"}
+                            title="Chi tiết"
+                            src={"/icons/detail.webp"}
                             alt="Detail"
                             width={26}
                             height={26}
@@ -175,29 +175,6 @@ const DetailClasses = (id: any) => {
               </tbody>
             </table>
           </div>
-        </div>
-        <div className="p-4 flex">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious href="#" />
-              </PaginationItem>
-              <PaginationItem className="flex">
-                <PaginationLink href="#">1</PaginationLink>
-                <PaginationLink href="#">2</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem className="flex">
-                <PaginationLink href="#">4</PaginationLink>
-                <PaginationLink href="#">5</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
         </div>
       </div>
     </>

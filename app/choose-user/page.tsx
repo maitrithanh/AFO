@@ -6,6 +6,7 @@ import { setCookie } from "cookies-next";
 import useFetch from "@/utils/useFetch";
 import DefaultImage from "../components/shared/defaultImage";
 import { useTranslation } from "react-i18next";
+import { getImageUrl } from "@/utils/image";
 
 const ChooseUserPage = () => {
   const router = useRouter();
@@ -41,7 +42,7 @@ const ChooseUserPage = () => {
                 <div className="relative cursor-pointer rounded-full hover:border-main border-4">
                   <div className="">
                     <DefaultImage
-                      img={childInfo.avatar}
+                      img={getImageUrl(childInfo.avatar)}
                       fallback="/avatar.webp"
                       custom="w-[200px] h-[200px]"
                     />

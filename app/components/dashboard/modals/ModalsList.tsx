@@ -21,12 +21,12 @@ const ModalsList: React.FC<ModalsListProps> = ({
   const router = useRouter();
 
   const handleLogout = () => {
+    router.push("/");
     deleteCookie("token");
     deleteCookie("role");
     deleteCookie("child");
     <Loading />;
     toast.success("Đăng xuất thành công");
-    router.push("/");
   };
   //Translate
   const { t } = useTranslation();

@@ -84,7 +84,9 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
                   "Đang tải..."
                 ) : (
                   <>
-                    <h4 className="font-semibold">{user?.fullName}</h4>
+                    <h4 className="font-semibold ml-2">
+                      {user?.fullName} admin
+                    </h4>
                   </>
                 )
               ) : (

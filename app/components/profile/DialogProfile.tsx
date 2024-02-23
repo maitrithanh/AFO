@@ -1,7 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CardInfo from "./card/CardInfo";
-import Link from "next/link";
-import { MdChangeCircle } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import DefaultImage from "../shared/defaultImage";
 import { getImageUrl } from "@/utils/image";
@@ -9,6 +7,11 @@ import { FaPen } from "react-icons/fa6";
 import CardInfoLine from "./card/CardInfoLine";
 import toast from "react-hot-toast";
 import { callApiWithToken } from "@/utils/callApi";
+import useFetch from "@/utils/useFetch";
+import { CiEdit } from "react-icons/ci";
+import Button from "../Button";
+import Input from "../inputs/input";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 interface DialogProfileProps {
   handleDialog: () => void;
@@ -21,9 +24,17 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
 }) => {
   const { t } = useTranslation();
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
+  const editRef = useRef<HTMLInputElement | null>(null);
+  const [editMode, setEditMode] = useState(false);
 
-  //upload avtar
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const { data: detailChild, loading } = useFetch(
+    "Child/getChild?id=" + data.id
+  );
+
+  //upload avtar child
+  const handleFileChangeChild = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     var file: Blob = event.target.files![0];
     if (!file) return;
     const formData = new FormData();
@@ -31,7 +42,7 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
 
     callApiWithToken()
       .put(
-        "File/ChangeAvatar",
+        "File/ChangeChildAvatar?Id=" + data.id,
         { file },
         { headers: { "content-type": "multipart/form-data" } }
       )
@@ -42,29 +53,53 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
       })
       .catch((err) => {
         toast.error(err.response.data.error);
-      });
+      })
+      .finally(() => {});
   };
+
   const onUpdateAvatarClick = () => {
     uploadAvatarRef.current?.click();
   };
 
-  const infoChild = {
-    fullName: "",
-    birthDay: "",
-    gender: "",
-    joinDate: "",
-    nation: "",
-    status: "",
-    address: "",
-    note: "",
+  const onEditClick = () => {
+    editRef.current?.click();
+  };
+
+  const handleChangeModeEdit = () => {
+    setEditMode((curr) => !curr);
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FieldValues>({
+    defaultValues: {
+      fullName: "",
+      birthDay: "",
+      gender: "",
+      nation: "",
+      address: "",
+      note: "",
+    },
+  });
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    callApiWithToken()
+      .put(`Child/update/` + detailChild.id, data)
+      .then((response) => {
+        toast("Đã cập nhật");
+      })
+      .catch((error) => {
+        toast.error(error, { id: error });
+      });
   };
 
   return (
     <div
       className={`fixed z-50 top-0 left-0 w-full h-full flex items-center bg-black bg-opacity-40 justify-center `}
-      onClick={() => {
-        handleDialog();
-      }}
+      // onClick={() => {
+      //   handleDialog();
+      // }}
     >
       <div className="w-[550px] mx-2 h-fit">
         <CardInfo cardName={t("infoChild")}>
@@ -72,7 +107,7 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
             <div className="absolute right-4 -top-10">
               <span className="relative group">
                 <DefaultImage
-                  img={getImageUrl()}
+                  img={getImageUrl(data.avatar)}
                   fallback="/avatar.webp"
                   className={`w-14 h-14 rounded-full cursor-pointer`}
                   custom="w-[80px] h-[80px]"
@@ -83,7 +118,7 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
                 >
                   <input
                     type="file"
-                    onChange={handleFileChange}
+                    onChange={handleFileChangeChild}
                     className="hidden"
                     title="no"
                     ref={uploadAvatarRef}
@@ -95,37 +130,112 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
                 </div>
               </span>
             </div>
-            <CardInfoLine
-              lineName={t("fullName")}
-              contentLine={data?.fullName}
-            />
-            <CardInfoLine
-              lineName={t("dateOfBirth")}
-              contentLine={infoChild?.birthDay}
-            />
-            <CardInfoLine
-              lineName={t("gender")}
-              contentLine={infoChild?.gender}
-            />
-            <CardInfoLine
-              lineName={t("joinDate")}
-              contentLine={infoChild?.joinDate}
-            />
-            <CardInfoLine
-              lineName={t("nationality")}
-              contentLine={infoChild?.nation}
-            />
-            <CardInfoLine
-              lineName={t("status")}
-              contentLine={infoChild?.status ? "Đang học" : "Đã nghỉ"}
-            />
 
-            <CardInfoLine
-              lineName={t("address")}
-              contentLine={infoChild?.address}
-            />
+            {!editMode ? (
+              <>
+                <CardInfoLine
+                  lineName={t("fullName")}
+                  contentLine={detailChild?.fullName}
+                />
+                <CardInfoLine
+                  lineName={t("dateOfBirth")}
+                  contentLine={detailChild?.birthDay}
+                />
+                <CardInfoLine
+                  lineName={t("gender")}
+                  contentLine={detailChild?.gender == 0 ? "Nữ" : "Nam"}
+                />
+                <CardInfoLine
+                  lineName={t("joinDate")}
+                  contentLine={detailChild?.joinDate}
+                />
+                <CardInfoLine
+                  lineName={t("nationality")}
+                  contentLine={detailChild?.nation}
+                />
+                <CardInfoLine
+                  lineName={t("status")}
+                  contentLine={detailChild?.status ? "Đang học" : "Đã nghỉ"}
+                />
 
-            <CardInfoLine lineName={t("note")} contentLine={infoChild?.note} />
+                <CardInfoLine
+                  lineName={t("address")}
+                  contentLine={detailChild?.address}
+                />
+
+                <CardInfoLine
+                  lineName={t("note")}
+                  contentLine={detailChild?.note}
+                />
+              </>
+            ) : (
+              <>
+                <div className="flex w-full">
+                  <div className="grid grid-rows-1 gap-2 w-full">
+                    <Input
+                      id="fullName"
+                      label="Họ tên"
+                      register={register}
+                      defaultValue={detailChild?.fullName}
+                      errors={errors}
+                    />
+                    <Input
+                      id="birthDay"
+                      label="Ngày sinh"
+                      register={register}
+                      defaultValue={detailChild?.birthDay}
+                      errors={errors}
+                    />
+                    <select
+                      id="gender"
+                      {...register("gender")}
+                      defaultValue={detailChild?.gender}
+                      className="outline-none border-slate-300 border-2 rounded-md p-4"
+                    >
+                      <option value="0">Nữ</option>
+                      <option value="1">Nam</option>
+                    </select>
+                    <Input
+                      id="nation"
+                      label="Quốc tịch"
+                      register={register}
+                      errors={errors}
+                    />
+                    <Input
+                      id="address"
+                      label="Địa chỉ"
+                      register={register}
+                      errors={errors}
+                    />
+                    <Input
+                      id="note"
+                      type="textarea"
+                      label="Ghi Chú"
+                      register={register}
+                      errors={errors}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <div className="mt-4">
+            {!editMode ? (
+              <Button
+                label="Chỉnh sửa"
+                custom="my-2"
+                outline
+                onClick={() => handleChangeModeEdit()}
+              />
+            ) : (
+              <Button
+                label="Lưu"
+                custom="my-2"
+                outline
+                onClick={handleSubmit(onSubmit)}
+              />
+            )}
+            <Button label="Thoát" onClick={() => handleDialog()} />
           </div>
         </CardInfo>
       </div>
