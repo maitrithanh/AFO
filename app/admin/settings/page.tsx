@@ -18,6 +18,7 @@ const SettingPage = () => {
       localStorage.setItem("bgSidebar", "false");
     }
     setSidebarBg((curr) => !curr);
+    location.reload();
   };
 
   useEffect(() => {
