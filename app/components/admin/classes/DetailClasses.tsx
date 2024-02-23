@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import useFetch from "@/utils/useFetch";
 import { useTranslation } from "react-i18next";
-import { MdArrowBackIosNew } from "react-icons/md";
 import {
   Select,
   SelectContent,
@@ -11,20 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+
 import { Input } from "@/components/ui/input";
 import DefaultImage from "@/app/components/shared/defaultImage";
 import { useSearchParams } from "next/navigation";
 import DialogProfile from "../../profile/DialogProfile";
-import Link from "next/link";
 import BackAction from "../BackAction";
 import { getImageUrl } from "@/utils/image";
 
