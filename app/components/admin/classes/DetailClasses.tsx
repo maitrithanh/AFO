@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CiEdit } from "react-icons/ci";
 
 import { Input } from "@/components/ui/input";
 import DefaultImage from "@/app/components/shared/defaultImage";
@@ -24,6 +25,8 @@ const DetailClasses = (id: any) => {
   const year = searchParams.get("year");
   const [closeDialog, setCloseDialog] = useState(false);
   const [dataStudentDetail, setDataStudentDetail] = useState({});
+  const [searchType, setSearchType] = useState("searchName");
+  const [search, setSearch] = useState("");
 
   const { data: detailClassData } = useFetch(
     `ClassRoom/Detail/id=${id.id}&year=${year}`
@@ -31,6 +34,12 @@ const DetailClasses = (id: any) => {
 
   const handleDialog = () => {
     setCloseDialog((currState) => !currState);
+  };
+
+  const searchChildInClass = (c: any): boolean => {
+    const matchName: boolean = c.fullName.toLowerCase().includes(search);
+    const matchPhone: boolean = c.phone.includes(search);
+    return matchName || matchPhone;
   };
 
   return (
@@ -55,8 +64,10 @@ const DetailClasses = (id: any) => {
               </div>
               <div className="flex">
                 <p className="md:text-xl">
-                  Giáo viên chủ nhiệm:{" "}
-                  <span className="italic">{detailClassData?.teachers}</span>
+                  Giáo viên chủ nhiệm:
+                  <span className="italic ml-2">
+                    {detailClassData?.teachers}
+                  </span>
                 </p>
               </div>
             </div>
@@ -66,22 +77,16 @@ const DetailClasses = (id: any) => {
                   + {t("addNew")}
                 </button>
               </div>
-              <div className="bg-white flex items-center">
-                <div className="shadow-lg rounded-lg border">
-                  <Select>
-                    <SelectTrigger className="md:w-[180px] w-[120px]">
-                      <SelectValue placeholder="Tìm" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="nameFilter">Tìm theo tên</SelectItem>
-                      <SelectItem value="phoneNumberFilter">
-                        Tìm theo số điện thoại
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="mx-2 shadow-lg rounded-lg">
-                  <Input type="email" placeholder="Tìm kiếm..." />
+              <div className="bg-white flex items-center md:mb-2 mb-4">
+                <div className="mx-2 shadow-lg rounded-lg md:w-[480px] w-full flex">
+                  <Input
+                    type="email"
+                    placeholder="Tìm kiếm..."
+                    className="p-4 "
+                    onChange={(event) => {
+                      setSearch(event.target.value.toLowerCase());
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -113,8 +118,9 @@ const DetailClasses = (id: any) => {
                 </tr>
               </thead>
               <tbody>
-                {detailClassData?.students?.map(
-                  (dataStudent: any, index: any) => {
+                {detailClassData?.students
+                  ?.filter(searchChildInClass)
+                  .map((dataStudent: any, index: any) => {
                     return (
                       <tr
                         key={dataStudent.id}
@@ -139,7 +145,7 @@ const DetailClasses = (id: any) => {
                         <td className="px-6 py-4">{dataStudent.phone}</td>
                         <td className="px-6 py-4">{dataStudent.parentName}</td>
                         <td
-                          className="md:px-6 md:py-4 hover"
+                          className="md:px-6 md:py-4 hover hover:text-main"
                           onClick={() => {
                             setDataStudentDetail({
                               avatar: dataStudent.avatar,
@@ -148,20 +154,11 @@ const DetailClasses = (id: any) => {
                             setCloseDialog(true);
                           }}
                         >
-                          <Image
-                            title="Chi tiết"
-                            src={"/icons/detail.webp"}
-                            alt="Detail"
-                            width={26}
-                            height={26}
-                            priority
-                            className="hover:scale-110 transition-all"
-                          />
+                          <CiEdit size={24} />
                         </td>
                       </tr>
                     );
-                  }
-                )}
+                  })}
               </tbody>
             </table>
           </div>

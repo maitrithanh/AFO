@@ -7,7 +7,7 @@ export const menuParent = [
   {
     name: "helth",
     image: "heartbeat.webp",
-    path: "/",
+    path: "/parent/health",
   },
   {
     name: "schoolFee",

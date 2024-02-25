@@ -41,6 +41,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
     null,
     refresh
   );
+
   const { data: listChild } = useFetch("parent/childrenlist");
   const infoChild = listChild?.find((x: any) => x.id == child);
   const { data: Session } = useSession();
@@ -265,22 +266,26 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
                         className={`w-14 h-14 rounded-full cursor-pointer`}
                         custom="w-[80px] h-[80px]"
                       />
-                      <div
-                        title="Đổi ảnh"
-                        className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
-                      >
-                        <input
-                          type="file"
-                          onChange={handleFileChangeChild}
-                          className="hidden"
-                          title="no"
-                          ref={uploadAvatarRef}
-                        />
-                        <FaPen
-                          onClick={onUpdateAvatarClick}
-                          className="cursor-pointer text-white"
-                        />
-                      </div>
+                      {parent ? (
+                        ""
+                      ) : (
+                        <div
+                          title="Đổi ảnh"
+                          className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
+                        >
+                          <input
+                            type="file"
+                            onChange={handleFileChangeChild}
+                            className="hidden"
+                            title="no"
+                            ref={uploadAvatarRef}
+                          />
+                          <FaPen
+                            onClick={onUpdateAvatarClick}
+                            className="cursor-pointer text-white"
+                          />
+                        </div>
+                      )}
                     </span>
                   </div>
                   <CardInfoLine

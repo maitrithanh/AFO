@@ -43,6 +43,16 @@ export function middleware (request: NextRequest) {
     }
   }
 
+  if ((request.nextUrl.pathname).includes('/teacher')) {
+    if(token && role === "Teacher") {
+      if(request.nextUrl.pathname !== "/teacher"){
+        return NextResponse.rewrite(new URL(request.nextUrl.pathname, request.url))
+      }
+    }else {
+      return NextResponse.rewrite(new URL('/login', request.url))
+    }
+  }
+
   if (request.nextUrl.pathname.includes('/login')) {
     if(token && role === "Parent"){
       return NextResponse.redirect(new URL('/parent', request.url))
@@ -61,7 +71,7 @@ export function middleware (request: NextRequest) {
     }else if(token && role === "Admin") {
       return NextResponse.redirect(new URL('/admin/profile', request.url))
     }else if(token && role === "Teacher") {
-      return NextResponse.rewrite(new URL('/teacher/profile', request.url))
+      return NextResponse.redirect(new URL('/teacher/profile', request.url))
     }else {
       return NextResponse.rewrite(new URL('/login', request.url))
     }
