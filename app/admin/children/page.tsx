@@ -167,7 +167,7 @@ const ParentPage = () => {
 
                     <td className="md:px-6 md:py-4">
                       <Link
-                        href={`/admin/parent/${x.id}`}
+                        href={`/admin/children/${x.id}`}
                         className="font-medium hover:text-main"
                       >
                         <CiCircleMore size={24} />
