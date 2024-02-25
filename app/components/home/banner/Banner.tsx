@@ -34,7 +34,7 @@ const Banner = () => {
         </div>
         <div className="my-2"></div>
       </div>
-      <div className=" lg:bottom-32 right-2 bottom-14  flex justify-center items-center">
+      <div className=" lg:bottom-32 right-2 bottom-14  flex justify-center items-center animate-floating ">
         <Image
           src={"/banner/an-preschool.webp"}
           alt="banner"

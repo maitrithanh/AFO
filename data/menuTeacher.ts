@@ -18,6 +18,11 @@ export const menuTeacher = [
       name: "contact",
       image: "telephone.webp",
       path: "/",
-    }
+    },
+    {
+      name: "helth",
+      image: "heartbeat.webp",
+      path: "/teacher/health",
+    },
   ];
   

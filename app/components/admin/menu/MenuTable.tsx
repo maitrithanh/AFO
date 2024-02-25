@@ -1,10 +1,8 @@
 "use client";
-
-import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import useFetch from "@/utils/useFetch";
-import Link from "next/link";
+import { CiCircleMore } from "react-icons/ci";
 
 const MenuTable = () => {
   const { t } = useTranslation();
@@ -70,18 +68,10 @@ const MenuTable = () => {
                     </td>
 
                     <td
-                      className="md:px-6 md:py-4 hover"
+                      className="md:px-6 md:py-4 hover hover:text-main"
                       onClick={() => router.push(`/admin/menu/${allMenu.id}`)}
                     >
-                      <Image
-                        title="Chi tiết"
-                        src={"/icons/detail.webp"}
-                        alt="Detail"
-                        width={26}
-                        height={26}
-                        priority
-                        className="hover:scale-110 transition-all"
-                      />
+                      <CiCircleMore size={24} />
                     </td>
                   </tr>
                 );
