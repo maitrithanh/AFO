@@ -120,5 +120,6 @@
     "subject": "Subject",
     "previous": "Previous",
     "parentlist": "Guardians",
-    "childrenlist": "Children"
+    "childrenlist": "Children",
+    "event": "Event"
 }

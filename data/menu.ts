@@ -47,10 +47,10 @@ export const  menu = [
     },
     ,
     {
-        text: 'subject',
+        text: 'event',
         icon: FaHeart,
-        pathname: '/admin/subject',
-        img: "book.webp"
+        pathname: '/admin/event',
+        img: "event.webp"
     },
     {
         text: 'pickup',
