@@ -1,19 +1,31 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { setCookie } from "cookies-next";
 import useFetch from "@/utils/useFetch";
 import DefaultImage from "../components/shared/defaultImage";
 import { useTranslation } from "react-i18next";
 import { getImageUrl } from "@/utils/image";
+import Loading from "../components/shared/Loading";
 
 const ChooseUserPage = () => {
   const router = useRouter();
   const { t } = useTranslation();
-
+  const [loading, setLoading] = useState(true);
   const { data: listChild } = useFetch("parent/childrenlist");
 
+  useEffect(() => {
+    if (listChild?.length == 1) {
+      saveIdChild(listChild[0].id);
+    } else {
+      setLoading(false);
+    }
+  }, [listChild]);
+
+  if (loading) {
+    return <Loading />;
+  }
   const saveIdChild = (id: string) => {
     setCookie("child", id);
     router.push("/parent");

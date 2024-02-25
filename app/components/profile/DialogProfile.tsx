@@ -11,6 +11,7 @@ import useFetch from "@/utils/useFetch";
 import Input from "../inputs/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Button from "../shared/Button";
+import { IoIosArrowBack } from "react-icons/io";
 
 interface DialogProfileProps {
   handleDialog: () => void;
@@ -25,9 +26,11 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
   const editRef = useRef<HTMLInputElement | null>(null);
   const [editMode, setEditMode] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
-  const { data: detailChild, loading } = useFetch(
-    "Child/getChild?id=" + data.id
+  const { data: detailChild } = useFetch(
+    "Child/getChild?id=" + data.id,
+    refresh
   );
 
   //upload avtar child
@@ -67,11 +70,19 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
   const handleChangeModeEdit = () => {
     setEditMode((curr) => !curr);
   };
+  const values = {
+    fullName: detailChild?.fullName,
+    birthDay: detailChild?.birthDay,
+    gender: detailChild?.gender,
+    nation: detailChild?.nation,
+    address: detailChild?.address,
+    note: detailChild?.note,
+  };
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = useForm<FieldValues>({
     defaultValues: {
       fullName: "",
@@ -81,12 +92,15 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
       address: "",
       note: "",
     },
+    values,
   });
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     callApiWithToken()
       .put(`Child/update/` + detailChild.id, data)
       .then((response) => {
-        toast("Đã cập nhật");
+        toast.success("Đã cập nhật");
+        setRefresh(true);
+        handleDialog();
       })
       .catch((error) => {
         toast.error(error, { id: error });
@@ -102,6 +116,20 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
     >
       <div className="w-[550px] mx-2 h-fit">
         <CardInfo cardName={t("infoChild")}>
+          <div className="mb-4 ">
+            {editMode ? (
+              <button
+                onClick={() => handleChangeModeEdit()}
+                className="text-main flex items-center"
+              >
+                <IoIosArrowBack />
+                Trở lại
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
+
           <div>
             <div className="absolute right-4 -top-10">
               <span className="relative group">
@@ -170,25 +198,22 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
             ) : (
               <>
                 <div className="flex w-full">
-                  <div className="grid grid-rows-1 gap-2 w-full">
+                  <div className="grid grid-rows-1 gap-4 w-full">
                     <Input
                       id="fullName"
                       label="Họ tên"
                       register={register}
-                      defaultValue={detailChild?.fullName}
                       errors={errors}
                     />
                     <Input
                       id="birthDay"
                       label="Ngày sinh"
                       register={register}
-                      defaultValue={detailChild?.birthDay}
                       errors={errors}
                     />
                     <select
                       id="gender"
                       {...register("gender")}
-                      defaultValue={detailChild?.gender}
                       className="outline-none border-slate-300 border-2 rounded-md p-4"
                     >
                       <option value="0">Nữ</option>
@@ -227,12 +252,14 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
                 onClick={() => handleChangeModeEdit()}
               />
             ) : (
-              <Button
-                label="Lưu"
-                custom="my-2"
-                outline
-                onClick={handleSubmit(onSubmit)}
-              />
+              <div className="flex gap-2">
+                <Button
+                  label="Lưu"
+                  custom="my-2"
+                  outline
+                  onClick={handleSubmit(onSubmit)}
+                />
+              </div>
             )}
             <Button label="Thoát" onClick={() => handleDialog()} />
           </div>
