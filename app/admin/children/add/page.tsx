@@ -2,8 +2,9 @@
 
 import ChildrenPutForm from "@/app/components/admin/children/putForm"
 import ParentPutForm from "@/app/components/admin/parent/parentPutForm"
-import AddChildReq from "@/types/AddChildReq"
+import SelectParent from "@/app/components/admin/parent/selectParent"
 import AddParentReq from "@/types/AddParentReq"
+import DetailChildReq from "@/types/DetailChildReq"
 import { callApiWithToken } from "@/utils/callApi"
 import { t } from "i18next"
 import { useState } from "react"
@@ -12,67 +13,98 @@ import toast from "react-hot-toast"
 const AddChildrenPage = () => {
 
     const initChild = {
-        FullName: '',
-        BirthDay: '',
-        Nation: 'Việt Nam',
-        Gender: 0,
-        Address: '',
-        Note: '',
-        Avatar: null
+        fullName: '',
+        birthDay: '',
+        nation: 'Việt Nam',
+        gender: 0,
+        address: '',
+        note: '',
+        avatarFile: null,
+        avatar: ''
     };
 
     const initParent = {
-        FullName: '',
-        PhoneNumber: '',
-        Gender: 0,
-        Address: '',
-        BirthDay: '',
-        IDNumber: '',
-        Job: '',
-        Note: '',
+        fullName: '',
+        phoneNumber: '',
+        gender: 0,
+        address: '',
+        birthDay: '',
+        idNumber: '',
+        job: '',
+        note: '',
     }
 
-    const [dataChildren, setDataChildren] = useState<AddChildReq>(initChild)
+    const [dataChildren, setDataChildren] = useState<DetailChildReq>(initChild)
     const [dataParent, setDataParent] = useState<AddParentReq>(initParent)
     const [registerdParent, setRegisterdParent] = useState(false);
+    const [selectParent, setSelectParent] = useState('');
 
     const onSubmit = () => { 
         let formData = new FormData();
 
+        var pre = registerdParent ? '' : 'child.';
+
+        //append child
         for (const [propName, propValue] of Object.entries(dataChildren)) {
-            const fullKey = `${'child'}.${propName}`
+            const fullKey = `${pre}${propName}`
             formData.append(fullKey, propValue);
         }
 
-        for (const [propName, propValue] of Object.entries(dataParent)) {
-            const fullKey = `${'parent'}.${propName}`
-            formData.append(fullKey, propValue);
+        const onSuccess = () => { 
+            setDataChildren(initChild);
+            setDataParent(initParent);
+            setRegisterdParent(false);
         }
 
-        if (!registerdParent) { 
+        if (!registerdParent) {
+            //append parent
+            for (const [propName, propValue] of Object.entries(dataParent)) {
+                const fullKey = `${'parent'}.${propName}`
+                formData.append(fullKey, propValue);
+            }
+
             callApiWithToken()
-            .post("child/add", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data", // Specify content type
-                },
-            })
-            .then((res) => {
-                toast.success(t("toastUpdate"));
-                setDataChildren(initChild);
-            })
-            .catch((err) => {
-                toast.error(err?.response?.data?.error || 'Lỗi');
-            })
+                .post("child/add", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data", // Specify content type
+                    },
+                })
+                .then((res) => {
+                    toast.success(t("toastUpdate"));
+                    onSuccess()
+                })
+                .catch((err) => {
+                    toast.error(err?.response?.data?.error || 'Lỗi');
+                })
+        } else { 
+            if (!selectParent) { 
+                toast.error('Chưa chọn phụ huynh')
+                return
+            }
+
+            callApiWithToken()
+                .post("child/addToParent/" + selectParent, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data", // Specify content type
+                    },
+                })
+                .then((res) => {
+                    toast.success(t("toastUpdate"));
+                    onSuccess()
+                })
+                .catch((err) => {
+                    toast.error(err?.response?.data?.error || 'Lỗi');
+                })
         }
     }
 
-    return <div className="w-[50%] mx-auto">
+    return <div className="w-[60%] mx-auto">
         <h2 className="font-bold text-xl mb-3">Thông tin trẻ: </h2>
         <div>
-            <ChildrenPutForm data={dataChildren} setData={(x) => setDataChildren(x)} />
+            <ChildrenPutForm data={dataChildren} setData={(x) => setDataChildren(x)} editable={true} />
         </div>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between mt-[20px]">
             <h2 className="font-bold text-xl mb-3">Thông tin người giám hộ: </h2>
             <label className="inline-flex items-center mb-5 cursor-pointer">
                 <input type="checkbox" value="" className="sr-only peer" checked={registerdParent} onChange={() => { setRegisterdParent(x => !x)}} />
@@ -85,11 +117,11 @@ const AddChildrenPage = () => {
             registerdParent ?
                 
                 <div>
-                    select parent
+                    <SelectParent selectId={selectParent} setSelectId={(x) => setSelectParent(x)} />
                 </div>
                 :
                 <div>
-                    <ParentPutForm data={dataParent} setData={(x) => setDataParent(x)} />
+                    <ParentPutForm data={dataParent} setData={(x) => setDataParent(x)} editable={true} />
                 </div>
         }
         

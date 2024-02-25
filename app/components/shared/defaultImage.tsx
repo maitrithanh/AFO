@@ -19,7 +19,7 @@ const DefaultImage = (p: Props) => {
       onError={() => {
         setSrc(p.fallback);
       }}
-      className={`rounded-full ${p.custom ? p.custom : "w-[40px] "}`}
+      className={`rounded-full ${p.custom ? p.custom : "w-[40px] h-[40px]"}`}
     />
   );
 };

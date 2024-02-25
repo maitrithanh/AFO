@@ -14,19 +14,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { compareName } from "@/utils/compare";
+import { checkNameInclude, compareName } from "@/utils/compare"
+import SearchBar from "@/app/components/shared/searchBar"
 
 const ParentPage = () => {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("new");
+  const [keyword, setKeyword] = useState(''); //searching
 
   const { data: dataParent } = useFetch<ParentListRes[]>("Parent/GetList");
 
   const RowPerPage = 20;
 
+  const searchParent = (c: ParentListRes): boolean => {
+    const matchName: boolean = checkNameInclude(c.fullName || '', keyword)
+    const matchPhone: boolean = (c.phoneNumber || '').includes(keyword);
+    return matchName || matchPhone
+  }
+
   const PageCount = useMemo(() => {
-    return Math.ceil((dataParent?.length ?? 0) / RowPerPage);
-  }, [dataParent]);
+    return Math.ceil((dataParent?.filter(searchParent).length ?? 0) / RowPerPage)
+  }, [dataParent, keyword])
 
   const getJoinDate = (a: ParentListRes): string => {
     return a.children.reduce((res, curr) =>
@@ -48,12 +56,32 @@ const ParentPage = () => {
     }
   };
 
+  const searchHints = useMemo(() => {
+    var names = dataParent?.map(x => x.fullName || '') || [];
+    var phones = dataParent?.map(x => x.phoneNumber || '') || [];
+    return [...names, ...phones]
+  }, [dataParent])
+
+  const onSearch = (s: string) => {
+    setKeyword(s);
+    setPage(1);
+  }
+
+
   return (
     <>
       <div className="flex justify-between items-center mb-5">
         <div>
           <h2 className="text-2xl font-bold mb-5">Danh sách phụ huynh</h2>
         </div>
+
+        <div className="flex items-center">
+          <p className="text-xl">Tìm kiếm: </p>
+          <div className="w-[250px]">
+            <SearchBar dataSource={searchHints} placeholder="Nhập tên hoặc sđt..." onSearch={onSearch} />
+          </div>
+        </div>
+
         <div className="bg-white shadow-lg rounded-lg">
           <Select
             onValueChange={(value: any) => {
@@ -73,6 +101,12 @@ const ParentPage = () => {
         </div>
       </div>
 
+      <div className="mb-3 italic">
+        {keyword &&
+          `Tìm kiếm "${keyword}": `
+        }
+      </div>
+
       <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -81,7 +115,6 @@ const ParentPage = () => {
               <th scope="col" className="px-6 py-3">
                 Tên Phụ Huynh
               </th>
-              <th>Tên Trẻ</th>
               <th scope="col" className="px-6 py-3">
                 Sđt
               </th>
@@ -94,13 +127,15 @@ const ParentPage = () => {
               <th scope="col" className="px-6 py-3">
                 Địa chỉ
               </th>
+              <th>Tên Trẻ</th>
 
               <th scope="col" className="px-6 py-3"></th>
             </tr>
           </thead>
           <tbody>
             {[...(dataParent || [])]
-              ?.sort(compareParent)
+              .filter(searchParent)
+              .sort(compareParent)
               .slice((page - 1) * RowPerPage, page * RowPerPage)
               .map((x, i) => {
                 return (
@@ -117,9 +152,6 @@ const ParentPage = () => {
                     >
                       {x.fullName}
                     </th>
-                    <td>
-                      <pre>{x.children.map((x) => x.fullName).join(",\n")}</pre>
-                    </td>
                     <td className="px-6 py-4 md:max-w-[660px]">
                       {x.phoneNumber}
                     </td>
@@ -128,10 +160,13 @@ const ParentPage = () => {
                     </td>
                     <td className="px-6 py-4">{x.birthDay}</td>
                     <td className="px-6 py-4">{x.address}</td>
+                     <td>
+                      <pre>{x.children.map((x) => x.fullName).join(",\n")}</pre>
+                    </td>
 
                     <td className="md:px-6 md:py-4">
                       <Link
-                        href={`/admin/parent/${x.id}`}
+                        href={`/admin/listparent/${x.id}`}
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
                         <Image
