@@ -41,6 +41,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
     null,
     refresh
   );
+
   const { data: listChild } = useFetch("parent/childrenlist");
   const infoChild = listChild?.find((x: any) => x.id == child);
   const { data: Session } = useSession();

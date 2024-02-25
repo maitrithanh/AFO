@@ -7,14 +7,14 @@ const IntroSection = () => {
   const { t } = useTranslation();
   return (
     <div className="my-2">
-      <div className="relative flex justify-center w-full py-8">
+      <div className="relative flex justify-center w-full py-8 ">
         <Image
           src={"/icons/cloud.webp"}
           width={200}
           height={100}
           alt="cloud"
           loading="lazy"
-          className="absolute duration-500 hidden md:block left-28"
+          className="absolute duration-500 hidden md:block left-28 "
         />
         <Image
           src={"/icons/cloud.webp"}

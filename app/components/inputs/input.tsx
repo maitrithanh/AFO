@@ -1,8 +1,6 @@
 "use client";
-
 import React from "react";
 import { UseFormRegister, FieldValues, FieldErrors } from "react-hook-form";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { MdOutlineLock, MdOutlineLockOpen } from "react-icons/md";
 
 interface InputProps {
@@ -38,7 +36,8 @@ const Input: React.FC<InputProps> = ({
       <input
         autoComplete="off"
         id={id}
-        defaultValue={defaultValue}
+        key={defaultValue}
+        value={defaultValue}
         disabled={disabled}
         {...register(id, { required })}
         placeholder=""
