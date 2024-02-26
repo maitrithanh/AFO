@@ -1,25 +1,8 @@
-"use client";
-
 import React from "react";
-import Sidebar from "../components/dashboard/sidebar/Sidebar";
-import Navbar from "../components/dashboard/navbar/Navbar";
-import { Toaster } from "react-hot-toast";
+import AdminLayout from "../components/admin/AdminLayout";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="flex h-screen bg-[#fafafb]">
-      <Toaster />
-      <div className="flex">
-        <Sidebar />
-      </div>
-      <div className="w-full h-screen transition-all delay-300">
-        <div className="border-b shadow-sm">
-          <Navbar admin />
-        </div>
-        <div className="p-4">{children}</div>
-      </div>
-    </div>
-  );
+  return <AdminLayout>{children}</AdminLayout>;
 };
 
 export default Layout;
