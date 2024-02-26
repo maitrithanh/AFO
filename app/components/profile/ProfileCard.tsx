@@ -33,6 +33,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
   const [refresh, setRefresh] = useState(0);
   const [openChangePassword, setOpenChangePassword] = useState(false);
   const child = getCookie("child");
+  const role = getCookie("role");
 
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
 
@@ -333,7 +334,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
             <CardInfo cardName={t("albumImages")}>
               <div className="absolute right-4 top-4">
                 <Link
-                  href={"#"}
+                  href={`/${role?.toLowerCase()}/albums`}
                   className="text-main font-bold hover:opacity-80 hover:mr-2 transition-all"
                 >
                   {t("more")}
