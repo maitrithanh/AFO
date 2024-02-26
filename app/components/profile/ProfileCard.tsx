@@ -339,7 +339,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
                   {t("more")}
                 </Link>
               </div>
-              <Slider showThumbs />
+              <Slider showThumbs data={infoChild?.pictures?.split(",")} />
             </CardInfo>
           </div>
 
