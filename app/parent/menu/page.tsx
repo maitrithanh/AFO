@@ -7,7 +7,6 @@ import { useState } from "react";
 import moment from "moment";
 
 const MenuPage = () => {
-
   const [week, setWeek] = useState(
     moment().format("YYYY") + "-W" + moment().format("WW")
   );
@@ -20,10 +19,12 @@ const MenuPage = () => {
   const { data: dataMeal } = useFetch<MealRes[]>("Menu/ListMeal");
 
   const days = ["T2", "T3", "T4", "T5", "T6", "T7"];
-  const mealTime = [10, 14, 24] //tg kết thúc các bữa ăn (giả định)
+  const mealTime = [10, 14, 24]; //tg kết thúc các bữa ăn (giả định)
 
   const getListFood = (day: number, meal: number): DetailMenuItem[] => {
-    return dataMenu?.items.filter((x) => x.day === day && x.idMeal === meal) || [];
+    return (
+      dataMenu?.items.filter((x) => x.day === day && x.idMeal === meal) || []
+    );
   };
 
   const getWeekName = (week: string = "") => {
@@ -31,19 +32,19 @@ const MenuPage = () => {
     return "Tuần " + arr[1] + " - " + arr[0];
   };
 
-  const isCurrentMeal = (day?: number, idMeal?: number): boolean => { 
+  const isCurrentMeal = (day?: number, idMeal?: number): boolean => {
     if (day != undefined && moment().isoWeekday() - 1 !== day) return false;
-    if (idMeal != undefined) { 
-      var i = dataMeal?.findIndex(x => x.id === idMeal);
+    if (idMeal != undefined) {
+      var i = dataMeal?.findIndex((x) => x.id === idMeal);
       if (i == undefined || i < 0 || i > mealTime.length) return false;
 
       var time = moment().hour();
-      var j = mealTime.findIndex(x => time < x);
+      var j = mealTime.findIndex((x) => time < x);
       if (i !== j) return false;
     }
 
     return true;
-  }
+  };
 
   return (
     <div className="bg-white md:w-[75vw] m-auto md:px-10 px-4 py-10 rounded-xl">
@@ -101,13 +102,15 @@ const MenuPage = () => {
         </div>
       ) : (
         <div>
-          <table className="w-full text-gray-500 dark:text-gray-400 text-center text-md mt-3">
+          <table className="w-full text-gray-500 dark:text-gray-400 text-center text-md mt-3 ">
             <thead className="text-xs text-gray-700 uppercase bg-[#FFD9BF] dark:bg-gray-700 dark:text-gray-400">
               <tr className="">
                 <th className="rounded-tl-[12px]"></th>
                 {days.map((x, i) => (
                   <th
-                    className={`${isCurrentMeal(i) ? `bg-[#FFC694]`: ''} md:px-6 py-3 text-lg font-thin relative last:rounded-tr-[12px]`}
+                    className={`${
+                      isCurrentMeal(i) ? `bg-[#FFC694]` : ""
+                    } md:px-6 py-3 text-lg font-thin relative last:rounded-tr-[12px]`}
                     key={x}
                   >
                     {x}
@@ -121,8 +124,12 @@ const MenuPage = () => {
                   key={x.id}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 md:border"
                 >
-                  <th className={`${isCurrentMeal(undefined, x.id) ? `bg-[#FFC694]` : ''} md:px-6 py-4 relative w-[10px]`}>
-                    <p className= "font-thin md:text-[18px] -rotate-90 w-[10px]">
+                  <th
+                    className={`${
+                      isCurrentMeal(undefined, x.id) ? `bg-[#FFC694]` : ""
+                    } md:px-6 py-4 relative w-[10px]`}
+                  >
+                    <p className="font-thin md:text-[18px] -rotate-90 w-[10px]">
                       {x.name}
                     </p>
                   </th>
@@ -130,16 +137,13 @@ const MenuPage = () => {
                   {days.map((y, i) => (
                     <td
                       key={`${x.id}-${i}`}
-                      className={`${isCurrentMeal(i, x.id) ? `text-[#FFC694] font-bold` : ''} md:px-6 pt-2 min-h-[200px] border md:p-2`}
+                      className={`${
+                        isCurrentMeal(i, x.id) ? `text-[#FFC694] font-bold` : ""
+                      } md:px-6 pt-2 min-h-[200px] border md:p-2`}
                     >
                       {getListFood(i, x.id).map((z, j) => (
-                        <div
-                          key={`${x.id}-${i}-${j}`}
-                          className="flex md:p-1"
-                        >
-                          <span>
-                            {z.nameFood}
-                          </span>
+                        <div key={`${x.id}-${i}-${j}`} className="flex md:p-1">
+                          <span>{z.nameFood}</span>
                         </div>
                       ))}
                     </td>

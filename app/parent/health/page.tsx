@@ -93,7 +93,7 @@ const HealthPage = () => {
                 <p
                   className={`text-sm font-normal ml-4 w-fit px-2 h-8 flex justify-center items-center ${
                     health?.status
-                      ? health?.status == "Tốt"
+                      ? health?.status == "Khỏe Mạnh"
                         ? "bg-green-500"
                         : "bg-rose-500"
                       : "bg-yellow-500"

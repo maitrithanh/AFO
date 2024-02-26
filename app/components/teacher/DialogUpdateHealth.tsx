@@ -116,7 +116,7 @@ const DialogUpdateHealth = ({
           <Input
             id="status"
             type="text"
-            label="Trạng thái"
+            label="Trình trạng"
             register={register}
             errors={errors}
             required
