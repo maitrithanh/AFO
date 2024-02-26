@@ -19,7 +19,7 @@ const Slider: React.FC<SliderProps> = ({ showThumbs = false, data }) => {
         showThumbs={showThumbs}
         interval={2000}
         dynamicHeight
-        className="md:max-h-[600px] max-h-[200px]"
+        className="h-fit"
       >
         {data?.map((item: any, index: any) => {
           return (
@@ -28,21 +28,14 @@ const Slider: React.FC<SliderProps> = ({ showThumbs = false, data }) => {
               className="md:h-[600px] h-[200px] relative transition-all"
             >
               <img
-                src={getImageUrl(item?.url)}
-                alt={item?.url}
-                className="md:max-h-[600px] max-h-[200px] relative"
+                src={getImageUrl(item)}
+                alt={item}
+                className="md:max-h-[600px] max-h-[200px] relative object-cover"
               />
             </div>
           );
         })}
       </Carousel>
-      {/* <Image
-        src={item.url}
-        layout="fill"
-        alt={item.url}
-        priority
-        className="md:max-h-[600px] max-h-[200px] relative"
-      /> */}
     </>
   );
 };
