@@ -218,7 +218,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
               />
               <CardInfoLine
                 lineName={t("gender")}
-                contentLine={currentUser?.gender}
+                contentLine={infoChild?.gender === 1 ? "Nam" : "Nữ"}
               />
               <CardInfoLine
                 lineName={t("phoneNumber")}
@@ -298,7 +298,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
                   />
                   <CardInfoLine
                     lineName={t("gender")}
-                    contentLine={infoChild?.gender}
+                    contentLine={infoChild?.gender == 1 ? "Nam" : "Nữ"}
                   />
                   <CardInfoLine
                     lineName={t("joinDate")}

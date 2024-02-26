@@ -6,7 +6,7 @@ export const menuTeacher = [
     },
     {
       name: "teacherSchedule",
-      image: "calendar.webp",
+      image: "weekly.webp",
       path: "/",
     },
     {
@@ -28,6 +28,11 @@ export const menuTeacher = [
       name: "event",
       image: "event.webp",
       path: "/teacher/event",
+    },
+    {
+      name: "classes",
+      image: "blackboard.webp",
+      path: "/teacher/classes",
     },
   ];
   

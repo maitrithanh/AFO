@@ -16,11 +16,13 @@ import { IoIosArrowBack } from "react-icons/io";
 interface DialogProfileProps {
   handleDialog: () => void;
   data: any;
+  teacher?: boolean;
 }
 
 const DialogProfile: React.FC<DialogProfileProps> = ({
   handleDialog,
   data,
+  teacher,
 }) => {
   const { t } = useTranslation();
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
@@ -244,23 +246,28 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
             )}
           </div>
           <div className="mt-4">
-            {!editMode ? (
-              <Button
-                label="Chỉnh sửa"
-                custom="my-2"
-                outline
-                onClick={() => handleChangeModeEdit()}
-              />
-            ) : (
-              <div className="flex gap-2">
+            {!teacher ? (
+              !editMode ? (
                 <Button
-                  label="Lưu"
+                  label="Chỉnh sửa"
                   custom="my-2"
                   outline
-                  onClick={handleSubmit(onSubmit)}
+                  onClick={() => handleChangeModeEdit()}
                 />
-              </div>
+              ) : (
+                <div className="flex gap-2">
+                  <Button
+                    label="Lưu"
+                    custom="my-2"
+                    outline
+                    onClick={handleSubmit(onSubmit)}
+                  />
+                </div>
+              )
+            ) : (
+              ""
             )}
+
             <Button label="Thoát" onClick={() => handleDialog()} />
           </div>
         </CardInfo>
