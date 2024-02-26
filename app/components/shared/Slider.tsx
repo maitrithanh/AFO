@@ -1,15 +1,15 @@
 "use client";
 import React from "react";
-import { slides } from "@/data/slides";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import Image from "next/legacy/image";
+import { getImageUrl } from "@/utils/image";
 
 interface SliderProps {
   showThumbs?: boolean;
+  data: any;
 }
 
-const Slider: React.FC<SliderProps> = ({ showThumbs = false }) => {
+const Slider: React.FC<SliderProps> = ({ showThumbs = false, data }) => {
   return (
     <>
       <Carousel
@@ -21,15 +21,15 @@ const Slider: React.FC<SliderProps> = ({ showThumbs = false }) => {
         dynamicHeight
         className="md:max-h-[600px] max-h-[200px]"
       >
-        {slides.map((item: any) => {
+        {data?.map((item: any, index: any) => {
           return (
             <div
-              key={item.url}
+              key={item?.index}
               className="md:h-[600px] h-[200px] relative transition-all"
             >
               <img
-                src={item.url}
-                alt={item.url}
+                src={getImageUrl(item?.url)}
+                alt={item?.url}
                 className="md:max-h-[600px] max-h-[200px] relative"
               />
             </div>
