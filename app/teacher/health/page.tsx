@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import GetClass from "@/utils/classes/getClass";
 import useFetch from "@/utils/useFetch";
 import React, { useEffect, useState } from "react";
 import { MdCalendarMonth } from "react-icons/md";
@@ -15,36 +16,16 @@ const HealthPage = () => {
   const day = new Date();
   let month = day.getMonth();
   const [getMonth, setGetMonth] = useState(month + 1);
-  const [getClassId, setGetClassId] = useState("");
-  const [classId, setClassId] = useState([] as string[]);
   const { data: healthEvent } = useFetch("Healthy/getListEvent");
   const { data: dataUser } = useFetch(`/Auth/current`);
   const [arrRelationship, setArrRelationship] = useState("");
+  const [getClassIdC, setGetClassIdC] = useState("");
+
+  const { classId, getClassId, arrClassName } = GetClass();
 
   useEffect(() => {
-    if (dataUser) setArrRelationship(dataUser?.relationship);
-  }, [dataUser]);
-
-  useEffect(() => {
-    if (arrRelationship) {
-      let arrClassId = arrRelationship.split(/[-,,]/);
-      for (let i = 0; i < arrClassId.length; i++) {
-        if (i == 1 || i == 2) {
-          arrClassId.splice(i, 1);
-        }
-      }
-      setClassId(arrClassId);
-      setGetClassId(arrClassId[0].trim());
-    }
-  }, [arrRelationship]);
-
-  //Lấy mảng tên lớp
-  let arrClassName = arrRelationship.split(/[-,,]/);
-  for (let i = 0; i < arrClassName.length; i++) {
-    if (i == 0 || i == 1) {
-      arrClassName.splice(i, 1);
-    }
-  }
+    setGetClassIdC(getClassId);
+  }, [getClassId]);
 
   //format ngay thang nam
   const formatDate = (date: Date) => {
@@ -98,7 +79,7 @@ const HealthPage = () => {
             <Select
               defaultValue={classId[0]?.trim()}
               onValueChange={(value: any) => {
-                setGetClassId(value);
+                setGetClassIdC(value);
               }}
             >
               <SelectTrigger className="md:w-[140px] w-full text-lg">
@@ -123,7 +104,7 @@ const HealthPage = () => {
           </div>
         </div>
       </div>
-      <HealthTable month={getMonth} classId={getClassId} />
+      <HealthTable month={getMonth} classId={getClassIdC} />
     </div>
   );
 };
