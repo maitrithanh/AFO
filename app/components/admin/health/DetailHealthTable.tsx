@@ -121,7 +121,13 @@ const DetailHealthTable = ({ eventId, classId }: HeathTableProps) => {
                         </td>
                         <td className="md:px-6 md:py-4">{studentHealth.bmi}</td>
                         <td className="md:px-6 md:py-4">{studentHealth.eye}</td>
-                        <td className="md:px-6 md:py-4">
+                        <td
+                          className={`md:px-6 md:py-4 ${
+                            studentHealth?.status === "Khỏe Mạnh"
+                              ? "text-green-500"
+                              : "text-rose-500"
+                          }`}
+                        >
                           {studentHealth.status}
                         </td>
                         <td
