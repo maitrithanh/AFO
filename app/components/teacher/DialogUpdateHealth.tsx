@@ -103,29 +103,6 @@ const DialogUpdateHealth = ({
             errors={errors}
             required
           />
-
-          <div className="relative">
-            <Input
-              id="bmi"
-              type="text"
-              label="BMI"
-              defaultValue={bmiValue.toFixed(2)}
-              register={register}
-              errors={errors}
-              required
-            />
-            <button
-              className="absolute right-2 top-5 text-main"
-              onClick={() => {
-                setBmiValue(
-                  getValues("weight") /
-                    ((getValues("height") / 100) * (getValues("height") / 100))
-                );
-              }}
-            >
-              <CiCalculator2 size={24} />
-            </button>
-          </div>
         </div>
         <div className="grid gap-4 my-4">
           <Input
