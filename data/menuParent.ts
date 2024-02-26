@@ -45,9 +45,9 @@ export const menuParent = [
     path: "/",
   },
   {
-    name: "Album",
-    image: "album-folder.webp",
-    path: "/",
+    name: "event",
+    image: "event.webp",
+    path: "/parent/event",
   },
   {
     name: "changeClasses",

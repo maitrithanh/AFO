@@ -1,7 +1,7 @@
 export const menuTeacher = [
     {
       name: "student",
-      image: "kids-card.webp",
+      image: "students.webp",
       path: "/teacher/calendar",
     },
     {
@@ -23,6 +23,11 @@ export const menuTeacher = [
       name: "helth",
       image: "heartbeat.webp",
       path: "/teacher/health",
+    },
+    {
+      name: "event",
+      image: "event.webp",
+      path: "/teacher/event",
     },
   ];
   

@@ -6,6 +6,7 @@ import Button from "../../shared/Button";
 import { IoMdClose } from "react-icons/io";
 import callApi, { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
+import { formatDate, reformatDateString } from "@/utils/formatDate/formatDate";
 
 interface DialogAddEventProps {
   onClose: () => void;
@@ -18,27 +19,11 @@ const DialogAddEvent = ({
   editMode,
   currentEvents,
 }: DialogAddEventProps) => {
-  function formatDate(date: string) {
-    var d = new Date(reformatDateString(date)),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
-  }
   const values = {
     title: currentEvents?.title,
     start: formatDate(currentEvents?.startDate),
     end: formatDate(currentEvents?.endDate),
   };
-
-  function reformatDateString(date: string) {
-    var b = date?.split(/\D/);
-    return b?.reverse().join("-");
-  }
 
   const {
     register,
