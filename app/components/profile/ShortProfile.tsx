@@ -43,7 +43,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
 
   return (
     <div
-      className={`relative transition-all  ${
+      className={`relative transition-all z-30  ${
         borderTop
           ? "p-3"
           : "border p-1 rounded-full w-[50px] h-[50px] sm:h-full sm:w-full bg-white duration-300 hover:scale-105 "
@@ -107,9 +107,21 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
                 <IoMdMore size={24} />
               </button>
             ) : modalListOpen ? (
-              <IoIosArrowDown />
+              <div
+                onClick={() => {
+                  setModalListOpen((curr) => !curr);
+                }}
+              >
+                <IoIosArrowDown />
+              </div>
             ) : (
-              <IoIosArrowForward />
+              <div
+                onClick={() => {
+                  setModalListOpen((curr) => !curr);
+                }}
+              >
+                <IoIosArrowForward />
+              </div>
             )}
           </div>
         </div>

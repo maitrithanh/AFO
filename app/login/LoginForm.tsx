@@ -15,6 +15,13 @@ import ResponseData from "@/types/ResponseData";
 import LoginRes from "@/types/LoginRes";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { Asap_Condensed } from "next/font/google";
+
+const font_asap_condensed = Asap_Condensed({
+  weight: "800", // if single weight, otherwise you use array like [400, 500, 700],
+  style: "normal", // if single style, otherwise you use array like ['normal', 'italic']
+  subsets: ["latin"],
+});
 
 const LoginForm = () => {
   const router = useRouter();
@@ -132,7 +139,7 @@ const LoginForm = () => {
           />
         </div>
         <div className="flex min-h-full flex-col justify-center px-8 py-12 items-center lg:px-8">
-          <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-white z-10 pt-24  justify-center">
+          <div className="relative mt-16 w-full sm:max-w-[440px] shadow-xl p-8 rounded-lg bg-white z-10 pt-20  justify-center">
             <div className="absolute z-10 top-0 left-0 -translate-y-[50%] justify-center w-full ">
               <Link href={"/"}>
                 <Image
@@ -144,12 +151,17 @@ const LoginForm = () => {
                 />
               </Link>
             </div>
+            <div
+              className={`flex justify-center text-main pb-2 text-3xl ${font_asap_condensed.className}`}
+            >
+              ĐĂNG NHẬP
+            </div>
             <form className="space-y-6 w-full" action="#" method="POST">
               <div>
                 <div className="mt-2">
                   <Input
                     id="phone"
-                    label={t("phoneNumberLogin")}
+                    label={t("Username")}
                     disabled={isLoading}
                     register={register}
                     errors={errors}
@@ -193,15 +205,13 @@ const LoginForm = () => {
                 />
               </div>
             </form>
-
             <div className="relative flex w-full justify-center my-1">
               <hr className="my-3 w-full" />
               <p className="absolute top-0 bg-white px-2 text-gray-500"></p>
             </div>
-
             <div className="grid gap-2 md:grid-cols-2 ">
               <button
-                className="bg-[#ec5114] p-3 text-white font-semibold rounded-lg flex items-center justify-center gap-2"
+                className="text-[#f8853e] border-[#f8853e] border-2 p-3  font-semibold rounded-lg flex items-center justify-center gap-2"
                 onClick={() => ExternalLogin("google")}
               >
                 <Image
@@ -213,7 +223,7 @@ const LoginForm = () => {
                 Google
               </button>
               <button
-                className="bg-[#2350c1] p-3 text-white font-semibold rounded-lg flex items-center justify-center gap-2"
+                className="text-[#f8853e] border-[#f8853e] border-2 p-3 font-semibold rounded-lg flex items-center justify-center gap-2"
                 onClick={() => ExternalLogin("facebook")}
               >
                 <Image
