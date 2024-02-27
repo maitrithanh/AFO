@@ -55,7 +55,7 @@ const DetailClasses = (id: any) => {
         <DialogProfile
           handleDialog={handleDialog}
           data={dataStudentDetail}
-          setRefresh={(b: boolean) => setRefresh(b)}
+          setRefresh={setRefresh((b) => b)}
           refresh
         />
       ) : (

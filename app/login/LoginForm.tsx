@@ -129,7 +129,7 @@ const LoginForm = () => {
   return (
     <>
       <div className="relative">
-        <div className="brightness-[.8]">
+        <div className="brightness-[.5]">
           <Image
             className="absolute h-screen w-full object-cover sm:object-fill"
             src="/background.webp"
@@ -161,7 +161,7 @@ const LoginForm = () => {
                 <div className="mt-2">
                   <Input
                     id="phone"
-                    label={t("Username")}
+                    label={t("account")}
                     disabled={isLoading}
                     register={register}
                     errors={errors}

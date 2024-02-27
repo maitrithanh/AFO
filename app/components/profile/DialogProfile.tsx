@@ -19,7 +19,7 @@ interface DialogProfileProps {
   handleDialog: () => void;
   data: any;
   teacher?: boolean;
-  setRefresh: (value: boolean) => void;
+  setRefresh: any;
   refresh?: boolean;
 }
 

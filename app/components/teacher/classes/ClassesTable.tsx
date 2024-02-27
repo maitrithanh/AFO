@@ -24,6 +24,7 @@ const ClassesTable = () => {
   const [dataStudentDetail, setDataStudentDetail] = useState({});
   const [search, setSearch] = useState("");
   const [defaultClassID, setDefaultClassID] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
   const { classId, getClassId, arrClassName } = GetClass();
   console.log({ classId, getClassId, arrClassName });
@@ -60,6 +61,7 @@ const ClassesTable = () => {
           handleDialog={handleDialog}
           data={dataStudentDetail}
           teacher
+          setRefresh={setRefresh((b) => b)}
         />
       ) : (
         ""
