@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import CardInfo from "./card/CardInfo";
 import { useTranslation } from "react-i18next";
@@ -12,23 +13,28 @@ import Input from "../inputs/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Button from "../shared/Button";
 import { IoIosArrowBack } from "react-icons/io";
+import { toYMD } from "@/utils/dateTime";
 
 interface DialogProfileProps {
   handleDialog: () => void;
   data: any;
   teacher?: boolean;
+  setRefresh: (value: boolean) => void;
+  refresh?: boolean;
 }
 
 const DialogProfile: React.FC<DialogProfileProps> = ({
   handleDialog,
   data,
   teacher,
+  setRefresh,
+  refresh,
 }) => {
   const { t } = useTranslation();
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
   const editRef = useRef<HTMLInputElement | null>(null);
   const [editMode, setEditMode] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+  const [currAvatar, setCurrAvatar] = useState<File | null>(null);
 
   const { data: detailChild } = useFetch(
     "Child/getChild?id=" + data.id,
@@ -73,32 +79,45 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
     setEditMode((curr) => !curr);
   };
   const values = {
-    fullName: detailChild?.fullName,
-    birthDay: detailChild?.birthDay,
-    gender: detailChild?.gender,
-    nation: detailChild?.nation,
-    address: detailChild?.address,
-    note: detailChild?.note,
+    FullName: detailChild?.fullName,
+    BirthDay: toYMD(detailChild?.birthDay),
+    Gender: detailChild?.gender,
+    Nation: detailChild?.nation,
+    Address: detailChild?.address,
+    Note: detailChild?.note,
   };
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      fullName: "",
-      birthDay: "",
-      gender: "",
-      nation: "",
-      address: "",
-      note: "",
+      FullName: "",
+      BirthDay: "",
+      Gender: "",
+      Nation: "",
+      Address: "",
+      Note: "",
     },
     values,
   });
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    if (currAvatar) {
+      formData.append("AvatarFile", currAvatar);
+    }
+
     callApiWithToken()
-      .put(`Child/update/` + detailChild.id, data)
+      .put(`Child/update/` + detailChild.id, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Specify content type
+        },
+      })
       .then((response) => {
         toast.success("Đã cập nhật");
         setRefresh(true);
@@ -112,11 +131,8 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
   return (
     <div
       className={`fixed z-50 top-0 left-0 w-full h-full flex items-center bg-black bg-opacity-40 justify-center `}
-      // onClick={() => {
-      //   handleDialog();
-      // }}
     >
-      <div className="w-[550px] mx-2 h-fit">
+      <div className="w-[650px] mx-2 h-fit">
         <CardInfo cardName={t("infoChild")}>
           <div className="mb-4 ">
             {editMode ? (
@@ -135,12 +151,16 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
           <div>
             <div className="absolute right-4 -top-10">
               <span className="relative group">
-                <DefaultImage
-                  img={getImageUrl(data.avatar)}
-                  fallback="/avatar.webp"
-                  className={`w-14 h-14 rounded-full cursor-pointer`}
-                  custom="w-[80px] h-[80px]"
-                />
+                {editMode ? (
+                  ""
+                ) : (
+                  <DefaultImage
+                    img={getImageUrl(data.avatar)}
+                    fallback="/avatar.webp"
+                    className={`w-14 h-14 rounded-full cursor-pointer`}
+                    custom="w-[80px] h-[80px]"
+                  />
+                )}
                 <div
                   title="Đổi ảnh"
                   className="h-full w-full justify-center items-center bg-black bg-opacity-50 rounded-full absolute top-0 left-0 hidden group-hover:flex"
@@ -201,40 +221,77 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
               <>
                 <div className="flex w-full">
                   <div className="grid grid-rows-1 gap-4 w-full">
+                    <div className="flex relative items-center border-2 border-dashed rounded-md h-fit">
+                      <div className=" flex items-center p-2 ">
+                        {!currAvatar && detailChild?.avatar && editMode && (
+                          <img
+                            src={getImageUrl(detailChild.avatar)}
+                            alt=""
+                            className="w-[80px] h-[80px] rounded-full"
+                          />
+                        )}
+
+                        {currAvatar && (
+                          <img
+                            src={URL.createObjectURL(currAvatar)}
+                            alt="Current Avatar"
+                            className="w-[60px] h-[60px] rounded-full"
+                          />
+                        )}
+                      </div>
+
+                      <input
+                        id={"avatar"}
+                        {...register("avatar", { required: false })}
+                        type={"file"}
+                        onChange={(e) => setCurrAvatar(e.target.files![0])}
+                      />
+                    </div>
+
                     <Input
-                      id="fullName"
+                      id="FullName"
                       label="Họ tên"
                       register={register}
                       errors={errors}
                     />
+                    <div className="flex gap-2">
+                      <Input
+                        id="BirthDay"
+                        label="Ngày sinh"
+                        required
+                        type="date"
+                        register={register}
+                        errors={errors}
+                      />
+                      <div className="relative h-full">
+                        <select
+                          id="Gender"
+                          {...register("Gender")}
+                          className="outline-none text-xl border-slate-300 border-2 rounded-md h-full px-8"
+                        >
+                          <option value="0">Nữ</option>
+                          <option value="1">Nam</option>
+                        </select>
+                        <div className="text-gray-500 bg-white h-fit absolute top-0 left-2 -translate-y-3">
+                          Giới tính
+                        </div>
+                      </div>
+                    </div>
                     <Input
-                      id="birthDay"
-                      label="Ngày sinh"
-                      register={register}
-                      errors={errors}
-                    />
-                    <select
-                      id="gender"
-                      {...register("gender")}
-                      className="outline-none border-slate-300 border-2 rounded-md p-4"
-                    >
-                      <option value="0">Nữ</option>
-                      <option value="1">Nam</option>
-                    </select>
-                    <Input
-                      id="nation"
+                      id="Nation"
                       label="Quốc tịch"
                       register={register}
                       errors={errors}
                     />
                     <Input
-                      id="address"
+                      id="Address"
                       label="Địa chỉ"
+                      required
                       register={register}
                       errors={errors}
                     />
                     <Input
-                      id="note"
+                      id="Note"
                       type="textarea"
                       label="Ghi Chú"
                       register={register}

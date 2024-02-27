@@ -124,16 +124,16 @@ const Sidebar = () => {
               active={pathName == "/admin/settings"}
               expanded={expanded}
             />
-            <SidebarItem
+            {/* <SidebarItem
               icon={<IoHelpCircleOutline size={22} />}
               text={t("support")}
               img={"/icons/qa.webp"}
               pathname={"/admin/help"}
               active={pathName == "/admin/help"}
               expanded={expanded}
-            />
+            /> */}
           </ul>
-          <ShortProfile expanded={expanded} borderTop />
+          {/* <ShortProfile expanded={expanded} borderTop /> */}
         </nav>
       </div>
     </>
