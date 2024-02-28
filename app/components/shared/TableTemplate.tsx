@@ -33,7 +33,9 @@ export interface TableTemplateAction<T = any> {
     icon?: JSX.Element
     //trả đường link theo object
     //vd: (x) => `/admin/listparent/${x.id}`
-    getLink: (obj: T) => string 
+    getLink?: (obj: T) => string,
+    //hoặc là sự kiện
+    onClick?: (obj: T) => void
 }
 
 interface IObject {
@@ -72,8 +74,10 @@ interface Props<T extends IObject> {
     sortOptions?: TableTemplateSort[]
     addButton?: {
         button?: JSX.Element,
-        link: string
+        link?: string,
+        onClick?: () => void
     }
+    extraElementsToolBar?: JSX.Element
 
     //options
     hideIndex?: boolean
@@ -85,7 +89,7 @@ function TableTemplate<T extends IObject = any>(
     {
         title, dataSource, columns, actions, addButton,
         searchColumns, searchPlaceHolder, sortOptions,
-        hideIndex, hidePaging, rowPerPage
+        extraElementsToolBar, hideIndex, hidePaging, rowPerPage
     }: Props<T>) { 
     
     //init
@@ -149,7 +153,10 @@ function TableTemplate<T extends IObject = any>(
         setKeyword(s);
     }
 
-    const DefaultAddBtn = <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+    const DefaultAddBtn = <button
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => { if (addButton?.onClick) addButton.onClick(); }}
+    >
         + {t("addNew")}
     </button>
     
@@ -161,7 +168,7 @@ function TableTemplate<T extends IObject = any>(
         <div className="flex justify-between items-baseline mb-5">
             {
                 addButton &&
-                <Link href={addButton.link}>
+                <Link href={addButton.link ?? ''}>
                         {
                             addButton.button ||
                             DefaultAddBtn
@@ -202,11 +209,13 @@ function TableTemplate<T extends IObject = any>(
                 </div>
             }
 
+            {extraElementsToolBar}
+
         </div>
 
         <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         {!hideIndex && <th>{/* index */}</th>}
                         
@@ -231,18 +240,19 @@ function TableTemplate<T extends IObject = any>(
                                 </td>
 
                             {columns.map((col, j) => <>
-                                <th key={row['id'] ?? i + '-' + j}
+                                <td key={row['id'] ?? i + '-' + j}
                                     scope="row"
-                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    className="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                     {col.getData(row)}
-                                </th>
+                                </td>
                             </>)}
 
                             {actions?.map((act, i) => <>
                                 <td className="md:px-6 md:py-4" key={i}>
                                     <Link
-                                        href={act.getLink(row)}
+                                        href={act.getLink ? act.getLink(row) : ''}
                                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                        onClick={act.onClick ? () => { act.onClick!(row); } : () => { }}
                                     >
                                         {act.icon ?? DefaultActionIcon}
                                     </Link>

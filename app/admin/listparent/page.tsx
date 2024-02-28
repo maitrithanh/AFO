@@ -1,195 +1,78 @@
-"use client";
+"use client"
 
+import TableTemplate, { TableTemplateAction, TableTemplateColumn, TableTemplateSort } from "@/app/components/shared/TableTemplate";
 import ParentListRes from "@/types/ParentListRes";
+import { compareName } from "@/utils/compare";
 import useFetch from "@/utils/useFetch";
-import { t } from "i18next";
-import Image from "next/image";
-import Link from "next/link";
-import MyPagination from "@/components/ui/pagination";
-import { useMemo, useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { checkNameInclude, compareName } from "@/utils/compare"
-import SearchBar from "@/app/components/shared/searchBar"
 
-const ParentPage = () => {
-  const [page, setPage] = useState(1);
-  const [sort, setSort] = useState("new");
-  const [keyword, setKeyword] = useState(''); //searching
+const Columns: TableTemplateColumn<ParentListRes>[] = [
+  {
+    title: "Tên Phụ Huynh",
+    getData: (x) => x.fullName
+  },
+  {
+    title: "Số điện thoại",
+    getData: (x) => x.phoneNumber
+  },
+  {
+    title: "Giới tính",
+    getData: (x) => x.gender ? "Nam" : "Nữ"
+  },
+  {
+    title: "Ngày sinh",
+    getData: (x) => x.birthDay
+  },
+  {
+    title: "Địa chỉ",
+    getData: (x) => x.address
+  },
+  {
+    title: "Tên Trẻ",
+    getData: (x) => <pre>
+      {x.children.map((x) => x.fullName).join(",\n")}
+    </pre>
+  },
+];
 
-  const { data: dataParent } = useFetch<ParentListRes[]>("Parent/GetList");
+const searchCols = [Columns[0], Columns[1],];
 
-  const RowPerPage = 20;
+const Action: TableTemplateAction<ParentListRes> = {
+  getLink: (x) => `/admin/listparent/${x.id}`
+}
 
-  const searchParent = (c: ParentListRes): boolean => {
-    const matchName: boolean = checkNameInclude(c.fullName || '', keyword)
-    const matchPhone: boolean = (c.phoneNumber || '').includes(keyword);
-    return matchName || matchPhone
-  }
-
-  const PageCount = useMemo(() => {
-    return Math.ceil((dataParent?.filter(searchParent).length ?? 0) / RowPerPage)
-  }, [dataParent, keyword])
-
-  const getJoinDate = (a: ParentListRes): string => {
-    return a.children.reduce((res, curr) =>
-      curr.joinDate > res.joinDate ? curr : res
-    ).joinDate;
-  };
-
-  const compareParent = (a: ParentListRes, b: ParentListRes): number => {
-    //-1 => a < b
-    switch (sort) {
-      case "new":
-        return getJoinDate(a) <= getJoinDate(b) ? 1 : -1;
-      case "az":
-        return compareName(a.fullName, b.fullName);
-      case "za":
-        return -compareName(a.fullName, b.fullName);
-      default:
-        return -1;
-    }
-  };
-
-  const searchHints = useMemo(() => {
-    var names = dataParent?.map(x => x.fullName || '') || [];
-    var phones = dataParent?.map(x => x.phoneNumber || '') || [];
-    return [...names, ...phones]
-  }, [dataParent])
-
-  const onSearch = (s: string) => {
-    setKeyword(s);
-    setPage(1);
-  }
-
-
-  return (
-    <>
-      <div className="flex justify-between items-center mb-5">
-        <div>
-          <h2 className="text-2xl font-bold mb-5">Danh sách phụ huynh</h2>
-        </div>
-
-        <div className="flex items-center">
-          <p className="text-xl">Tìm kiếm: </p>
-          <div className="w-[250px]">
-            <SearchBar dataSource={searchHints} placeholder="Nhập tên hoặc sđt..." onSearch={onSearch} />
-          </div>
-        </div>
-
-        <div className="bg-white shadow-lg rounded-lg">
-          <Select
-            onValueChange={(value: any) => {
-              setSort(value);
-            }}
-          >
-            <SelectTrigger className="w-[200px] text-lg">
-              <p>Sắp xếp:</p>
-              <SelectValue placeholder={"Mới nhất"} defaultValue={sort} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="new">Mới nhất</SelectItem>
-              <SelectItem value="az">Tên (A-Z)</SelectItem>
-              <SelectItem value="za">Tên (Z-A)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      <div className="mb-3 italic">
-        {keyword &&
-          `Tìm kiếm "${keyword}": `
-        }
-      </div>
-
-      <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th></th>
-              <th scope="col" className="px-6 py-3">
-                Tên Phụ Huynh
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Sđt
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Giới tính
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Ngày sinh
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Địa chỉ
-              </th>
-              <th>Tên Trẻ</th>
-
-              <th scope="col" className="px-6 py-3"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {[...(dataParent || [])]
-              .filter(searchParent)
-              .sort(compareParent)
-              .slice((page - 1) * RowPerPage, page * RowPerPage)
-              .map((x, i) => {
-                return (
-                  <tr
-                    key={x.id}
-                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
-                  >
-                    <td className="pl-6 py-4">
-                      {i + 1 + (page - 1) * RowPerPage}
-                    </td>
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {x.fullName}
-                    </th>
-                    <td className="px-6 py-4 md:max-w-[660px]">
-                      {x.phoneNumber}
-                    </td>
-                    <td className="px-6 py-4">
-                      {x.gender === 1 ? "Nam" : "Nữ"}
-                    </td>
-                    <td className="px-6 py-4">{x.birthDay}</td>
-                    <td className="px-6 py-4">{x.address}</td>
-                     <td>
-                      <pre>{x.children.map((x) => x.fullName).join(",\n")}</pre>
-                    </td>
-
-                    <td className="md:px-6 md:py-4">
-                      <Link
-                        href={`/admin/listparent/${x.id}`}
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        <Image
-                          title="Chi tiết"
-                          src={"/icons/detail.webp"}
-                          alt="Detail"
-                          width={26}
-                          height={26}
-                          priority
-                          className="hover:scale-110 transition-all"
-                        />
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
-      </div>
-
-      <MyPagination page={page} setPage={setPage} PageCount={PageCount} />
-    </>
-  );
+const getJoinDate = (a: ParentListRes): string => {
+  return a.children.reduce((res, curr) =>
+    curr.joinDate > res.joinDate ? curr : res
+  ).joinDate;
 };
 
-export default ParentPage;
+const sorts: TableTemplateSort<ParentListRes>[] = [
+  {
+    title: 'Mới nhất',
+    compare: (a, b) => getJoinDate(a) <= getJoinDate(b) ? 1 : -1
+  },
+  {
+    title: 'Tên (A-Z)',
+    compare: (a, b) => compareName(a.fullName, b.fullName)
+  },
+  {
+    title: 'Tên (Z-A)',
+    compare: (a, b) => -compareName(a.fullName, b.fullName)
+  }
+]
+
+const ParentPage = () => {
+  const { data: dataParent } = useFetch<ParentListRes[]>("Parent/GetList");
+
+  return <TableTemplate<ParentListRes>
+    title="Danh sách phụ huynh"
+    dataSource={dataParent || []}
+    columns={Columns}
+    actions={[Action]}
+    searchColumns={searchCols}
+    searchPlaceHolder="Nhập tên hoặc số điện thoại..."
+    sortOptions={sorts}
+  />
+}
+
+export default ParentPage
