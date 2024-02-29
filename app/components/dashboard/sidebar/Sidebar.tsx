@@ -6,8 +6,8 @@ import SidebarItem from "./SidebarItem";
 import { menu } from "@/data/menu";
 import { usePathname } from "next/navigation";
 import { IoSettingsOutline, IoHelpCircleOutline } from "react-icons/io5";
-import ShortProfile from "../../profile/ShortProfile";
 import { useTranslation } from "next-i18next";
+import { IoMenu } from "react-icons/io5";
 
 const Sidebar = () => {
   const pathName = usePathname();
@@ -40,17 +40,14 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className="md:hidden block fixed top-24 right-2 bg-white p-2 rounded-full z-40 shadow-lg transition-all"
+        className="md:hidden block fixed top-24 -right-4 bg-main p-2 rounded-tl-3xl rounded-bl-3xl z-40 shadow-lg transition-all"
         onClick={() => {
           setExpanded((curr) => !curr);
         }}
       >
-        <Image
-          src={"/icons/menuSidebar.webp"}
-          width={30}
-          height={30}
-          alt="Menu"
-        />
+        <span className="text-white">
+          <IoMenu size={30} />
+        </span>
       </div>
       <div
         className={`relative z-40 h-screen min-h-full transition-all ${
@@ -97,7 +94,7 @@ const Sidebar = () => {
           </div>
 
           <ul
-            className="flex-1 px-3 overflow-y-auto overflow-x-hidden"
+            className="flex-1 px-3 overflow-y-auto overflow-x-hidden no-select"
             onClick={() => {
               handleExpanedMobile();
             }}
@@ -112,18 +109,20 @@ const Sidebar = () => {
                   pathname={menuItem.pathname}
                   active={pathName.includes(menuItem.pathname)}
                   expanded={expanded}
+                  child={menuItem.child}
+                  activeChild={pathName.includes(menuItem?.child?.pathname)}
                 />
               );
             })}
             <hr className="my-3" />
-            <SidebarItem
+            {/* <SidebarItem
               icon={<IoSettingsOutline size={22} />}
               img={"/icons/settings.webp"}
               text={t("setting")}
               pathname={"/admin/settings"}
               active={pathName == "/admin/settings"}
               expanded={expanded}
-            />
+            /> */}
             {/* <SidebarItem
               icon={<IoHelpCircleOutline size={22} />}
               text={t("support")}
