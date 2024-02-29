@@ -141,7 +141,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                     expanded ? "w-52 ml-3" : "w-0"
                   }`}
                 >
-                  {item.text}
+                  {t(item.text)}
                 </span>
                 {alert ? (
                   pathName === item.pathname ? (
@@ -166,7 +166,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
                     className={`absolute left-full w-fit z-10 rounded-md px-2 py-1 ml-6 bg-[#F8853E] text-white text-sm
         invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
                   >
-                    {item.text}
+                    {t(item.text)}
                   </div>
                 )}
               </li>
