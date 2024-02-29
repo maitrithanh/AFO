@@ -18,21 +18,24 @@ export const  menu = [
     {
         text: 'accountManagement',
         icon: IoAnalyticsSharp,
-        pathname: '/admin/account',
-        img: 'user.webp'
+        pathname: '#',
+        img: 'user.webp',
+        child: [
+            {
+                text: 'parentlist',
+                icon: IoAnalyticsSharp,
+                pathname: '/admin/listparent',
+                img: 'parentList.webp'
+            },
+            {
+                text: 'childrenlist',
+                icon: IoAnalyticsSharp,
+                pathname: '/admin/children',
+                img: 'childList.webp'
+            },
+        ]
     },
-    {
-        text: 'parentlist',
-        icon: IoAnalyticsSharp,
-        pathname: '/admin/listparent',
-        img: 'user.webp'
-    },
-    {
-        text: 'childrenlist',
-        icon: IoAnalyticsSharp,
-        pathname: '/admin/children',
-        img: 'user.webp'
-    },
+    
     {
         text: 'classes',
         icon: LuUser2,
