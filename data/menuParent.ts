@@ -21,7 +21,7 @@ export const menuParent = [
   },
   {
     name: "pickup",
-    image: "bus.webp",
+    image: "pickupChild.webp",
     path: "/parent/pickup",
   },
   {
@@ -35,9 +35,9 @@ export const menuParent = [
     path: "/",
   },
   {
-    name: "feedback",
-    image: "feedback.webp",
-    path: "/",
+    name: "Xe bus",
+    image: "bus.webp",
+    path: "/parent/bus",
   },
   {
     name: "learningOutcomes",

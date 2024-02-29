@@ -75,7 +75,7 @@
   }
 }
 
-body{
+/* body{
   cursor: url('/icons/cursor.webp'), default;
 }
 
@@ -89,7 +89,7 @@ button:hover {
 
 .hover:hover {
   cursor: url('/icons/cursorLink.webp'), default;
-}
+} */
 
 customCard {
   clip-path: polygon(0 0, 100% 10%, 100% 100%, 0% 100%);
@@ -111,4 +111,14 @@ customCard {
 
 ::-webkit-scrollbar-thumb:hover {
  opacity: 0.5;
+}
+
+.no-select{
+  -moz-user-select: none !important;
+-webkit-touch-callout: none!important;
+-webkit-user-select: none!important;
+-khtml-user-select: none!important;
+-moz-user-select: none!important;
+-ms-user-select: none!important;
+user-select: none!important;
 }

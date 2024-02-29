@@ -9,7 +9,7 @@ interface CardInfoProps {
 const CardInfo: React.FC<CardInfoProps> = ({ cardName, children, parent }) => {
   return (
     <div
-      className={`relative shadow-lg border p-8 pt-4 my-4 rounded-xl ${
+      className={`relative shadow-3xl border p-8 pt-4 my-4 rounded-xl ${
         parent ? "bg-[#fffc]" : "bg-white"
       }`}
     >

@@ -55,8 +55,22 @@ export const  menu = [
     {
         text: 'pickup',
         icon: PiChalkboardTeacherDuotone,
-        pathname: '/admin/bus',
-        img: 'bus.webp'
+        pathname: '#',
+        img: 'bus.webp',
+        child: [
+            {
+                text: 'Tuyến xe',
+                icon: PiChalkboardTeacherDuotone,
+                pathname: '/admin/bus',
+                img: 'route.webp',
+            },
+            {
+                text: 'Tài xế',
+                pathname: '/admin/bus/driver',
+                img: 'driver.webp'
+            },
+
+        ]
     },
     {
         text: 'helth',
