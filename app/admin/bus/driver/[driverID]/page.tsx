@@ -133,7 +133,7 @@ const DetailDriver = (params: any) => {
               columns={Columns}
               searchColumns={[Columns[0]]}
               searchPlaceHolder="Nhập tên tuyến..."
-              addButton={{ link: "#" }}
+              // addButton={{ link: "#" }}
               actions={[{ getLink: (x) => `/admin/bus/${x.id}` }]}
             />
           </div>

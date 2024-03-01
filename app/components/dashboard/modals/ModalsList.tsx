@@ -6,6 +6,7 @@ import { deleteCookie, getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import Loading from "../../shared/Loading";
 import { useTranslation } from "react-i18next";
+import { IoSettingsOutline } from "react-icons/io5";
 
 interface ModalsListProps {
   modalListOpen: boolean;
@@ -32,7 +33,8 @@ const ModalsList: React.FC<ModalsListProps> = ({
   const { t } = useTranslation();
   return (
     <div
-      className={`absolute w-36 h-fit rounded-lg bg-white border shadow-lg z-30
+      className={`absolute w-48 h-fit rounded-lg bg-white border shadow-lg z-30
+      -top-3
       ${
         borderTop
           ? expanded
@@ -45,8 +47,8 @@ const ModalsList: React.FC<ModalsListProps> = ({
     ${modalListOpen ? "visible" : "invisible"}
     `}
     >
-      <ul className="p-2">
-        <li className="border-b p-1 hover:bg-gray-100 cursor-pointer">
+      <ul className="">
+        <li className="border-b p-2 px-4 hover:bg-gray-100 cursor-pointer">
           <button
             className="w-full flex items-center justify-left"
             onClick={() => router.push("/profile")}
@@ -55,7 +57,16 @@ const ModalsList: React.FC<ModalsListProps> = ({
             <span className="ml-2"> {t("profile")}</span>
           </button>
         </li>
-        <li className="p-1 hover:bg-gray-100 cursor-pointer">
+        <li className="border-b p-2 px-4 hover:bg-gray-100 cursor-pointer">
+          <button
+            className="w-full flex items-center justify-left"
+            onClick={() => router.push("/admin/settings")}
+          >
+            <IoSettingsOutline size={20} />
+            <span className="ml-2"> {t("setting")}</span>
+          </button>
+        </li>
+        <li className="p-2 px-4 hover:bg-gray-100 cursor-pointer">
           <button
             className="w-full flex items-center justify-left"
             onClick={() => handleLogout()}
