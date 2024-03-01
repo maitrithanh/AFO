@@ -13,14 +13,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@radix-ui/react-select";
+import TableTemplate, { TableTemplateColumn } from "../../shared/TableTemplate";
+import { getCookie } from "cookies-next";
+
+const Columns: TableTemplateColumn[] = [
+  {
+    title: "Tên tuyến",
+    getData: (x) => x.routeName,
+  },
+  {
+    title: "Bắt đầu",
+    getData: (x) => x.startTime,
+  },
+  {
+    title: "Tên tài xế",
+    getData: (x) => x.fullName,
+  },
+  {
+    title: "Biển số",
+    getData: (x) => x.busID,
+  },
+  {
+    title: "Tình trạng",
+    getData: (x) =>
+      x.status === true ? (
+        <p className="text-green-600">Đang hoạt động</p>
+      ) : (
+        <p className="text-rose-600">Đã dừng</p>
+      ),
+  },
+];
 
 const BusPage = () => {
   const { t } = useTranslation();
   const { data: allBus } = useFetch(`BusDriver/getBusList`);
   const [station, setStation] = useState("");
   const [stationName, setStationName] = useState("");
+  const childID = getCookie("child");
   const { data: busDetail } = useFetch(
     `BusDriver/getBusDetail?busId=${station}`
+  );
+  const { data: busData } = useFetch(
+    `BusDriver/getBusByChild?childId=${childID}`
   );
 
   useEffect(() => {
@@ -127,6 +161,15 @@ const BusPage = () => {
                 <p>{busDetail?.stationEnd}</p>
                 <p>{busDetail?.endTime}</p>
               </div>
+            </div>
+            <div className="mt-4">
+              <TableTemplate
+                title={`Danh sách tuyến xe đã đăng ký`}
+                dataSource={busData || []}
+                columns={Columns}
+                searchColumns={[Columns[0]]}
+                searchPlaceHolder="Nhập tên tuyến..."
+              />
             </div>
           </div>
         </div>
