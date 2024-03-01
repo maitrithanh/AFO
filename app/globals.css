@@ -101,11 +101,13 @@ customCard {
 
 ::-webkit-scrollbar-track {
   background: #aaaaaa4d;
+  border-radius: 50px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #fc8853;
-  border-radius: 2px;
+  /* background: #fc8853; */
+  background: #9a9a9a89;
+  border-radius: 50px;
 }
 
 
