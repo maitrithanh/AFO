@@ -274,13 +274,13 @@ function TableTemplate<T extends IObject = any>({
                         </td>
                       </>
                     ))}
-
-                    {actions?.map((act, i) => (
-                      <>
-                        <td className="md:px-6 md:py-4" key={i}>
+                    <td className="md:px-6 md:py-4 flex">
+                      {actions?.map((act, i) => (
+                        <>
                           <Link
+                            key={i}
                             href={act.getLink ? act.getLink(row) : ""}
-                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                             onClick={
                               act.onClick
                                 ? () => {
@@ -291,9 +291,9 @@ function TableTemplate<T extends IObject = any>({
                           >
                             {act.icon ?? DefaultActionIcon}
                           </Link>
-                        </td>
-                      </>
-                    ))}
+                        </>
+                      ))}
+                    </td>
                   </tr>
                 ))}
             </tbody>

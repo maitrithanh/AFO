@@ -27,6 +27,7 @@ const config = {
       colors: {
         main: "#F8853E",
         mainBlur: "#F8853E7D",
+        bgDialog: "#00000081",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

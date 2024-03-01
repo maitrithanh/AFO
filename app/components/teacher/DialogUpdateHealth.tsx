@@ -113,14 +113,14 @@ const DialogUpdateHealth = ({
             errors={errors}
             required
           />
-          <Input
+          {/* <Input
             id="status"
             type="text"
             label="Trình trạng"
             register={register}
             errors={errors}
             required
-          />
+          /> */}
         </div>
         <Button label="Lưu" onClick={handleSubmit(onSubmit)} />
       </div>
