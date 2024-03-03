@@ -42,7 +42,7 @@ export const menuParent = [
   {
     name: "learningOutcomes",
     image: "report-study.webp",
-    path: "/",
+    path: "/parent/learningresult",
   },
   {
     name: "event",
@@ -57,6 +57,6 @@ export const menuParent = [
   {
     name: "off",
     image: "burnout.webp",
-    path: "/",
+    path: "/parent/burnout",
   },
 ];

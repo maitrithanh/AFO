@@ -80,14 +80,9 @@ const DropdownMessage = () => {
       >
         <div
           ref={dropdown}
-          style={{
-            background: "url(/bg-chat.webp)",
-            backgroundSize: "100% 100%",
-            backgroundRepeat: "no-repeat",
-          }}
           onFocus={() => setDropdownOpen(true)}
           onBlur={() => setDropdownOpen(false)}
-          className={`absolute md:w-[400px] md:right-0 top-0 inset-0 h-screen overflow-hidden z-50 `}
+          className={`absolute bg-white md:w-[400px] md:right-0 top-0 inset-0 h-screen overflow-hidden z-50 `}
         >
           <div className="w-full flex justify-end p-2 text-rose-600 hover:cursor-pointer">
             <div

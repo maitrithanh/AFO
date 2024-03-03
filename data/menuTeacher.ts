@@ -1,8 +1,8 @@
 export const menuTeacher = [
     {
-      name: "student",
-      image: "students.webp",
-      path: "/teacher/calendar",
+      name: "attendance",
+      image: "attendance.webp",
+      path: "/teacher/attendance",
     },
     {
       name: "teacherSchedule",
@@ -33,6 +33,11 @@ export const menuTeacher = [
       name: "classes",
       image: "blackboard.webp",
       path: "/teacher/classes",
+    },  
+    {
+      name: "learningOutcomes",
+      image: "learningOutcomes.webp",
+      path: "/teacher/learningresult",
     },
   ];
   
