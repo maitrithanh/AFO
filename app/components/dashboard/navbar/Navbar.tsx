@@ -147,7 +147,12 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
         >
           <IoClose />
         </div>
-        <div className="p-12">
+        <div
+          className="p-12"
+          onClick={() => {
+            handleMobileMenu();
+          }}
+        >
           <Menu />
         </div>
       </div>

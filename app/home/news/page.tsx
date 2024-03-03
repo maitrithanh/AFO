@@ -3,7 +3,7 @@ import React from "react";
 
 const NewsPage = () => {
   return (
-    <div className="h-screen mt-14">
+    <div className="h-full mt-14">
       <div className=" w-full flex justify-center pt-8">
         <h1 className="text-3xl font-bold uppercase text-main">Tin tức AFO</h1>
       </div>

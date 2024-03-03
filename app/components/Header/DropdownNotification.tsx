@@ -81,14 +81,14 @@ const DropdownNotification = () => {
           ref={dropdown}
           onFocus={() => setDropdownOpen(true)}
           onBlur={() => setDropdownOpen(false)}
-          style={{
-            backgroundImage: `url("/bg-noti.webp")`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-          }}
-          className={`absolute md:w-[400px] transition-all duration-500 md:right-0 top-0 inset-0 left-0 h-screen z-50 hover:cursor-pointer overflow-hidden `}
+          // style={{
+          //   backgroundImage: `url("/bg-noti.webp")`,
+          //   backgroundRepeat: "no-repeat",
+          //   backgroundSize: "cover",
+          // }}
+          className={`bg-white absolute md:w-[400px] transition-all duration-500 md:right-0 top-0 inset-0 left-0 h-screen z-50 hover:cursor-pointer overflow-hidden `}
         >
-          <div className="w-full flex justify-end p-2 text-rose-600 ">
+          <div className="w-full flex justify-end text-rose-600 ">
             <div
               className="bg-white p-1 rounded-md"
               onClick={() => {
