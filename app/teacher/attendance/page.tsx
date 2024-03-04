@@ -18,6 +18,11 @@ import { CiCircleMore } from "react-icons/ci";
 import { SiGoogleclassroom } from "react-icons/si";
 import DialogProfile from "@/app/components/profile/DialogProfile";
 import Button from "@/app/components/shared/Button";
+import GetAttendanceClass from "@/utils/attendance/getAttendance";
+import { IoCalendarOutline } from "react-icons/io5";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { callApiWithToken } from "@/utils/callApi";
+import toast from "react-hot-toast";
 
 const AttendancePage = () => {
   const { t } = useTranslation();
@@ -26,17 +31,31 @@ const AttendancePage = () => {
   const [search, setSearch] = useState("");
   const [defaultClassID, setDefaultClassID] = useState("");
   const [refresh, setRefresh] = useState(false);
-
   const { classId, getClassId, arrClassName } = GetClass();
-  console.log({ classId, getClassId, arrClassName });
+  const [attendanceID, setAttendanceID] = useState("");
+  const {
+    arrGetAttendanceByClass,
+    nameAttendanceByClassFirst,
+    idAttendanceByClassFirst,
+  } = GetAttendanceClass(defaultClassID);
+  const [attendance, setAttendance] = useState("");
 
   useEffect(() => {
     setDefaultClassID(classId[0]?.trim());
   }, [classId]);
 
   useEffect(() => {
+    setAttendance(idAttendanceByClassFirst);
+  }, [idAttendanceByClassFirst]);
+
+  useEffect(() => {
     setDefaultClassID(getClassId);
+    setRefresh(true);
   }, [getClassId]);
+
+  useEffect(() => {
+    setOjbData([]);
+  }, [refresh]);
 
   const day = new Date();
   const year = day.getFullYear();
@@ -44,16 +63,81 @@ const AttendancePage = () => {
   const { data: detailClassData } = useFetch(
     `ClassRoom/Detail/id=${defaultClassID}&year=${year}`
   );
+  const { data: attendanceClassData, loading } = useFetch(
+    `CheckIn/getListById?id=${attendance}`,
+    refresh
+  );
 
   const handleDialog = () => {
     setCloseDialog((currState) => !currState);
   };
 
   const searchChildInClass = (c: any): boolean => {
-    const matchName: boolean = c.fullName.toLowerCase().includes(search);
-    const matchPhone: boolean = c.phone.includes(search);
-    return matchName || matchPhone;
+    const matchName: boolean = c.childName.toLowerCase().includes(search);
+    return matchName;
   };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FieldValues>({
+    defaultValues: {
+      Started: "false",
+      Ended: "false",
+      Point: "1",
+      OffReason: "'",
+      Note: "'",
+    },
+  });
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    setOjbData([]);
+    for (const key in data) {
+      if (
+        !(key.split("-")[1] === undefined) &&
+        attendanceClassData.find((x: any) => x.id == key.split("-")[1])
+      ) {
+        if (!ojbData.find((x: any) => x.id == key.split("-")[1])) {
+          ojbData.push({
+            id: key.split("-")[1],
+            Started: data[`Started-${key.split("-")[1]}`],
+            Ended: data[`Ended-${key.split("-")[1]}`],
+            Point: data[`Point-${key.split("-")[1]}`],
+            OffReason: "''",
+            Note: data[`Note-${key.split("-")[1]}`],
+          });
+        }
+      }
+    }
+    console.log(ojbData);
+
+    toast.success("Đã cập nhật");
+
+    for (let i = 0; i < attendanceClassData.length; i++) {
+      callApiWithToken()
+        .put(
+          `CheckIn/putById?id=${attendanceClassData[i]?.id}`,
+          ojbData.find((x: any) => x.id == attendanceClassData[i]?.id),
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((response) => {
+          setRefresh(true);
+        })
+        .catch((error) => {
+          toast.error("Có lỗi");
+        });
+    }
+  };
+
+  setTimeout(() => {
+    setRefresh(false);
+  }, 1000);
+  const [ojbData, setOjbData] = useState([] as object[]);
 
   return (
     <>
@@ -73,9 +157,37 @@ const AttendancePage = () => {
             <div className="flex lg:flex-row flex-col items-center justify-between">
               <div className="">
                 <div className="md:text-3xl flex items-center">
-                  Điểm danh ngày
-                  <span className="text-main font-bold mx-2">03/03/2024</span> -
-                  Lớp
+                  Điểm danh
+                  <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-bold text-3xl ">
+                    <Select
+                      defaultValue={classId[0]?.trim()}
+                      onValueChange={(value: any) => {
+                        setAttendance(value);
+                      }}
+                    >
+                      <SelectTrigger className="md:w-fill w-full text-lg">
+                        <p className="text-gray-600 mr-2">
+                          <IoCalendarOutline />
+                        </p>
+                        <SelectValue
+                          placeholder={nameAttendanceByClassFirst}
+                          defaultValue={idAttendanceByClassFirst}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {arrGetAttendanceByClass?.map(
+                          (data: any, index: any) => {
+                            return (
+                              <SelectItem key={data?.id} value={data?.id}>
+                                {data?.classOfDay}
+                              </SelectItem>
+                            );
+                          }
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  - Lớp
                   <div className="bg-gray-100 shadow-sm rounded-lg ml-2 font-bold text-3xl ">
                     <Select
                       defaultValue={classId[0]?.trim()}
@@ -131,7 +243,10 @@ const AttendancePage = () => {
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <Button label="Lưu điểm danh" onClick={() => {}} />
+                <Button
+                  label="Lưu điểm danh"
+                  onClick={handleSubmit(onSubmit)}
+                />
               </div>
             </div>
           </div>
@@ -142,9 +257,6 @@ const AttendancePage = () => {
                 <tr className="text-center">
                   <th scope="col" className="px-6 py-3">
                     STT
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Hình
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Họ tên
@@ -168,7 +280,8 @@ const AttendancePage = () => {
                 </tr>
               </thead>
               <tbody>
-                {detailClassData?.students
+                {loading ? "Đang tải..." : ""}
+                {attendanceClassData
                   ?.filter(searchChildInClass)
                   .map((dataStudent: any, index: any) => {
                     return (
@@ -180,47 +293,68 @@ const AttendancePage = () => {
                           scope="row"
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                          {index + 1}
+                          {dataStudent.id}
                         </th>
-                        <td className="px-6 py-4 flex justify-center">
-                          <DefaultImage
-                            img={getImageUrl(dataStudent.avatar)}
-                            className={`w-10 h-10 rounded-full cursor-pointer`}
-                            custom="w-[50px] h-[50px]"
-                            fallback="/avatar.webp"
-                          />
-                        </td>
+
                         <td className="px-6 py-4 text-left">
-                          {dataStudent.fullName}
+                          {dataStudent.childName}
                         </td>
-                        <td className="px-6 py-4">
-                          <input type="checkbox" className="scale-150" />
-                        </td>
-                        <td className="px-6 py-4">
-                          <input type="checkbox" className="scale-150" />
-                        </td>
-                        <td className="px-6 py-4">Lý do nghỉ</td>
                         <td className="px-6 py-4">
                           <input
+                            id={`Started-${dataStudent.id}`}
+                            {...register(`Started-${dataStudent.id}`, {
+                              required: false,
+                            })}
+                            type="checkbox"
+                            defaultChecked={dataStudent.started}
+                            className="scale-150"
+                          />
+                        </td>
+                        <td className="px-6 py-4">
+                          <input
+                            id={`Ended-${dataStudent.id}`}
+                            {...register(`Ended-${dataStudent.id}`, {
+                              required: false,
+                            })}
+                            type="checkbox"
+                            defaultChecked={dataStudent.ended}
+                            className="scale-150"
+                          />
+                        </td>
+                        <td className="px-6 py-4">
+                          {dataStudent.reason ? dataStudent.reason : "''"}
+                        </td>
+                        <td className="px-6 py-4">
+                          <input
+                            id={`Point-${dataStudent.id}`}
+                            {...register(`Point-${dataStudent.id}`, {
+                              required: true,
+                            })}
                             type="text"
+                            defaultValue={dataStudent.point}
                             className="w-14 border-2 px-2 py-1 font-bold text-lg text-center text-main rounded-md focus:outline-main"
                           />
                         </td>
                         <td className="px-6 py-4">
                           <textarea
+                            id={`Note-${dataStudent.id}`}
+                            {...register(`Note-${dataStudent.id}`, {
+                              required: false,
+                            })}
                             className="border-2 px-2 py-1 rounded-md focus:outline-main"
                             placeholder="Ghi chú"
+                            defaultValue={dataStudent.note}
                           />
                         </td>
                         <td
                           className="md:px-6 md:py-4 hover hover:text-main"
-                          onClick={() => {
-                            setDataStudentDetail({
-                              avatar: dataStudent.avatar,
-                              id: dataStudent.id,
-                            });
-                            setCloseDialog(true);
-                          }}
+                          // onClick={() => {
+                          //   setDataStudentDetail({
+                          //     avatar: dataStudent.avatar,
+                          //     id: dataStudent.id,
+                          //   });
+                          //   setCloseDialog(true);
+                          // }}
                         >
                           <CiCircleMore size={24} />
                         </td>

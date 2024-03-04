@@ -61,7 +61,6 @@ const BusPage = () => {
   );
 
   const onClose = () => {
-    setEditMode(false);
     setCloseDialogAddEvent((curr) => !curr);
   };
   const onCloseEdit = () => {
@@ -72,17 +71,11 @@ const BusPage = () => {
     RouteName: busData?.find((x: any) => x.id === idBusChoose)?.routeName,
     StationStart: busData?.find((x: any) => x.id === idBusChoose)?.stationStart,
     StationEnd: busData?.find((x: any) => x.id === idBusChoose)?.stationEnd,
-    StartTime: hanldeDateTime(
-      busData
-        ?.find((x: any) => x.id === idBusChoose)
-        ?.startTime.split(" - ")[0],
-      busData?.find((x: any) => x.id === idBusChoose)?.startTime.split(" - ")[1]
+    StartTime: toYMD(
+      busData?.find((x: any) => x.id === idBusChoose)?.startTime
     ),
-    EndTime: hanldeDateTime(
-      busData?.find((x: any) => x.id === idBusChoose)?.endTime.split(" - ")[0],
-      busData?.find((x: any) => x.id === idBusChoose)?.endTime.split(" - ")[1]
-    ),
-    DriverId: busData?.find((x: any) => x.id === idBusChoose)?.driverId,
+    EndTime: toYMD(busData?.find((x: any) => x.id === idBusChoose)?.startTime),
+    DriverId: busDataDetail?.driver?.id,
     BusID: busData?.find((x: any) => x.id === idBusChoose)?.busID,
     Status: busData?.find((x: any) => x.id === idBusChoose)?.status,
   };
@@ -131,12 +124,11 @@ const BusPage = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmitAdd: SubmitHandler<FieldValues> = (data) => {
     const formData = new FormData();
     for (const key in data) {
       formData.append(key, data[key]);
     }
-    console.log(formData);
 
     callApiWithToken()
       .post(`BusDriver/addBus`, formData, {
@@ -145,6 +137,8 @@ const BusPage = () => {
         },
       })
       .then((response) => {
+        console.log(response);
+
         toast.success("Đã thêm tuyến xe");
         handleRefresh();
         onClose();
@@ -169,20 +163,26 @@ const BusPage = () => {
       .then((response) => {
         toast.success("Sửa thành công");
         handleRefresh();
-        onCloseEdit();
+        onClose();
       })
       .catch((error) => {
         toast.error("Có lỗi");
       });
   };
 
-  const DialogAdd = (
+  const DialogEdit = (
     <div
       className={`fixed z-50 top-0 left-0 w-full h-full flex items-center bg-black bg-opacity-40 justify-center `}
     >
       <div className="bg-white p-4 rounded-xl md:w-1/3 mx-4 w-full h-fit">
         <div className="flex justify-between items-center mb-4 py-2 border-b">
-          <h3 className="text-2xl ">Thêm tuyến xe </h3>
+          <h3 className="text-2xl ">
+            Chỉnh sửa tuyến xe{" "}
+            <strong className="text-main font-bold">
+              {" "}
+              {values?.RouteName}
+            </strong>
+          </h3>
           <button
             className="text-gray-600"
             onClick={() => {
@@ -223,7 +223,7 @@ const BusPage = () => {
         <div className="grid grid-flow-row gap-4 my-4">
           <Input
             id="StartTime"
-            type="datetime-local"
+            type="date"
             label="Giờ đón"
             register={register}
             errors={errors}
@@ -231,108 +231,7 @@ const BusPage = () => {
           />
           <Input
             id="EndTime"
-            type="datetime-local"
-            label="Giờ trả"
-            register={register}
-            errors={errors}
-            required
-          />
-        </div>
-        <Input
-          id="BusID"
-          type="text"
-          label="Biển số xe"
-          register={register}
-          errors={errors}
-          required
-        />
-        <div className="grid gap-4 my-4">
-          <div className="relative h-full w-full">
-            <select
-              id="DriverId"
-              {...register("DriverId", { required: true })}
-              className="outline-none text-xl border-slate-300 border-2 rounded-md w-full h-full p-4"
-            >
-              {driverData?.map((item: any, index: any) => {
-                return (
-                  <option key={index} value={item.id}>
-                    {item.fullName}
-                  </option>
-                );
-              })}
-            </select>
-            <div className="text-gray-500 bg-white h-fit absolute top-0 left-2 -translate-y-3">
-              Tài xế
-            </div>
-          </div>
-        </div>
-        <Button label="Lưu" onClick={handleSubmit(onSubmit)} />
-      </div>
-    </div>
-  );
-
-  const DialogEdit = (
-    <div
-      className={`fixed z-50 top-0 left-0 w-full h-full flex items-center bg-black bg-opacity-40 justify-center `}
-    >
-      <div className="bg-white p-4 rounded-xl md:w-1/3 mx-4 w-full h-fit">
-        <div className="flex justify-between items-center mb-4 py-2 border-b">
-          <h3 className="text-2xl ">
-            Chỉnh sửa tuyến xe{" "}
-            <strong className="text-main font-bold">
-              {" "}
-              {values?.RouteName}
-            </strong>
-          </h3>
-          <button
-            className="text-gray-600"
-            onClick={() => {
-              onCloseEdit();
-            }}
-          >
-            <IoMdClose size={28} />
-          </button>
-        </div>
-        <div className="grid gap-4 my-4">
-          <Input
-            id="RouteName"
-            type="text"
-            label="Tên tuyến"
-            register={register}
-            errors={errors}
-            required
-          />
-        </div>
-        <div className="grid grid-flow-col gap-4">
-          <Input
-            id="StationStart"
-            type="text"
-            label="Điểm đón "
-            register={register}
-            errors={errors}
-            required
-          />
-          <Input
-            id="StationEnd"
-            type="text"
-            label="Điểm trả"
-            register={register}
-            errors={errors}
-            required
-          />
-        </div>
-        <div className="grid grid-flow-row gap-4 my-4">
-          <Input
-            id="StartTime"
-            type="datetime-local"
-            label="Giờ đón"
-            register={register}
-            errors={errors}
-            required
-          />
-          <Input
-            id="EndTime"
-            type="datetime-local"
+            type="date"
             label="Giờ trả"
             register={register}
             errors={errors}
@@ -370,21 +269,25 @@ const BusPage = () => {
             </div>
           </div>
 
-          <div className="relative h-full w-full">
-            <select
-              id="Status"
-              {...register("Status", { required: true })}
-              className="outline-none text-xl border-slate-300 border-2 rounded-md w-full h-full p-4"
-            >
-              <option value="true" defaultChecked>
-                Hoạt động
-              </option>
-              <option value="false">Dừng</option>
-            </select>
-            <div className="text-gray-500 bg-white h-fit absolute top-0 left-2 -translate-y-3">
-              Trạng thái
+          {editMode ? (
+            <div className="relative h-full w-full">
+              <select
+                id="Status"
+                {...register("Status", { required: true })}
+                className="outline-none text-xl border-slate-300 border-2 rounded-md w-full h-full p-4"
+              >
+                <option value="true" defaultChecked>
+                  Hoạt động
+                </option>
+                <option value="false">Dừng</option>
+              </select>
+              <div className="text-gray-500 bg-white h-fit absolute top-0 left-2 -translate-y-3">
+                Trạng thái
+              </div>
             </div>
-          </div>
+          ) : (
+            ""
+          )}
         </div>
         <div className="flex gap-4">
           {/* <Button
@@ -395,16 +298,19 @@ const BusPage = () => {
               setEditMode(true);
             }}
           /> */}
-
-          <Button label="Lưu" onClick={handleSubmit(onSubmitEdit)} />
+          {editMode ? (
+            <Button label="Lưu" onClick={handleSubmit(onSubmitEdit)} />
+          ) : (
+            <Button label="Thêm" onClick={handleSubmit(onSubmitAdd)} />
+          )}
         </div>
       </div>
     </div>
   );
   return (
     <>
-      {closeDialogAddEvent ? DialogAdd : ""}
-      {closeDialogEditEvent ? DialogEdit : ""}
+      {/* {closeDialogAddEvent ? DialogAdd : ""} */}
+      {closeDialogAddEvent ? DialogEdit : ""}
       <TableTemplate
         title="Danh sách tuyến xe"
         dataSource={busData || []}
@@ -424,7 +330,8 @@ const BusPage = () => {
             icon: EditActionIcon,
             onClick: (x) => {
               setIdBusChoose(x.id);
-              onCloseEdit();
+              onClose();
+              setEditMode(true);
             },
           },
           { getLink: (x) => `/admin/bus/${x.id}` },

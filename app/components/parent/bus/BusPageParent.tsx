@@ -147,7 +147,7 @@ const BusPage = () => {
               </p>
               <div className="md:grid md:grid-cols-2 flex justify-between text-xl font-bold text-gray-700">
                 <div>Địa điểm đón</div>
-                <div>Thời gian đón</div>
+                <div>Chuyến bắt đầu từ</div>
               </div>
               <div className="md:grid md:grid-cols-2 flex justify-between text-lg">
                 <p>{busDetail?.stationStart}</p>
@@ -155,7 +155,7 @@ const BusPage = () => {
               </div>
               <div className="md:grid md:grid-cols-2 flex justify-between text-xl font-bold text-gray-700">
                 <div>Địa điểm trả</div>
-                <div>Thời gian trả</div>
+                <div>Chuyến sẽ kết thúc vào</div>
               </div>
               <div className="md:grid md:grid-cols-2 flex justify-between text-lg">
                 <p>{busDetail?.stationEnd}</p>

@@ -36,10 +36,6 @@ const Columns: TableTemplateColumn[] = [
     getData: (x) => x.fullName,
   },
   {
-    title: "Ngày sinh",
-    getData: (x) => x.birthDay,
-  },
-  {
     title: "Địa chỉ",
     getData: (x) => x.address,
   },
@@ -71,6 +67,8 @@ const DetailBus = ({ param }: any) => {
     `BusDriver/getBusDetail?busId=${param}`,
     refresh
   );
+
+  console.log(busDetail);
 
   const allKids = allKidsData?.filter((x: any) =>
     x.fullName?.toLowerCase()?.includes(searchChild.toLowerCase())
@@ -160,7 +158,6 @@ const DetailBus = ({ param }: any) => {
   };
 
   //dialog add kids
-
   const DialogAdd = (
     <div
       className={`fixed z-50 top-0 left-0 w-full h-full flex items-center bg-black bg-opacity-40 justify-center `}
@@ -364,7 +361,7 @@ const DetailBus = ({ param }: any) => {
             </p>
             <div className="md:grid md:grid-cols-2 flex justify-between text-xl font-bold text-gray-700">
               <div>Địa điểm đón</div>
-              <div>Thời gian đón</div>
+              <div>Chuyến bắt đầu</div>
             </div>
             <div className="md:grid md:grid-cols-2 flex justify-between text-lg">
               <p>{busDetail?.stationStart}</p>
@@ -372,7 +369,7 @@ const DetailBus = ({ param }: any) => {
             </div>
             <div className="md:grid md:grid-cols-2 flex justify-between text-xl font-bold text-gray-700">
               <div>Địa điểm trả</div>
-              <div>Thời gian trả</div>
+              <div>Chuyến sẽ kết thúc vào</div>
             </div>
             <div className="md:grid md:grid-cols-2 flex justify-between text-lg">
               <p>{busDetail?.stationEnd}</p>
