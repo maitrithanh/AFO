@@ -43,10 +43,16 @@ export const  menu = [
         img: 'blackboard.webp'
     },
     {
+        text: 'Điểm danh',
+        icon: LuUser2,
+        pathname: '/admin/attendance',
+        img: 'attendance.webp'
+    },
+    {
         text: 'studySchedule',
         icon: MdOutlineInventory,
         pathname: '/admin/schedule',
-        img: 'attendance.webp'
+        img: 'weekly.webp'
     },
     ,
     {

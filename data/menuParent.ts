@@ -32,7 +32,7 @@ export const menuParent = [
   {
     name: "attendance",
     image: "calendar.webp",
-    path: "/",
+    path: "/parent/attendance",
   },
   {
     name: "Xe bus",

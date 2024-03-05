@@ -46,6 +46,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
   const { data: listChild } = useFetch("parent/childrenlist");
   const infoChild = listChild?.find((x: any) => x.id == child);
   const { data: Session } = useSession();
+  console.log(infoChild);
 
   useEffect(() => {
     setLoading(loadingUser);

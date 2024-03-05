@@ -4,7 +4,7 @@ import { MdArrowBackIosNew } from "react-icons/md";
 const BackAction = () => {
   return (
     <div
-      className="text-main w-fit group hover mb-2"
+      className="text-main w-fit group hover:cursor-pointer mb-2"
       onClick={() => history.back()}
     >
       <div className="flex items-center">

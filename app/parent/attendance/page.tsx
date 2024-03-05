@@ -14,15 +14,13 @@ import { Input } from "@/components/ui/input";
 import DefaultImage from "@/app/components/shared/defaultImage";
 import { getImageUrl } from "@/utils/image";
 import GetClass from "@/utils/classes/getClass";
-import { CiCircleMore } from "react-icons/ci";
-import { SiGoogleclassroom } from "react-icons/si";
 import DialogProfile from "@/app/components/profile/DialogProfile";
-import Button from "@/app/components/shared/Button";
 import GetAttendanceClass from "@/utils/attendance/getAttendance";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
+import { getCookie } from "cookies-next";
 
 const AttendancePage = () => {
   const { t } = useTranslation();
@@ -32,49 +30,42 @@ const AttendancePage = () => {
   const [defaultClassID, setDefaultClassID] = useState("");
   const [refresh, setRefresh] = useState(false);
   const { classId, getClassId, arrClassName } = GetClass();
+  const [childI, setChildI] = useState("");
+  const child = getCookie("child");
 
-  const {
-    arrGetAttendanceByClass,
-    nameAttendanceByClassFirst,
-    idAttendanceByClassFirst,
-  } = GetAttendanceClass(defaultClassID);
   const [attendance, setAttendance] = useState("");
-
-  useEffect(() => {
-    setDefaultClassID(classId[0]?.trim());
-  }, [classId]);
-
-  useEffect(() => {
-    setAttendance(idAttendanceByClassFirst);
-  }, [idAttendanceByClassFirst]);
-
-  useEffect(() => {
-    setDefaultClassID(getClassId);
-    setRefresh(true);
-  }, [getClassId]);
-
-  useEffect(() => {
-    setOjbData([]);
-  }, [refresh]);
 
   const day = new Date();
   const year = day.getFullYear();
 
-  const { data: detailClassData } = useFetch(
-    `ClassRoom/Detail/id=${defaultClassID}&year=${year}`
+  const { data: allClass } = useFetch(`ClassRoom/List/${year}`);
+  const { data: listChild } = useFetch("parent/childrenlist");
+  const infoChild = listChild?.find((x: any) => x.id == child);
+  const infoClass = allClass?.find(
+    (classInfo: any) => classInfo.name == infoChild?.classRoom
   );
+  const {
+    arrGetAttendanceByClass,
+    nameAttendanceByClassFirst,
+    idAttendanceByClassFirst,
+  } = GetAttendanceClass(infoClass?.id);
+
   const { data: attendanceClassData, loading } = useFetch(
-    `CheckIn/getListById?id=${attendance}`,
+    `CheckIn/getListById?id=${idAttendanceByClassFirst}`,
     refresh
   );
+
+  console.log(infoClass?.id);
+
+  console.log(attendanceClassData?.find((x: any) => x.id == child));
 
   const handleDialog = () => {
     setCloseDialog((currState) => !currState);
   };
 
   const searchChildInClass = (c: any): boolean => {
-    const matchName: boolean = c.childName.toLowerCase().includes(search);
-    return matchName;
+    const matchID: boolean = c.childId === child;
+    return matchID;
   };
 
   const {
@@ -193,66 +184,7 @@ const AttendancePage = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  - Lớp
-                  <div className="bg-gray-100 shadow-sm rounded-lg ml-2 font-bold text-3xl ">
-                    <Select
-                      defaultValue={classId[0]?.trim()}
-                      onValueChange={(value: any) => {
-                        setDefaultClassID(value);
-                      }}
-                    >
-                      <SelectTrigger className="md:w-[140px] w-full text-lg">
-                        <p className="text-gray-600 mr-2">
-                          <SiGoogleclassroom />
-                        </p>
-                        <SelectValue
-                          placeholder={arrClassName[0]?.trim()}
-                          defaultValue={classId[0]?.trim()}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {classId?.map((data: any, index: any) => {
-                          return (
-                            <SelectItem key={data?.trim()} value={data?.trim()}>
-                              {arrClassName[index]}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-                  </div>
                 </div>
-                <p className="md:text-xl">
-                  Số học sinh: {detailClassData?.count}
-                </p>
-              </div>
-              <div className="flex">
-                <p className="md:text-xl">
-                  Giáo viên chủ nhiệm:
-                  <span className="italic ml-2">
-                    {detailClassData?.teachers}
-                  </span>
-                </p>
-              </div>
-            </div>
-            <div className="md:flex justify-between items-center">
-              <div className="bg-white flex items-center md:mb-2 mb-4">
-                <div className=" shadow-lg rounded-lg md:w-[480px] w-full flex">
-                  <Input
-                    type="email"
-                    placeholder="Tìm kiếm..."
-                    className="p-4 "
-                    onChange={(event) => {
-                      setSearch(event.target.value.toLowerCase());
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Button
-                  label="Lưu điểm danh"
-                  onClick={handleSubmit(onSubmit)}
-                />
               </div>
             </div>
           </div>
@@ -289,7 +221,7 @@ const AttendancePage = () => {
                 {loading ? "Đang tải..." : ""}
                 {attendanceClassData
                   ?.filter(searchChildInClass)
-                  .map((dataStudent: any, index: any) => {
+                  ?.map((dataStudent: any, index: any) => {
                     return (
                       <tr
                         key={dataStudent.id}
@@ -308,12 +240,10 @@ const AttendancePage = () => {
                         <td className="px-6 py-4">
                           <input
                             id={`Started-${dataStudent.id}`}
-                            {...register(`Started-${dataStudent.id}`, {
-                              required: false,
-                            })}
                             type="checkbox"
                             defaultChecked={dataStudent.started}
                             className="scale-150"
+                            readOnly
                           />
                         </td>
                         <td className="px-6 py-4">
@@ -325,6 +255,7 @@ const AttendancePage = () => {
                             type="checkbox"
                             defaultChecked={dataStudent.ended}
                             className="scale-150"
+                            readOnly
                           />
                         </td>
                         <td className="px-6 py-4">
@@ -340,6 +271,7 @@ const AttendancePage = () => {
                             defaultValue={
                               dataStudent.point ? dataStudent.point : "0"
                             }
+                            readOnly
                             className="w-14 border-2 px-2 py-1 font-bold text-lg text-center text-main rounded-md focus:outline-main"
                           />
                         </td>
@@ -351,21 +283,10 @@ const AttendancePage = () => {
                             })}
                             className="border-2 px-2 py-1 rounded-md focus:outline-main"
                             placeholder="Ghi chú"
+                            readOnly
                             defaultValue={dataStudent.note}
                           />
                         </td>
-                        {/* <td
-                          className="md:px-6 md:py-4 hover hover:text-main"
-                          // onClick={() => {
-                          //   setDataStudentDetail({
-                          //     avatar: dataStudent.avatar,
-                          //     id: dataStudent.id,
-                          //   });
-                          //   setCloseDialog(true);
-                          // }}
-                        >
-                          <CiCircleMore size={24} />
-                        </td> */}
                       </tr>
                     );
                   })}
