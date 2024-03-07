@@ -5,7 +5,6 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import SidebarItem from "./SidebarItem";
 import { menu } from "@/data/menu";
 import { usePathname } from "next/navigation";
-import { IoSettingsOutline, IoHelpCircleOutline } from "react-icons/io5";
 import { useTranslation } from "next-i18next";
 import { IoMenu } from "react-icons/io5";
 

@@ -8,7 +8,6 @@ import Menu from "./Menu";
 import DropdownNotification from "../../Header/DropdownNotification";
 import DropdownMessage from "../../Header/DropdownMessage";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import Languages from "../../shared/Languages";
 import { useTranslation } from "react-i18next";
 import { IoClose } from "react-icons/io5";

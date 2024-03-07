@@ -14,7 +14,7 @@ const GetAttendanceClass = (defaultClassID:any) => {
   useEffect(() => {
     if (dataAttendanceByClassID) {
       setArrGetAttendanceByClass(dataAttendanceByClassID)
-      setNameAttendanceByClassFirst(dataAttendanceByClassID[0]?.classOfDay)
+      setNameAttendanceByClassFirst(dataAttendanceByClassID[0]?.classOfDay.split('-')[1])
       setIdAttendanceByClassFirst(dataAttendanceByClassID[0]?.id)
     }
   }, [dataAttendanceByClassID]);

@@ -30,11 +30,6 @@ export const menuParent = [
     path: "/",
   },
   {
-    name: "attendance",
-    image: "calendar.webp",
-    path: "/parent/attendance",
-  },
-  {
     name: "Xe bus",
     image: "bus.webp",
     path: "/parent/bus",
@@ -58,5 +53,10 @@ export const menuParent = [
     name: "off",
     image: "burnout.webp",
     path: "/parent/burnout",
+  },
+  {
+    name: "support",
+    image: "qa.webp",
+    path: "/parent/attendance",
   },
 ];

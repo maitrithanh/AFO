@@ -12,12 +12,14 @@ interface ModalsListProps {
   modalListOpen: boolean;
   expanded: boolean;
   borderTop?: boolean;
+  setModalListOpen: any;
 }
 
 const ModalsList: React.FC<ModalsListProps> = ({
   modalListOpen,
   expanded,
   borderTop,
+  setModalListOpen,
 }) => {
   const router = useRouter();
 
@@ -47,7 +49,12 @@ const ModalsList: React.FC<ModalsListProps> = ({
     ${modalListOpen ? "visible" : "invisible"}
     `}
     >
-      <ul className="">
+      <ul
+        className=""
+        onClick={() => {
+          setModalListOpen(false);
+        }}
+      >
         <li className="border-b p-2 px-4 hover:bg-gray-100 cursor-pointer">
           <button
             className="w-full flex items-center justify-left"

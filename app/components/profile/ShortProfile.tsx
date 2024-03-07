@@ -43,10 +43,10 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
 
   return (
     <div
-      className={`relative transition-all z-30  ${
+      className={`relative transition-all z-30 hover:cursor-pointer  ${
         borderTop
           ? "p-3"
-          : "border p-1 rounded-full w-[50px] h-[50px] sm:h-full sm:w-full bg-white duration-300 hover:scale-105 "
+          : "border p-1 rounded-full w-[50px] h-[50px] sm:h-full sm:w-full bg-white duration-300"
       } flex`}
     >
       <div
@@ -128,6 +128,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
 
         <ModalsList
           modalListOpen={modalListOpen}
+          setModalListOpen={setModalListOpen}
           expanded={expanded}
           borderTop={borderTop}
         />

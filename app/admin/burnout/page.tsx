@@ -55,7 +55,7 @@ const Columns: TableTemplateColumn[] = [
   },
 ];
 
-const DetailAttendancePage = ({ params }: any) => {
+const BurnOutPage = ({ params }: any) => {
   const { data: attendanceByID } = useFetch(
     `CheckIn/getListById?id=${params?.attendanceID}`
   );
@@ -75,7 +75,7 @@ const DetailAttendancePage = ({ params }: any) => {
       <BackAction />
 
       <TableTemplate
-        title={`Lớp ${detailAttendance?.classOfDay}`}
+        title={`Đơn xin nghỉ ${detailAttendance?.classOfDay}`}
         dataSource={attendanceByID || []}
         columns={Columns}
         searchColumns={[Columns[0]]}
@@ -86,4 +86,4 @@ const DetailAttendancePage = ({ params }: any) => {
   );
 };
 
-export default DetailAttendancePage;
+export default BurnOutPage;

@@ -61,7 +61,8 @@ const AttendancePage = () => {
   const year = day.getFullYear();
 
   const { data: detailClassData } = useFetch(
-    `ClassRoom/Detail/id=${defaultClassID}&year=${year}`
+    `ClassRoom/Detail/id=${defaultClassID}&year=${year}`,
+    refresh
   );
   const { data: attendanceClassData, loading } = useFetch(
     `CheckIn/getListById?id=${attendance}`,
@@ -115,7 +116,9 @@ const AttendancePage = () => {
 
     callApiWithToken()
       .put(`CheckIn/save?id=${attendance}`)
-      .then((response) => {})
+      .then((response) => {
+        setRefresh(true);
+      })
       .catch((errors) => {
         toast.error("Có lỗi khi cập nhật trạng thái lưu điểm danh!");
       });
@@ -142,7 +145,7 @@ const AttendancePage = () => {
 
   setTimeout(() => {
     setRefresh(false);
-  }, 1000);
+  }, 2000);
   const [ojbData, setOjbData] = useState([] as object[]);
 
   return (
@@ -185,7 +188,7 @@ const AttendancePage = () => {
                           (data: any, index: any) => {
                             return (
                               <SelectItem key={data?.id} value={data?.id}>
-                                {data?.classOfDay}
+                                {data?.classOfDay?.split("-")[1]}
                               </SelectItem>
                             );
                           }
@@ -222,16 +225,17 @@ const AttendancePage = () => {
                     </Select>
                   </div>
                 </div>
+
+                <div className="flex">
+                  <p className="md:text-xl">
+                    Giáo viên chủ nhiệm:
+                    <span className="italic ml-2">
+                      {detailClassData?.teachers}
+                    </span>
+                  </p>
+                </div>
                 <p className="md:text-xl">
                   Số học sinh: {detailClassData?.count}
-                </p>
-              </div>
-              <div className="flex">
-                <p className="md:text-xl">
-                  Giáo viên chủ nhiệm:
-                  <span className="italic ml-2">
-                    {detailClassData?.teachers}
-                  </span>
                 </p>
               </div>
             </div>
@@ -263,6 +267,9 @@ const AttendancePage = () => {
                 <tr className="text-center">
                   <th scope="col" className="px-6 py-3">
                     STT
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Hình
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Họ tên
@@ -301,7 +308,12 @@ const AttendancePage = () => {
                         >
                           {dataStudent.id}
                         </th>
-
+                        <td className="px-6 py-4 text-left">
+                          <DefaultImage
+                            img={getImageUrl(dataStudent.avatar)}
+                            fallback="/avatar.webp"
+                          />
+                        </td>
                         <td className="px-6 py-4 text-left">
                           {dataStudent.childName}
                         </td>

@@ -19,6 +19,8 @@ import { SiGoogleclassroom } from "react-icons/si";
 import DialogProfile from "@/app/components/profile/DialogProfile";
 import Button from "@/app/components/shared/Button";
 import { MdCalendarMonth } from "react-icons/md";
+import { IoCalendarOutline } from "react-icons/io5";
+import GetAttendanceClass from "@/utils/attendance/getAttendance";
 
 const LearningResultPage = () => {
   const { t } = useTranslation();
@@ -29,7 +31,11 @@ const LearningResultPage = () => {
   const [refresh, setRefresh] = useState(false);
 
   const { classId, getClassId, arrClassName } = GetClass();
-  console.log({ classId, getClassId, arrClassName });
+  const {
+    arrGetAttendanceByClass,
+    nameAttendanceByClassFirst,
+    idAttendanceByClassFirst,
+  } = GetAttendanceClass(defaultClassID);
 
   useEffect(() => {
     setDefaultClassID(classId[0]?.trim());
@@ -46,15 +52,23 @@ const LearningResultPage = () => {
     `ClassRoom/Detail/id=${defaultClassID}&year=${year}`
   );
 
+  const { data: learningResultData } = useFetch(
+    `CheckIn/getClassByMonth?classId=${defaultClassID}&month=3`,
+    refresh
+  );
+
   const handleDialog = () => {
     setCloseDialog((currState) => !currState);
   };
 
   const searchChildInClass = (c: any): boolean => {
     const matchName: boolean = c.fullName.toLowerCase().includes(search);
-    const matchPhone: boolean = c.phone.includes(search);
-    return matchName || matchPhone;
+    return matchName;
   };
+
+  setTimeout(() => {
+    setRefresh(false);
+  }, 2000);
 
   return (
     <>
@@ -74,40 +88,13 @@ const LearningResultPage = () => {
             <div className="flex lg:flex-row flex-col items-center justify-between">
               <div className="">
                 <div className="md:text-3xl flex items-center">
-                  Kết quả học tập
-                  <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-bold text-3xl ">
-                    <Select
-                      defaultValue={classId[0]?.trim()}
-                      onValueChange={(value: any) => {
-                        setDefaultClassID(value);
-                      }}
-                    >
-                      <SelectTrigger className="md:w-[160px] w-full text-lg">
-                        <p className="text-gray-600 mr-2">
-                          <MdCalendarMonth />
-                        </p>
-                        <SelectValue
-                          placeholder="03/03/2024"
-                          defaultValue="03/03/2024"
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {classId?.map((data: any, index: any) => {
-                          return (
-                            <SelectItem key={data?.trim()} value={data?.trim()}>
-                              {arrClassName[index]}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  Lớp
+                  Kết quả học tập Lớp
                   <div className="bg-gray-100 shadow-sm rounded-lg ml-2 font-bold text-3xl ">
                     <Select
                       defaultValue={classId[0]?.trim()}
                       onValueChange={(value: any) => {
                         setDefaultClassID(value);
+                        setRefresh(true);
                       }}
                     >
                       <SelectTrigger className="md:w-[140px] w-full text-lg">
@@ -131,16 +118,16 @@ const LearningResultPage = () => {
                     </Select>
                   </div>
                 </div>
+                <div className="flex">
+                  <p className="md:text-xl">
+                    Giáo viên chủ nhiệm:
+                    <span className="italic ml-2">
+                      {detailClassData?.teachers}
+                    </span>
+                  </p>
+                </div>
                 <p className="md:text-xl">
                   Số học sinh: {detailClassData?.count}
-                </p>
-              </div>
-              <div className="flex">
-                <p className="md:text-xl">
-                  Giáo viên chủ nhiệm:
-                  <span className="italic ml-2">
-                    {detailClassData?.teachers}
-                  </span>
                 </p>
               </div>
             </div>
@@ -167,9 +154,7 @@ const LearningResultPage = () => {
                   <th scope="col" className="px-6 py-3">
                     STT
                   </th>
-                  <th scope="col" className="px-6 py-3">
-                    Hình
-                  </th>
+
                   <th scope="col" className="px-6 py-3">
                     Họ tên
                   </th>
@@ -177,7 +162,10 @@ const LearningResultPage = () => {
                     Ngày học
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Ngày nghỉ
+                    Ngày nghỉ có phép
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Ngày nghỉ không phép
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Điểm đánh giá
@@ -185,12 +173,10 @@ const LearningResultPage = () => {
                   <th scope="col" className="px-6 py-3">
                     Đánh giá
                   </th>
-
-                  <th scope="col" className="px-6 py-3"></th>
                 </tr>
               </thead>
               <tbody>
-                {detailClassData?.students
+                {learningResultData
                   ?.filter(searchChildInClass)
                   .map((dataStudent: any, index: any) => {
                     return (
@@ -204,34 +190,19 @@ const LearningResultPage = () => {
                         >
                           {index + 1}
                         </th>
-                        <td className="px-6 py-4 flex justify-center">
-                          <DefaultImage
-                            img={getImageUrl(dataStudent.avatar)}
-                            className={`w-10 h-10 rounded-full cursor-pointer`}
-                            custom="w-[50px] h-[50px]"
-                            fallback="/avatar.webp"
-                          />
-                        </td>
+
                         <td className="px-6 py-4 text-left">
                           {dataStudent.fullName}
                         </td>
-                        <td className="px-6 py-4">29</td>
-                        <td className="px-6 py-4">1</td>
-                        <td className="px-6 py-4">290</td>
-                        <td className="px-6 py-4">Chăm ngoan</td>
-
-                        <td
-                          className="md:px-6 md:py-4 hover hover:text-main"
-                          onClick={() => {
-                            setDataStudentDetail({
-                              avatar: dataStudent.avatar,
-                              id: dataStudent.id,
-                            });
-                            setCloseDialog(true);
-                          }}
-                        >
-                          <CiCircleMore size={24} />
+                        <td className="px-6 py-4">{dataStudent.countCheck}</td>
+                        <td className="px-6 py-4">
+                          {dataStudent.countOffReason}
                         </td>
+                        <td className="px-6 py-4">
+                          {dataStudent.countNoCheck}
+                        </td>
+                        <td className="px-6 py-4">{dataStudent.point}</td>
+                        <td className="px-6 py-4">{dataStudent.status}</td>
                       </tr>
                     );
                   })}
