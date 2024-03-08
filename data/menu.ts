@@ -35,7 +35,7 @@ export const  menu = [
             },
         ]
     },
-    
+   
     {
         text: 'classes',
         icon: LuUser2,
@@ -47,6 +47,12 @@ export const  menu = [
         icon: LuUser2,
         pathname: '/admin/attendance',
         img: 'attendance.webp'
+    },
+    {
+        text: 'Danh sách xin nghỉ',
+        icon: GiTeacher,
+        pathname: '/admin/burnout',
+        img: 'burnout.webp'
     },
     {
         text: 'studySchedule',
@@ -106,7 +112,7 @@ export const  menu = [
         icon: GiTeacher,
         pathname: '/admin/schoolfee',
         img: 'cost.webp'
-    },
+    }, 
     {
         text: 'notification',
         icon: GiTeacher,

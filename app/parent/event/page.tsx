@@ -42,17 +42,32 @@ const EventPage = () => {
             >
               <div className="flex md:flex-row flex-col text-lg items-center justify-between w-full">
                 <div className="flex items-center md:flex-row flex-col">
-                  <p className="font-bold">{event?.title}</p>
                   <p
-                    className={`text-sm font-normal ml-4 w-fit px-2 h-8 flex justify-center items-center bg-green-500 text-white p-1 rounded-full`}
+                    className={`font-bold ${
+                      getMonth(event?.endDate) < month ? "line-through" : ""
+                    }`}
                   >
-                    <p>
-                      Nghỉ
-                      <span className="bg-rose-500 px-2 rounded-full mx-1">
-                        {event?.countDay}
-                      </span>
-                      ngày trong tháng {getMonth(event?.startDate)}
-                    </p>
+                    {event?.title}
+                  </p>
+                  <p
+                    className={`text-sm font-normal ml-4 w-fit px-2 h-8 flex justify-center items-center
+                    ${
+                      getMonth(event?.endDate) < month
+                        ? "bg-gray-400"
+                        : "bg-green-500"
+                    }  text-white p-1 rounded-full`}
+                  >
+                    {getMonth(event?.endDate) < month ? (
+                      "Đã diễn ra"
+                    ) : (
+                      <p>
+                        Nghỉ
+                        <span className="bg-rose-500 px-2 rounded-full mx-1">
+                          {event?.countDay}
+                        </span>
+                        ngày trong tháng {getMonth(event?.startDate)}
+                      </p>
+                    )}
                   </p>
                 </div>
                 <div>

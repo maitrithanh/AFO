@@ -143,8 +143,12 @@ const DetailClasses = (id: any) => {
                   <th scope="col" className="px-6 py-3">
                     STT
                   </th>
+
                   <th scope="col" className="px-6 py-3">
                     Hình
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Mã trẻ
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Họ tên
@@ -184,6 +188,7 @@ const DetailClasses = (id: any) => {
                             fallback="/avatar.webp"
                           />
                         </td>
+                        <td className="px-6 py-4">{dataStudent.id}</td>
                         <td className="px-6 py-4">{dataStudent.fullName}</td>
                         <td className="px-6 py-4">{dataStudent.birthDay}</td>
                         <td className="px-6 py-4">{dataStudent.phone}</td>
