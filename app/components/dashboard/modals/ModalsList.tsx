@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import Loading from "../../shared/Loading";
 import { useTranslation } from "react-i18next";
 import { IoSettingsOutline } from "react-icons/io5";
+import { useGlobalContext } from "@/app/contexts/GlobalContext";
 
 interface ModalsListProps {
   modalListOpen: boolean;
@@ -22,9 +23,11 @@ const ModalsList: React.FC<ModalsListProps> = ({
   setModalListOpen,
 }) => {
   const router = useRouter();
+  const { refreshContactList } = useGlobalContext();
 
   const handleLogout = () => {
     router.push("/");
+    if (refreshContactList) refreshContactList();
     deleteCookie("token");
     deleteCookie("role");
     deleteCookie("child");

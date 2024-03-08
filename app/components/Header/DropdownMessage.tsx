@@ -4,13 +4,29 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { IoClose } from "react-icons/io5";
+import { useGlobalContext } from "@/app/contexts/GlobalContext";
+import DefaultImage from "../shared/defaultImage";
+import ContactList from "@/components/ui/contactList";
+import { useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
 
 const DropdownMessage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notifying, setNotifying] = useState(true);
+  const [notifying, setNotifying] = useState(false);
+
+  const { contactList, selectChat } = useGlobalContext();
+  const router = useRouter();
+  const role = getCookie('role');
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+
+  //notif
+  useEffect(() => { 
+    var flag = contactList?.find(x => x.newMessage);
+    setNotifying(flag !== undefined);
+
+  }, [contactList])
 
   // close on click outside
   useEffect(() => {
@@ -46,7 +62,6 @@ const DropdownMessage = () => {
         <Link
           ref={trigger}
           onClick={() => {
-            setNotifying(false);
             setDropdownOpen(!dropdownOpen);
           }}
           href="#"
@@ -100,7 +115,46 @@ const DropdownMessage = () => {
             </h5>
           </div>
 
-          <ul className="flex flex-col overflow-y-auto h-[90%]">
+          <ContactList onSelect={
+            (contact) => {
+              if (selectChat) selectChat(contact)
+              router.push(`/${role?.toLocaleLowerCase()}/contact`);
+            }
+          } />
+          {/* <ul className="flex flex-col overflow-y-auto h-[90%]">
+
+            {
+              contactList?.map(x => 
+                <li className="text-left" key={x.userId}>
+                  <Link
+                    className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                    href="/messages"
+                  >
+                    <div className="h-12.5 w-12.5 rounded-full mr-2">
+                      <DefaultImage
+                        width={55}
+                        height={55}
+                        img={x.avatar}
+                        fallback="/avatar.webp"
+                      />
+
+                    </div>
+
+                    <div>
+                      <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
+                        {x.name}
+                      </h6>
+                      <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
+                        {x.title}
+                      </p>
+                      <p className="text-xs">1 phút trước</p>
+                    </div>
+                  </Link>
+                </li>
+              )
+            }
+
+            
             <li className="text-left">
               <Link
                 className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
@@ -309,33 +363,7 @@ const DropdownMessage = () => {
                 </div>
               </Link>
             </li>
-            <li className="text-left">
-              <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                href="/messages"
-              >
-                <div className="h-12.5 w-12.5 rounded-full mr-2">
-                  <Image
-                    width={55}
-                    height={55}
-                    src={"/avatar.webp"}
-                    alt="User"
-                    className="rounded-full"
-                  />
-                </div>
-
-                <div>
-                  <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
-                    Tên người gửi
-                  </h6>
-                  <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
-                    Nội dung nhắn 💪
-                  </p>
-                  <p className="text-xs">1 phút trước</p>
-                </div>
-              </Link>
-            </li>
-          </ul>
+          </ul> */}
         </div>
       </div>
     </>

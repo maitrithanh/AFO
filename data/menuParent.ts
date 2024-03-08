@@ -27,7 +27,7 @@ export const menuParent = [
   {
     name: "contact",
     image: "telephone.webp",
-    path: "/",
+    path: "/parent/contact",
   },
   {
     name: "Xe bus",

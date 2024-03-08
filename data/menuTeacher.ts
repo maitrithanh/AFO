@@ -17,7 +17,7 @@ export const menuTeacher = [
     {
       name: "contact",
       image: "telephone.webp",
-      path: "/",
+      path: "/teacher/contact",
     },
     {
       name: "helth",

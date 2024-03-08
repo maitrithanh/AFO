@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Provider from "./components/shared/sessionProvider";
 import { Baloo_Bhaijaan_2 } from "next/font/google";
 import { Asap_Condensed } from "next/font/google";
+import GlobalContextProvider from "./contexts/GlobalContext";
 
 const font = Baloo_Bhaijaan_2({
   weight: "400", // if single weight, otherwise you use array like [400, 500, 700],
@@ -34,7 +35,9 @@ export default function RootLayout({
         <div className="relative">
           <Toaster />
         </div>
-        <Provider>{children}</Provider>
+        <GlobalContextProvider>
+          <Provider>{children}</Provider>
+        </GlobalContextProvider>
       </body>
     </html>
   );
