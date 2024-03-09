@@ -25,32 +25,36 @@ import { MdChangeCircle } from "react-icons/md";
 
 interface ProfileCardProps {
   parent?: boolean;
+  justView?: boolean;
+  idChild?: string;
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
+const ProfileCard: React.FC<ProfileCardProps> = ({
+  parent,
+  justView,
+  idChild,
+}) => {
   const [loading, setLoading] = useState(false);
-
   const [refresh, setRefresh] = useState(0);
   const [openChangePassword, setOpenChangePassword] = useState(false);
-  const child = getCookie("child");
+  const child = justView ? idChild : getCookie("child");
   const role = getCookie("role");
 
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
 
-  const { data: currentUser, loading: loadingUser } = useFetch<UserData>(
-    "Auth/current",
-    null,
-    refresh
-  );
+  // const { data: currentUser2, loading: loadingUser } = useFetch<UserData>(
+  //   "Auth/current",
+  //   null,
+  //   refresh
+  // );
 
-  const { data: listChild } = useFetch("parent/childrenlist");
-  const infoChild = listChild?.find((x: any) => x.id == child);
+  const { data: infoChild } = useFetch(`Child/getChild?id=${child}`);
+  const currentUser = infoChild?.parent;
   const { data: Session } = useSession();
-  console.log(infoChild);
 
-  useEffect(() => {
-    setLoading(loadingUser);
-  }, [loadingUser]);
+  // useEffect(() => {
+  //   setLoading(loadingUser);
+  // }, [loadingUser]);
 
   //external login redirect
   useEffect(() => {
@@ -249,16 +253,20 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
             {parent ? (
               <>
                 <CardInfo cardName={t("infoChild")}>
-                  <div className="absolute right-6 ">
-                    <Link href={"/choose-user"}>
-                      <p className="text-main flex items-center">
-                        <span className="m-1">
-                          <MdChangeCircle size={20} />
-                        </span>
-                        {t("changeProfile")}
-                      </p>
-                    </Link>
-                  </div>
+                  {justView ? (
+                    ""
+                  ) : (
+                    <div className="absolute right-6 ">
+                      <Link href={"/choose-user"}>
+                        <p className="text-main flex items-center">
+                          <span className="m-1">
+                            <MdChangeCircle size={20} />
+                          </span>
+                          {t("changeProfile")}
+                        </p>
+                      </Link>
+                    </div>
+                  )}
                   <div className="absolute right-4 -top-10">
                     <span className="relative group">
                       <DefaultImage
@@ -345,73 +353,81 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ parent }) => {
             </CardInfo>
           </div>
 
-          <div className="shadow-lg border p-8 pt-4 my-4 rounded-xl bg-[#fffc]">
-            <div className="text-main sm:text-2xl text-xl font-bold flex border-b mb-4">
-              {t("link") + " " + t("account")}
-            </div>
-            <div className="block md:flex mt-1 gap-4">
-              {currentUser?.googleName ? (
-                <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
-                  <FaGoogle size={24} />
-                  <p className="font-semibold">{currentUser.googleName}</p>
-                  <div
-                    className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
-                    onClick={() => onUnlink("google")}
-                  >
-                    <IoClose />
-                  </div>
+          {
+            justView ? (
+              ""
+            ) : (
+              <div className="shadow-lg border p-8 pt-4 my-4 rounded-xl bg-[#fffc]">
+                <div className="text-main sm:text-2xl text-xl font-bold flex border-b mb-4">
+                  {t("link") + " " + t("account")}
                 </div>
-              ) : (
-                <>
-                  <Button
-                    label={t("link") + " Google"}
-                    outline
-                    custom="mr-2 mb-4 md:m-0"
-                    icon={FaGoogle}
-                    onClick={() => ExternalLogin("google")}
-                  />
-                </>
-              )}
-              {currentUser?.facebookName ? (
-                <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
-                  <FaFacebook size={24} />
-                  <p className="font-semibold">{currentUser.facebookName}</p>
-                  <div
-                    className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
-                    onClick={() => onUnlink("facebook")}
-                  >
-                    <IoClose />
-                  </div>
+                <div className="block md:flex mt-1 gap-4">
+                  {currentUser?.googleName ? (
+                    <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
+                      <FaGoogle size={24} />
+                      <p className="font-semibold">{currentUser.googleName}</p>
+                      <div
+                        className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
+                        onClick={() => onUnlink("google")}
+                      >
+                        <IoClose />
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <Button
+                        label={t("link") + " Google"}
+                        outline
+                        custom="mr-2 mb-4 md:m-0"
+                        icon={FaGoogle}
+                        onClick={() => ExternalLogin("google")}
+                      />
+                    </>
+                  )}
+                  {currentUser?.facebookName ? (
+                    <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
+                      <FaFacebook size={24} />
+                      <p className="font-semibold">
+                        {currentUser.facebookName}
+                      </p>
+                      <div
+                        className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
+                        onClick={() => onUnlink("facebook")}
+                      >
+                        <IoClose />
+                      </div>
+                    </div>
+                  ) : (
+                    <Button
+                      label={t("link") + " Facebook"}
+                      icon={FaFacebook}
+                      outline
+                      custom="bg-[#ffffff7d]"
+                      onClick={() => {
+                        ExternalLogin("facebook");
+                      }}
+                    />
+                  )}
                 </div>
-              ) : (
                 <Button
-                  label={t("link") + " Facebook"}
-                  icon={FaFacebook}
-                  outline
-                  custom="bg-[#ffffff7d]"
+                  label={t("changePass")}
                   onClick={() => {
-                    ExternalLogin("facebook");
+                    setOpenChangePassword(true);
                   }}
+                  custom="mt-4"
                 />
-              )}
-            </div>
-          </div>
+                {openChangePassword && (
+                  <ChangePwDialog
+                    onClose={() => {
+                      setOpenChangePassword(false);
+                    }}
+                  />
+                )}
+              </div>
+            )
 
-          {/* <Button label="Xem album" onClick={() => {}} custom="mt-4" /> */}
-          <Button
-            label={t("changePass")}
-            onClick={() => {
-              setOpenChangePassword(true);
-            }}
-            custom="mt-4"
-          />
-          {openChangePassword && (
-            <ChangePwDialog
-              onClose={() => {
-                setOpenChangePassword(false);
-              }}
-            />
-          )}
+            /* <Button label="Xem album" onClick={() => {}} custom="mt-4" /> */
+          }
         </div>
       </div>
     </div>

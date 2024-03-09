@@ -17,6 +17,7 @@ import { getImageUrl } from "@/utils/image";
 import GetClass from "@/utils/classes/getClass";
 import { CiCircleMore } from "react-icons/ci";
 import { MdCalendarMonth } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 const ClassesTable = () => {
   const { t } = useTranslation();
@@ -25,10 +26,9 @@ const ClassesTable = () => {
   const [search, setSearch] = useState("");
   const [defaultClassID, setDefaultClassID] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const router = useRouter();
 
   const { classId, getClassId, arrClassName } = GetClass();
-  console.log({ classId, getClassId, arrClassName });
-
   useEffect(() => {
     setDefaultClassID(classId[0]?.trim());
   }, [classId]);
@@ -179,7 +179,16 @@ const ClassesTable = () => {
                             fallback="/avatar.webp"
                           />
                         </td>
-                        <td className="px-6 py-4">{dataStudent.fullName}</td>
+                        <td
+                          className="px-6 py-4 cursor-pointer"
+                          onClick={() => {
+                            router.push(
+                              `/teacher/detailChild/${dataStudent.id}`
+                            );
+                          }}
+                        >
+                          {dataStudent.fullName}
+                        </td>
                         <td className="px-6 py-4">{dataStudent.birthDay}</td>
                         <td className="px-6 py-4">{dataStudent.phone}</td>
                         <td className="px-6 py-4">{dataStudent.parentName}</td>

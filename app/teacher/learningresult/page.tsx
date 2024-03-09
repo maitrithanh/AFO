@@ -57,6 +57,8 @@ const LearningResultPage = () => {
     refresh
   );
 
+  console.log(learningResultData);
+
   const handleDialog = () => {
     setCloseDialog((currState) => !currState);
   };
@@ -154,7 +156,9 @@ const LearningResultPage = () => {
                   <th scope="col" className="px-6 py-3">
                     STT
                   </th>
-
+                  <th scope="col" className="px-6 py-3">
+                    Hình
+                  </th>
                   <th scope="col" className="px-6 py-3">
                     Họ tên
                   </th>
@@ -190,7 +194,12 @@ const LearningResultPage = () => {
                         >
                           {index + 1}
                         </th>
-
+                        <td className="px-6 py-4 text-left">
+                          <DefaultImage
+                            img={getImageUrl(dataStudent.avatar)}
+                            fallback="/avatar.webp"
+                          />
+                        </td>
                         <td className="px-6 py-4 text-left">
                           {dataStudent.fullName}
                         </td>

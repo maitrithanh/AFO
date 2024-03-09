@@ -14,7 +14,7 @@ import { CiEdit } from "react-icons/ci";
 
 import { Input } from "@/components/ui/input";
 import DefaultImage from "@/app/components/shared/defaultImage";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import DialogProfile from "../../profile/DialogProfile";
 import BackAction from "../BackAction";
 import { getImageUrl } from "@/utils/image";
@@ -28,13 +28,12 @@ const DetailClasses = (id: any) => {
   const [searchType, setSearchType] = useState("searchName");
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
+  const router = useRouter();
 
   const { data: detailClassData } = useFetch(
     `ClassRoom/Detail/id=${id.id}&year=${year}`,
     refresh
   );
-
-  console.log(refresh);
 
   const handleDialog = () => {
     setCloseDialog((currState) => !currState);
@@ -172,7 +171,10 @@ const DetailClasses = (id: any) => {
                     return (
                       <tr
                         key={dataStudent.id}
-                        className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                        onClick={() => {
+                          router.push(`/admin/detailChild/${dataStudent.id}`);
+                        }}
+                        className="odd:bg-white cursor-pointer odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                       >
                         <th
                           scope="row"

@@ -86,19 +86,22 @@ const AttendancePage = () => {
     defaultValues: {
       Started: "false",
       Ended: "false",
-      Point: "1",
+      Point: "",
       OffReason: "'",
       Note: "'",
     },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    //khi nhấn lưu thì set object data rỗng trước khi thêm data mới
     setOjbData([]);
     for (const key in data) {
+      // xem id đã tách trong input có tồn tại không rồi lưu data vào objData để call api
       if (
         !(key.split("-")[1] === undefined) &&
         attendanceClassData.find((x: any) => x.id == key.split("-")[1])
       ) {
+        // kiểm tra xem trong ojbData có tồn tài id đso chưa?
         if (!ojbData.find((x: any) => x.id == key.split("-")[1])) {
           ojbData.push({
             id: key.split("-")[1],
@@ -113,6 +116,7 @@ const AttendancePage = () => {
     }
 
     toast.success("Đã cập nhật");
+    location.reload();
 
     callApiWithToken()
       .put(`CheckIn/save?id=${attendance}`)
