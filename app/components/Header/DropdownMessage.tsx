@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { IoClose } from "react-icons/io5";
 import { useGlobalContext } from "@/app/contexts/GlobalContext";
 import DefaultImage from "../shared/defaultImage";
-import ContactList from "@/components/ui/contactList";
+import ContactList from "@/app/components/contact/contactList";
 import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 

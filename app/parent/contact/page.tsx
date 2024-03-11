@@ -1,4 +1,4 @@
-import ContactPage from "@/components/page/contactPage"
+import ContactPage from "@/app/components/contact/contactPage"
 
 const ParentContactPage = () => {
     return <>

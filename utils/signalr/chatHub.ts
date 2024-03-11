@@ -28,7 +28,6 @@ export const connectToSignalR = async (token: string) => {
             await connection.start();
             console.log('Connected to SignalR server');
         }
-        
 
         connection.on('onError', (data: ErrorData) => {
             console.log('signalR error: ', data)
