@@ -32,7 +32,7 @@ const ContactPage = () => {
     //     }
     // }, [])
 
-    return <div className="bg-white h-[80vh] flex w-[80vw] m-auto">
+    return <div className="bg-white h-[80vh] flex w-[80vw] m-auto rounded-md">
         <div className="flex-[4] border-r-2 border-slate-200">
             <ContactList onSelect={(id) => selectChat!(id)}/>
         </div>
