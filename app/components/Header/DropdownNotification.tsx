@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { IoClose } from "react-icons/io5";
 import { IoNotifications } from "react-icons/io5";
+import { getCookie } from "cookies-next";
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -12,6 +13,7 @@ const DropdownNotification = () => {
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+  const role = getCookie("role");
 
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -59,14 +61,21 @@ const DropdownNotification = () => {
             >
               <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
             </span>
+            <span
+              className={` ${
+                role == "Admin" ? "text-[#6b7280]" : "text-white"
+              } hover:text-main hover:scale-110 transition-all`}
+            >
+              <IoNotifications size={24} />
+            </span>
 
-            <Image
+            {/* <Image
               src={"/icons/notification.webp"}
               width={20}
               height={20}
               alt=""
               className="group-hover:scale-105 group-hover:rotate-6 transition-all"
-            />
+            /> */}
           </Link>
         </div>
       </div>

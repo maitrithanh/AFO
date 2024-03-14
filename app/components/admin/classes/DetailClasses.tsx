@@ -1,23 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
 import useFetch from "@/utils/useFetch";
 import { useTranslation } from "react-i18next";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { CiEdit } from "react-icons/ci";
-
-import { Input } from "@/components/ui/input";
 import DefaultImage from "@/app/components/shared/defaultImage";
 import { useRouter, useSearchParams } from "next/navigation";
 import DialogProfile from "../../profile/DialogProfile";
 import BackAction from "../BackAction";
 import { getImageUrl } from "@/utils/image";
+import { GoInfo } from "react-icons/go";
 
 const DetailClasses = (id: any) => {
   const { t } = useTranslation();
@@ -25,7 +16,6 @@ const DetailClasses = (id: any) => {
   const year = searchParams.get("year");
   const [closeDialog, setCloseDialog] = useState(false);
   const [dataStudentDetail, setDataStudentDetail] = useState({});
-  const [searchType, setSearchType] = useState("searchName");
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
   const router = useRouter();
@@ -37,6 +27,7 @@ const DetailClasses = (id: any) => {
 
   const handleDialog = () => {
     setCloseDialog((currState) => !currState);
+    setRefresh(true);
     setTimeout(() => {
       setRefresh(false);
     }, 1000);
@@ -53,9 +44,7 @@ const DetailClasses = (id: any) => {
       {closeDialog ? (
         <DialogProfile
           handleDialog={handleDialog}
-          data={dataStudentDetail}
-          setRefresh={setRefresh((b) => b)}
-          refresh
+          dataProps={dataStudentDetail}
         />
       ) : (
         ""
@@ -97,9 +86,9 @@ const DetailClasses = (id: any) => {
                         >
                           <path
                             stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                           />
                         </svg>
@@ -142,7 +131,6 @@ const DetailClasses = (id: any) => {
                   <th scope="col" className="px-6 py-3">
                     STT
                   </th>
-
                   <th scope="col" className="px-6 py-3">
                     Hình
                   </th>
@@ -171,9 +159,9 @@ const DetailClasses = (id: any) => {
                     return (
                       <tr
                         key={dataStudent.id}
-                        onClick={() => {
-                          router.push(`/admin/detailChild/${dataStudent.id}`);
-                        }}
+                        // onClick={() => {
+                        //   router.push(`/admin/detailChild/${dataStudent.id}`);
+                        // }}
                         className="odd:bg-white cursor-pointer odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                       >
                         <th
@@ -195,17 +183,29 @@ const DetailClasses = (id: any) => {
                         <td className="px-6 py-4">{dataStudent.birthDay}</td>
                         <td className="px-6 py-4">{dataStudent.phone}</td>
                         <td className="px-6 py-4">{dataStudent.parentName}</td>
-                        <td
-                          className="md:px-6 md:py-4 hover hover:text-main"
-                          onClick={() => {
-                            setDataStudentDetail({
-                              avatar: dataStudent.avatar,
-                              id: dataStudent.id,
-                            });
-                            setCloseDialog(true);
-                          }}
-                        >
-                          <CiEdit size={24} />
+                        <td className="md:px-6 md:py-4 hover flex">
+                          <span
+                            className="hover:text-main mx-1"
+                            onClick={() => {
+                              setDataStudentDetail({
+                                avatar: dataStudent.avatar,
+                                id: dataStudent.id,
+                              });
+                              setCloseDialog(true);
+                            }}
+                          >
+                            <CiEdit size={24} />
+                          </span>
+                          <span
+                            className="hover:text-main mx-1"
+                            onClick={() => {
+                              router.push(
+                                `/admin/detailChild/${dataStudent.id}`
+                              );
+                            }}
+                          >
+                            <GoInfo size={24} />
+                          </span>
                         </td>
                       </tr>
                     );

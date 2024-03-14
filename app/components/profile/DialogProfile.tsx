@@ -17,27 +17,24 @@ import { toYMD } from "@/utils/dateTime";
 
 interface DialogProfileProps {
   handleDialog: () => void;
-  data: any;
+  dataProps?: any;
   teacher?: boolean;
-  setRefresh: any;
-  refresh?: boolean;
 }
 
 const DialogProfile: React.FC<DialogProfileProps> = ({
   handleDialog,
-  data,
+  dataProps,
   teacher,
-  setRefresh,
-  refresh,
 }) => {
   const { t } = useTranslation();
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
   const editRef = useRef<HTMLInputElement | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [currAvatar, setCurrAvatar] = useState<File | null>(null);
+  const [refresh, setRefresh] = useState(false);
 
   const { data: detailChild } = useFetch(
-    "Child/getChild?id=" + data.id,
+    "Child/getChild?id=" + dataProps.id,
     refresh
   );
 
@@ -52,7 +49,7 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
 
     callApiWithToken()
       .put(
-        "File/ChangeChildAvatar?Id=" + data.id,
+        "File/ChangeChildAvatar?Id=" + dataProps.id,
         { file },
         { headers: { "content-type": "multipart/form-data" } }
       )
@@ -104,6 +101,7 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    setRefresh(true);
     const formData = new FormData();
     for (const key in data) {
       formData.append(key, data[key]);
@@ -120,7 +118,9 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
       })
       .then((response) => {
         toast.success("Đã cập nhật");
-        setRefresh(true);
+        setTimeout(() => {
+          setRefresh(false);
+        }, 1000);
         handleDialog();
       })
       .catch((error) => {
@@ -155,7 +155,7 @@ const DialogProfile: React.FC<DialogProfileProps> = ({
                   ""
                 ) : (
                   <DefaultImage
-                    img={getImageUrl(data.avatar)}
+                    img={getImageUrl(dataProps.avatar)}
                     fallback="/avatar.webp"
                     className={`w-14 h-14 rounded-full cursor-pointer`}
                     custom="w-[80px] h-[80px]"

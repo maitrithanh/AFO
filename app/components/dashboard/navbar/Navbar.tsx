@@ -11,6 +11,8 @@ import Image from "next/image";
 import Languages from "../../shared/Languages";
 import { useTranslation } from "react-i18next";
 import { IoClose } from "react-icons/io5";
+import { IoApps } from "react-icons/io5";
+import { usePathname } from "next/navigation";
 
 interface navbarProps {
   admin?: boolean;
@@ -23,6 +25,8 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [isStickyNav, setIsStickyNav] = useState(false);
   const { t } = useTranslation();
+  const role = getCookie("role");
+  const pathName = usePathname();
 
   useEffect(() => {
     if (token) {
@@ -64,7 +68,7 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
         </div>
       ) : (
         <div
-          className={`w-full uppercase transition-all duration-300 ${
+          className={`w-full  transition-all duration-300 ${
             home ? "" : "text-white"
           } ${isStickyNav ? "fixed" : "absolute"}  z-30 top-0  ${
             home
@@ -96,9 +100,8 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                 <div className={`mx-2 p-1 hidden xl:block rounded-full `}>
                   <Menu />
                 </div>
-
                 {!home ? (
-                  <div className="flex gap-2 mx-2 text-black list-none">
+                  <div className="flex gap-2 mr-6 text-black list-none">
                     <DropdownNotification />
                     <DropdownMessage />
                   </div>
@@ -108,7 +111,21 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
 
                 <div className=" text-black bg-white rounded-full">
                   {login ? (
-                    <ShortProfile />
+                    <div className="flex items-center justify-center">
+                      <ShortProfile />
+                      {pathName == "/" ? (
+                        <div className="mx-4 text-main hover:scale-110 transition-all">
+                          <Link
+                            href={`/${role?.toLowerCase()}`}
+                            title="Trở lại trang ứng dụng"
+                          >
+                            <IoApps size={24} />
+                          </Link>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   ) : (
                     <Link
                       href={"/login"}
@@ -118,6 +135,7 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                     </Link>
                   )}
                 </div>
+
                 <div
                   className={`relative ml-2 xl:hidden block p-2 cursor-pointer ${
                     home ? "" : "hidden"

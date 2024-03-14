@@ -6,7 +6,7 @@ import { getImageUrl } from "@/utils/image";
 import useFetch from "@/utils/useFetch";
 import { useState } from "react";
 import { FaPen } from "react-icons/fa";
-import { FaDeleteLeft } from "react-icons/fa6";
+import { AiFillDelete } from "react-icons/ai";
 import PutPickupDialog from "./putDialog";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
@@ -138,14 +138,14 @@ const PickUpPage = () => {
                     className="rounded-full p-2 text-blue-600 border-blue-600 border-solid border-2 cursor-pointer"
                     onClick={() => OnEdit(x)}
                   >
-                    <FaPen />
+                    <FaPen size={20} />
                   </div>
 
                   <div
                     className="rounded-full p-2 text-red-600 border-red-600 border-solid border-2 cursor-pointer"
                     onClick={() => OnDelete(x)}
                   >
-                    <FaDeleteLeft />
+                    <AiFillDelete size={20} />
                   </div>
                 </div>
               </li>

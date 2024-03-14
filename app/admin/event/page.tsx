@@ -133,7 +133,7 @@ const EventPage = () => {
       actions={[Action]}
       addButton={{ onClick: handleOpenAdd }}
       searchColumns={searchs}
-      searchPlaceHolder="Nhập tên sự kiện..."
+      searchPlaceHolder="Tìm kiếm..."
       extraElementsToolBar={dialog}
       sortOptions={sorts}
     />

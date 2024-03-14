@@ -188,8 +188,19 @@ function TableTemplate<T extends IObject = any>({
         <div className="flex justify-between items-baseline mb-2 py-3 mx-2">
           {searchColumns?.length && (
             <div className="flex items-center">
+              <div className="flex items-center">
+                <p className="text-xl"></p>
+                <div className="w-[250px] bg-white">
+                  <SearchBar
+                    dataSource={searchHints}
+                    placeholder={searchPlaceHolder}
+                    onSearch={onSearch}
+                  />
+                </div>
+              </div>
+              <div className="mx-4">{extraElementsToolBar}</div>
               {sortOptions?.length && (
-                <div className="bg-white shadow-lg rounded-lg">
+                <div className="bg-gray-100 shadow-sm rounded-lg ml-2">
                   <Select
                     onValueChange={(value: any) => {
                       setSort(value);
@@ -214,18 +225,6 @@ function TableTemplate<T extends IObject = any>({
                   </Select>
                 </div>
               )}
-
-              <div className="flex items-center">
-                <p className="text-xl"></p>
-                <div className="w-[250px] bg-white">
-                  <SearchBar
-                    dataSource={searchHints}
-                    placeholder={searchPlaceHolder}
-                    onSearch={onSearch}
-                  />
-                </div>
-              </div>
-              <div className="mx-4">{extraElementsToolBar}</div>
             </div>
           )}
 
