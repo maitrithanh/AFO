@@ -9,6 +9,7 @@ import DefaultImage from "../shared/defaultImage";
 import ContactList from "@/app/components/contact/contactList";
 import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
+import { IoChatbox } from "react-icons/io5";
 
 const DropdownMessage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -16,17 +17,16 @@ const DropdownMessage = () => {
 
   const { contactList, selectChat } = useGlobalContext();
   const router = useRouter();
-  const role = getCookie('role');
+  const role = getCookie("role");
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
   //notif
-  useEffect(() => { 
-    var flag = contactList?.find(x => x.newMessage);
+  useEffect(() => {
+    var flag = contactList?.find((x) => x.newMessage);
     setNotifying(flag !== undefined);
-
-  }, [contactList])
+  }, [contactList]);
 
   // close on click outside
   useEffect(() => {
@@ -74,14 +74,21 @@ const DropdownMessage = () => {
           >
             <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
           </span>
+          <span
+            className={` ${
+              role === "Admin" ? "text-[#6b7280]" : "text-white"
+            } hover:text-main hover:scale-110 transition-all`}
+          >
+            <IoChatbox size={24} />
+          </span>
 
-          <Image
+          {/* <Image
             src={"/icons/chat.webp"}
             width={20}
             height={20}
             alt=""
             className="group-hover:scale-105 group-hover:rotate-6 transition-all"
-          />
+          /> */}
         </Link>
 
         {/* <!-- Dropdown Start --> */}
@@ -97,7 +104,7 @@ const DropdownMessage = () => {
           ref={dropdown}
           onFocus={() => setDropdownOpen(true)}
           onBlur={() => setDropdownOpen(false)}
-          className={`absolute bg-white md:w-[400px] md:right-0 top-0 inset-0 h-screen overflow-hidden z-50 `}
+          className={`absolute bg-white md:w-[400px] md:right-0 top-0 inset-0 h-screen overflow-hidden z-50 pb-8 `}
         >
           <div className="w-full flex justify-end p-2 text-rose-600 hover:cursor-pointer">
             <div
@@ -109,261 +116,18 @@ const DropdownMessage = () => {
               <IoClose size={24} />
             </div>
           </div>
-          <div className="px-4.5 py-2 flex justify-center">
+          {/* <div className="px-4.5 py-2 flex justify-center">
             <h5 className="px-3 py-1 text-xl font-bold flex justify-center items-center bg-main w-fit rounded-full text-white text-cool">
               {t("message")}
             </h5>
-          </div>
+          </div> */}
 
-          <ContactList onSelect={
-            (contact) => {
-              if (selectChat) selectChat(contact)
+          <ContactList
+            onSelect={(contact) => {
+              if (selectChat) selectChat(contact);
               router.push(`/${role?.toLocaleLowerCase()}/contact`);
-            }
-          } />
-          {/* <ul className="flex flex-col overflow-y-auto h-[90%]">
-
-            {
-              contactList?.map(x => 
-                <li className="text-left" key={x.userId}>
-                  <Link
-                    className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                    href="/messages"
-                  >
-                    <div className="h-12.5 w-12.5 rounded-full mr-2">
-                      <DefaultImage
-                        width={55}
-                        height={55}
-                        img={x.avatar}
-                        fallback="/avatar.webp"
-                      />
-
-                    </div>
-
-                    <div>
-                      <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
-                        {x.name}
-                      </h6>
-                      <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
-                        {x.title}
-                      </p>
-                      <p className="text-xs">1 phút trước</p>
-                    </div>
-                  </Link>
-                </li>
-              )
-            }
-
-            
-            <li className="text-left">
-              <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                href="/messages"
-              >
-                <div className="h-12.5 w-12.5 rounded-full mr-2">
-                  <Image
-                    width={55}
-                    height={55}
-                    src={"/avatar.webp"}
-                    alt="User"
-                    className="rounded-full"
-                  />
-                </div>
-
-                <div>
-                  <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
-                    Tên người gửi
-                  </h6>
-                  <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
-                    Nội dung nhắn 💪
-                  </p>
-                  <p className="text-xs">1 phút trước</p>
-                </div>
-              </Link>
-            </li>
-            <li className="text-left">
-              <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                href="/messages"
-              >
-                <div className="h-12.5 w-12.5 rounded-full mr-2">
-                  <Image
-                    width={55}
-                    height={55}
-                    src={"/avatar.webp"}
-                    alt="User"
-                    className="rounded-full"
-                  />
-                </div>
-
-                <div>
-                  <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
-                    Tên người gửi
-                  </h6>
-                  <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
-                    Nội dung nhắn 💪
-                  </p>
-                  <p className="text-xs">1 phút trước</p>
-                </div>
-              </Link>
-            </li>
-            <li className="text-left">
-              <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                href="/messages"
-              >
-                <div className="h-12.5 w-12.5 rounded-full mr-2">
-                  <Image
-                    width={55}
-                    height={55}
-                    src={"/avatar.webp"}
-                    alt="User"
-                    className="rounded-full"
-                  />
-                </div>
-
-                <div>
-                  <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
-                    Tên người gửi
-                  </h6>
-                  <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
-                    Nội dung nhắn 💪
-                  </p>
-                  <p className="text-xs">1 phút trước</p>
-                </div>
-              </Link>
-            </li>
-            <li className="text-left">
-              <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                href="/messages"
-              >
-                <div className="h-12.5 w-12.5 rounded-full mr-2">
-                  <Image
-                    width={55}
-                    height={55}
-                    src={"/avatar.webp"}
-                    alt="User"
-                    className="rounded-full"
-                  />
-                </div>
-
-                <div>
-                  <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
-                    Tên người gửi
-                  </h6>
-                  <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
-                    Nội dung nhắn 💪
-                  </p>
-                  <p className="text-xs">1 phút trước</p>
-                </div>
-              </Link>
-            </li>
-            <li className="text-left">
-              <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                href="/messages"
-              >
-                <div className="h-12.5 w-12.5 rounded-full mr-2">
-                  <Image
-                    width={55}
-                    height={55}
-                    src={"/avatar.webp"}
-                    alt="User"
-                    className="rounded-full"
-                  />
-                </div>
-
-                <div>
-                  <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
-                    Tên người gửi
-                  </h6>
-                  <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
-                    Nội dung nhắn 💪
-                  </p>
-                  <p className="text-xs">1 phút trước</p>
-                </div>
-              </Link>
-            </li>
-            <li className="text-left">
-              <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                href="/messages"
-              >
-                <div className="h-12.5 w-12.5 rounded-full mr-2">
-                  <Image
-                    width={55}
-                    height={55}
-                    src={"/avatar.webp"}
-                    alt="User"
-                    className="rounded-full"
-                  />
-                </div>
-
-                <div>
-                  <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
-                    Tên người gửi
-                  </h6>
-                  <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
-                    Nội dung nhắn 💪
-                  </p>
-                  <p className="text-xs">1 phút trước</p>
-                </div>
-              </Link>
-            </li>
-            <li className="text-left">
-              <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                href="/messages"
-              >
-                <div className="h-12.5 w-12.5 rounded-full mr-2">
-                  <Image
-                    width={55}
-                    height={55}
-                    src={"/avatar.webp"}
-                    alt="User"
-                    className="rounded-full"
-                  />
-                </div>
-
-                <div>
-                  <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
-                    Tên người gửi
-                  </h6>
-                  <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
-                    Nội dung nhắn 💪
-                  </p>
-                  <p className="text-xs">1 phút trước</p>
-                </div>
-              </Link>
-            </li>
-            <li className="text-left">
-              <Link
-                className="flex items-center mx-4 my-2 p-2 bg-[#fffc] rounded-lg gap-4.5 border-[#ff6f0068] border-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                href="/messages"
-              >
-                <div className="h-12.5 w-12.5 rounded-full mr-2">
-                  <Image
-                    width={55}
-                    height={55}
-                    src={"/avatar.webp"}
-                    alt="User"
-                    className="rounded-full"
-                  />
-                </div>
-
-                <div>
-                  <h6 className="text-sm font-medium text-black dark:text-white bg-[#F8853E7d] w-fit px-1 rounded-lg">
-                    Tên người gửi
-                  </h6>
-                  <p className="text-sm max-w-[200px] max-h-[20px] text-ellipsis overflow-hidden">
-                    Nội dung nhắn 💪
-                  </p>
-                  <p className="text-xs">1 phút trước</p>
-                </div>
-              </Link>
-            </li>
-          </ul> */}
+            }}
+          />
         </div>
       </div>
     </>

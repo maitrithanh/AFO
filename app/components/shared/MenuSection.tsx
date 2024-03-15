@@ -12,7 +12,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
   const router = useRouter();
   const { t } = useTranslation();
   return (
-    <div className="mt-14 grid md:grid-cols-4 grid-cols-3 gap-4 h-full">
+    <div className="mt-14 grid md:grid-cols-4 grid-cols-3 gap-6 h-full">
       {dataMenu.map((item: any) => {
         return (
           <div
@@ -20,11 +20,12 @@ const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
               router.push(`${item.path}`);
             }}
             key={item.name}
-            className="relative hover:scale-105 cursor-pointer transition-all"
+            style={{ backgroundColor: item.color }}
+            className={`relative hover:scale-105 cursor-pointer border-2 border-gray-100 hover:border-orange-200 shadow-3xl transition-all w-[200px] h-[#200px] rounded-xl`}
           >
             <Image
               src={`/bg-card.webp`}
-              className="p-2 "
+              className="p-2 invisible"
               alt=""
               width={200}
               height={200}

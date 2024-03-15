@@ -42,14 +42,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   const uploadAvatarRef = useRef<HTMLInputElement | null>(null);
 
-  // const { data: currentUser2, loading: loadingUser } = useFetch<UserData>(
-  //   "Auth/current",
-  //   null,
-  //   refresh
-  // );
+  const { data: currentUserTeacher, loading: loadingUser } = useFetch<UserData>(
+    "Auth/current",
+    null,
+    refresh
+  );
 
   const { data: infoChild } = useFetch(`Child/getChild?id=${child}`);
-  const currentUser = infoChild?.parent;
+  const currentUser = parent ? infoChild?.parent : currentUserTeacher;
   const { data: Session } = useSession();
 
   // useEffect(() => {
@@ -238,6 +238,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 lineName={t("job")}
                 contentLine={currentUser?.job}
               />
+              {parent ? null : (
+                <CardInfoLine
+                  lineName={"Lớp phụ trách"}
+                  contentLine={currentUser?.relationship.split("-")[1]}
+                />
+              )}
 
               <CardInfoLine
                 lineName={t("address")}
@@ -339,19 +345,21 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             )}
           </div>
 
-          <div>
-            <CardInfo cardName={t("albumImages")}>
-              <div className="absolute right-4 top-4">
-                <Link
-                  href={`/${role?.toLowerCase()}/albums`}
-                  className="text-main font-bold hover:opacity-80 hover:mr-2 transition-all"
-                >
-                  {t("more")}
-                </Link>
-              </div>
-              <Slider showThumbs data={infoChild?.pictures?.split(",")} />
-            </CardInfo>
-          </div>
+          {parent ? (
+            <div>
+              <CardInfo cardName={t("albumImages")}>
+                <div className="absolute right-4 top-4">
+                  <Link
+                    href={`/${role?.toLowerCase()}/albums`}
+                    className="text-main font-bold hover:opacity-80 hover:mr-2 transition-all"
+                  >
+                    {t("more")}
+                  </Link>
+                </div>
+                <Slider showThumbs data={infoChild?.pictures?.split(",")} />
+              </CardInfo>
+            </div>
+          ) : null}
 
           {
             justView ? (

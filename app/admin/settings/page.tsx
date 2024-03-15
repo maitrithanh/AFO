@@ -31,7 +31,7 @@ const SettingPage = () => {
       <div className="my-4">
         <div className="bg-white shadow-3xl p-6 rounded-lg flex justify-between items-center">
           <div className="flex items-center">
-            <p className="mr-2">Sidebar: </p>
+            <p className="mr-2">Nền menu trái: </p>
             <div className="border bg-white w-[80px] h-[40px] rounded-md">
               {showSidebarBg ? (
                 <Image

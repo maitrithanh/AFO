@@ -59,9 +59,9 @@ const ClassesTable = () => {
       {closeDialog ? (
         <DialogProfile
           handleDialog={handleDialog}
-          data={dataStudentDetail}
+          dataProps={dataStudentDetail}
           teacher
-          setRefresh={setRefresh((b) => b)}
+          // setRefresh={setRefresh((b) => b)}
         />
       ) : (
         ""

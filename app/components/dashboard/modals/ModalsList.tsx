@@ -1,7 +1,8 @@
+"use client";
 import React from "react";
 import { IoIosLogOut } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { deleteCookie, getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import Loading from "../../shared/Loading";
@@ -23,10 +24,15 @@ const ModalsList: React.FC<ModalsListProps> = ({
   setModalListOpen,
 }) => {
   const router = useRouter();
+  const pathName = usePathname();
   const { refreshContactList } = useGlobalContext();
 
   const handleLogout = () => {
-    router.push("/");
+    if (pathName === "/") {
+      location.reload();
+    } else {
+      router.push("/");
+    }
     if (refreshContactList) refreshContactList();
     deleteCookie("token");
     deleteCookie("role");

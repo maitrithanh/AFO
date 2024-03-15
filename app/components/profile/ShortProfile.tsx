@@ -10,6 +10,7 @@ import useFetch from "@/utils/useFetch";
 import DefaultImage from "../shared/defaultImage";
 import { baseURL } from "@/utils/callApi";
 import UserData from "@/types/UserData";
+import { getCookie } from "cookies-next";
 
 interface ShortProfileProps {
   borderTop?: boolean;
@@ -23,6 +24,21 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
   const [modalListOpen, setModalListOpen] = useState(false);
   const dropdown = useRef<HTMLInputElement | null>(null);
   const { data: user, loading } = useFetch<UserData>("Auth/current");
+  const role = getCookie("role");
+  const [roleName, setRoleName] = useState("");
+  useEffect(() => {
+    switch (role) {
+      case "Parent":
+        setRoleName("Phụ huynh");
+        break;
+      case "Teacher":
+        setRoleName("Giáo viên");
+        break;
+      default:
+        setRoleName("Quản trị");
+        break;
+    }
+  }, []);
 
   //close modal outside click
   useEffect(() => {
@@ -84,15 +100,19 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
                   "Đang tải..."
                 ) : (
                   <>
-                    <h4 className="font-semibold ml-2">
-                      {user?.fullName} admin
-                    </h4>
+                    <h4 className="font-semibold ml-2">{user?.fullName}</h4>
+                    <p>{roleName}</p>
                   </>
                 )
               ) : (
-                <h4 className="text-md font-normal mx-1 sm:visible invisible">
-                  {user?.fullName}
-                </h4>
+                <>
+                  <h4 className="text-md font-normal mx-1 mt-1 sm:visible invisible">
+                    {user?.fullName}
+                  </h4>
+                  <p className="text-left mx-1 text-sm text-gray-600">
+                    {roleName}
+                  </p>
+                </>
               )}
             </div>
 
@@ -108,6 +128,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
               </button>
             ) : modalListOpen ? (
               <div
+                className="flex items-center"
                 onClick={() => {
                   setModalListOpen((curr) => !curr);
                 }}
@@ -116,6 +137,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
               </div>
             ) : (
               <div
+                className="flex items-center"
                 onClick={() => {
                   setModalListOpen((curr) => !curr);
                 }}

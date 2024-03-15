@@ -6,6 +6,7 @@ import Provider from "./components/shared/sessionProvider";
 import { Baloo_Bhaijaan_2 } from "next/font/google";
 import { Asap_Condensed } from "next/font/google";
 import GlobalContextProvider from "./contexts/GlobalContext";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const font = Baloo_Bhaijaan_2({
   weight: "400", // if single weight, otherwise you use array like [400, 500, 700],
@@ -31,6 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <SpeedInsights />
       <body className={`${font.className}`}>
         <div className="relative">
           <Toaster />
