@@ -52,10 +52,21 @@ export const sendMessage = async (message: string, receiverId: string) => {
     }
 };
 
+export const sendReaction = async (chatId: number, reaction: string | null) => {
+    try {
+        await connection.invoke('OnReact', chatId, reaction);
+    } catch (error) {
+        console.error('Failed to send message:', error);
+    }
+};
+
 export const onMessageReceived = (onMessage: (s: GetMessagesRes) => void) => {
     connection.on('onNewMessage', onMessage);
 };
 
+export const onNewReaction = (cb: (data: { msgId: number, reaction : string}) => void) => {
+    connection.on('onNewReaction', cb);
+};
 
 export type ContactListData = {
     userId: string,

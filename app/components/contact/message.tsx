@@ -1,12 +1,13 @@
 import DefaultImage from "@/app/components/shared/defaultImage"
 import { useGlobalContext } from "@/app/contexts/GlobalContext"
 import GetMessagesRes from "@/types/GetMessagesRes"
-import callApi, { callApiWithToken } from "@/utils/callApi"
+import callApi, { baseURL, callApiWithToken } from "@/utils/callApi"
 import { toDMY } from "@/utils/dateTime"
-import { ContactListData, onMessageReceived, readMessage, sendMessage, unBindEvent } from "@/utils/signalr/chatHub"
+import { getImageUrl } from "@/utils/image"
+import { ContactListData, onMessageReceived, onNewReaction, readMessage, sendMessage, sendReaction, unBindEvent } from "@/utils/signalr/chatHub"
 import useFetch from "@/utils/useFetch"
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react"
-import { FaPaperPlane } from "react-icons/fa6"
+import { FaDownload, FaPaperPlane, FaUpload } from "react-icons/fa6"
 
 
 const Message = () => {
@@ -20,6 +21,8 @@ const Message = () => {
     const [loadingMsg, setLoadingMsg] = useState(false);
     const [reachedTop, setReachedTop] = useState(false); //đã đọc hết tin nhắn
     const [scrollPosition, setScrollPosition] = useState(0); //scroll distance from bottom
+
+    const { data: reactions } = useFetch<string[]>('Chat/listReactions');
 
     const receiverId = useRef<string>();
     receiverId.current = receiver?.userId;
@@ -52,6 +55,18 @@ const Message = () => {
         }
 
     }, [])
+
+    useEffect(() => { 
+        const cbReaction = (data: { msgId: number, reaction: string }) => {
+            if (!chatLogs.find(x => x.msgId === data.msgId)) return;
+            setChatLogs(x => x.map(y => y.msgId === data.msgId ? { ...y, reaction: data.reaction } : y))
+        }
+        onNewReaction(cbReaction);
+
+        return () => { 
+            unBindEvent('onNewReaction', cbReaction);
+        }
+    }, [chatLogs])
 
     //on change chat
     useEffect(() => { 
@@ -106,7 +121,7 @@ const Message = () => {
                             }
                             setLoadingMsg(false)
                         })
-                }, 100)
+                }, 200)
             }
         }
 
@@ -140,6 +155,31 @@ const Message = () => {
         </h1>
     </div>
 
+    const onReact = (chatId: number, reaction: string | null, currReaction: string | null) => { 
+        if (reaction == currReaction) reaction = null;
+        sendReaction(chatId, reaction)
+    }
+
+    const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        var file: Blob = event.target.files![0];
+        if (!file) return;
+        // const formData = new FormData();
+        // if (file) formData.append("file", file, undefined);
+        
+        if (!receiver?.userId) return;
+        callApiWithToken()
+        .post(
+            "Chat/SendFile/" + receiver?.userId,
+            { file },
+            { headers: { "content-type": "multipart/form-data" } }
+        )
+    };
+
+    const fileIsImage = (name?: string) => { 
+        if (!name) return false;
+        return name.match(/\.(jpg|jpeg|png)$/i);
+    }
+
     return <div className="p-3 h-full flex flex-col">
         <div className="flex items-center">
             <div className="relative">
@@ -170,7 +210,7 @@ const Message = () => {
                 </div>
             }
             {chatLogs?.map((x, i) =>
-                <div key={i}>
+                <div key={x.msgId}>
                     {/* dates */}
                     {
                         (i == 0 || (getDate(x.time) > getDate(chatLogs[i - 1].time))) &&
@@ -180,19 +220,69 @@ const Message = () => {
                     }
 
                     {/* message */}
-                    <div className={`${x.senderId == receiver.userId ? 'justify-start' : 'justify-end'} flex`}>
-                        <div className="group">
-                            <div className={`${x.senderId == receiver.userId ? 'bg-slate-200' : 'bg-blue-400 text-white'} rounded-[999px] py-3 px-5 max-w-[500px] break-words`} >
-                                {x.message}
-                            </div>
-                            <div className="flex justify-end text-sm text-gray-500 invisible group-hover:visible">
-                                <div className="mr-4">
-                                    {getTime(x.time)}
-                                </div>
+                    <div className={`${x.senderId == receiver.userId ? '' : 'flex-row-reverse'} flex mb-5 items-center group`}>
+                        {/* content */}
+                        <div className={`relative`} >
 
-                            </div>
+                            {
+                                fileIsImage(x.filePath) ?
+                                    // content is image
+                                    <img title={x.filePath} src={getImageUrl(x.filePath)} className="max-w-[300px] max-h-[300px] rounded-xl" />
+                                    :
+                                    <div className={`${x.senderId == receiver.userId ? 'bg-slate-200' : 'bg-blue-400 text-white'} rounded-[999px] py-3 px-5 max-w-[500px] break-words `}>
+                                        {
+                                            x.filePath ? 
+                                                //content is downloadable file
+                                                <a href={`${baseURL}File/GetFile/${x.filePath}`} target="_blank">
+                                                    <div className="cursor-pointer">
+                                                        <FaDownload className="inline me-2" />
+                                                        {x.filePath}
+                                                    </div>
+                                                </a>
+                                                :
+                                                //content is text
+                                                x.message
+                                        }
+                                    </div>
+                                        
+                            }
+
+                            {/* current reaction */}
+                            {
+                                x.reaction && <DefaultImage
+                                    key={x.reaction}
+                                    img={getImageUrl(x.reaction)}
+                                    fallback="/avatar.webp"
+                                    custom="w-[20px] h-[20px] absolute right-0 bottom-0 translate-y-[50%]"
+                                />
+                            }
                         </div>
 
+                        <div className="text-sm ms-3 text-gray-500 invisible group-hover:visible">
+                            {/* time */}
+                            <div className="mr-4 mb-1">
+                                {getTime(x.time)}
+                            </div>
+
+                            {/* reactions */}
+                            {
+                                x.senderId == receiver.userId &&
+                                <div className="flex">
+                                        {reactions?.map(y =>                                     
+                                            <div key={y} className={`${y == x.reaction ? 'bg-slate-300': ''} p-[2px] rounded-md me-1`}>
+                                                <DefaultImage
+                                                    img={getImageUrl(y)}
+                                                    fallback="/avatar.webp"
+                                                    custom={'w-[28px] h-[28px] cursor-pointer'}
+                                                    onClick={() => onReact(x.msgId, y, x.reaction)}
+                                                />
+                                            </div>
+                                        )}
+                                </div>
+                            }
+                        </div>
+
+                        <div className="flex-1"></div>
                     </div>
 
                     {/* last seen */}
@@ -220,11 +310,17 @@ const Message = () => {
         </div>
 
         <form onSubmit={onSubmitMsg}>
-            <div className="flex h-[50px] bg-slate-300 rounded-xl overflow-hidden pr-5">
+            <div className="flex h-[50px] bg-slate-300 rounded-xl overflow-hidden pr-5 items-center">
 
                 <input type="text" className="bg-inherit flex-1 pl-3 placeholder:text-black outline-none" placeholder="Nhập tin nhắn..."
                     value={msg} onChange={e => setMsg(e.target.value)}
                 />
+
+                <label htmlFor="file" title="Gửi File" className="me-3 cursor-pointer">
+                    <FaUpload />
+                </label>
+                <input title="file" id="file" type="file" className="hidden" onChange={onFileChange}/>
+                
                 <button title="Gửi">
                     <FaPaperPlane className="text-blue-400 hover:text-blue-500" />
                 </button>

@@ -14,7 +14,6 @@ const DefaultImage = (p: Props) => {
   return (
     <img
       {...p}
-      title="avatar"
       src={src}
       onError={() => {
         setSrc(p.fallback);
