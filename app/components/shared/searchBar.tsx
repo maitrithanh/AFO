@@ -2,15 +2,16 @@
 
 import { Input } from "@/components/ui/input";
 import { checkNameInclude } from "@/utils/compare";
-import { KeyboardEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 
 interface Props {
   dataSource: string[];
   onSearch: (s: string) => void;
   placeholder?: string;
+  autoSearch?: boolean;
 }
 
-const SearchBar = ({ dataSource, onSearch, placeholder }: Props) => {
+const SearchBar = ({ dataSource, onSearch, placeholder, autoSearch }: Props) => {
   const [search, setSearch] = useState("");
 
   const hints = useMemo(() => {
@@ -22,8 +23,21 @@ const SearchBar = ({ dataSource, onSearch, placeholder }: Props) => {
     return res;
   }, [search, dataSource]);
 
+  const timer = useRef<any>();
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => { 
+    var s = e.currentTarget.value
+    setSearch(s);
+    if (!autoSearch) return;
+
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => { 
+      onSearch(s)
+    }, 300)
+    
+  }
+
   const onSearchKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== "Enter") return;
+    if (e.key !== "Enter" || autoSearch) return;
     onSearch(search);
   };
 
@@ -33,8 +47,8 @@ const SearchBar = ({ dataSource, onSearch, placeholder }: Props) => {
   };
 
   return (
-    <div className="mx-2 shadow-lg rounded-lg w-full relative group">
-      <form className="flex items-center jc max-w-sm mx-auto w-full">
+    <div className="shadow-lg rounded-lg w-full relative group">
+      <form className="flex items-center jc max-w-sm mx-auto w-full" onSubmit={e => e.preventDefault()}>
         <div className="relative w-full">
           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg
@@ -60,7 +74,7 @@ const SearchBar = ({ dataSource, onSearch, placeholder }: Props) => {
             className={`peer ${
               hints.length > 0 ? "" : "text-red-500"
             } bg-gray-50 border focus-visible:outline-main border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
-            onChange={(e) => setSearch(e.currentTarget.value)}
+            onChange={onChange}
             onKeyDown={onSearchKeyDown}
           />
         </div>
@@ -75,7 +89,7 @@ const SearchBar = ({ dataSource, onSearch, placeholder }: Props) => {
         onKeyDown={onSearchKeyDown}
       /> */}
       <div className="absolute left-0 bottom-0 z-10 translate-y-[100%] w-full max-h-[150px] overflow-y-auto bg-white shadow-lg rounded-lg invisible peer-focus:visible group-hover:visible">
-        {search &&
+        {search && !autoSearch &&
           hints.map((x) => (
             <div
               key={x}

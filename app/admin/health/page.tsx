@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import DialogAddEvent from "@/app/components/admin/health/DialogAddEvent";
+import { toYMD } from "@/utils/dateTime";
 
 const Columns: TableTemplateColumn[] = [
   {
@@ -94,6 +95,10 @@ const HealthPage = () => {
           {dialog} {selectMonth}
         </>
       }
+      dateRange={{
+        name: 'Ngày khám: ',
+        filter: (obj, from, to) => (from == '' || toYMD(obj.examDate) >= from) && (to == '' || toYMD(obj.examDate) <= to)
+      }}
     />
   );
 };

@@ -2,10 +2,13 @@
 
 import DialogAddEvent from "@/app/components/admin/event/DialogAddEvent";
 import TableTemplate, {
+  FilterOptions,
   TableTemplateAction,
   TableTemplateColumn,
+  TableTemplateFilter,
   TableTemplateSort,
 } from "@/app/components/shared/TableTemplate";
+import { toYMD } from "@/utils/dateTime";
 import useFetch from "@/utils/useFetch";
 import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
@@ -46,7 +49,6 @@ const sorts: TableTemplateSort[] = [
       var x = getDayDiff(a.startDate);
       var y = getDayDiff(b.startDate);
 
-      //-1 -> ab
       if (x < 0 || y < 0) return y - x;
       return x - y;
     },
@@ -67,6 +69,27 @@ const searchs: TableTemplateColumn[] = [
     getData: (x) => x.title,
   },
 ];
+
+const filterOptions: FilterOptions[] = [
+  {
+    value: 'Tất cả',
+    filter: () => true
+  },
+  {
+    value: 'Chưa diễn ra',
+    filter: (x) => getDayDiff(x.startDate) > 0
+  },
+  {
+    value: 'Đã diễn ra',
+    filter: (x) => getDayDiff(x.startDate) < 0
+  },
+]
+
+const filter: TableTemplateFilter =
+{
+  name: 'Hiển thị',
+  options: filterOptions
+}
 
 const EventPage = () => {
   const [editMode, setEditMode] = useState(false);
@@ -133,9 +156,14 @@ const EventPage = () => {
       actions={[Action]}
       addButton={{ onClick: handleOpenAdd }}
       searchColumns={searchs}
-      searchPlaceHolder="Tìm kiếm..."
+      searchPlaceHolder="Nhập tên sự kiện"
       extraElementsToolBar={dialog}
       sortOptions={sorts}
+      filters={[filter]}
+      dateRange={{
+        name: 'Ngày: ',
+        filter: (obj, from, to) => (from == '' || toYMD(obj.endDate) >= from) && (to == '' || toYMD(obj.startDate) <= to)
+      }}
     />
   );
 };

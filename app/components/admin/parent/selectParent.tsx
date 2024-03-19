@@ -36,7 +36,7 @@ const SelectParent = ({ selectId, setSelectId }: Props) => {
 
         <div className="flex w-full justify-center items-center mb-5">
             <div className="w-[350px]">
-                <SearchBar dataSource={searchHints} placeholder="Nhập tên hoặc sđt..." onSearch={onSearch} />
+                <SearchBar dataSource={searchHints} placeholder="Nhập tên hoặc số điện thoại..." onSearch={onSearch} autoSearch={true} />
             </div>
         </div>
 

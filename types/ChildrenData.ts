@@ -1,5 +1,5 @@
 export interface ChildrenData {
-    id: number,
+    id: string,
     avatar: any,
     pictures: any,
     fullName: string,
