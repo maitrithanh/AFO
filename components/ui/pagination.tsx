@@ -148,6 +148,7 @@ const MyPagination = (p: {
             key={i}
             isActive={p == page}
             onClick={() => setPage(p)}
+            className="cursor-pointer"
           >
             {p}
           </PaginationLink>
@@ -161,7 +162,7 @@ const MyPagination = (p: {
       <Pagination>
         <PaginationContent>
           {/* previous */}
-          <PaginationItem className={`${page > 1 ? "" : "invisible"}`}>
+          <PaginationItem className={`${page > 1 ? "" : "invisible"} cursor-pointer`}>
             <PaginationPrevious onClick={() => setPage((x) => x - 1)} />
           </PaginationItem>
 
@@ -195,7 +196,7 @@ const MyPagination = (p: {
           <Pages x={Math.max(RightStart, MidEnd + 2)} y={PageCount} />
 
           {/* next */}
-          <PaginationItem className={`${page < PageCount ? "" : "invisible"}`}>
+          <PaginationItem className={`${page < PageCount ? "" : "invisible"} cursor-pointer`}>
             <PaginationNext onClick={() => setPage((x) => x + 1)} />
           </PaginationItem>
         </PaginationContent>

@@ -3,7 +3,7 @@
 import MyPagination from "@/components/ui/pagination";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import SearchBar from "./searchBar";
 import { checkNameInclude } from "@/utils/compare";
 import {
@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { t } from "i18next";
+import { toYMD } from "@/utils/dateTime";
 
 //default values
 //icon của action
@@ -57,6 +58,21 @@ export interface TableTemplateSort<T = any> {
   title: string;
 }
 
+export interface FilterOptions<T = any> { 
+  value: string,
+  filter: (obj: T) => boolean;
+}
+
+export interface TableTemplateFilter { 
+  name: string,
+  options: FilterOptions[]
+}
+
+export interface TableTemplateRange<T = any> { 
+  name: string,
+  filter: (obj: T, from: string, to: string) => boolean
+}
+
 //T khỏi truyền cũng được
 interface Props<T extends IObject> {
   //tên trang
@@ -79,8 +95,12 @@ interface Props<T extends IObject> {
     link?: string;
     onClick?: () => void;
   };
+  //dropdown filter
+  filters?: TableTemplateFilter[];
+  //date range
+  dateRange?: TableTemplateRange;
+  //extra
   extraElementsToolBar?: JSX.Element;
-  extraElementsToolBarRight?: JSX.Element;
 
   //options
   hideIndex?: boolean;
@@ -97,14 +117,17 @@ function TableTemplate<T extends IObject = any>({
   searchColumns,
   searchPlaceHolder,
   sortOptions,
+  filters,
+  dateRange,
   extraElementsToolBar,
-  extraElementsToolBarRight,
   hideIndex,
   hidePaging,
   rowPerPage,
 }: Props<T>) {
   //init
   if (!rowPerPage) rowPerPage = DefaultRowPerPage;
+
+  //filter for searching
   const filter = (obj: T): boolean => {
     if (searchColumns?.length) {
       for (var i = 0; i < searchColumns.length; i++) {
@@ -129,21 +152,44 @@ function TableTemplate<T extends IObject = any>({
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState(""); //searching
   const [sort, setSort] = useState(0);
+  const [filterOpt, setFilterOpt] = useState<number[]>([]);
+  const [fromDate, setFromDate] = useState('')
+  const [toDate, setToDate] = useState('')
 
   useEffect(() => {
     setPage(1);
   }, [keyword, sort]);
 
+  useEffect(() => { 
+    var arr: number[] = [];
+    filters?.forEach(x => arr.push(0));
+    setFilterOpt(arr);
+  }, [filters])
+
   const filteredData = useMemo(() => {
     var list = dataSource;
     if (searchColumns?.length && keyword) list = list.filter(filter);
+
+    if (filters?.length) { 
+      for (var i = 0; i < filters.length; i++) { 
+        var filterOptions = filters[i]
+        var option = filterOptions.options[filterOpt[i]];
+        if(option?.filter) list = list.filter(option.filter);
+      }
+    }
+
+    if (dateRange) { 
+      if (list && list[0]) console.log(toYMD(list[0].startDate), list[0].endDate, fromDate, toDate)//
+      list = list.filter(x => dateRange.filter(x, fromDate, toDate));
+    }
+
     if (sortOptions?.length && sortOptions?.length > sort) {
       var comp = sortOptions[sort].compare;
       list = [...list].sort(comp);
     }
 
     return list;
-  }, [dataSource, searchColumns, keyword, sort]);
+  }, [dataSource, searchColumns, keyword, sort, filterOpt, filters, fromDate, toDate]);
 
   const PageCount = useMemo(() => {
     return Math.ceil(filteredData.length / rowPerPage!);
@@ -178,6 +224,18 @@ function TableTemplate<T extends IObject = any>({
     </button>
   );
 
+  const onChangeFromDate = (e: ChangeEvent<HTMLInputElement>) => { 
+    var val = e.target.value;
+    setFromDate(val);
+    if (val > toDate) setToDate(val);
+  }
+
+  const onChangeToDate = (e: ChangeEvent<HTMLInputElement>) => {
+    var val = e.target.value;
+    setToDate(val);
+    if (val < fromDate) setFromDate(val);
+  }
+
   return (
     <>
       <div>
@@ -185,61 +243,124 @@ function TableTemplate<T extends IObject = any>({
       </div>
 
       <div className="bg-white shadow-3xl rounded-md">
-        <div className="flex justify-between items-baseline mb-2 py-3 mx-2">
-          {searchColumns?.length && (
-            <div className="flex items-center">
-              <div className="flex items-center">
+        <div className="flex justify-between items-center mb-2 py-3 mx-2">
+
+          <div className="flex items-center flex-wrap">
+
+            {/* search */}
+            {searchColumns?.length &&
+              <div className="flex items-center mx-4 mb-3">
                 <p className="text-xl"></p>
-                <div className="w-[250px] bg-white">
+                <div className="w-[300px] bg-white">
                   <SearchBar
                     dataSource={searchHints}
                     placeholder={searchPlaceHolder}
                     onSearch={onSearch}
+                    autoSearch={true}
                   />
                 </div>
               </div>
-              <div className="mx-4">{extraElementsToolBar}</div>
-              {sortOptions?.length && (
-                <div className="bg-gray-100 shadow-sm rounded-lg ml-2">
+            }
+
+            {/* more tools */}
+            {
+              extraElementsToolBar &&
+              <div>{extraElementsToolBar}</div>
+            }
+
+            {/* filters */}
+            {
+              filters?.map((filterOptions, i) => 
+                <div className="bg-gray-100 shadow-sm rounded-lg mx-4">
                   <Select
                     onValueChange={(value: any) => {
-                      setSort(value);
+                      var arr = [...filterOpt];
+                      arr[i] = value;
+                      setFilterOpt(arr);
                     }}
                   >
-                    <SelectTrigger className="w-[200px] text-lg">
-                      <p>Sắp xếp:</p>
+                    <SelectTrigger className="min-w-[200px] text-lg">
+                      <p className="mr-2">{filterOptions.name}:</p>
                       <SelectValue
-                        placeholder={sortOptions[0].title}
+                        placeholder={filterOptions.options[0]?.value}
                         defaultValue={"0"}
                       />
                     </SelectTrigger>
                     <SelectContent>
-                      {sortOptions.map((x, i) => (
+                      {filterOptions.options.map((x, j) => (
                         <>
-                          <SelectItem key={x.title} value={i + ""}>
-                            {x.title}
+                          <SelectItem key={x.value} value={j + ""}>
+                            {x.value}
                           </SelectItem>
                         </>
                       ))}
                     </SelectContent>
                   </Select>
-                </div>
-              )}
-            </div>
-          )}
+                </div>  
+              )
+            }
+
+            {/* sorts */}
+            {sortOptions?.length && (
+              <div className="bg-gray-100 shadow-sm rounded-lg mx-4">
+                <Select
+                  onValueChange={(value: any) => {
+                    setSort(value);
+                  }}
+                >
+                  <SelectTrigger className="min-w-[200px] text-lg">
+                    <p className="mr-2">Sắp xếp:</p>
+                    <SelectValue
+                      placeholder={sortOptions[0].title}
+                      defaultValue={"0"}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {sortOptions.map((x, i) => (
+                      <>
+                        <SelectItem key={x.title} value={i + ""}>
+                          {x.title}
+                        </SelectItem>
+                      </>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            {/* date range */}
+            {
+              dateRange &&
+              <div className="bg-gray-100 shadow-sm rounded-lg mx-4 whitespace-nowrap px-3 py-2">
+                <span className="mr-2">{dateRange.name}</span>
+                <input type="date" title="Từ ngày" value={fromDate} className="bg-gray-100" onChange={onChangeFromDate} />
+                <span className="mx-2">—</span>
+                <input type="date" title="Đến ngày" value={toDate} className="bg-gray-100" onChange={onChangeToDate} />
+              </div>
+            }
+
+          </div>
 
           {addButton && (
-            <Link href={addButton.link ?? ""}>
-              {addButton.button || DefaultAddBtn}
-            </Link>
+            <div className="flex-1 flex justify-end px-4">
+              <Link href={addButton.link ?? ""} className="whitespace-nowrap">
+                {addButton.button || DefaultAddBtn}
+              </Link>
+            </div>
           )}
         </div>
 
         <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
+          {
+            filteredData?.length > 0 &&
+            <div className="italic px-6 py-1">
+              Hiển thị dòng {(page - 1) * rowPerPage! + 1} - {Math.min(page * rowPerPage!, filteredData.length)} trên {filteredData.length} dòng
+            </div>
+          }
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
             <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                {!hideIndex && <th>{/* index */}</th>}
+                {!hideIndex && <th className="px-6 py-3">Số thứ tự</th>}
 
                 {columns.map((x) => (
                   <th key={x.title} scope="col" className="px-6 py-3">
@@ -267,7 +388,7 @@ function TableTemplate<T extends IObject = any>({
                         <td
                           key={row["id"] ?? i + "-" + j}
                           scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 dark:text-white"
+                          className="px-6 py-4 max-w-[200px] font-medium text-gray-900 dark:text-white"
                         >
                           {col.getData(row)}
                         </td>

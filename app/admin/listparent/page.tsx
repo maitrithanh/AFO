@@ -1,10 +1,6 @@
 "use client";
 
-import TableTemplate, {
-  TableTemplateAction,
-  TableTemplateColumn,
-  TableTemplateSort,
-} from "@/app/components/shared/TableTemplate";
+import TableTemplate, { FilterOptions, TableTemplateAction, TableTemplateColumn, TableTemplateFilter, TableTemplateSort } from "@/app/components/shared/TableTemplate";
 import ParentListRes from "@/types/ParentListRes";
 import { compareName } from "@/utils/compare";
 import useFetch from "@/utils/useFetch";
@@ -63,20 +59,42 @@ const sorts: TableTemplateSort<ParentListRes>[] = [
   },
 ];
 
+const genderOptions: FilterOptions<ParentListRes>[] = [
+  {
+    value: 'Tất cả',
+    filter: () => true
+  },
+  {
+    value: 'Nam',
+    filter: (obj) => obj.gender == 1
+  },
+  {
+    value: 'Nữ',
+    filter: (obj) => !obj?.gender
+  },
+]
+
+const filterGender: TableTemplateFilter= 
+{
+  name: 'Giới tính',
+  options: genderOptions
+}
+
+
 const ParentPage = () => {
   const { data: dataParent } = useFetch<ParentListRes[]>("Parent/GetList");
 
-  return (
-    <TableTemplate<ParentListRes>
-      title="Danh sách phụ huynh"
-      dataSource={dataParent || []}
-      columns={Columns}
-      actions={[Action]}
-      searchColumns={searchCols}
-      searchPlaceHolder="Nhập tên hoặc số điện thoại..."
-      sortOptions={sorts}
-    />
-  );
-};
+
+  return <TableTemplate<ParentListRes>
+    title="Danh sách phụ huynh"
+    dataSource={dataParent || []}
+    columns={Columns}
+    actions={[Action]}
+    searchColumns={searchCols}
+    searchPlaceHolder="Nhập tên hoặc số điện thoại phụ huynh"
+    sortOptions={sorts}
+    filters={[filterGender]}
+  />
+}
 
 export default ParentPage;

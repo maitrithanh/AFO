@@ -4,7 +4,9 @@ import { EditActionIcon } from "@/app/components/shared/ActionIcon";
 import Button from "@/app/components/shared/Button";
 import { DeleteActionIcon } from "@/app/components/shared/DeleteActionIcon";
 import TableTemplate, {
+  FilterOptions,
   TableTemplateColumn,
+  TableTemplateFilter,
 } from "@/app/components/shared/TableTemplate";
 import { callApiWithToken } from "@/utils/callApi";
 import { toYMD } from "@/utils/dateTime";
@@ -47,6 +49,27 @@ const Columns: TableTemplateColumn[] = [
       ),
   },
 ];
+
+const filterOptions: FilterOptions[] = [
+  {
+    value: 'Tất cả',
+    filter: () => true
+  },
+  {
+    value: 'Đang hoạt động',
+    filter: (x) => x.status
+  },
+  {
+    value: 'Đã dừng',
+    filter: (x) => !x.status
+  },
+]
+
+const filter: TableTemplateFilter =
+{
+  name: 'Tình trạng',
+  options: filterOptions
+}
 
 const BusPage = () => {
   const [refresh, setRefresh] = useState(false);
@@ -183,7 +206,7 @@ const BusPage = () => {
               {values?.RouteName}
             </strong>
           </h3>
-          <button
+          <button title="đóng"
             className="text-gray-600"
             onClick={() => {
               onClose();
@@ -315,8 +338,9 @@ const BusPage = () => {
         title="Danh sách tuyến xe"
         dataSource={busData || []}
         columns={Columns}
-        searchColumns={[Columns[0]]}
-        searchPlaceHolder="Nhập tên tuyến..."
+        searchColumns={[Columns[0], Columns[4]]}
+        searchPlaceHolder="Nhập tên tuyến hoặc biển số xe"
+        filters={[filter]}
         addButton={{
           onClick: () => {
             {
@@ -336,6 +360,10 @@ const BusPage = () => {
           },
           { getLink: (x) => `/admin/bus/${x.id}` },
         ]}
+        dateRange={{
+          name: 'Ngày bắt đầu: ',
+          filter: (obj, from, to) => (from == '' || toYMD(obj.startTime) >= from) && (to == '' || toYMD(obj.startTime) <= to)
+        }}
       />
     </>
   );
