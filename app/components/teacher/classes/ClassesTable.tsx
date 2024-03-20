@@ -24,24 +24,16 @@ const ClassesTable = () => {
   const [closeDialog, setCloseDialog] = useState(false);
   const [dataStudentDetail, setDataStudentDetail] = useState({});
   const [search, setSearch] = useState("");
-  const [defaultClassID, setDefaultClassID] = useState("");
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
 
-  const { classId, getClassId, arrClassName } = GetClass();
-  useEffect(() => {
-    setDefaultClassID(classId[0]?.trim());
-  }, [classId]);
-
-  useEffect(() => {
-    setDefaultClassID(getClassId);
-  }, [getClassId]);
+  const { data: dataUser } = useFetch(`Auth/current`);
 
   const day = new Date();
   const year = day.getFullYear();
 
   const { data: detailClassData } = useFetch(
-    `ClassRoom/Detail/id=${defaultClassID}&year=${year}`
+    `ClassRoom/Detail/id=${dataUser?.classId}&year=${year}`
   );
 
   const handleDialog = () => {
@@ -72,34 +64,7 @@ const ClassesTable = () => {
             <div className="flex items-center justify-between">
               <div className="">
                 <p className="md:text-3xl flex">
-                  Danh sách học sinh - Lớp
-                  <div className="bg-gray-100 shadow-sm rounded-lg ml-2">
-                    <Select
-                      defaultValue={classId[0]?.trim()}
-                      onValueChange={(value: any) => {
-                        setDefaultClassID(value);
-                      }}
-                    >
-                      <SelectTrigger className="md:w-[140px] w-full text-lg">
-                        <p className="text-gray-600 mr-2">
-                          <MdCalendarMonth />
-                        </p>
-                        <SelectValue
-                          placeholder={arrClassName[0]?.trim()}
-                          defaultValue={classId[0]?.trim()}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {classId?.map((data: any, index: any) => {
-                          return (
-                            <SelectItem key={data?.trim()} value={data?.trim()}>
-                              {arrClassName[index]}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  Danh sách học sinh - Lớp {dataUser?.className}
                 </p>
                 <p className="md:text-xl">
                   Số học sinh: {detailClassData?.count}

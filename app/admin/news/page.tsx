@@ -44,13 +44,13 @@ const Columns: TableTemplateColumn[] = [
   },
   {
     title: "Tiêu đề",
-    getData: (x) => <p className="w-[350px]">{x.title}</p>,
+    getData: (x) => <p className="w-[250px]">{x.title}</p>,
   },
   {
     title: "Nội dung",
     getData: (x) => (
       <p
-        className="descriptNewsTable text-justify w-[490px]"
+        className="descriptNewsTable text-justify w-[290px]"
         dangerouslySetInnerHTML={{ __html: x.content }}
       ></p>
     ),

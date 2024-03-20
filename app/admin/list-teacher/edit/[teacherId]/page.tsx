@@ -13,7 +13,14 @@ import toast from "react-hot-toast";
 const EditTeacherPage = (params: any) => {
   const [currAvatar, setCurrAvatar] = useState<File | null>(null);
   const router = useRouter();
+
+  const date = new Date();
+  const year = date.getFullYear();
+
+  //fetch data
   const { data: dataTeacher } = useFetch("Teacher/getList");
+
+  const { data: dataClass } = useFetch(`ClassRoom/List/${year}`);
 
   const detailTeacher = dataTeacher?.find(
     (info: any) => info.id == params.params.teacherId
@@ -30,6 +37,7 @@ const EditTeacherPage = (params: any) => {
     IDNumber: detailTeacher?.idNumber,
     Education: detailTeacher?.education,
     Note: detailTeacher?.note,
+    ClassId: detailTeacher?.classId + "-" + detailTeacher?.className,
     File: "",
   };
   const {
@@ -46,6 +54,7 @@ const EditTeacherPage = (params: any) => {
       IDNumber: "",
       Education: "",
       Note: "",
+      ClassId: "",
       File: "",
     },
     values,
@@ -114,29 +123,29 @@ const EditTeacherPage = (params: any) => {
                     type="text"
                     id="FullName"
                     {...register("FullName", { required: true })}
-                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="FullName"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Họ và tên
                   </label>
                 </div>
 
                 {detailTeacher?.gender ? (
-                  <div className="grid md:grid-cols-2 md:gap-3 mx-5 border-gray-200 border">
+                  <div className="grid md:grid-cols-2 md:gap-3 mx-5 border-gray-200 border rounded-md">
                     <div className="flex items-center ps-4 rounded dark:border-gray-700">
                       <input
                         id="Gender-male-c"
                         type="radio"
                         radioGroup="gender-children"
                         value="1"
-                        checked={detailTeacher?.gender === "Nam"}
+                        defaultChecked={detailTeacher?.gender === "Nam"}
                         {...register("Gender", { required: true })}
-                        className="w-4 h-4 text-blue-600 bg-gray-100  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-4 h-4 text-orange-600 bg-gray-100  focus:ring-orange-500 dark:focus:ring-orange-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
                       <label
                         htmlFor="Gender-male-c"
@@ -151,9 +160,9 @@ const EditTeacherPage = (params: any) => {
                         type="radio"
                         radioGroup="gender-children"
                         value="0"
-                        checked={detailTeacher?.gender === "Nữ"}
+                        defaultChecked={detailTeacher?.gender === "Nữ"}
                         {...register("Gender", { required: true })}
-                        className="w-4 h-4 text-blue-600 bg-gray-100 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        className="w-4 h-4 text-orange-600 bg-gray-100 focus:ring-orange-500 dark:focus:ring-orange-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       />
                       <label
                         htmlFor="Gender-female-c"
@@ -172,13 +181,13 @@ const EditTeacherPage = (params: any) => {
                     type="text"
                     id="IDNumber"
                     {...register("IDNumber", { required: true })}
-                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="IDNumber"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     CCCD
                   </label>
@@ -191,13 +200,13 @@ const EditTeacherPage = (params: any) => {
                     type="text"
                     id="PhoneNumber"
                     {...register(`PhoneNumber`, { required: true })}
-                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="PhoneNumber"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Số điện thoại
                   </label>
@@ -207,69 +216,62 @@ const EditTeacherPage = (params: any) => {
                   <select
                     id="Education"
                     {...register(`Education`, { required: true })}
-                    className="block py-2.5 px-0 w-full  text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    className="block py-2.5 px-0 w-full  text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                   >
                     <option
                       value="Tiến Sĩ"
-                      selected={detailTeacher?.education === "Tiến Sĩ"}
+                      selected={detailTeacher?.education?.trim() === "Tiến Sĩ"}
                     >
-                      Tiến sĩ
+                      Tiến Sĩ
                     </option>
                     <option
                       value="Thạc Sĩ"
-                      selected={detailTeacher?.education === "Thạc Sĩ"}
+                      selected={detailTeacher?.education?.trim() === "Thạc Sĩ"}
                     >
-                      Thạc sĩ
+                      Thạc Sĩ
                     </option>
                     <option
                       value="Đại Học"
-                      selected={detailTeacher?.education == "Đại Học"}
+                      selected={detailTeacher?.education?.trim() == "Đại Học"}
                     >
-                      Đại học
+                      Đại Học
                     </option>
                     <option
                       value="Cao Đẳng"
-                      selected={detailTeacher?.education === "Cao Đẳng"}
+                      selected={detailTeacher?.education?.trim() === "Cao Đẳng"}
                     >
-                      Cao đẳng
+                      Cao Đẳng
                     </option>
                     <option
                       value="Trung Cấp"
-                      selected={detailTeacher?.education === "Trung Cấp"}
+                      selected={
+                        detailTeacher?.education?.trim() === "Trung Cấp"
+                      }
                     >
-                      Trung cấp
+                      Trung Cấp
                     </option>
                   </select>
 
-                  {/* <input
-                    type="text"
-                    name="Education"
-                    id="Education"
-                    {...(register(`Education`), { required: true })}
-                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  /> */}
                   <label
                     htmlFor="Education"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Trình độ
                   </label>
                 </div>
                 {/* Ngày sinh */}
-                <div className="relative z-0 mb-5 group ml-5">
+                <div className="relative z-0 group ml-5">
                   <input
                     type="date"
                     id="BirthDay"
                     {...register(`BirthDay`, { required: true })}
-                    className="block py-2.5 px-0 w-[150px] text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer h-[41.6px]"
+                    className="block py-2.5 px-0 w-[150px] text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="BirthDay"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Ngày sinh
                   </label>
@@ -278,21 +280,51 @@ const EditTeacherPage = (params: any) => {
             </div>
           </div>
           {/* Địa chỉ */}
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="text"
-              id="Address"
-              {...register(`Address`, { required: true })}
-              className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-            <label
-              htmlFor="Address"
-              className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Địa chỉ
-            </label>
+          <div className=" flex gap-4">
+            <div className="relative w-full z-0 mb-5 group ">
+              <input
+                type="text"
+                id="Address"
+                {...register(`Address`, { required: true })}
+                className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
+                placeholder=" "
+                required
+              />
+              <label
+                htmlFor="Address"
+                className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >
+                Địa chỉ
+              </label>
+            </div>
+
+            <div className="relative">
+              <input
+                type="text"
+                id="ClassId"
+                list={"classIdList"}
+                {...register(`ClassId`, { required: true })}
+                className="relative block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
+                placeholder=" "
+                required
+              />
+              <label
+                htmlFor="ClassId"
+                className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >
+                Lớp chủ nhiệm
+              </label>
+              <datalist id="classIdList">
+                {dataClass?.map((classItem: any) => {
+                  return (
+                    <option
+                      key={classItem.id}
+                      value={classItem.id + "-" + classItem.name}
+                    ></option>
+                  );
+                })}
+              </datalist>
+            </div>
           </div>
 
           {/* Ghi chú */}
@@ -301,19 +333,19 @@ const EditTeacherPage = (params: any) => {
               type="text"
               id="Note"
               {...register(`Note`, { required: false })}
-              className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
               placeholder=" "
             />
             <label
               htmlFor="Note"
-              className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Ghi chú
             </label>
           </div>
           <div className="flex justify-end">
             <button
-              className="text-white bg-main hover:bg-mainBlur focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-white bg-main hover:bg-mainBlur focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
               onClick={handleSubmit(onSubmit)}
             >
               Lưu hồ sơ

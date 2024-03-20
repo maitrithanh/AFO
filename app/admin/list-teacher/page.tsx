@@ -6,12 +6,9 @@ import TableTemplate, {
   TableTemplateSort,
 } from "@/app/components/shared/TableTemplate";
 import DefaultImage from "@/app/components/shared/defaultImage";
-import ParentListRes from "@/types/ParentListRes";
 import { callApiWithToken } from "@/utils/callApi";
-import { compareName } from "@/utils/compare";
 import { getImageUrl } from "@/utils/image";
 import useFetch from "@/utils/useFetch";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { MdBlock } from "react-icons/md";
@@ -74,10 +71,11 @@ const searchCols = [Columns[0], Columns[1]];
 const ListTeacherPage = () => {
   const [nameTeacher, setNameTeacher] = useState("");
   const [idTeacher, setIdTeacher] = useState("");
+  const [classId, setClassId] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
-  const { data: dataTeacher } = useFetch("Teacher/getList");
+  const { data: dataTeacher } = useFetch("Teacher/getList", refresh);
 
   //Khi update tự động cập nhật
   const handleRefresh = () => {
@@ -90,9 +88,9 @@ const ListTeacherPage = () => {
   };
 
   //xoá giáo viên theo id
-  const DeletePost = (id: string) => {
+  const DeletePost = (id: string, classIdTeacher: string) => {
     callApiWithToken()
-      .delete(`Users?id=${id}`)
+      .delete(`Teacher/remove?teacherID=${id}&classID=${classIdTeacher}`)
       .then((response) => {
         toast.success(`Xoá thành công`);
         handleRefresh();
@@ -102,8 +100,9 @@ const ListTeacherPage = () => {
       });
   };
 
-  const handleOpenDialog = (id: string, name: string) => {
+  const handleOpenDialog = (id: string, name: string, classId: string) => {
     setIdTeacher(id);
+    setClassId(classId);
     setNameTeacher(name);
     setOpenDialog(true);
   };
@@ -118,7 +117,7 @@ const ListTeacherPage = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Bạn có chắc chắn thông tin giáo viên?
+              Bạn có chắc chắn xoá thông tin giáo viên?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-rose-600 font-bold">
               {nameTeacher}
@@ -129,7 +128,7 @@ const ListTeacherPage = () => {
             <AlertDialogAction
               className="bg-rose-600 hover:bg-rose-900"
               onClick={() => {
-                DeletePost(idTeacher);
+                DeletePost(idTeacher, classId);
               }}
             >
               Xác nhận xoá
@@ -162,7 +161,7 @@ const ListTeacherPage = () => {
               </span>
             ),
             onClick: (x) => {
-              handleOpenDialog(x.id, x.fullName);
+              handleOpenDialog(x.id, x.fullName, x.classId);
             },
           },
         ]}

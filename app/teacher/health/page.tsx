@@ -18,14 +18,6 @@ const HealthPage = () => {
   const [getMonth, setGetMonth] = useState(month + 1);
   const { data: healthEvent } = useFetch("Healthy/getListEvent");
   const { data: dataUser } = useFetch(`/Auth/current`);
-  const [arrRelationship, setArrRelationship] = useState("");
-  const [getClassIdC, setGetClassIdC] = useState("");
-
-  const { classId, getClassId, arrClassName } = GetClass();
-
-  useEffect(() => {
-    setGetClassIdC(getClassId);
-  }, [getClassId]);
 
   //format ngay thang nam
   const formatDate = (date: Date) => {
@@ -61,9 +53,9 @@ const HealthPage = () => {
                 />
               </SelectTrigger>
               <SelectContent>
-                {healthEvent?.map((data: any) => {
+                {healthEvent?.map((data: any, i: number) => {
                   return (
-                    <SelectItem key={data?.id} value={data?.id}>
+                    <SelectItem key={i} value={data?.id}>
                       {data?.examDate}
                     </SelectItem>
                   );
@@ -72,39 +64,8 @@ const HealthPage = () => {
             </Select>
           </div>
         </div>
-        {/* Chọn lớp */}
-        <div className="bg-gray-100 shadow-sm rounded-lg flex items-center px-2">
-          Lớp
-          <div className="bg-gray-100 shadow-sm rounded-lg ml-2">
-            <Select
-              defaultValue={classId[0]?.trim()}
-              onValueChange={(value: any) => {
-                setGetClassIdC(value);
-              }}
-            >
-              <SelectTrigger className="md:w-[140px] w-full text-lg">
-                <p className="text-gray-600 mr-2">
-                  <MdCalendarMonth />
-                </p>
-                <SelectValue
-                  placeholder={arrClassName[0]?.trim()}
-                  defaultValue={classId[0]?.trim()}
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {classId?.map((data: any, index: any) => {
-                  return (
-                    <SelectItem key={data?.trim()} value={data?.trim()}>
-                      {arrClassName[index]}
-                    </SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
       </div>
-      <HealthTable month={getMonth} classId={getClassIdC} />
+      <HealthTable month={getMonth} classId={dataUser?.classId} />
     </div>
   );
 };

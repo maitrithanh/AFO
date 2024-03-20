@@ -1,6 +1,7 @@
 "use client";
 import BackAction from "@/app/components/admin/BackAction";
 import { callApiWithToken } from "@/utils/callApi";
+import useFetch from "@/utils/useFetch";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -9,6 +10,10 @@ import toast from "react-hot-toast";
 const AddTeacherPage = () => {
   const [currAvatar, setCurrAvatar] = useState<File | null>(null);
   const router = useRouter();
+
+  const date = new Date();
+  const year = date.getFullYear();
+  const { data: dataClass } = useFetch(`ClassRoom/List/${year}`);
 
   const {
     register,
@@ -24,36 +29,44 @@ const AddTeacherPage = () => {
       IDNumber: "",
       Education: "",
       Note: "",
+      classId: "",
       File: "",
     },
   });
 
-  console.log(errors);
-
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const formData = new FormData();
+    if (!(data.PhoneNumber.length == 10)) {
+      toast.error("Số điện thoại phải đủ 10 số");
+    } else if (!(data.IDNumber.length == 12)) {
+      toast.error("Căn cước công dân phải đủ 12 số");
+    } else {
+      const formData = new FormData();
+      for (let key in data) {
+        if (key == "classId") {
+          formData.append(key, data[key].split("-")[0]);
+        } else {
+          formData.append(key, data[key]);
+        }
+      }
 
-    if (currAvatar) {
-      formData.append("File", currAvatar);
-    }
+      if (currAvatar) {
+        formData.append("File", currAvatar);
+      }
 
-    callApiWithToken()
-      .post(
-        `Teacher/addTeacher?FullName=${data.FullName}&PhoneNumber=${data.PhoneNumber}&Gender=${data.Gender}&Address=${data.Address}&BirthDay=${data.BirthDay}&IDNumber=${data.IDNumber}&Education=${data.Education}`,
-        formData,
-        {
+      callApiWithToken()
+        .post(`Teacher/addTeacher`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
-      )
-      .then((response) => {
-        toast.success("Hồ sơ đã được lưu");
-        router.push("/admin/list-teacher");
-      })
-      .catch((errors) => {
-        toast.error("Có lỗi xảy ra!");
-      });
+        })
+        .then((response) => {
+          toast.success("Hồ sơ đã được lưu");
+          router.push("/admin/list-teacher");
+        })
+        .catch((errors) => {
+          toast.error("Có lỗi xảy ra!");
+        });
+    }
   };
   return (
     <>
@@ -93,13 +106,13 @@ const AddTeacherPage = () => {
                     type="text"
                     id="FullName"
                     {...register("FullName", { required: true })}
-                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="FullName"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Họ và tên
                   </label>
@@ -113,7 +126,7 @@ const AddTeacherPage = () => {
                       radioGroup="gender-children"
                       value="1"
                       {...register("Gender", { required: true })}
-                      className="w-4 h-4 text-blue-600 bg-gray-100  focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-orange-600 bg-gray-100  focus:ring-orange-500 dark:focus:ring-orange-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
                       htmlFor="Gender-male-c"
@@ -129,7 +142,7 @@ const AddTeacherPage = () => {
                       radioGroup="gender-children"
                       value="0"
                       {...register("Gender", { required: true })}
-                      className="w-4 h-4 text-blue-600 bg-gray-100 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-orange-600 bg-gray-100 focus:ring-orange-500 dark:focus:ring-orange-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
                       htmlFor="Gender-female-c"
@@ -145,13 +158,13 @@ const AddTeacherPage = () => {
                     type="text"
                     id="IDNumber"
                     {...register("IDNumber", { required: true })}
-                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="IDNumber"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     CCCD
                   </label>
@@ -164,13 +177,13 @@ const AddTeacherPage = () => {
                     type="text"
                     id="PhoneNumber"
                     {...register(`PhoneNumber`, { required: true })}
-                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="PhoneNumber"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Số điện thoại
                   </label>
@@ -180,27 +193,17 @@ const AddTeacherPage = () => {
                   <select
                     id="Education"
                     {...register(`Education`, { required: true })}
-                    className="block py-2.5 px-0 w-full  text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    className="block py-2.5 px-0 w-full  text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                   >
-                    <option value="Tiến sĩ">Tiến sĩ</option>
-                    <option value="Thạc sĩ">Thạc sĩ</option>
-                    <option value="Đại học">Đại học</option>
-                    <option value="Cao đẳng">Cao đẳng</option>
-                    <option value="Trung cấp">Trung cấp</option>
+                    <option value="Tiến Sĩ">Tiến Sĩ</option>
+                    <option value="Thạc Sĩ">Thạc Sĩ</option>
+                    <option value="Đại Học">Đại Học</option>
+                    <option value="Cao Đẳng">Cao Đẳng</option>
+                    <option value="Trung Cấp">Trung Cấp</option>
                   </select>
-
-                  {/* <input
-                    type="text"
-                    name="Education"
-                    id="Education"
-                    {...(register(`Education`), { required: true })}
-                    className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  /> */}
                   <label
                     htmlFor="Education"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Trình độ
                   </label>
@@ -211,13 +214,13 @@ const AddTeacherPage = () => {
                     type="date"
                     id="BirthDay"
                     {...register(`BirthDay`, { required: true })}
-                    className="block py-2.5 px-0 w-[150px] text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer h-[41.6px]"
+                    className="block py-2.5 px-0 w-[150px] text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer h-[41.6px]"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="BirthDay"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Ngày sinh
                   </label>
@@ -226,21 +229,51 @@ const AddTeacherPage = () => {
             </div>
           </div>
           {/* Địa chỉ */}
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="text"
-              id="Address"
-              {...register(`Address`, { required: true })}
-              className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-            <label
-              htmlFor="Address"
-              className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Địa chỉ
-            </label>
+          <div className=" flex gap-4">
+            <div className="relative w-full z-0 mb-5 group ">
+              <input
+                type="text"
+                id="Address"
+                {...register(`Address`, { required: true })}
+                className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
+                placeholder=" "
+                required
+              />
+              <label
+                htmlFor="Address"
+                className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >
+                Địa chỉ
+              </label>
+            </div>
+
+            <div className="relative">
+              <input
+                type="text"
+                id="classId"
+                list={"classIdList"}
+                {...register(`classId`, { required: false })}
+                className="relative block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
+                placeholder=" "
+                required
+              />
+              <label
+                htmlFor="classId"
+                className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >
+                Lớp chủ nhiệm
+              </label>
+              <datalist id="classIdList">
+                {dataClass?.map((classItem: any) => {
+                  return (
+                    <option
+                      key={classItem.id}
+                      value={classItem.id + "-" + classItem.name}
+                    ></option>
+                  );
+                })}
+              </datalist>
+            </div>
           </div>
 
           {/* Ghi chú */}
@@ -249,19 +282,19 @@ const AddTeacherPage = () => {
               type="text"
               id="Note"
               {...register(`Note`, { required: false })}
-              className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
               placeholder=" "
             />
             <label
               htmlFor="Note"
-              className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Ghi chú
             </label>
           </div>
           <div className="flex justify-end">
             <button
-              className="text-white bg-main hover:bg-mainBlur focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-white bg-main hover:bg-mainBlur focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
               onClick={handleSubmit(onSubmit)}
             >
               Lưu hồ sơ

@@ -1,17 +1,7 @@
 "use client";
-import Image from "next/image";
 import React, { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { useTranslation } from "react-i18next";
 import useFetch from "@/utils/useFetch";
-import { useRouter } from "next/navigation";
 import DefaultImage from "../shared/defaultImage";
 import { getImageUrl } from "@/utils/image";
 import DialogUpdateHealth from "./DialogUpdateHealth";
@@ -42,6 +32,7 @@ const HealthTable = ({ month, classId }: HeathTableProps) => {
   const handleRefresh = () => {
     setRefresh((curr) => !curr);
   };
+
   return (
     <>
       <div
@@ -122,6 +113,15 @@ const HealthTable = ({ month, classId }: HeathTableProps) => {
                 })}
               </tbody>
             </table>
+            <div className="flex justify-center items-center p-2">
+              {healthListStudent ? (
+                healthListStudent.length <= 0 ? (
+                  <p>Không có dữ liệu</p>
+                ) : null
+              ) : (
+                "Đang tải"
+              )}
+            </div>
           </div>
         </div>
       </div>
