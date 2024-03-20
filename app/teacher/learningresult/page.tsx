@@ -13,51 +13,36 @@ import {
 import { Input } from "@/components/ui/input";
 import DefaultImage from "@/app/components/shared/defaultImage";
 import { getImageUrl } from "@/utils/image";
-import GetClass from "@/utils/classes/getClass";
-import { CiCircleMore } from "react-icons/ci";
-import { SiGoogleclassroom } from "react-icons/si";
 import DialogProfile from "@/app/components/profile/DialogProfile";
-import Button from "@/app/components/shared/Button";
-import { MdCalendarMonth } from "react-icons/md";
 import { IoCalendarOutline } from "react-icons/io5";
-import GetAttendanceClass from "@/utils/attendance/getAttendance";
 
 const LearningResultPage = () => {
   const { t } = useTranslation();
   const [closeDialog, setCloseDialog] = useState(false);
   const [dataStudentDetail, setDataStudentDetail] = useState({});
+  const [monthDefault, setMonthDefault] = useState("");
   const [search, setSearch] = useState("");
-  const [defaultClassID, setDefaultClassID] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const { data: currentUserTeacher } = useFetch("Auth/current");
 
-  const { classId, getClassId, arrClassName } = GetClass();
-  const {
-    arrGetAttendanceByClass,
-    nameAttendanceByClassFirst,
-    idAttendanceByClassFirst,
-  } = GetAttendanceClass(defaultClassID);
-
-  useEffect(() => {
-    setDefaultClassID(classId[0]?.trim());
-  }, [classId]);
-
-  useEffect(() => {
-    setDefaultClassID(getClassId);
-  }, [getClassId]);
+  const allMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   const day = new Date();
   const year = day.getFullYear();
+  const month = day.getMonth() + 1;
+
+  useEffect(() => {
+    setMonthDefault(month.toString());
+  }, [month]);
 
   const { data: detailClassData } = useFetch(
-    `ClassRoom/Detail/id=${defaultClassID}&year=${year}`
+    `ClassRoom/Detail/id=${currentUserTeacher?.classId}&year=${year}`
   );
 
   const { data: learningResultData } = useFetch(
-    `CheckIn/getClassByMonth?classId=${defaultClassID}&month=3`,
+    `CheckIn/getClassByMonth?classId=${currentUserTeacher?.classId}&month=${monthDefault}`,
     refresh
   );
-
-  console.log(learningResultData);
 
   const handleDialog = () => {
     setCloseDialog((currState) => !currState);
@@ -89,29 +74,25 @@ const LearningResultPage = () => {
             <div className="flex lg:flex-row flex-col items-center justify-between">
               <div className="">
                 <div className="md:text-3xl flex items-center">
-                  Kết quả học tập Lớp
-                  <div className="bg-gray-100 shadow-sm rounded-lg ml-2 font-bold text-3xl ">
+                  Kết quả học tập Lớp {currentUserTeacher?.className}
+                  <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-bold text-3xl ">
                     <Select
-                      defaultValue={classId[0]?.trim()}
+                      defaultValue={monthDefault}
                       onValueChange={(value: any) => {
-                        setDefaultClassID(value);
-                        setRefresh(true);
+                        setMonthDefault(value);
                       }}
                     >
-                      <SelectTrigger className="md:w-[140px] w-full text-lg">
+                      <SelectTrigger className="md:w-fill w-full text-lg">
                         <p className="text-gray-600 mr-2">
-                          <SiGoogleclassroom />
+                          <IoCalendarOutline />
                         </p>
-                        <SelectValue
-                          placeholder={arrClassName[0]?.trim()}
-                          defaultValue={classId[0]?.trim()}
-                        />
+                        <p>{`Tháng ${monthDefault}`}</p>
                       </SelectTrigger>
                       <SelectContent>
-                        {classId?.map((data: any, index: any) => {
+                        {allMonth.map((item: any, index: any) => {
                           return (
-                            <SelectItem key={data?.trim()} value={data?.trim()}>
-                              {arrClassName[index]}
+                            <SelectItem key={index} value={item}>
+                              Tháng {item}
                             </SelectItem>
                           );
                         })}
@@ -218,6 +199,11 @@ const LearningResultPage = () => {
             </table>
           </div>
         </div>
+        {learningResultData ? null : (
+          <div className="w-full flex justify-center items-center p-8">
+            <p>Không có dữ liệu</p>
+          </div>
+        )}
       </div>
     </>
   );

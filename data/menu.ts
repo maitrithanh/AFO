@@ -33,6 +33,12 @@ export const  menu = [
                 pathname: '/admin/children',
                 img: 'childList.webp'
             },
+            {
+                text: 'teacherList',
+                icon: IoAnalyticsSharp,
+                pathname: '/admin/list-teacher',
+                img: 'employment.webp'
+            },
         ]
     },
    
@@ -92,6 +98,12 @@ export const  menu = [
         icon: CiMoneyBill,
         pathname: '/admin/health',
         img: 'heartbeat.webp'
+    },
+    {
+        text: 'news',
+        icon: CiMoneyBill,
+        pathname: '/admin/news',
+        img: 'news.webp'
     },
     {
         text: 'menu',

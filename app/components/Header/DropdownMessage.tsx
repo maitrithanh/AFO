@@ -106,14 +106,19 @@ const DropdownMessage = () => {
           onBlur={() => setDropdownOpen(false)}
           className={`absolute bg-white md:w-[400px] md:right-0 top-0 inset-0 h-screen overflow-hidden z-50 pb-8 `}
         >
-          <div className="w-full flex justify-end p-2 text-rose-600 hover:cursor-pointer">
+          <div className="w-full flex justify-between items-center py-1 hover:cursor-pointer border-b">
+            <div className="px-4.5 py-2 flex justify-center">
+              <h5 className="px-2 text-2xl flex justify-center items-center w-fit rounded-full text-cool">
+                Tin nhắn
+              </h5>
+            </div>
             <div
-              className="bg-white p-1 rounded-md"
+              className="bg-white p-1 rounded-md text-rose-600 "
               onClick={() => {
                 setDropdownOpen(false);
               }}
             >
-              <IoClose size={24} />
+              <IoClose size={28} />
             </div>
           </div>
           {/* <div className="px-4.5 py-2 flex justify-center">

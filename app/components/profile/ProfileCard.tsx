@@ -234,15 +234,23 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 lineName={t("idNumber")}
                 contentLine={currentUser?.idNumber}
               />
-              <CardInfoLine
-                lineName={t("job")}
-                contentLine={currentUser?.job}
-              />
-              {parent ? null : (
+
+              {parent ? (
                 <CardInfoLine
-                  lineName={"Lớp phụ trách"}
-                  contentLine={currentUser?.relationship.split("-")[1]}
+                  lineName={t("job")}
+                  contentLine={currentUser?.job}
                 />
+              ) : (
+                <>
+                  <CardInfoLine
+                    lineName={"Lớp phụ trách"}
+                    contentLine={currentUser?.className}
+                  />
+                  <CardInfoLine
+                    lineName={"Trình độ"}
+                    contentLine={currentUser?.education}
+                  />
+                </>
               )}
 
               <CardInfoLine
@@ -324,6 +332,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                     lineName={t("nationality")}
                     contentLine={infoChild?.nation}
                   />
+                  {/* <CardInfoLine
+                    lineName={t("Lớp học")}
+                    contentLine={infoChild?.classRoom}
+                  /> */}
                   <CardInfoLine
                     lineName={t("status")}
                     contentLine={infoChild?.status ? "Đang học" : "Đã nghỉ"}

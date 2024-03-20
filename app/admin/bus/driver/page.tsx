@@ -169,7 +169,6 @@ const DriverPage = () => {
         toast.error("Có lỗi");
       });
   };
-  console.log(editMode);
 
   //dialog thêm tài xế
   const DialogAdd = (
@@ -202,7 +201,6 @@ const DriverPage = () => {
 
             <input
               id={"Avatar"}
-              // {...register("Avatar", { required: true })}
               type={"file"}
               onChange={(e) => setCurrAvatar(e.target.files![0])}
             />

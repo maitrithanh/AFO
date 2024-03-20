@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="grid items-center justify-center lg:grid-cols-3 grid-cols-1 lg:gap-52 gap-4 py-4">
           <div className="flex items-center">
             <Image
-              src={"/logo.webp"}
+              src={"/Logo.webp"}
               width={100}
               height={100}
               alt="footer left"

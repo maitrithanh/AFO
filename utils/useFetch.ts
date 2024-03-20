@@ -22,6 +22,7 @@ const [data, setData] = useState<T | null>(null)
         }
     } catch (error:any) {
         setError(error)
+        setData(null)
         console.log("useFetch something went wrong: ", error);
     } finally{
         setLoading(false)
