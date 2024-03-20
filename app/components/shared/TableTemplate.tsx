@@ -26,7 +26,7 @@ const DefaultActionIcon = (
     width={26}
     height={26}
     priority
-    className="hover:scale-110 transition-all"
+    className="hover:scale-110 transition-all min-w-[26px] min-h-[26px]"
   />
 );
 //số dòng mỗi trang
@@ -394,25 +394,27 @@ function TableTemplate<T extends IObject = any>({
                         </td>
                       </>
                     ))}
-                    <td className="md:px-6 md:py-4 flex">
-                      {actions?.map((act, i) => (
-                        <>
-                          <Link
-                            key={i}
-                            href={act.getLink ? act.getLink(row) : ""}
-                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                            onClick={
-                              act.onClick
-                                ? () => {
-                                    act.onClick!(row);
-                                  }
-                                : () => {}
-                            }
-                          >
-                            {act.icon ?? DefaultActionIcon}
-                          </Link>
-                        </>
-                      ))}
+                    <td className="md:px-6 md:py-4">
+                      <div className="flex">
+                        {actions?.map((act, i) => (
+                          <>
+                            <Link
+                              key={i}
+                              href={act.getLink ? act.getLink(row) : ""}
+                              className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                              onClick={
+                                act.onClick
+                                  ? () => {
+                                      act.onClick!(row);
+                                    }
+                                  : () => {}
+                              }
+                            >
+                              {act.icon ?? DefaultActionIcon}
+                            </Link>
+                          </>
+                        ))}
+                      </div>
                     </td>
                   </tr>
                 ))}

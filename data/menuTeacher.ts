@@ -12,9 +12,9 @@ export const menuTeacher = [
       color: "#fef7ec"
     },
     {
-      name: "off",
+      name: "Danh sách xin nghỉ",
       image: "burnout.webp",
-      path: "/",
+      path: "/teacher/burnout",
       color: "#ecf9fe"
     },
     {

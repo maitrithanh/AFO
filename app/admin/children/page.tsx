@@ -1,8 +1,10 @@
-"use client"
+"use client";
 
+import DefaultImage from "@/app/components/shared/defaultImage";
 import TableTemplate, { FilterOptions, TableTemplateAction, TableTemplateColumn, TableTemplateFilter, TableTemplateSort } from "@/app/components/shared/TableTemplate"
 import { ChildrenData } from "@/types/ChildrenData";
 import { compareName } from "@/utils/compare";
+import { getImageUrl } from "@/utils/image";
 import useFetch from "@/utils/useFetch";
 import { useMemo } from "react";
 
@@ -11,50 +13,58 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
     title: 'Mã số',
     getData: (x) => x.id
   },
+  {  
+    title: "Hình",
+    getData: (x) => (<DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />),
+  },
   {
     title: 'Họ tên',
     getData: (x) => x.fullName
   },
   {
-    title: 'Lớp',
-    getData: (x) => x.classRoom
+    title: "Họ tên",
+    getData: (x) => x.fullName,
   },
   {
-    title: 'ngày sinh',
-    getData: (x) => x.birthDay
+    title: "Lớp",
+    getData: (x) => x.classRoom,
   },
   {
-    title: 'Giới tính',
-    getData: (x) => x.gender
+    title: "ngày sinh",
+    getData: (x) => x.birthDay,
   },
   {
-    title: 'Người giám hộ',
-    getData: (x) => x.parentName
+    title: "Giới tính",
+    getData: (x) => x.gender,
   },
   {
-    title: 'Số điện thoại',
-    getData: (x) => x.phone
+    title: "Người giám hộ",
+    getData: (x) => x.parentName,
   },
-]
+  {
+    title: "Số điện thoại",
+    getData: (x) => x.phone,
+  },
+];
 
 const Action: TableTemplateAction<ChildrenData> = {
-  getLink: (x) => `/admin/children/${x.id}`
-}
+  getLink: (x) => `/admin/children/${x.id}`,
+};
 
 const sorts: TableTemplateSort<ChildrenData>[] = [
   {
-    title: 'Mới nhất',
-    compare: (a, b) => a.joinDate <= b.joinDate ? 1 : -1
+    title: "Mới nhất",
+    compare: (a, b) => (a.joinDate <= b.joinDate ? 1 : -1),
   },
   {
-    title: 'Tên (A-Z)',
-    compare: (a, b) => compareName(a.fullName, b.fullName)
+    title: "Tên (A-Z)",
+    compare: (a, b) => compareName(a.fullName, b.fullName),
   },
   {
-    title: 'Tên (Z-A)',
-    compare: (a, b) => -compareName(a.fullName, b.fullName)
-  }
-]
+    title: "Tên (Z-A)",
+    compare: (a, b) => -compareName(a.fullName, b.fullName),
+  },
+];
 
 const genderOptions: FilterOptions<ChildrenData>[] = [
   {
@@ -117,4 +127,4 @@ const ChildPage = () => {
   />
 }
 
-export default ChildPage
+export default ChildPage;

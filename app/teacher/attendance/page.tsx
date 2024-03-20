@@ -2,24 +2,12 @@
 import React, { useEffect, useState } from "react";
 import useFetch from "@/utils/useFetch";
 import { useTranslation } from "react-i18next";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { Input } from "@/components/ui/input";
 import DefaultImage from "@/app/components/shared/defaultImage";
 import { getImageUrl } from "@/utils/image";
-import GetClass from "@/utils/classes/getClass";
-import { CiCircleMore } from "react-icons/ci";
-import { SiGoogleclassroom } from "react-icons/si";
 import DialogProfile from "@/app/components/profile/DialogProfile";
 import Button from "@/app/components/shared/Button";
 import GetAttendanceClass from "@/utils/attendance/getAttendance";
-import { IoCalendarOutline } from "react-icons/io5";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
@@ -29,29 +17,18 @@ const AttendancePage = () => {
   const [closeDialog, setCloseDialog] = useState(false);
   const [dataStudentDetail, setDataStudentDetail] = useState({});
   const [search, setSearch] = useState("");
-  const [defaultClassID, setDefaultClassID] = useState("");
   const [refresh, setRefresh] = useState(false);
-  const { classId, getClassId, arrClassName } = GetClass();
+  const { data: currentUserTeacher } = useFetch("Auth/current");
 
-  const {
-    arrGetAttendanceByClass,
-    nameAttendanceByClassFirst,
-    idAttendanceByClassFirst,
-  } = GetAttendanceClass(defaultClassID);
+  //lấy id theo ngày từ id lớp
+  const { idAttendanceByClassFirst } = GetAttendanceClass(
+    currentUserTeacher?.classId
+  );
   const [attendance, setAttendance] = useState("");
-
-  useEffect(() => {
-    setDefaultClassID(classId[0]?.trim());
-  }, [classId]);
 
   useEffect(() => {
     setAttendance(idAttendanceByClassFirst);
   }, [idAttendanceByClassFirst]);
-
-  useEffect(() => {
-    setDefaultClassID(getClassId);
-    setRefresh(true);
-  }, [getClassId]);
 
   useEffect(() => {
     setOjbData([]);
@@ -60,10 +37,12 @@ const AttendancePage = () => {
   const day = new Date();
   const year = day.getFullYear();
 
+  //lấy thông tin lớp học
   const { data: detailClassData } = useFetch(
-    `ClassRoom/Detail/id=${defaultClassID}&year=${year}`,
+    `ClassRoom/Detail/id=${currentUserTeacher?.classId}&year=${year}`,
     refresh
   );
+  //Lấy danh sách điểm danh theo ngày
   const { data: attendanceClassData, loading } = useFetch(
     `CheckIn/getListById?id=${attendance}`,
     refresh
@@ -169,64 +148,7 @@ const AttendancePage = () => {
             <div className="flex lg:flex-row flex-col items-center justify-between">
               <div className="">
                 <div className="md:text-3xl flex items-center">
-                  Điểm danh
-                  <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-bold text-3xl ">
-                    <Select
-                      defaultValue={classId[0]?.trim()}
-                      onValueChange={(value: any) => {
-                        setAttendance(value);
-                      }}
-                    >
-                      <SelectTrigger className="md:w-fill w-full text-lg">
-                        <p className="text-gray-600 mr-2">
-                          <IoCalendarOutline />
-                        </p>
-                        <SelectValue
-                          placeholder={nameAttendanceByClassFirst}
-                          defaultValue={idAttendanceByClassFirst}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {arrGetAttendanceByClass?.map(
-                          (data: any, index: any) => {
-                            return (
-                              <SelectItem key={data?.id} value={data?.id}>
-                                {data?.classOfDay?.split("-")[1]}
-                              </SelectItem>
-                            );
-                          }
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  - Lớp
-                  <div className="bg-gray-100 shadow-sm rounded-lg ml-2 font-bold text-3xl ">
-                    <Select
-                      defaultValue={classId[0]?.trim()}
-                      onValueChange={(value: any) => {
-                        setDefaultClassID(value);
-                      }}
-                    >
-                      <SelectTrigger className="md:w-[140px] w-full text-lg">
-                        <p className="text-gray-600 mr-2">
-                          <SiGoogleclassroom />
-                        </p>
-                        <SelectValue
-                          placeholder={arrClassName[0]?.trim()}
-                          defaultValue={classId[0]?.trim()}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {classId?.map((data: any, index: any) => {
-                          return (
-                            <SelectItem key={data?.trim()} value={data?.trim()}>
-                              {arrClassName[index]}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  Điểm danh Lớp
                 </div>
 
                 <div className="flex">

@@ -4,7 +4,7 @@ import TableTemplate, {
   TableTemplateColumn,
 } from "@/app/components/shared/TableTemplate";
 import useFetch from "@/utils/useFetch";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -19,7 +19,6 @@ import { getImageUrl } from "@/utils/image";
 import { FaCheck } from "react-icons/fa6";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
-import { error } from "console";
 
 const Columns: TableTemplateColumn[] = [
   {
@@ -60,26 +59,14 @@ const Columns: TableTemplateColumn[] = [
 ];
 
 const BurnOutPage = () => {
-  const searchParams = useSearchParams();
-
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [refresh, setRefresh] = useState(false);
+  const { data: currentUserTeacher } = useFetch("Auth/current");
 
-  const handlRefresh = () => {
-    setRefresh(true);
-    if (refresh === true) {
-      setTimeout(() => {
-        setRefresh(false);
-      }, 1000);
-    }
-  };
-
-  //refresh data every 2s
-  // setInterval(() => {
-  //   handlRefresh();
-  // }, 2000);
-
-  const { data: classData } = useFetch(`CheckIn/getAllRequest`, refresh);
+  const { data: classData } = useFetch(
+    `CheckIn/getRequest?classId=${currentUserTeacher?.classId}&month=${month}`,
+    refresh
+  );
 
   const months = [];
   for (var i = 1; i <= 12; i++) months.push(i);
@@ -120,38 +107,33 @@ const BurnOutPage = () => {
       });
   };
 
-  console.log(classData);
-
   return (
-    <>
-      <BackAction />
-      <TableTemplate
-        title={`Danh sách xin nghỉ`}
-        dataSource={classData || []}
-        columns={Columns}
-        searchColumns={[Columns[0]]}
-        searchPlaceHolder="Tìm kiếm..."
-        // addButton={{ link: "#" }}
-        actions={[
-          {
-            icon: <FaCheck size={24} />,
-            onClick: (x) => {
-              if (!x.isActive) {
-                hanldeAccept(x.reqId);
-              }
+    <div className="w-full flex justify-center items-center">
+      <div className="w-2/3 bg-white p-4 rounded-md">
+        <TableTemplate
+          title={`Danh sách xin nghỉ của lớp ${currentUserTeacher?.className}`}
+          dataSource={classData || []}
+          columns={Columns}
+          searchColumns={[Columns[0]]}
+          searchPlaceHolder="Tìm kiếm..."
+          // addButton={{ link: "#" }}
+          actions={[
+            {
+              icon: <FaCheck size={24} />,
+              onClick: (x) => {
+                if (!x.isActive) {
+                  hanldeAccept(x.reqId);
+                }
+              },
             },
-          },
-        ]}
-        // extraElementsToolBar={selectMonth}
-      />
-      {classData ? (
-        <div className="flex w-full justify-center items-center">
-          <p>{classData.length <= 0 ? "Không có dữ liệu" : null}</p>
+          ]}
+          extraElementsToolBar={selectMonth}
+        />
+        <div className="w-full flex justify-center items-center">
+          {classData?.length > 0 ? null : "Không có dữ liệu"}
         </div>
-      ) : (
-        "Đang tải"
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 

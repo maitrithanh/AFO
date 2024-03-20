@@ -8,14 +8,15 @@ const GetClass = () => {
   const [classId, setClassId] = useState([] as string[]);
   const [getClassId, setGetClassId] = useState("");
 
+  
   useEffect(() => {
     if (dataUser) setArrRelationship(dataUser?.relationship);
   }, [dataUser]);
 
   useEffect(() => {
     if (arrRelationship) {
-      let arrClassId = arrRelationship.split(/[-,,]/);
-      for (let i = 0; i < arrClassId.length; i++) {
+      let arrClassId = arrRelationship?.split(/[-,,]/);
+      for (let i = 0; i < arrClassId?.length; i++) {
         if (i == 1 || i == 2) {
           arrClassId.splice(i, 1);
         }
@@ -26,8 +27,8 @@ const GetClass = () => {
   }, [arrRelationship]);
 
   //Lấy mảng tên lớp
-  let arrClassName = arrRelationship.split(/[-,,]/);
-  for (let i = 0; i < arrClassName.length; i++) {
+  let arrClassName = arrRelationship?.split(/[-,,]/);
+  for (let i = 0; i < arrClassName?.length; i++) {
     if (i == 0 || i == 1) {
       arrClassName.splice(i, 1);
     }

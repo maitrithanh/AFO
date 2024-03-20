@@ -16,7 +16,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { CiCircleMore } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
-import { MdDelete } from "react-icons/md";
+import { MdCancelScheduleSend } from "react-icons/md";
 
 const BurnOutPage = () => {
   const [closeDialogBurnOut, setCloseDialogBurnOut] = useState(false);
@@ -30,6 +30,20 @@ const BurnOutPage = () => {
   const onClose = () => {
     setCloseDialogBurnOut((curr) => !curr);
   };
+
+  let today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  console.log(mm + "-" + dd + "-" + yyyy);
+
+  const values = {
+    startTime: yyyy + "-" + mm + "-" + dd,
+    endTime: "",
+    childId: childID,
+    reason: "",
+  };
+
   const {
     register,
     handleSubmit,
@@ -42,6 +56,7 @@ const BurnOutPage = () => {
       childId: childID,
       reason: "",
     },
+    values,
   });
 
   useEffect(() => {
@@ -51,32 +66,39 @@ const BurnOutPage = () => {
   }, [isSubmitSuccessful]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const formData = new FormData();
+    const dateStart = new Date(data.startTime);
+    const dateEnd = new Date(data.endTime);
 
-    for (const key in data) {
-      formData.append(key, data[key]);
+    if (dateStart > dateEnd) {
+      alert("Ngày kết thúc không được nhỏ hơn ngày bắt đầu!");
+    } else {
+      const formData = new FormData();
+
+      for (const key in data) {
+        formData.append(key, data[key]);
+      }
+      callApiWithToken()
+        .post(`CheckIn/postRequest`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          toast.success("Tạo thành công");
+          onClose();
+          setRefresh(true);
+        })
+        .catch((errors) => {
+          toast.error("Có lỗi", errors);
+        });
     }
-    callApiWithToken()
-      .post(`CheckIn/postRequest`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        toast.success("Tạo thành công");
-        onClose();
-        setRefresh(true);
-      })
-      .catch((errors) => {
-        toast.error("Có lỗi", errors);
-      });
   };
 
   const onSubmitDelete = (reqId: any) => {
     callApiWithToken()
       .delete(`CheckIn/undoRequest?reqID=${reqId}`)
       .then((response) => {
-        toast.success("Đã xoá");
+        toast.success("Đã huỷ");
         setRefresh(true);
       })
       .catch((errors) => {
@@ -174,7 +196,9 @@ const BurnOutPage = () => {
                   <th scope="col" className="px-6 py-3">
                     Lý do
                   </th>
-
+                  <th scope="col" className="px-6 py-3">
+                    Trạng thái
+                  </th>
                   <th scope="col" className="px-6 py-3"></th>
                 </tr>
               </thead>
@@ -185,27 +209,50 @@ const BurnOutPage = () => {
                       key={item.reqId}
                       className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                     >
-                      <td className="px-6 py-4 text-green-500 font-bold">
+                      <td
+                        className={`px-6 py-4 ${
+                          item.isActive ? "text-green-600" : "text-yellow-600"
+                        } font-bold`}
+                      >
                         {item.reqId}
                       </td>
                       <td className="px-6 py-4">
                         {item.startTime + " - " + item.endTime}
                       </td>
                       <td className="px-6 py-4">{item.reason}</td>
-
+                      <td className="px-6 py-4">
+                        {item.isActive ? (
+                          <span className="text-green-600">Đã xem xét</span>
+                        ) : (
+                          <span className="text-yellow-600">Đã gửi</span>
+                        )}
+                      </td>
                       <td
-                        className="md:px-6 md:py-4 hover hover:text-rose-600 cursor-pointer"
+                        className={`md:px-6 md:py-4 hover hover:text-rose-600  ${
+                          !item.isActive
+                            ? "cursor-pointer"
+                            : "cursor-not-allowed"
+                        }`}
                         onClick={() => {
-                          onSubmitDelete(item.reqId);
+                          {
+                            !item.isActive ? onSubmitDelete(item.reqId) : "";
+                          }
                         }}
                       >
-                        <MdDelete size={24} />
+                        <MdCancelScheduleSend size={24} />
                       </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
+          </div>
+          <div className="flex w-full justify-center items-center p-8">
+            {dataListBurnOutByChild
+              ? dataListBurnOutByChild.length <= 0
+                ? "Chưa có đơn xin nghỉ nào"
+                : null
+              : null}
           </div>
         </div>
       </div>
