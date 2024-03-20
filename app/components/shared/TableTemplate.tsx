@@ -58,19 +58,19 @@ export interface TableTemplateSort<T = any> {
   title: string;
 }
 
-export interface FilterOptions<T = any> { 
-  value: string,
+export interface FilterOptions<T = any> {
+  value: string;
   filter: (obj: T) => boolean;
 }
 
-export interface TableTemplateFilter { 
-  name: string,
-  options: FilterOptions[]
+export interface TableTemplateFilter {
+  name: string;
+  options: FilterOptions[];
 }
 
-export interface TableTemplateRange<T = any> { 
-  name: string,
-  filter: (obj: T, from: string, to: string) => boolean
+export interface TableTemplateRange<T = any> {
+  name: string;
+  filter: (obj: T, from: string, to: string) => boolean;
 }
 
 //T khỏi truyền cũng được
@@ -153,34 +153,40 @@ function TableTemplate<T extends IObject = any>({
   const [keyword, setKeyword] = useState(""); //searching
   const [sort, setSort] = useState(0);
   const [filterOpt, setFilterOpt] = useState<number[]>([]);
-  const [fromDate, setFromDate] = useState('')
-  const [toDate, setToDate] = useState('')
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   useEffect(() => {
     setPage(1);
   }, [keyword, sort]);
 
-  useEffect(() => { 
+  useEffect(() => {
     var arr: number[] = [];
-    filters?.forEach(x => arr.push(0));
+    filters?.forEach((x) => arr.push(0));
     setFilterOpt(arr);
-  }, [filters])
+  }, [filters]);
 
   const filteredData = useMemo(() => {
     var list = dataSource;
     if (searchColumns?.length && keyword) list = list.filter(filter);
 
-    if (filters?.length) { 
-      for (var i = 0; i < filters.length; i++) { 
-        var filterOptions = filters[i]
+    if (filters?.length) {
+      for (var i = 0; i < filters.length; i++) {
+        var filterOptions = filters[i];
         var option = filterOptions.options[filterOpt[i]];
-        if(option?.filter) list = list.filter(option.filter);
+        if (option?.filter) list = list.filter(option.filter);
       }
     }
 
-    if (dateRange) { 
-      if (list && list[0]) console.log(toYMD(list[0].startDate), list[0].endDate, fromDate, toDate)//
-      list = list.filter(x => dateRange.filter(x, fromDate, toDate));
+    if (dateRange) {
+      if (list && list[0])
+        console.log(
+          toYMD(list[0].startDate),
+          list[0].endDate,
+          fromDate,
+          toDate
+        ); //
+      list = list.filter((x) => dateRange.filter(x, fromDate, toDate));
     }
 
     if (sortOptions?.length && sortOptions?.length > sort) {
@@ -189,7 +195,16 @@ function TableTemplate<T extends IObject = any>({
     }
 
     return list;
-  }, [dataSource, searchColumns, keyword, sort, filterOpt, filters, fromDate, toDate]);
+  }, [
+    dataSource,
+    searchColumns,
+    keyword,
+    sort,
+    filterOpt,
+    filters,
+    fromDate,
+    toDate,
+  ]);
 
   const PageCount = useMemo(() => {
     return Math.ceil(filteredData.length / rowPerPage!);
@@ -224,17 +239,17 @@ function TableTemplate<T extends IObject = any>({
     </button>
   );
 
-  const onChangeFromDate = (e: ChangeEvent<HTMLInputElement>) => { 
+  const onChangeFromDate = (e: ChangeEvent<HTMLInputElement>) => {
     var val = e.target.value;
     setFromDate(val);
     if (val > toDate) setToDate(val);
-  }
+  };
 
   const onChangeToDate = (e: ChangeEvent<HTMLInputElement>) => {
     var val = e.target.value;
     setToDate(val);
     if (val < fromDate) setFromDate(val);
-  }
+  };
 
   return (
     <>
@@ -244,11 +259,9 @@ function TableTemplate<T extends IObject = any>({
 
       <div className="bg-white shadow-3xl rounded-md">
         <div className="flex justify-between items-center mb-2 py-3 mx-2">
-
           <div className="flex items-center flex-wrap">
-
             {/* search */}
-            {searchColumns?.length &&
+            {searchColumns?.length && (
               <div className="flex items-center mx-4 mb-3">
                 <p className="text-xl"></p>
                 <div className="w-[300px] bg-white">
@@ -260,45 +273,40 @@ function TableTemplate<T extends IObject = any>({
                   />
                 </div>
               </div>
-            }
+            )}
 
             {/* more tools */}
-            {
-              extraElementsToolBar &&
-              <div>{extraElementsToolBar}</div>
-            }
+            {extraElementsToolBar && <div>{extraElementsToolBar}</div>}
 
             {/* filters */}
-            {
-              filters?.map((filterOptions, i) => 
-                <div className="bg-gray-100 shadow-sm rounded-lg mx-4">
-                  <Select
-                    onValueChange={(value: any) => {
-                      var arr = [...filterOpt];
-                      arr[i] = value;
-                      setFilterOpt(arr);
-                    }}
-                  >
-                    <SelectTrigger className="min-w-[200px] text-lg">
-                      <p className="mr-2">{filterOptions.name}:</p>
-                      <SelectValue
-                        placeholder={filterOptions.options[0]?.value}
-                        defaultValue={"0"}
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {filterOptions.options.map((x, j) => (
-                        <>
-                          <SelectItem key={x.value} value={j + ""}>
-                            {x.value}
-                          </SelectItem>
-                        </>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>  
-              )
-            }
+            {filters?.map((filterOptions, i) => (
+              <div key={i} className="bg-gray-100 shadow-sm rounded-lg mx-4">
+                <Select
+                  onValueChange={(value: any) => {
+                    var arr = [...filterOpt];
+                    arr[i] = value;
+                    setFilterOpt(arr);
+                  }}
+                >
+                  <SelectTrigger className="min-w-[200px] text-lg">
+                    <p className="mr-2">{filterOptions.name}:</p>
+                    <SelectValue
+                      placeholder={filterOptions.options[0]?.value}
+                      defaultValue={"0"}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {filterOptions.options.map((x, j) => (
+                      <>
+                        <SelectItem key={x.value} value={j + ""}>
+                          {x.value}
+                        </SelectItem>
+                      </>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            ))}
 
             {/* sorts */}
             {sortOptions?.length && (
@@ -329,16 +337,26 @@ function TableTemplate<T extends IObject = any>({
             )}
 
             {/* date range */}
-            {
-              dateRange &&
+            {dateRange && (
               <div className="bg-gray-100 shadow-sm rounded-lg mx-4 whitespace-nowrap px-3 py-2">
                 <span className="mr-2">{dateRange.name}</span>
-                <input type="date" title="Từ ngày" value={fromDate} className="bg-gray-100" onChange={onChangeFromDate} />
+                <input
+                  type="date"
+                  title="Từ ngày"
+                  value={fromDate}
+                  className="bg-gray-100"
+                  onChange={onChangeFromDate}
+                />
                 <span className="mx-2">—</span>
-                <input type="date" title="Đến ngày" value={toDate} className="bg-gray-100" onChange={onChangeToDate} />
+                <input
+                  type="date"
+                  title="Đến ngày"
+                  value={toDate}
+                  className="bg-gray-100"
+                  onChange={onChangeToDate}
+                />
               </div>
-            }
-
+            )}
           </div>
 
           {addButton && (
@@ -351,12 +369,13 @@ function TableTemplate<T extends IObject = any>({
         </div>
 
         <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
-          {
-            filteredData?.length > 0 &&
+          {filteredData?.length > 0 && (
             <div className="italic px-6 py-1">
-              Hiển thị dòng {(page - 1) * rowPerPage! + 1} - {Math.min(page * rowPerPage!, filteredData.length)} trên {filteredData.length} dòng
+              Hiển thị dòng {(page - 1) * rowPerPage! + 1} -{" "}
+              {Math.min(page * rowPerPage!, filteredData.length)} trên{" "}
+              {filteredData.length} dòng
             </div>
-          }
+          )}
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
             <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
