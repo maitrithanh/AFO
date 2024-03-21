@@ -1,7 +1,7 @@
 import GetMessagesRes from '@/types/GetMessagesRes';
 import { HubConnectionBuilder, HttpTransportType, HubConnectionState, HubConnection } from '@microsoft/signalr';
 
-const chatHubUrl = 'https://localhost:7254/chatHub';
+const chatHubUrl = 'http://localhost:5088/chatHub';
 
 var connection: HubConnection = new HubConnectionBuilder()
     .withUrl(chatHubUrl, {

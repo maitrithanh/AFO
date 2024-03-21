@@ -32,6 +32,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { IoClose, IoWarning } from "react-icons/io5";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
+import DefaultImage from "@/app/components/shared/defaultImage";
+import { getImageUrl } from "@/utils/image";
 
 const Columns: TableTemplateColumn[] = [
   {
@@ -159,15 +161,17 @@ const ClassesPage = () => {
     }
   }, [reset, isSubmitSuccessful]);
 
+  console.log(arrTeacher);
+
   //Xử lý thêm giáo viên vào mảng
   const handleAddTeacherToArr = (teacherInfo: any, event: any) => {
     if (arrTeacher.length >= 2) {
       alert("Một lớp tối đa 2 giáo viên!");
     } else {
-      if (
-        arrStudent?.filter((x: any) => x.teacherID == teacherInfo.teacherID)
-      ) {
-        toast.error(`${teacherInfo.fullName} đã được thêm vào lớp`);
+      if (arrTeacher.length >= 1) {
+        if (arrTeacher?.filter((x: any) => x.teacherID === 1)) {
+          toast.error(`Giáo viên ${teacherInfo.fullName} đã được thêm vào lớp`);
+        }
       } else {
         setInputTeacherValue(event?.target?.value || "");
         arrTeacher.push(teacherInfo);
@@ -290,7 +294,13 @@ const ClassesPage = () => {
                                 key={data.id}
                                 className="p-2 text-main bg-gray-200 rounded-xl w-fit flex justify-center items-center mx-2"
                               >
-                                <p className="text-lg">{data?.fullName}</p>
+                                <div className="flex items-center">
+                                  <DefaultImage
+                                    img={getImageUrl(data.avatar)}
+                                    fallback="/avatar.webp"
+                                  />
+                                  <p className="text-lg">{data?.fullName}</p>
+                                </div>
                                 <span
                                   className="text-rose-600 ml-2 flex justify-center items-center cursor-pointer"
                                   onClick={() => {
