@@ -33,7 +33,7 @@ const HealthPage = () => {
   };
 
   return (
-    <div className="bg-white md:w-3/4 m-auto rounded-xl">
+    <div className="bg-white md:w-full h-[88vh] overflow-auto m-auto rounded-xl">
       <div className="flex justify-between px-10 py-8 ">
         <div className="text-xl flex justify-center items-center">
           Khám sức khoẻ

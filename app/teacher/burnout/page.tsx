@@ -109,7 +109,7 @@ const BurnOutPage = () => {
 
   return (
     <div className="w-full flex justify-center items-center">
-      <div className="w-2/3 bg-white p-4 rounded-md">
+      <div className="w-full bg-white p-4 rounded-md h-[88vh] overflow-auto">
         <TableTemplate
           title={`Danh sách xin nghỉ của lớp ${currentUserTeacher?.className}`}
           dataSource={classData || []}

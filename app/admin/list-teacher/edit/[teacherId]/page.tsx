@@ -1,18 +1,22 @@
 "use client";
 import BackAction from "@/app/components/admin/BackAction";
 import DefaultImage from "@/app/components/shared/defaultImage";
-import { callApiWithToken } from "@/utils/callApi";
+import { callApiWithToken, fetchApiWithFetch } from "@/utils/callApi";
 import { toYMD } from "@/utils/dateTime";
 import { getImageUrl } from "@/utils/image";
 import useFetch from "@/utils/useFetch";
+import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 const EditTeacherPage = (params: any) => {
   const [currAvatar, setCurrAvatar] = useState<File | null>(null);
+  const [teacherClassID, setTeacherClassID] = useState("");
+
   const router = useRouter();
+  const token = getCookie("token");
 
   const date = new Date();
   const year = date.getFullYear();
@@ -26,10 +30,17 @@ const EditTeacherPage = (params: any) => {
     (info: any) => info.id == params.params.teacherId
   );
 
-  console.log(detailTeacher);
+  useEffect(() => {
+    if (detailTeacher) {
+      setTeacherClassID(
+        detailTeacher?.classId == null ? "" : `${detailTeacher?.classId}`
+      );
+    }
+  }, [detailTeacher]);
 
   const values = {
     FullName: detailTeacher?.fullName,
+    teacherID: params.params.teacherId,
     PhoneNumber: detailTeacher?.phoneNumber,
     Gender: detailTeacher?.gender,
     Address: detailTeacher?.address,
@@ -37,9 +48,13 @@ const EditTeacherPage = (params: any) => {
     IDNumber: detailTeacher?.idNumber,
     Education: detailTeacher?.education,
     Note: detailTeacher?.note,
-    ClassId: detailTeacher?.classId + "-" + detailTeacher?.className,
+    ClassId:
+      detailTeacher?.classId != null
+        ? `${detailTeacher?.classId + "-" + detailTeacher?.className}`
+        : "",
     File: "",
   };
+
   const {
     register,
     handleSubmit,
@@ -55,41 +70,96 @@ const EditTeacherPage = (params: any) => {
       Education: "",
       Note: "",
       ClassId: "",
-      File: "",
+      teacherID: "",
     },
     values,
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const formData = new FormData();
+    //có chỉnh sửa classId
+    // if (teacherClassID != data["ClassId"].split("-")[0].trim()) {
+    //   console.log("Có chỉnh sửa");
+    //   //hiện tại teacher đã có lớp
+    //   if (teacherClassID != "") {
+    //     console.log("Khác Nulll", teacherClassID != null);
+    //     const formData = new FormData();
+    //     formData.append("classID", teacherClassID);
+    //     formData.append("teacherID", params.params.teacherId);
 
-    if (currAvatar) {
-      formData.append("File", currAvatar);
-    }
+    //     //nếu classid mới là null thì xoá lớp
+    //     if (data["ClassId"].length == 0) {
+    //       console.log("Class id mới là null");
+    //       fetch("http://localhost:5088/api/ClassRoom/removeTeacherOutClass", {
+    //         method: "DELETE",
+    //         body: formData,
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       }).then((response) => response.json());
+    //     } else {
+    //       //ngược lại nếu classid là mới thì xoá cái cũ cập nhật cái mới
+    //       console.log("Classid mới");
+    //       fetch("http://localhost:5088/api/ClassRoom/removeTeacherOutClass", {
+    //         method: "DELETE",
+    //         body: formData,
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       }).then((response) =>
+    //         callApiWithToken().post(
+    //           `Teacher/addTeacherToClass?teacherID=${
+    //             params.params.teacherId
+    //           }&classId=${data["ClassId"].split("-")[0].trim()}`
+    //         )
+    //       );
+    //     }
+    //   } else {
+    //     callApiWithToken().post(
+    //       `Teacher/addTeacherToClass?teacherID=${
+    //         params.params.teacherId
+    //       }&classId=${data["ClassId"].split("-")[0].trim()}`
+    //     );
+    //   }
+    // }
 
-    callApiWithToken()
-      .put(
-        `Teacher/putTeacher?teacherID=${params.params.teacherId}&FullName=${data.FullName}&PhoneNumber=${data.PhoneNumber}&Gender=${data.Gender}&Address=${data.Address}&BirthDay=${data.BirthDay}&IDNumber=${data.IDNumber}&Education=${data.Education}`,
-        formData,
-        {
+    if (!(data.PhoneNumber.length == 10)) {
+      toast.error("Số điện thoại phải đủ 10 số");
+    } else if (!(data.IDNumber.length == 12)) {
+      toast.error("Căn cước công dân phải đủ 12 số");
+    } else {
+      const formData = new FormData();
+      for (let key in data) {
+        if (key == "teacherID") {
+          formData.append(key, params.params.teacherId);
+        } else {
+          formData.append(key, data[key]);
+        }
+      }
+
+      if (currAvatar) {
+        formData.append("File", currAvatar);
+      }
+
+      callApiWithToken()
+        .put(`Teacher/putTeacher`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
-      )
-      .then((response) => {
-        toast.success("Hồ sơ đã được lưu");
-        router.push("/admin/list-teacher");
-      })
-      .catch((errors) => {
-        toast.error("Có lỗi xảy ra!");
-      });
+        })
+        .then((response) => {
+          toast.success("Hồ sơ đã được lưu");
+          router.push("/admin/list-teacher");
+        })
+        .catch((errors) => {
+          toast.error("Có lỗi xảy ra!");
+        });
+    }
   };
   return (
     <>
-      <div className="flex justify-center items-center mt-10">
-        <div className="w-2/3 bg-white rounded-md shadow-3xl p-8">
-          <BackAction />
+      <BackAction />
+      <div className="flex justify-center items-center ">
+        <div className="w-full bg-white rounded-md shadow-3xl p-8">
           <p className="text-2xl">Thông tin giáo viên</p>
           <div className="flex items-center">
             <div className="rounded-md shadow-3xl mr-5">
@@ -98,13 +168,13 @@ const EditTeacherPage = (params: any) => {
                   <img
                     src={URL.createObjectURL(currAvatar)}
                     alt="Current Avatar"
-                    className="w-[100px] h-[130px] rounded-md cursor-pointer"
+                    className="w-[120px] h-[150px] rounded-md cursor-pointer"
                   />
                 ) : detailTeacher ? (
                   <DefaultImage
                     img={getImageUrl(detailTeacher?.avatar)}
                     fallback="/upload-image.jpg"
-                    custom="w-[100px] h-[130px] cursor-pointer rounded-md"
+                    custom="w-[120px] h-[150px] cursor-pointer rounded-md"
                   />
                 ) : null}
               </label>
@@ -280,7 +350,7 @@ const EditTeacherPage = (params: any) => {
             </div>
           </div>
           {/* Địa chỉ */}
-          <div className=" flex gap-4">
+          <div className=" flex gap-4 mt-6">
             <div className="relative w-full z-0 mb-5 group ">
               <input
                 type="text"
@@ -298,12 +368,12 @@ const EditTeacherPage = (params: any) => {
               </label>
             </div>
 
-            <div className="relative">
+            {/* <div className="relative">
               <input
                 type="text"
                 id="ClassId"
                 list={"classIdList"}
-                {...register(`ClassId`, { required: true })}
+                {...register(`ClassId`, { required: false })}
                 className="relative block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                 placeholder=" "
                 required
@@ -324,7 +394,7 @@ const EditTeacherPage = (params: any) => {
                   );
                 })}
               </datalist>
-            </div>
+            </div> */}
           </div>
 
           {/* Ghi chú */}
@@ -343,7 +413,7 @@ const EditTeacherPage = (params: any) => {
               Ghi chú
             </label>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-10">
             <button
               className="text-white bg-main hover:bg-mainBlur focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
               onClick={handleSubmit(onSubmit)}
@@ -351,6 +421,17 @@ const EditTeacherPage = (params: any) => {
               Lưu hồ sơ
             </button>
           </div>
+        </div>
+      </div>
+      <div className="p-2 mt-8">
+        <p>Lưu ý:</p>
+        <div className="text-rose-600 italic ml-2">
+          <p>
+            Số điện thoại phải đủ 10 số.<sup>*</sup>
+          </p>
+          <p>
+            CCCD (Căn cước công dân) phải đủ 12 số. <sup>*</sup>{" "}
+          </p>
         </div>
       </div>
     </>

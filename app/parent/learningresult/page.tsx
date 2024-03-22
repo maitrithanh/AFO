@@ -30,7 +30,7 @@ const LearningResult = () => {
   const allMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
   return (
-    <div className="h-[600px] bg-white md:w-3/4 m-auto rounded-xl">
+    <div className="h-[88vh] bg-white w-full m-auto rounded-xl">
       <div className="relative overflow-x-auto  bg-white pt-2 sm:rounded-lg">
         <div className="p-4">
           <div className="text-3xl flex justify-center items-center border-b pb-4">

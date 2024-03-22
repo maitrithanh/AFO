@@ -196,7 +196,7 @@ const CalendarPage = () => {
       >
         <div className="group w-full h-full flex-grow cursor-pointer ">
           <div
-            className={`${sp} event h-full items-center justify-center bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}
+            className={`${sp} event h-full items-center justify-center left-2 z-30 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}
           >
             <span className={`event-name text-sm font-semibold text-center`}>
               {activity}
@@ -211,7 +211,7 @@ const CalendarPage = () => {
   };
 
   return (
-    <div className="md:w-3/4 w-full m-auto">
+    <div className=" w-full m-auto">
       <div className="flex justify-between items-center w-full ">
         <div className="flex items-center gap-2 mb-2">
           <div className="bg-white rounded-sm">
@@ -266,7 +266,7 @@ const CalendarPage = () => {
                           ts.end >= getCurrentTimeHHmm()
                             ? "border-[3px]"
                             : ""
-                        } event bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm text-center border-main bg-gray px-3 py-1 group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}
+                        } event  left-2 z-30 mb-1 flex flex-col rounded-sm text-center border-main bg-gray px-3 py-1 group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}
                       >
                         <span>{ts.begin + "-" + ts.end}</span>
                       </div>

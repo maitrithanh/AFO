@@ -47,7 +47,7 @@ const MenuPage = () => {
   };
 
   return (
-    <div className="bg-white md:w-[75vw] m-auto md:px-10 px-4 py-10 rounded-xl">
+    <div className="bg-white w-full m-auto md:px-10 px-4 py-10 rounded-xl">
       <div className="flex justify-between items-center w-full">
         {dataMenu && (
           <div>

@@ -162,7 +162,7 @@ const BurnOutPage = () => {
     </div>
   );
   return (
-    <div className="h-[600px] bg-white md:w-3/4 m-auto rounded-xl">
+    <div className="h-[88vh] bg-white w-full m-auto rounded-xl">
       <div className="relative overflow-x-auto  bg-white pt-2 sm:rounded-lg">
         {closeDialogBurnOut ? DialogBurnOut : ""}
         <div className="p-4">

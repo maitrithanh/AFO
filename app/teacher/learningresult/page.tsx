@@ -68,51 +68,58 @@ const LearningResultPage = () => {
       ) : (
         ""
       )}
-      <div className="h-[600px] bg-white md:w-3/4 m-auto rounded-xl">
+      <div className=" bg-white h-[88vh] md:w-full m-auto rounded-xl">
         <div className="relative overflow-x-auto shadow-sm bg-white pt-2 sm:rounded-lg">
           <div className="p-4">
             <div className="flex lg:flex-row flex-col items-center justify-between">
-              <div className="">
-                <div className="md:text-3xl flex items-center">
-                  Kết quả học tập Lớp {currentUserTeacher?.className}
-                  <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-bold text-3xl ">
-                    <Select
-                      defaultValue={monthDefault}
-                      onValueChange={(value: any) => {
-                        setMonthDefault(value);
-                      }}
-                    >
-                      <SelectTrigger className="md:w-fill w-full text-lg">
-                        <p className="text-gray-600 mr-2">
-                          <IoCalendarOutline />
-                        </p>
-                        <p>{`Tháng ${monthDefault}`}</p>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {allMonth.map((item: any, index: any) => {
-                          return (
-                            <SelectItem key={index} value={item}>
-                              Tháng {item}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-                  </div>
+              <div className="md:text-3xl flex items-center">
+                Kết quả học tập Lớp {currentUserTeacher?.className}
+                <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-bold text-3xl ">
+                  <Select
+                    defaultValue={monthDefault}
+                    onValueChange={(value: any) => {
+                      setMonthDefault(value);
+                    }}
+                  >
+                    <SelectTrigger className="md:w-fill w-full text-lg">
+                      <p className="text-gray-600 mr-2">
+                        <IoCalendarOutline />
+                      </p>
+                      <p>{`Tháng ${monthDefault}`}</p>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {allMonth.map((item: any, index: any) => {
+                        return (
+                          <SelectItem key={index} value={item}>
+                            Tháng {item}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
                 </div>
-                <div className="flex">
-                  <p className="md:text-xl">
-                    Giáo viên chủ nhiệm:
-                    <span className="italic ml-2">
-                      {detailClassData?.teachers}
-                    </span>
-                  </p>
-                </div>
-                <p className="md:text-xl">
-                  Số học sinh: {detailClassData?.count}
+              </div>
+              <div className="my-2">
+                <p className="md:text-xl flex items-center">
+                  Giáo viên chủ nhiệm:
+                  {detailClassData?.teachers.map((teacher: any) => {
+                    return (
+                      <span
+                        className={`italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
+                        key={teacher.teacherID}
+                      >
+                        <DefaultImage
+                          img={getImageUrl(teacher.avatar)}
+                          fallback="/avatar.webp"
+                        />
+                        {teacher.fullName}
+                      </span>
+                    );
+                  })}
                 </p>
               </div>
             </div>
+            <p className="md:text-xl">Số học sinh: {detailClassData?.count}</p>
             <div className="md:flex justify-between items-center">
               <div className="bg-white flex items-center md:mb-2 mb-4">
                 <div className=" shadow-lg rounded-lg md:w-[480px] w-full flex">

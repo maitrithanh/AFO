@@ -12,7 +12,7 @@ const EventPageC = () => {
   const { data: eventData } = useFetch(`Events/getList?year=${year}`);
 
   return (
-    <div className="md:w-2/3 w-full m-auto rounded-lg bg-white p-4 md:p-10">
+    <div className="w-full h-[88vh] overflow-auto m-auto rounded-lg bg-white p-4 md:p-10">
       <div className="pb-2 w-full">
         <div className="md:flex justify-between items-center">
           <div>

@@ -63,7 +63,7 @@ const PickUpPage = () => {
   //translate
   const { t } = useTranslation();
   return (
-    <div className="bg-white md:w-2/3 m-auto px-10 pt-10 rounded-xl">
+    <div className="bg-white w-full h-[88vh] overflow-auto m-auto px-10 pt-10 rounded-xl">
       <h2 className="text-2xl font-bold">{t("listOfPeoplePickup")}</h2>
       <p>{t("subListOfPeoplePickup")}</p>
 

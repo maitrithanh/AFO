@@ -297,11 +297,9 @@ function TableTemplate<T extends IObject = any>({
                   </SelectTrigger>
                   <SelectContent>
                     {filterOptions.options.map((x, j) => (
-                      <>
-                        <SelectItem key={x.value} value={j + ""}>
-                          {x.value}
-                        </SelectItem>
-                      </>
+                      <SelectItem key={x.value} value={j + ""}>
+                        {x.value}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -325,11 +323,9 @@ function TableTemplate<T extends IObject = any>({
                   </SelectTrigger>
                   <SelectContent>
                     {sortOptions.map((x, i) => (
-                      <>
-                        <SelectItem key={x.title} value={i + ""}>
-                          {x.title}
-                        </SelectItem>
-                      </>
+                      <SelectItem key={x.title} value={i + ""}>
+                        {x.title}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -403,35 +399,31 @@ function TableTemplate<T extends IObject = any>({
                     </td>
 
                     {columns.map((col, j) => (
-                      <>
-                        <td
-                          key={row["id"] ?? i + "-" + j}
-                          scope="row"
-                          className="px-6 py-4 max-w-[200px] font-medium text-gray-900 dark:text-white"
-                        >
-                          {col.getData(row)}
-                        </td>
-                      </>
+                      <td
+                        key={row["id"] ?? i + "-" + j}
+                        scope="row"
+                        className="px-6 py-4 max-w-[200px] font-medium text-gray-900 dark:text-white"
+                      >
+                        {col.getData(row)}
+                      </td>
                     ))}
                     <td className="md:px-6 md:py-4">
                       <div className="flex">
                         {actions?.map((act, i) => (
-                          <>
-                            <Link
-                              key={i}
-                              href={act.getLink ? act.getLink(row) : ""}
-                              className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                              onClick={
-                                act.onClick
-                                  ? () => {
-                                      act.onClick!(row);
-                                    }
-                                  : () => {}
-                              }
-                            >
-                              {act.icon ?? DefaultActionIcon}
-                            </Link>
-                          </>
+                          <Link
+                            key={i}
+                            href={act.getLink ? act.getLink(row) : ""}
+                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                            onClick={
+                              act.onClick
+                                ? () => {
+                                    act.onClick!(row);
+                                  }
+                                : () => {}
+                            }
+                          >
+                            {act.icon ?? DefaultActionIcon}
+                          </Link>
                         ))}
                       </div>
                     </td>

@@ -19,7 +19,7 @@ import SchoolFeeFooter from "@/app/components/parent/schoolfee/SchoolFeeFooter";
 
 const SchoolFeePage = () => {
   return (
-    <div className="md:w-2/3 w-full m-auto rounded-lg bg-white p-4 md:p-10">
+    <div className="w-full h-[88vh] m-auto rounded-lg bg-white p-4 md:p-10">
       <SchoolFeeHeader />
 
       <SchoolFee />

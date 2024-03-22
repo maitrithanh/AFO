@@ -1,31 +1,7 @@
 "use client";
-import Link from "next/link";
 import React, { useState } from "react";
-import { FaCheckCircle } from "react-icons/fa";
-import { MdCalendarMonth } from "react-icons/md";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import SchoolFeeHeader from "@/app/components/parent/schoolfee/SchoolFeeHeader";
-import SchoolFee from "@/app/components/parent/schoolfee/SchoolFee";
-import SchoolFeeFooter from "@/app/components/parent/schoolfee/SchoolFeeFooter";
 import { getCookie } from "cookies-next";
 import useFetch from "@/utils/useFetch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const HealthPage = () => {
   const child = getCookie("child");
@@ -40,7 +16,7 @@ const HealthPage = () => {
   );
 
   return (
-    <div className="md:w-2/3 w-full m-auto rounded-lg bg-white p-4 md:p-10">
+    <div className="w-full m-auto h-[88vh] rounded-lg bg-white p-4 md:p-10">
       <div className="pb-2 w-full">
         <div className="md:flex justify-between items-center">
           <div>

@@ -54,7 +54,7 @@ const Columns: TableTemplateColumn<any>[] = [
   },
   {
     title: "Địa chỉ",
-    getData: (x) => x.address,
+    getData: (x) => <p className="descriptNewsTable">{x.address}</p>,
   },
   {
     title: "Lớp phụ trách",
@@ -88,11 +88,15 @@ const ListTeacherPage = () => {
   };
 
   //xoá giáo viên theo id
-  const DeletePost = (id: string, classIdTeacher: string) => {
+  const DeletePost = () => {
     callApiWithToken()
-      .delete(`Teacher/remove?teacherID=${id}&classID=${classIdTeacher}`)
+      .delete(`Teacher/remove?teacherID=${idTeacher}`)
       .then((response) => {
-        toast.success(`Xoá thành công`);
+        if (!(response?.data?.data == "Vui lòng kiểm tra mã giáo viên")) {
+          toast.success(`Xoá thành công`);
+        } else {
+          toast.error("Giáo viên này đã từng dạy không thể xoá");
+        }
         handleRefresh();
       })
       .catch((error) => {
@@ -102,9 +106,13 @@ const ListTeacherPage = () => {
 
   const handleOpenDialog = (id: string, name: string, classId: string) => {
     setIdTeacher(id);
-    setClassId(classId);
-    setNameTeacher(name);
-    setOpenDialog(true);
+    if (dataTeacher?.find((x: any) => x.id == id)?.classId != null) {
+      toast.error("Không thể xoá giáo viên này!");
+    } else {
+      setClassId(classId);
+      setNameTeacher(name);
+      setOpenDialog(true);
+    }
   };
   return (
     <>
@@ -128,7 +136,7 @@ const ListTeacherPage = () => {
             <AlertDialogAction
               className="bg-rose-600 hover:bg-rose-900"
               onClick={() => {
-                DeletePost(idTeacher, classId);
+                DeletePost();
               }}
             >
               Xác nhận xoá

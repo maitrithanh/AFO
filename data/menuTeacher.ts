@@ -68,7 +68,7 @@ export const menuTeacher = [
     {
       name: "support",
       image: "qa.webp",
-      path: "/teacher/attendance",
+      path: "/home/news",
       color: "#feecf9"
     },
   ];

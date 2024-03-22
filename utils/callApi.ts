@@ -17,4 +17,15 @@ export const callApiWithToken = (token: string = '') => {
     })
 }
 
+export const fetchApiWithFetch = (token: string = '', formData: any, pathName:string, method:string) => {
+    if (!token) token = getCookie('token') + '';
+    fetch(`${baseURL}${pathName}`, {
+          method: `${method.toUpperCase()}`,
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+}
+
 export default callApi;

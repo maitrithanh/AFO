@@ -29,7 +29,6 @@ const AddTeacherPage = () => {
       IDNumber: "",
       Education: "",
       Note: "",
-      classId: "",
       File: "",
     },
   });
@@ -42,11 +41,7 @@ const AddTeacherPage = () => {
     } else {
       const formData = new FormData();
       for (let key in data) {
-        if (key == "classId") {
-          formData.append(key, data[key].split("-")[0]);
-        } else {
-          formData.append(key, data[key]);
-        }
+        formData.append(key, data[key]);
       }
 
       if (currAvatar) {
@@ -70,9 +65,9 @@ const AddTeacherPage = () => {
   };
   return (
     <>
-      <div className="flex justify-center items-center mt-10">
-        <div className="w-2/3 bg-white rounded-md shadow-3xl p-8">
-          <BackAction />
+      <BackAction />
+      <div className="flex justify-center items-center">
+        <div className="w-full py-10 bg-white rounded-md shadow-3xl p-8">
           <p className="text-2xl">Thông tin giáo viên</p>
           <div className="flex items-center">
             <div className="rounded-md shadow-3xl mr-5">
@@ -81,13 +76,13 @@ const AddTeacherPage = () => {
                   <img
                     src={URL.createObjectURL(currAvatar)}
                     alt="Current Avatar"
-                    className="w-[100px] h-[130px] rounded-md cursor-pointer"
+                    className="w-[120px] h-[150px] rounded-md cursor-pointer"
                   />
                 ) : (
                   <img
                     src="/upload-image.jpg"
                     alt=""
-                    className="w-[100px] h-[130px] cursor-pointer rounded-md"
+                    className="w-[120px] h-[150px] cursor-pointer rounded-md"
                   />
                 )}
               </label>
@@ -112,14 +107,14 @@ const AddTeacherPage = () => {
                   />
                   <label
                     htmlFor="FullName"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Họ và tên
                   </label>
                 </div>
 
-                <div className="grid md:grid-cols-2 md:gap-3 mx-5 border-gray-200 border">
-                  <div className="flex items-center ps-4 rounded dark:border-gray-700">
+                <div className="grid md:grid-cols-2 md:gap-3 mx-5 border-gray-200 border rounded-md">
+                  <div className="flex items-center ps-4 rounded-full dark:border-gray-700">
                     <input
                       id="Gender-male-c"
                       type="radio"
@@ -135,7 +130,7 @@ const AddTeacherPage = () => {
                       Nam
                     </label>
                   </div>
-                  <div className="flex items-center ps-4  rounded dark:border-gray-700">
+                  <div className="flex items-center ps-4 rounded-full dark:border-gray-700">
                     <input
                       id="Gender-female-c"
                       type="radio"
@@ -164,7 +159,7 @@ const AddTeacherPage = () => {
                   />
                   <label
                     htmlFor="IDNumber"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     CCCD
                   </label>
@@ -183,7 +178,7 @@ const AddTeacherPage = () => {
                   />
                   <label
                     htmlFor="PhoneNumber"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Số điện thoại
                   </label>
@@ -203,24 +198,24 @@ const AddTeacherPage = () => {
                   </select>
                   <label
                     htmlFor="Education"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Trình độ
                   </label>
                 </div>
                 {/* Ngày sinh */}
-                <div className="relative z-0 mb-5 group ml-5">
+                <div className="relative z-0 group ml-5">
                   <input
                     type="date"
                     id="BirthDay"
                     {...register(`BirthDay`, { required: true })}
-                    className="block py-2.5 px-0 w-[150px] text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer h-[41.6px]"
+                    className="block py-2.5 px-0 w-[150px] text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="BirthDay"
-                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Ngày sinh
                   </label>
@@ -229,7 +224,7 @@ const AddTeacherPage = () => {
             </div>
           </div>
           {/* Địa chỉ */}
-          <div className=" flex gap-4">
+          <div className=" flex gap-4 mt-6">
             <div className="relative w-full z-0 mb-5 group ">
               <input
                 type="text"
@@ -241,20 +236,20 @@ const AddTeacherPage = () => {
               />
               <label
                 htmlFor="Address"
-                className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
                 Địa chỉ
               </label>
             </div>
 
-            <div className="relative">
+            {/* <div className="relative">
               <input
                 type="text"
                 id="classId"
                 list={"classIdList"}
                 {...register(`classId`, { required: false })}
                 className="relative block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-orange-500 focus:outline-none focus:ring-0 focus:border-orange-600 peer"
-                placeholder=" "
+                placeholder=""
                 required
               />
               <label
@@ -273,7 +268,7 @@ const AddTeacherPage = () => {
                   );
                 })}
               </datalist>
-            </div>
+            </div> */}
           </div>
 
           {/* Ghi chú */}
@@ -287,12 +282,12 @@ const AddTeacherPage = () => {
             />
             <label
               htmlFor="Note"
-              className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-lg text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-orange-600 peer-focus:dark:text-orange-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Ghi chú
             </label>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-10">
             <button
               className="text-white bg-main hover:bg-mainBlur focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
               onClick={handleSubmit(onSubmit)}
@@ -300,6 +295,17 @@ const AddTeacherPage = () => {
               Lưu hồ sơ
             </button>
           </div>
+        </div>
+      </div>
+      <div className="p-2 mt-8">
+        <p>Lưu ý:</p>
+        <div className="text-rose-600 italic ml-2">
+          <p>
+            Số điện thoại phải đủ 10 số.<sup>*</sup>
+          </p>
+          <p>
+            CCCD (Căn cước công dân) phải đủ 12 số. <sup>*</sup>{" "}
+          </p>
         </div>
       </div>
     </>

@@ -142,23 +142,37 @@ const AttendancePage = () => {
       ) : (
         ""
       )}
-      <div className="h-[600px] bg-white md:w-3/4 m-auto rounded-xl">
+      <div className="h-[88vh] bg-white md:w-full m-auto rounded-xl">
         <div className="relative overflow-x-auto shadow-sm bg-white pt-2 sm:rounded-lg">
           <div className="p-4">
-            <div className="flex lg:flex-row flex-col items-center justify-between">
+            <div>
+              <div className="flex lg:flex-row flex-col items-center justify-between">
+                <div className="flex justify-between w-full">
+                  <div className="md:text-3xl flex items-center">
+                    Điểm danh Lớp {detailClassData?.name}
+                  </div>
+                  <div>
+                    <p className="md:text-xl flex items-center">
+                      Giáo viên chủ nhiệm:
+                      {detailClassData?.teachers.map((teacher: any) => {
+                        return (
+                          <span
+                            className={`italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
+                            key={teacher.teacherID}
+                          >
+                            <DefaultImage
+                              img={getImageUrl(teacher.avatar)}
+                              fallback="/avatar.webp"
+                            />
+                            {teacher.fullName}
+                          </span>
+                        );
+                      })}
+                    </p>
+                  </div>
+                </div>
+              </div>
               <div className="">
-                <div className="md:text-3xl flex items-center">
-                  Điểm danh Lớp
-                </div>
-
-                <div className="flex">
-                  <p className="md:text-xl">
-                    Giáo viên chủ nhiệm:
-                    <span className="italic ml-2">
-                      {detailClassData?.teachers}
-                    </span>
-                  </p>
-                </div>
                 <p className="md:text-xl">
                   Số học sinh: {detailClassData?.count}
                 </p>
@@ -186,7 +200,7 @@ const AttendancePage = () => {
             </div>
           </div>
 
-          <div className="overflow-y-auto max-h-[590px]">
+          <div className="overflow-y-auto max-h-[650px]">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px] ">
               <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr className="text-center">
