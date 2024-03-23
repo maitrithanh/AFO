@@ -61,6 +61,12 @@ export const  menu = [
         img: 'burnout.webp'
     },
     {
+        text: 'Danh sách chuyển lớp',
+        icon: GiTeacher,
+        pathname: '/admin/change-class',
+        img: 'change-class.webp'
+    },
+    {
         text: 'studySchedule',
         icon: MdOutlineInventory,
         pathname: '/admin/schedule',

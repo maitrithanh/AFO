@@ -20,7 +20,7 @@ import {
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notifying, setNotifying] = useState(true);
+  const [notifying, setNotifying] = useState(false);
   const [phoneNumberCurrentUser, setPhoneNumberCurrentUser] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [idNotiDetail, setIdNotiDetail] = useState("");
@@ -50,9 +50,11 @@ const DropdownNotification = () => {
 
   useEffect(() => {
     if (userCurrentInfo) {
-      setPhoneNumberCurrentUser(userCurrentInfo?.phoneNumber);
+      if (role == "Admin") {
+        setPhoneNumberCurrentUser("admin");
+      } else setPhoneNumberCurrentUser(userCurrentInfo?.phoneNumber);
     }
-  }, [userCurrentInfo]);
+  }, [userCurrentInfo, role]);
   //noti data
   const { data: notiData } = useFetch(
     `Notification/getNotiByPhoneNumber?phoneNumber=${phoneNumberCurrentUser}`,
@@ -181,47 +183,52 @@ const DropdownNotification = () => {
               <IoClose size={28} />
             </div>
           </div>
-
+          {notiData?.filter((x: any) => {
+            return x.viewed == false;
+          }).length <= 0 ? (
+            <div className="w-full flex justify-center items-center p-8">
+              Không có thông báo
+            </div>
+          ) : null}
           <ul className="flex flex-col overflow-y-auto h-[90%]">
             {notiData?.map((notiData: any) => {
-              return (
-                <li
-                  key={notiData.id}
-                  className="hover:bg-gray-100 border-b"
-                  onClick={() => {
-                    handleReadDetail(notiData.id);
-                  }}
-                >
-                  <div className=" text-lg relative flex justify-between items-center mx-4 text-left p-2  my-1 rounded-lg gap-1 py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 ">
-                    <div>
-                      <p className="font-semibold text-gray-500 ">
-                        {notiData.title}
-                      </p>
-                      {/* <p className="text-sm">{notiData.content}</p> */}
+              if (notiData.viewed == false) {
+                return (
+                  <li
+                    key={notiData.id}
+                    className="hover:bg-gray-100 border-b"
+                    onClick={() => {
+                      handleReadDetail(notiData.id);
+                    }}
+                  >
+                    <div className=" text-lg relative flex justify-between items-center mx-4 text-left p-2  my-1 rounded-lg gap-1 py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 ">
+                      <div>
+                        <p className="font-semibold text-gray-500 ">
+                          {notiData.title}
+                        </p>
+                        {/* <p className="text-sm">{notiData.content}</p> */}
 
-                      <p className="text-xs italic text-gray-500">
-                        {notiData.sendTime}
-                      </p>
+                        <p className="text-xs italic text-gray-500">
+                          {notiData.sendTime}
+                        </p>
+                      </div>
+                      <div className="flex justify-center items-center">
+                        {notiData.viewed ? null : (
+                          <span
+                            className={` right-0 bg-main z-1 h-3 w-3 rounded-full bg-meta-1 ${
+                              notifying === false ? "block" : "inline"
+                            }`}
+                          >
+                            <span className=" -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex justify-center items-center">
-                      {notiData.viewed ? null : (
-                        <span
-                          className={` right-0 bg-main z-1 h-3 w-3 rounded-full bg-meta-1 ${
-                            notifying === false ? "block" : "inline"
-                          }`}
-                        >
-                          <span className=" -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </li>
-              );
+                  </li>
+                );
+              }
             })}
           </ul>
-          <div className="w-full justify-center items-center p-8">
-            {!notiData ? "Không có thông báo" : null}
-          </div>
         </div>
       </div>
     </div>

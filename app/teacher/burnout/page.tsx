@@ -61,12 +61,15 @@ const Columns: TableTemplateColumn[] = [
 const BurnOutPage = () => {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [refresh, setRefresh] = useState(false);
+  const [childID, setChildID] = useState("");
+
   const { data: currentUserTeacher } = useFetch("Auth/current");
 
   const { data: classData } = useFetch(
     `CheckIn/getRequest?classId=${currentUserTeacher?.classId}&month=${month}`,
     refresh
   );
+  const { data: childData } = useFetch(`Child/getChild?id=${childID}`);
 
   const months = [];
   for (var i = 1; i <= 12; i++) months.push(i);
@@ -98,6 +101,7 @@ const BurnOutPage = () => {
       .then((response) => {
         toast.success("Đã duyệt");
         setRefresh(true);
+        handleSendNotiChangeClass(idReq);
         setTimeout(() => {
           setRefresh(false);
         }, 1000);
@@ -107,6 +111,26 @@ const BurnOutPage = () => {
       });
   };
 
+  const handleSendNotiChangeClass = (idReq: string) => {
+    callApiWithToken()
+      .post(
+        `Notification/sendUser`,
+        {
+          PhoneNumber: childData?.parent?.phoneNumber,
+          Title: "Đơn xin nghỉ đã được duyệt",
+          Content: `Đơn xin nghỉ có mã:${idReq} đã được duyệt`,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((response) => {})
+      .catch((errors) => {
+        toast.error("Có lỗi", errors);
+      });
+  };
   return (
     <div className="w-full flex justify-center items-center">
       <div className="w-full bg-white p-4 rounded-md h-[88vh] overflow-auto">
@@ -122,7 +146,10 @@ const BurnOutPage = () => {
               icon: <FaCheck size={24} />,
               onClick: (x) => {
                 if (!x.isActive) {
-                  hanldeAccept(x.reqId);
+                  setChildID(x.childId);
+                  if (childID != "") {
+                    hanldeAccept(x.reqId);
+                  }
                 }
               },
             },

@@ -56,7 +56,7 @@ export const menuParent = [
   {
     name: "changeClasses",
     image: "change-class.webp",
-    path: "/",
+    path: "/parent/change-class",
     color: "#ecfef3"
   },
   {
@@ -68,7 +68,7 @@ export const menuParent = [
   {
     name: "support",
     image: "qa.webp",
-    path: "/parent/attendance",
+    path: "/home/news",
     color: "#feecf9"
   },
 ];

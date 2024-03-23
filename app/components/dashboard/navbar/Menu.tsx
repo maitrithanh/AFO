@@ -30,9 +30,8 @@ const Menu = () => {
             );
           })}
         </ul>
-      ) : (
-        <FunctionMenu />
-      )}
+      ) : // <FunctionMenu />
+      null}
     </div>
   );
 };

@@ -35,26 +35,26 @@ const FunctionMenu = () => {
     history.back();
   };
   return (
-    <div className="mx-2 hover:cursor-pointer p-1 flex justify-between w-full">
-      <div
+    <div className="mx-2 hover:cursor-pointer  p-1 flex justify-between w-full">
+      {/* <div
         className="flex items-center hover:scale-110 transition-all rounded-full p-2 mx-1"
         onClick={() => {
           backAction();
         }}
       >
         <Image src="/icons/back.webp" alt="" width={30} height={30} />
-      </div>
+      </div> */}
 
       <div
-        className="hover:scale-110 transition-all rounded-full p-2 mx-1"
+        className="hover:scale-110 transition-all rounded-full p-2 mx-1 bg-[#ffffff50] rounded-full"
         onClick={() => {
           router.push(`/${role}`);
         }}
       >
-        <Image src="/icons/home.webp" alt="" width={30} height={30} />
+        <Image src="/icons/menuFunction.webp" alt="" width={28} height={28} />
       </div>
 
-      <div
+      {/* <div
         className="hover:scale-110 transition-all rounded-full p-2 mx-1"
         onClick={() => {
           setOpen((open) => !open);
@@ -70,7 +70,7 @@ const FunctionMenu = () => {
       </div>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandSearch />
-      </CommandDialog>
+      </CommandDialog> */}
     </div>
   );
 };

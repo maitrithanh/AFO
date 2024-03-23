@@ -11,6 +11,15 @@ import GetAttendanceClass from "@/utils/attendance/getAttendance";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import GetClass from "@/utils/classes/getClass";
+import { IoCalendarOutline } from "react-icons/io5";
 
 const AttendancePage = () => {
   const { t } = useTranslation();
@@ -21,9 +30,14 @@ const AttendancePage = () => {
   const { data: currentUserTeacher } = useFetch("Auth/current");
 
   //lấy id theo ngày từ id lớp
-  const { idAttendanceByClassFirst } = GetAttendanceClass(
-    currentUserTeacher?.classId
-  );
+  const {
+    arrGetAttendanceByClass,
+    nameAttendanceByClassFirst,
+    idAttendanceByClassFirst,
+  } = GetAttendanceClass(currentUserTeacher?.classId);
+
+  const { classId, getClassId, arrClassName } = GetClass();
+
   const [attendance, setAttendance] = useState("");
 
   useEffect(() => {
@@ -149,7 +163,36 @@ const AttendancePage = () => {
               <div className="flex lg:flex-row flex-col items-center justify-between">
                 <div className="flex justify-between w-full">
                   <div className="md:text-3xl flex items-center">
-                    Điểm danh Lớp {detailClassData?.name}
+                    Điểm danh Lớp {detailClassData?.name}{" "}
+                    <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-bold text-3xl ">
+                      <Select
+                        defaultValue={classId[0]?.trim()}
+                        onValueChange={(value: any) => {
+                          setAttendance(value);
+                        }}
+                      >
+                        <SelectTrigger className="md:w-fill w-full text-lg">
+                          <p className="text-gray-600 mr-2">
+                            <IoCalendarOutline />
+                          </p>
+                          <SelectValue
+                            placeholder={nameAttendanceByClassFirst}
+                            defaultValue={idAttendanceByClassFirst}
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {arrGetAttendanceByClass?.map(
+                            (data: any, index: any) => {
+                              return (
+                                <SelectItem key={data?.id} value={data?.id}>
+                                  {data?.classOfDay?.split("-")[1]}
+                                </SelectItem>
+                              );
+                            }
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                   <div>
                     <p className="md:text-xl flex items-center">

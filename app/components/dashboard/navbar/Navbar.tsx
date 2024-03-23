@@ -113,18 +113,14 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                   {login ? (
                     <div className="flex items-center justify-center">
                       <ShortProfile />
-                      {pathName == "/" ? (
-                        <div className="mx-4 text-main hover:scale-110 transition-all">
-                          <Link
-                            href={`/${role?.toLowerCase()}`}
-                            title="Trở lại trang ứng dụng"
-                          >
-                            <IoApps size={24} />
-                          </Link>
-                        </div>
-                      ) : (
-                        ""
-                      )}
+                      <div className="mx-4 text-main hover:scale-110 transition-all">
+                        <Link
+                          href={`/${role?.toLowerCase()}`}
+                          title="Trở lại trang ứng dụng"
+                        >
+                          <IoApps size={24} />
+                        </Link>
+                      </div>
                     </div>
                   ) : (
                     <Link

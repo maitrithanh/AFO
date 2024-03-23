@@ -1,55 +1,35 @@
 "use client";
 import Input from "@/app/components/inputs/input";
+import SelectOption from "@/app/components/inputs/selectOption";
 import Button from "@/app/components/shared/Button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { callApiWithToken } from "@/utils/callApi";
 import useFetch from "@/utils/useFetch";
 import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { CiCircleMore } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
-import { MdCancelScheduleSend } from "react-icons/md";
 
-const BurnOutPage = () => {
+const ChangeClassPage = () => {
   const [closeDialogBurnOut, setCloseDialogBurnOut] = useState(false);
   const childID = getCookie("child");
   const [refresh, setRefresh] = useState(false);
-  const [arrTeacher, setArrTeacher] = useState<any>([] as object[]);
-  const { data: dataListBurnOutByChild } = useFetch(
-    `CheckIn/getRequestByChild?childId=${childID}`,
+  const { data: dataListChangeClassByChild } = useFetch(
+    `ChangeClass/getRequestByChild?childId=${childID}`,
     refresh
   );
 
-  const year = new Date().getFullYear();
   const { data: infoChild } = useFetch(`Child/getChild?id=${childID}`);
-  const { data: detailClass } = useFetch(
-    `ClassRoom/Detail/id=${infoChild?.classRoom?.classID}&year=${year}`
-  );
-
-  const { data: infoTeacher } = useFetch(`Teacher/getList`);
+  const { data: getGrade } = useFetch(`ClassRoom/getGrade?childID=${childID}`);
 
   const onClose = () => {
     setCloseDialogBurnOut((curr) => !curr);
   };
 
-  let today = new Date();
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = today.getFullYear();
-
   const values = {
-    startTime: yyyy + "-" + mm + "-" + dd,
-    endTime: "",
-    childId: childID,
-    reason: "",
+    Title: "Đơn xin chuyển lớp",
+    ChildID: childID,
+    OldClass: infoChild?.classRoom?.classID,
   };
 
   const {
@@ -59,40 +39,47 @@ const BurnOutPage = () => {
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      startTime: "",
-      endTime: "",
-      childId: childID,
-      reason: "",
+      Title: "Đơn xin chuyển lớp",
+      ChildID: childID,
+      Content: "",
+      OldClass: "",
+      NewClass: "",
     },
     values,
   });
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({ startTime: "", endTime: "", childId: childID, reason: "" });
-    }
-  }, [isSubmitSuccessful]);
+  // useEffect(() => {
+  //   if (isSubmitSuccessful) {
+  //     reset({
+  //       Title: "Đơn xin chuyển lớp",
+  //       ChildID: childID,
+  //       Content: "",
+  //       OldClass: "",
+  //       NewClass: "",
+  //     });
+  //   }
+  // }, [isSubmitSuccessful, reset, childID]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const dateStart = new Date(data.startTime);
-    const dateEnd = new Date(data.endTime);
-
-    if (dateStart > dateEnd) {
-      alert("Ngày kết thúc không được nhỏ hơn ngày bắt đầu!");
+    if (
+      dataListChangeClassByChild?.filter((x: any) => x.active == false).length >
+      0
+    ) {
+      onClose();
+      alert("Bạn đã đăng ký đơn xin chuyển! Vui lòng chờ duyệt.");
     } else {
       const formData = new FormData();
-
       for (const key in data) {
         formData.append(key, data[key]);
       }
       callApiWithToken()
-        .post(`CheckIn/postRequest`, formData, {
+        .post(`ChangeClass/sendRequest`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((response) => {
-          toast.success("Tạo thành công");
+          toast.success("Xin chuyển lớp thành công");
           handleSendNotiChangeClass();
           onClose();
           setRefresh(true);
@@ -109,50 +96,8 @@ const BurnOutPage = () => {
         `Notification/sendUser`,
         {
           PhoneNumber: "admin",
-          Title: `${infoChild?.fullName} xin nghỉ`,
-          Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((response) => {})
-      .catch((errors) => {
-        toast.error("Có lỗi", errors);
-      });
-    //GV1
-    callApiWithToken()
-      .post(
-        `Notification/sendUser`,
-        {
-          PhoneNumber: infoTeacher?.find((x: any) => {
-            return x.id == detailClass?.teachers[0]?.teacherID;
-          })?.phoneNumber,
-          Title: `${infoChild?.fullName} xin nghỉ`,
-          Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((response) => {})
-      .catch((errors) => {
-        toast.error("Có lỗi", errors);
-      });
-    //GV2
-    callApiWithToken()
-      .post(
-        `Notification/sendUser`,
-        {
-          PhoneNumber: infoTeacher?.find((x: any) => {
-            return x.id == detailClass?.teachers[1]?.teacherID;
-          })?.phoneNumber,
-          Title: `${infoChild?.fullName} xin nghỉ`,
-          Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
+          Title: `${infoChild?.fullName} xin chuyển lớp`,
+          Content: `Học sinh ${infoChild?.fullName} xin chuyển lớp`,
         },
         {
           headers: {
@@ -189,7 +134,7 @@ const BurnOutPage = () => {
       <div className="bg-white p-4 rounded-xl md:w-1/3 mx-4 w-full h-fit">
         <div className="flex justify-between items-center mb-4 py-2 border-b">
           <div className="flex">
-            <h3 className="text-2xl ">Xin nghỉ</h3>
+            <h3 className="text-2xl ">Xin chuyển lớp</h3>
           </div>
           <button
             className="text-gray-600"
@@ -202,26 +147,47 @@ const BurnOutPage = () => {
         </div>
         <div className="grid gap-4 my-4">
           <Input
-            id="startTime"
-            type="date"
-            label={"Ngày bắt đầu nghỉ"}
+            id="Title"
+            label={"Tiêu đề"}
             register={register}
             errors={errors}
             onclick={() => {}}
             required
           />
-          <Input
-            id="endTime"
-            type="date"
-            label={"Ngày kết thúc nghỉ"}
+          <SelectOption
+            id="OldClass"
             register={register}
-            errors={errors}
-            onclick={() => {}}
-            required
+            label="Lớp hiện tại"
+            option={[
+              {
+                value: infoChild?.classRoom?.classID,
+                name: infoChild?.classRoom?.className,
+              },
+            ]}
           />
+
+          <SelectOption
+            id="NewClass"
+            register={register}
+            label="Lớp muốn chuyển"
+            option={getGrade?.map((x: any) => {
+              if (x.classID == infoChild?.classRoom?.classID) {
+                return {
+                  value: null,
+                  name: null,
+                };
+              } else {
+                return {
+                  value: x.classID,
+                  name: x.className,
+                };
+              }
+            })}
+          />
+
           <textarea
-            id={`reason`}
-            {...register(`reason`, {
+            id={`Content`}
+            {...register(`Content`, {
               required: true,
             })}
             className="border-2 px-2 py-1 rounded-md focus:outline-main"
@@ -239,7 +205,7 @@ const BurnOutPage = () => {
         {closeDialogBurnOut ? DialogBurnOut : ""}
         <div className="p-4">
           <p className="text-3xl flex justify-center items-center pb-4 border-b mb-4">
-            Lịch sử xin nghỉ
+            Lịch sử xin chuyển lớp
           </p>
           <div className="flex justify-between items-center">
             <div>
@@ -248,7 +214,7 @@ const BurnOutPage = () => {
             </div>
             <div className="mb-2">
               <Button
-                label="Tạo đơn xin nghỉ"
+                label="Tạo đơn xin chuyển lớp"
                 onClick={() => {
                   onClose();
                 }}
@@ -266,16 +232,25 @@ const BurnOutPage = () => {
                     Ngày
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    Họ tên
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Lớp cũ
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Lớp mới
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     Lý do
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Trạng thái
                   </th>
-                  <th scope="col" className="px-6 py-3"></th>
+                  {/* <th scope="col" className="px-6 py-3"></th> */}
                 </tr>
               </thead>
               <tbody>
-                {dataListBurnOutByChild?.map((item: any) => {
+                {dataListChangeClassByChild?.map((item: any) => {
                   return (
                     <tr
                       key={item.reqId}
@@ -283,27 +258,26 @@ const BurnOutPage = () => {
                     >
                       <td
                         className={`px-6 py-4 ${
-                          item.isActive ? "text-green-600" : "text-yellow-600"
+                          item.active ? "text-green-600" : "text-yellow-600"
                         } font-bold`}
                       >
                         {item.reqId}
                       </td>
+                      <td className="px-6 py-4">{item.date}</td>
+                      <td className="px-6 py-4">{item.childName}</td>
+                      <td className="px-6 py-4">{item.oldClassName}</td>
+                      <td className="px-6 py-4">{item.newClassName}</td>
+                      <td className="px-6 py-4">{item.content}</td>
                       <td className="px-6 py-4">
-                        {item.startTime + " - " + item.endTime}
-                      </td>
-                      <td className="px-6 py-4">{item.reason}</td>
-                      <td className="px-6 py-4">
-                        {item.isActive ? (
+                        {item.active ? (
                           <span className="text-green-600">Đã xem xét</span>
                         ) : (
                           <span className="text-yellow-600">Đã gửi</span>
                         )}
                       </td>
-                      <td
+                      {/* <td
                         className={`md:px-6 md:py-4 hover hover:text-rose-600  ${
-                          !item.isActive
-                            ? "cursor-pointer"
-                            : "cursor-not-allowed"
+                          !item.active ? "cursor-pointer" : "cursor-not-allowed"
                         }`}
                         onClick={() => {
                           {
@@ -312,7 +286,7 @@ const BurnOutPage = () => {
                         }}
                       >
                         <MdCancelScheduleSend size={24} />
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })}
@@ -320,9 +294,9 @@ const BurnOutPage = () => {
             </table>
           </div>
           <div className="flex w-full justify-center items-center p-8">
-            {dataListBurnOutByChild
-              ? dataListBurnOutByChild.length <= 0
-                ? "Chưa có đơn xin nghỉ nào"
+            {dataListChangeClassByChild
+              ? dataListChangeClassByChild.length <= 0
+                ? "Chưa có đơn xin chuyển lớp nào"
                 : null
               : null}
           </div>
@@ -332,4 +306,4 @@ const BurnOutPage = () => {
   );
 };
 
-export default BurnOutPage;
+export default ChangeClassPage;

@@ -7,14 +7,8 @@ import TableTemplate, {
 } from "@/app/components/shared/TableTemplate";
 import useFetch from "@/utils/useFetch";
 import { useEffect, useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import BackAction from "@/app/components/admin/BackAction";
+import { useSearchParams } from "next/navigation";
 import DefaultImage from "@/app/components/shared/defaultImage";
 import { getImageUrl } from "@/utils/image";
 import { FaCheck } from "react-icons/fa6";
@@ -27,31 +21,35 @@ const Columns: TableTemplateColumn[] = [
     getData: (x) => x.reqId,
   },
   {
+    title: "Ngày",
+    getData: (x) => x.date,
+  },
+  {
     title: "Hình",
     getData: (x) => (
-      <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+      <DefaultImage img={getImageUrl(x.childAvatar)} fallback="/avatar.webp" />
     ),
   },
   {
     title: "Họ tên",
-    getData: (x) => x.fullName,
+    getData: (x) => x.childName,
+  },
+  {
+    title: "Lớp cũ",
+    getData: (x) => x.oldClassName,
+  },
+  {
+    title: "Lớp mới",
+    getData: (x) => x.newClassName,
   },
   {
     title: "Lý do",
-    getData: (x) => x.reason,
-  },
-  {
-    title: "Ngày nghỉ",
-    getData: (x) => (
-      <p>
-        {x.startTime} - {x.endTime}
-      </p>
-    ),
+    getData: (x) => x.content,
   },
   {
     title: "Trạng thái",
     getData: (x) =>
-      x.isActive ? (
+      x.active ? (
         <span className="text-green-600">Đã duyệt</span>
       ) : (
         <span className="text-yellow-600">Chờ duyệt</span>
@@ -66,11 +64,11 @@ const activeOptions: FilterOptions[] = [
   },
   {
     value: "Đã duyệt",
-    filter: (obj) => obj.isActive == true,
+    filter: (obj) => obj.active == true,
   },
   {
     value: "Chưa duyệt",
-    filter: (obj) => obj.isActive == false,
+    filter: (obj) => obj.active == false,
   },
 ];
 
@@ -79,8 +77,7 @@ const filterActive: TableTemplateFilter = {
   options: activeOptions,
 };
 
-const BurnOutPage = () => {
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
+const ChangeClassPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [childID, setChildID] = useState("");
 
@@ -93,50 +90,34 @@ const BurnOutPage = () => {
     }
   };
 
-  //refresh data every 2s
-  // setInterval(() => {
-  //   handlRefresh();
-  // }, 2000);
-
-  const { data: classData } = useFetch(`CheckIn/getAllRequest`, refresh);
+  const { data: classData } = useFetch(`ChangeClass/getRequest`, refresh);
   const { data: childData } = useFetch(`Child/getChild?id=${childID}`);
 
-  const months = [];
-  for (var i = 1; i <= 12; i++) months.push(i);
-  const selectMonth = (
-    <div className="bg-gray-100 shadow-sm rounded-lg">
-      <Select
-        onValueChange={(value: any) => {
-          setMonth(value);
-        }}
-      >
-        <SelectTrigger className="w-[180px] text-lg">
-          <p>Tháng:</p>
-          <SelectValue placeholder={month} defaultValue={month} />
-        </SelectTrigger>
-        <SelectContent>
-          {months.map((x) => (
-            <>
-              <SelectItem value={x + ""}>{x}</SelectItem>
-            </>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
-  );
+  console.log(childID);
 
   const hanldeAccept = (idReq: string) => {
-    callApiWithToken()
-      .put(`CheckIn/putRequest?reqID=${idReq}`)
-      .then((response) => {
-        toast.success("Đã duyệt");
-        handleSendNotiChangeClass(idReq);
-        setRefresh(true);
-        handlRefresh();
-      })
-      .catch((error) => {
-        toast.error("Có lỗi xảy ra!");
-      });
+    if (
+      classData?.find((x: any) => {
+        return x.reqId == idReq;
+      }).active == true
+    ) {
+      toast("Đã được duyệt!");
+    } else {
+      if (childID != "") {
+        callApiWithToken()
+          .put(`ChangeClass/acceptRequest?reqID=${idReq}`)
+          .then((response) => {
+            handlRefresh();
+            toast.success("Đã duyệt");
+            handleSendNotiChangeClass(idReq);
+          })
+          .catch((error) => {
+            toast.error("Có lỗi xảy ra!");
+          });
+      } else {
+        toast("Vui lòng thử lại!");
+      }
+    }
   };
 
   const handleSendNotiChangeClass = (idReq: string) => {
@@ -145,8 +126,8 @@ const BurnOutPage = () => {
         `Notification/sendUser`,
         {
           PhoneNumber: childData?.parent?.phoneNumber,
-          Title: "Đơn xin nghỉ đã được duyệt",
-          Content: `Đơn xin nghỉ có mã:${idReq} đã được duyệt`,
+          Title: "Đơn xin chuyển lớp đã được duyệt",
+          Content: `Đơn xin chuyển lớp có mã:${idReq} đã được duyệt`,
         },
         {
           headers: {
@@ -159,23 +140,24 @@ const BurnOutPage = () => {
         toast.error("Có lỗi", errors);
       });
   };
+
   return (
     <>
       <BackAction />
       <TableTemplate
-        title={`Danh sách xin nghỉ`}
+        title={`Danh sách xin chuyển lớp`}
         dataSource={classData || []}
         columns={Columns}
         searchColumns={[Columns[0]]}
         searchPlaceHolder="Tìm kiếm..."
-        filters={[filterActive]}
         // addButton={{ link: "#" }}
+        filters={[filterActive]}
         actions={[
           {
             icon: <FaCheck size={24} />,
             onClick: (x) => {
               if (!x.isActive) {
-                setChildID(x.childId);
+                setChildID(x.childID);
                 if (childID != "") {
                   hanldeAccept(x.reqId);
                 }
@@ -196,4 +178,4 @@ const BurnOutPage = () => {
   );
 };
 
-export default BurnOutPage;
+export default ChangeClassPage;

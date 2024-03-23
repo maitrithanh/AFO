@@ -97,23 +97,9 @@ const sorts: TableTemplateSort[] = [
 
 const ClassesPage = () => {
   const [year, setYear] = useState(new Date().getFullYear().toString());
-  const [openDialog, setOpenDialog] = useState(false);
-  const [arrTeacher, setArrTeacher] = useState<any>([] as object[]);
-  const [arrStudent, setArrStudent] = useState<any>([] as object[]);
-  const [inputTeacherValue, setInputTeacherValue] = useState("");
-  const [inputStudentValue, setInputStudentValue] = useState("");
-  const [editMode, setEditMode] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const [onSelect, setOnSelect] = useState(false);
-
-  //fetch data  const [inputTeacherValue, setInputTeacherValue] = useState("");
 
   const { data: classData } = useFetch(`/ClassRoom/List/${year}`, refresh);
-  // const { data: dataTeacher } = useFetch("Teacher/getList");
-  // const { data: dataStudent } = useFetch("Teacher/getList");
-
-  const { data: dataTeacher } = useFetch("ClassRoom/teacherFilter");
-  const { data: dataStudent } = useFetch("ClassRoom/studentFilter");
 
   const years = [];
   for (var i = 2024; i >= 2022; i--) years.push(i);
@@ -138,54 +124,6 @@ const ClassesPage = () => {
       </Select>
     </div>
   );
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitSuccessful },
-    reset,
-  } = useForm<FieldValues>({
-    defaultValues: {
-      Name: "",
-      Note: "",
-    },
-  });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({
-        Name: "",
-        Note: "",
-        teacherID: "",
-        childID: "",
-      });
-      setArrStudent([]);
-      setArrTeacher([]);
-    }
-  }, [reset, isSubmitSuccessful]);
-
-  //Xử lý thêm giáo viên vào mảng
-  const handleAddTeacherToArr = (teacherInfo: any, event: any) => {
-    if (arrTeacher.length >= 2) {
-      alert("Một lớp tối đa 2 giáo viên!");
-    } else {
-      if (arrTeacher.length >= 1) {
-        if (
-          arrTeacher?.filter((x: any) => x.teacherID == teacherInfo.teacherID)
-            .length > 0
-        ) {
-          toast.error(`Giáo viên ${teacherInfo.fullName} đã được thêm vào lớp`);
-          return;
-        }
-      }
-      setInputTeacherValue(event?.target?.value || "");
-      arrTeacher.push(teacherInfo);
-      setTimeout(() => {
-        setInputTeacherValue("");
-        setOnSelect(false);
-      }, 0);
-    }
-  };
 
   return (
     <>
