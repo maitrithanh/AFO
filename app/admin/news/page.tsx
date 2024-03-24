@@ -31,7 +31,7 @@ const Columns: TableTemplateColumn[] = [
         <img
           src={getImageUrl(x.image)}
           alt={x.title}
-          className="rounded-md min-h-[100px] h-[100px] min-w-[200px] w-[200px]"
+          className="rounded-md min-h-[100px] max-h-[100px] min-w-[200px] max-w-[200px]"
         />
       ) : (
         <Image
@@ -44,13 +44,13 @@ const Columns: TableTemplateColumn[] = [
   },
   {
     title: "Tiêu đề",
-    getData: (x) => <p className="w-[250px]">{x.title}</p>,
+    getData: (x) => <p className="max-w-[250px]">{x.title}</p>,
   },
   {
     title: "Nội dung",
     getData: (x) => (
       <p
-        className="descriptNewsTable text-justify w-[290px]"
+        className="descriptNewsTable text-justify max-w-[290px]"
         dangerouslySetInnerHTML={{ __html: x.content }}
       ></p>
     ),

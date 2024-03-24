@@ -40,11 +40,13 @@ const AttendancePage = () => {
   );
 
   useEffect(() => {
-    if (attendanceData) {
+    if (attendanceData?.length > 0) {
       setDateDefault(attendanceData[0].classOfDay.split("-")[1].trim());
       setValueDate(toYMD(attendanceData[0].classOfDay.split("-")[1].trim()));
     }
   }, [attendanceData]);
+
+  console.log("attendanceByDate", attendanceByDate);
 
   const selectYear = (
     <div className="bg-gray-100 shadow-sm rounded-lg">
@@ -58,18 +60,25 @@ const AttendancePage = () => {
   );
 
   return (
-    <TableTemplate
-      title="Danh sách điểm danh"
-      dataSource={attendanceByDate || []}
-      columns={Columns}
-      searchColumns={[Columns[0]]}
-      searchPlaceHolder="Nhập tên lớp..."
-      addButton={{ link: "#" }}
-      actions={[
-        { getLink: (x) => `/admin/attendance/${x.id}?date=${valueDate}` },
-      ]}
-      extraElementsToolBar={selectYear}
-    />
+    <>
+      <TableTemplate
+        title="Danh sách điểm danh"
+        dataSource={attendanceByDate || []}
+        columns={Columns}
+        searchColumns={[Columns[0]]}
+        searchPlaceHolder="Nhập tên lớp..."
+        addButton={{ link: "#" }}
+        actions={[
+          { getLink: (x) => `/admin/attendance/${x.id}?date=${valueDate}` },
+        ]}
+        extraElementsToolBar={selectYear}
+      />
+      {attendanceByDate?.length <= 0 || attendanceByDate == null ? (
+        <p className="flex justify-center items-center">
+          Ngày {valueDate} chưa có dữ liệu điểm danh nào
+        </p>
+      ) : null}
+    </>
   );
 };
 
