@@ -141,6 +141,32 @@ const ChangeClassPage = () => {
       });
   };
 
+  const handleChangeClass = () => {
+    callApiWithToken()
+      .put(`ChangeClass/allChangeClass`)
+      .then((res) => {
+        if (res.data.data) {
+          toast.error(res.data.data);
+        } else {
+          toast.success("Chuyển tất cả lớp thành công");
+        }
+      })
+      .catch((err) => {
+        toast.error("Có lỗi xảy ra!");
+      });
+  };
+
+  const DefaultAddBtn = (
+    <button
+      className="bg-main hover:bg-mainBlur text-white font-bold py-2 px-4 rounded-full"
+      onClick={() => {
+        handleChangeClass();
+      }}
+    >
+      Chuyển tất cả lớp
+    </button>
+  );
+
   return (
     <>
       <BackAction />
@@ -150,7 +176,7 @@ const ChangeClassPage = () => {
         columns={Columns}
         searchColumns={[Columns[0]]}
         searchPlaceHolder="Tìm kiếm..."
-        // addButton={{ link: "#" }}
+        addButton={{ button: DefaultAddBtn }}
         filters={[filterActive]}
         actions={[
           {

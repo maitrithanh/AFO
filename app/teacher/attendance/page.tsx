@@ -89,6 +89,16 @@ const AttendancePage = () => {
     //khi nhấn lưu thì set object data rỗng trước khi thêm data mới
     setOjbData([]);
     for (const key in data) {
+      if (data[`Ended-${key.split("-")[1]}`] == true) {
+        if (data[`Started-${key.split("-")[1]}`] == false) {
+          alert(
+            `STT: ${
+              key.split("-")[1]
+            } Chưa điểm danh vào lớp không thể điểm danh ra về!`
+          );
+          return;
+        }
+      }
       // xem id đã tách trong input có tồn tại không rồi lưu data vào objData để call api
       if (
         !(key.split("-")[1] === undefined) &&

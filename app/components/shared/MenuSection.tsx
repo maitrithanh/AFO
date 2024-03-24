@@ -21,7 +21,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
             }}
             key={item.name}
             style={{ backgroundColor: item.color }}
-            className={`relative hover:scale-105 cursor-pointer border-2 border-gray-100 hover:border-orange-200 shadow-3xl transition-all w-[200px] h-[#200px] rounded-xl`}
+            className={`relative hover:scale-105 cursor-pointer border-2 border-gray-100 hover:border-orange-200 shadow-3xl transition-all md:w-[200px] md:h-[200px] rounded-xl`}
           >
             <Image
               src={`/bg-card.webp`}

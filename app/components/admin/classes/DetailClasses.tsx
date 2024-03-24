@@ -217,8 +217,6 @@ const DetailClasses = (id: any) => {
     formData.append("classId", id.id);
     formData.append("childID", childID);
 
-    console.log(formData.getAll("classId"), formData.getAll("childID"));
-
     fetch("http://localhost:5088/api/ClassRoom/addStudentToClass", {
       method: "POST",
       body: formData,
@@ -242,9 +240,7 @@ const DetailClasses = (id: any) => {
           handleDialog={handleDialog}
           dataProps={dataStudentDetail}
         />
-      ) : (
-        ""
-      )}
+      ) : null}
       <AlertDialog
         onOpenChange={() => {
           setOpenDialog((curr) => !curr);

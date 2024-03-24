@@ -35,7 +35,7 @@ const FunctionMenu = () => {
     history.back();
   };
   return (
-    <div className="mx-2 hover:cursor-pointer  p-1 flex justify-between w-full">
+    <div className="hover:cursor-pointer p-1 flex justify-center w-full ">
       {/* <div
         className="flex items-center hover:scale-110 transition-all rounded-full p-2 mx-1"
         onClick={() => {
@@ -46,7 +46,7 @@ const FunctionMenu = () => {
       </div> */}
 
       <div
-        className="hover:scale-110 transition-all rounded-full p-2 mx-1 bg-[#ffffff50] rounded-full"
+        className="hover:scale-110 transition-all p-2 mx-1 bg-[#ffffff50] rounded-full"
         onClick={() => {
           router.push(`/${role}`);
         }}

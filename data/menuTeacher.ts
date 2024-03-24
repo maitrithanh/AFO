@@ -54,12 +54,6 @@ export const menuTeacher = [
       color: "#e3f0fd"  
     },
     {
-      name: "changeClasses",
-      image: "change-class.webp",
-      path: "/",
-      color: "#ecfef3"
-    },
-    {
       name: "menu",
       image: "menu.webp",
       path: "/teacher/menu",
@@ -70,6 +64,12 @@ export const menuTeacher = [
       image: "qa.webp",
       path: "/home/news",
       color: "#feecf9"
+    },
+    {
+      name: "",
+      image: "more.webp",
+      path: "#",
+      color: "#ecfef3"
     },
   ];
   
