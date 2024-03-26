@@ -1,12 +1,9 @@
 "use client"
 
 import TableTemplate, { TableTemplateColumn } from "@/app/components/shared/TableTemplate"
+import { getWeekName } from "@/utils/dateTime";
 import useFetch from "@/utils/useFetch";
 
-const getWeekName = (week: string = "") => {
-  var arr: string[] = week.split("-W");
-  return "Tuần " + arr[1] + " - " + arr[0];
-};
 
 const Columns: TableTemplateColumn[] = [
   {

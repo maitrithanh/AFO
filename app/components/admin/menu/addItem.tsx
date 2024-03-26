@@ -24,13 +24,18 @@ const AddItem = ({ onAdd, dataSource }: Props) => {
         setKeyword('');
     }
 
+    const onChooseHint = (food: FoodRes) => { 
+        onAdd(food);
+        setKeyword('');
+    }
+
     return <div className={`${keyword == '' ? 'invisible': ''} group-hover:visible`}>
         <div className="flex relative group/search">
             <input type="text" name="food" placeholder="Thêm món" className={`${hints?.length > 0? '' : 'text-red-400'} w-full outline-none peer`}
                 onChange={(e) => setKeyword(e.currentTarget.value)} value={keyword} onKeyDown={e => { if(e.key === 'Enter') onSubmit()}}
             />
-            <div className="absolute left-0 bottom-0 translate-y-[100%] w-full bg-gray-200 max-h-[100px] overflow-auto invisible peer-focus:visible group-hover/search:visible">
-                {keyword && hints.map(x => <div key={x.id} className="hover:bg-white py-[2px] cursor-pointer" onClick={() => setKeyword(x.name)}>
+            <div className="absolute left-0 bottom-0 translate-y-[100%] w-full bg-gray-200 max-h-[100px] overflow-auto invisible peer-focus:visible hover:visible">
+                {hints.map(x => <div key={x.id} className="hover:bg-white py-[2px] cursor-pointer" onClick={() => onChooseHint(x)}>
                     {x.name}
                 </div>)}
             </div>
