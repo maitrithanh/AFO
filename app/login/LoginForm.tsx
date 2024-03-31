@@ -15,8 +15,8 @@ import ResponseData from "@/types/ResponseData";
 import LoginRes from "@/types/LoginRes";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { Asap_Condensed } from "next/font/google";
 import { useGlobalContext } from "../contexts/GlobalContext";
+import { Asap_Condensed } from "next/font/google";
 
 const font_asap_condensed = Asap_Condensed({
   weight: "800", // if single weight, otherwise you use array like [400, 500, 700],
@@ -104,7 +104,7 @@ const LoginForm = () => {
     setCookie("token", token);
     setCookie("role", role);
     setCookie("expiration", res.data.data.expiration);
-    if(refreshContactList) refreshContactList();
+    if (refreshContactList) refreshContactList();
     toast.success(t("toastLoginSuccess"), { id: role });
     switch (role) {
       case "Admin":

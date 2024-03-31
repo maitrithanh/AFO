@@ -657,7 +657,7 @@ const DetailClasses = (id: any) => {
         ) : (
           <div className="mt-4">
             <p className="ml-1 text-lg">Ghi chú</p>
-            <div className="border-2 border-slate-300 p-2 rounded-md italic text-lg">
+            <div className="border bg-[#e1e1e14a] border-slate-300 w-full p-2 rounded-md italic text-lg">
               {detailClassData?.note}
             </div>
           </div>

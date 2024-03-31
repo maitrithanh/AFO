@@ -1,6 +1,5 @@
 "use client";
 import BackAction from "@/app/components/admin/BackAction";
-import Input from "@/app/components/inputs/input";
 import TableTemplate, {
   TableTemplateColumn,
 } from "@/app/components/shared/TableTemplate";
@@ -14,6 +13,26 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { CiCircleRemove } from "react-icons/ci";
 import { IoWarning } from "react-icons/io5";
+import Input from "@/app/components/shared/Input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Asap_Condensed } from "next/font/google";
+import { IoIosAddCircle } from "react-icons/io";
+
+const font_asap_condensed = Asap_Condensed({
+  weight: "600", // if single weight, otherwise you use array like [400, 500, 700],
+  style: "normal", // if single style, otherwise you use array like ['normal', 'italic']
+  subsets: ["latin"],
+});
 
 const ColumnsTeacher: TableTemplateColumn[] = [
   {
@@ -55,15 +74,27 @@ const AddTeacherPage = () => {
   const date = new Date();
   const year = date.getFullYear();
 
-  const { data: dataTeacher } = useFetch("ClassRoom/teacherFilter");
-  const { data: dataStudent } = useFetch("ClassRoom/studentFilter");
-
   const [arrTeacher, setArrTeacher] = useState<any>([] as object[]);
   const [arrStudent, setArrStudent] = useState<any>([] as object[]);
   const [onSelect, setOnSelect] = useState(false);
   const [inputTeacherValue, setInputTeacherValue] = useState("");
   const [inputStudentValue, setInputStudentValue] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const [openAddChildDialog, setOpenAddChildDialog] = useState(false);
+  const [openAddTeacherDialog, setOpenAddTeacherDialog] = useState(false);
+  const [listStudent, setListStudent] = useState<any>([] as object[]);
+  const [listTeacher, setListTeacher] = useState<any>([] as object[]);
+
+  const { data: dataTeacher } = useFetch("ClassRoom/teacherFilter");
+  const { data: dataStudent } = useFetch("ClassRoom/studentFilter");
+
+  useEffect(() => {
+    setListStudent(dataStudent);
+  }, [dataStudent]);
+
+  useEffect(() => {
+    setListTeacher(dataTeacher);
+  }, [dataTeacher]);
 
   const {
     register,
@@ -112,7 +143,7 @@ const AddTeacherPage = () => {
   };
 
   //Xử lý thêm giáo viên vào mảng
-  const handleAddTeacherToArr = (teacherInfo: any, event: any) => {
+  const handleAddTeacherToArr = (teacherInfo: any) => {
     if (arrTeacher.length >= 2) {
       alert("Một lớp tối đa 2 giáo viên!");
     } else {
@@ -125,17 +156,18 @@ const AddTeacherPage = () => {
           return;
         }
       }
-      setInputTeacherValue(event?.target?.value || "");
       arrTeacher.push(teacherInfo);
-      setTimeout(() => {
-        setInputTeacherValue("");
-        setOnSelect(false);
-      }, 0);
+      toast.success("Đã thêm giáo viên");
+      handleRemoveTeacherAlert(teacherInfo.teacherID);
     }
+  };
+  //Xử lý thêm giáo viên vào alert
+  const handleAddTeacherAlert = (teacherInfo: any) => {
+    listTeacher.push(teacherInfo);
   };
 
   //Xử lý thêm học sinh vào mảng
-  const handleAddStudentToArr = (studentInfo: any, event: any) => {
+  const handleAddStudentToArr = (studentInfo: any, id: any) => {
     if (arrStudent.length >= 1) {
       if (
         arrStudent?.filter((x: any) => x.childID == studentInfo.childID)
@@ -145,13 +177,16 @@ const AddTeacherPage = () => {
         return;
       }
     }
-    setInputStudentValue(event?.target?.value || "");
+    handleRemoveStudentAlert(id);
+    setInputStudentValue(id || "");
     arrStudent.push(studentInfo);
-    setTimeout(() => {
-      setInputStudentValue("");
-      setOnSelect(false);
-    }, 0);
+    toast.success("Đã thêm");
   };
+  //Xử lý thêm học sinh vào alert
+  const handleAddStudentAlert = (studentInfo: any) => {
+    listStudent.push(studentInfo);
+  };
+
   //Refresh
   const handleRefresh = () => {
     setRefresh(true);
@@ -160,7 +195,7 @@ const AddTeacherPage = () => {
     }, 1000);
   };
   // Xử lý gỡ giáo viên đã chọn
-  const handleRemoveTeacherInArr = (teacherID: any) => {
+  const handleRemoveTeacherInArr = (teacherID: any, infoTeacher: any) => {
     var index = arrTeacher
       .map((x: any) => {
         return x.teacherID;
@@ -170,10 +205,23 @@ const AddTeacherPage = () => {
     if (index > -1) {
       arrTeacher.splice(index, 1);
       handleRefresh();
+      handleAddTeacherAlert(infoTeacher);
+    }
+  };
+  const handleRemoveTeacherAlert = (teacherID: any) => {
+    var index = listTeacher
+      .map((x: any) => {
+        return x.teacherID;
+      })
+      .indexOf(teacherID);
+
+    if (index > -1) {
+      listTeacher.splice(index, 1);
+      handleRefresh();
     }
   };
   // Xử lý gỡ học sinh đã chọn
-  const handleRemoveStudentInArr = (childID: any) => {
+  const handleRemoveStudentInArr = (childID: any, infoStudent: any) => {
     var index = arrStudent
       .map((x: any) => {
         return x.childID;
@@ -181,6 +229,20 @@ const AddTeacherPage = () => {
       .indexOf(childID);
     if (index > -1) {
       arrStudent.splice(index, 1);
+      handleAddStudentAlert(infoStudent);
+      handleRefresh();
+    }
+  };
+
+  // Xử lý gỡ học sinh đã chọn trong alert
+  const handleRemoveStudentAlert = (childID: any) => {
+    var index = listStudent
+      .map((x: any) => {
+        return x.childID;
+      })
+      .indexOf(childID);
+    if (index > -1) {
+      listStudent.splice(index, 1);
       handleRefresh();
     }
   };
@@ -193,88 +255,136 @@ const AddTeacherPage = () => {
   }, [refresh, arrTeacher, arrStudent]);
   return (
     <>
+      {/* TEACHERRRRRRRRRRRRRRRRRRRRRRRRRR */}
+      <AlertDialog
+        onOpenChange={() => {
+          setOpenAddTeacherDialog((curr) => !curr);
+        }}
+        open={openAddTeacherDialog}
+      >
+        <AlertDialogContent className="max-w-[800px]">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Thêm giáo viên phụ trách</AlertDialogTitle>
+            <div>
+              <TableTemplate
+                title=""
+                dataSource={listTeacher || []}
+                columns={ColumnsTeacher}
+                actions={[
+                  {
+                    icon: (
+                      <span className="hover hover:text-main text-gray-500">
+                        <IoIosAddCircle size={24} />
+                      </span>
+                    ),
+                    onClick: (x) => {
+                      handleAddTeacherToArr(x);
+                    },
+                  },
+                ]}
+              />
+              {dataTeacher?.length <= 0 ? (
+                <p className="flex w-full justify-center items-center">
+                  <span className="text-yellow-500 mx-1">
+                    <IoWarning size={20} />
+                  </span>
+                  Hiện không có giáo viên nào trống lớp!
+                </p>
+              ) : null}
+            </div>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Đóng</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      {/* KIDSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS */}
+      <AlertDialog
+        onOpenChange={() => {
+          setOpenAddChildDialog((curr) => !curr);
+        }}
+        open={openAddChildDialog}
+      >
+        <AlertDialogContent className="max-w-[800px]">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Thêm trẻ vào lớp</AlertDialogTitle>
+            <div>
+              <TableTemplate
+                title=""
+                dataSource={listStudent || []}
+                columns={ColumnsStudent}
+                actions={[
+                  {
+                    icon: (
+                      <span className="hover hover:text-main text-gray-500">
+                        <IoIosAddCircle size={24} />
+                      </span>
+                    ),
+                    onClick: (x) => {
+                      handleAddStudentToArr(x, x.childID);
+                    },
+                  },
+                ]}
+              />
+              {dataStudent?.length <= 0 ? (
+                <p className="flex w-full justify-center items-center">
+                  <span className="text-yellow-500 mx-1">
+                    <IoWarning size={20} />
+                  </span>
+                  Hiện không có học sinh nào chưa có lớp
+                </p>
+              ) : null}
+            </div>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Đóng</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <BackAction />
+
       <div className="flex justify-center items-center">
         <div className="w-full bg-white rounded-md shadow-3xl p-8">
+          <div
+            className={`flex justify-center items-center mb-4 ${font_asap_condensed.className}`}
+          >
+            <h1 className="text-3xl uppercase flex items-center">
+              Thêm lớp học
+            </h1>
+          </div>
           <p className="text-2xl">Thông tin lớp học</p>
 
           <div>
             <Input
               label="Tên lớp học"
               id="Name"
-              errors={errors}
+              type="text"
+              placeholder="Tên lớp học"
               register={register}
+              errors={errors}
               required
             />
 
-            <div className="border-2 border-slate-300 rounded-md p-2 my-2">
-              <p className="text-2xl">Danh sách giáo viên</p>
-              {dataTeacher ? (
-                dataTeacher.length > 0 ? (
-                  <div className="flex items-center">
-                    {arrTeacher ? (
-                      arrTeacher.length <= 0 ? (
-                        <p className="flex w-full justify-center items-center">
-                          <span className="text-yellow-500 mx-1">
-                            <IoWarning size={20} />
-                          </span>
-                          Chưa có giáo viên nào được thêm
-                        </p>
-                      ) : null
-                    ) : (
-                      "Đang tải..."
-                    )}
-                  </div>
-                ) : (
-                  <p className="flex w-full justify-center items-center">
-                    <span className="text-yellow-500 mx-1">
-                      <IoWarning size={20} />
-                    </span>
-                    Hiện không có giáo viên nào trống lớp
-                  </p>
-                )
-              ) : null}
+            <div className="rounded-md my-4">
+              <div className="flex justify-between items-center">
+                <p className="text-lg">
+                  Giáo viên phụ trách
+                  <span className={`text-rose-600 `}>*</span> (2 giáo viên)
+                </p>
+                <button
+                  className="mx-2 bg-main px-2 py-1 w-32 rounded-sm text-white"
+                  onClick={() => setOpenAddTeacherDialog(true)}
+                >
+                  Thêm giáo viên
+                </button>
+              </div>
 
-              {dataTeacher ? (
-                dataTeacher.length > 0 ? (
-                  <div className="mt-4">
-                    <input
-                      type="text"
-                      list={"dataListTeacher"}
-                      placeholder="Tìm giáo viên"
-                      onClick={() => {
-                        setOnSelect(true);
-                      }}
-                      onChange={(e) => {
-                        if (onSelect) {
-                          handleAddTeacherToArr(dataTeacher[e.target.value], e);
-                        }
-                      }}
-                      value={inputTeacherValue}
-                      className="w-full p-4 outline-none shadow-3xl rounded-md border"
-                    />
-                    <datalist id="dataListTeacher">
-                      {dataTeacher?.map((data: any, i: number) => {
-                        return (
-                          <option
-                            key={data.id}
-                            value={i}
-                            onClick={() => {
-                              setOnSelect(true);
-                            }}
-                          >
-                            {data?.fullName}
-                          </option>
-                        );
-                      })}
-                    </datalist>
-                  </div>
-                ) : null
-              ) : null}
               <TableTemplate
                 title=""
                 dataSource={arrTeacher || []}
                 columns={ColumnsTeacher}
+                // addButton={{ link: "/admin/children/add" }}
+                hidePaging={arrTeacher.length < 10}
                 actions={[
                   {
                     icon: (
@@ -283,81 +393,34 @@ const AddTeacherPage = () => {
                       </span>
                     ),
                     onClick: (x) => {
-                      handleRemoveTeacherInArr(x.teacherID);
+                      handleRemoveTeacherInArr(x.teacherID, x);
                     },
                   },
                 ]}
               />
             </div>
 
-            <div className="border-2 border-slate-300 rounded-md p-2 my-2">
-              <p className="text-2xl">Danh sách học sinh</p>
+            <div className="rounded-md my-4">
+              <div className="flex justify-between items-center">
+                <p className="text-lg">
+                  Danh sách trẻ
+                  <span className={`text-rose-600 mr-2`}>*</span>
+                  (Sĩ số: {arrStudent.length})
+                </p>
+                <button
+                  className="mx-2 bg-main px-2 py-1 w-32 rounded-sm text-white"
+                  onClick={() => setOpenAddChildDialog(true)}
+                >
+                  Thêm trẻ
+                </button>
+              </div>
 
-              {dataStudent ? (
-                dataStudent.length > 0 ? (
-                  <div className="flex items-center">
-                    {arrStudent ? (
-                      arrStudent.length <= 0 ? (
-                        <p className="flex w-full justify-center items-center">
-                          <span className="text-yellow-500 mx-1">
-                            <IoWarning size={20} />
-                          </span>
-                          Chưa có học sinh nào được thêm
-                        </p>
-                      ) : null
-                    ) : (
-                      "Đang tải..."
-                    )}
-                  </div>
-                ) : (
-                  <p className="flex w-full justify-center items-center">
-                    <span className="text-yellow-500 mx-1">
-                      <IoWarning size={20} />
-                    </span>
-                    Hiện không có học sinh nào chưa có lớp
-                  </p>
-                )
-              ) : null}
-              {dataStudent ? (
-                dataStudent.length > 0 ? (
-                  <div className="mt-4">
-                    <input
-                      type="text"
-                      list={"dataListStudent"}
-                      placeholder="Tìm học sinh"
-                      onClick={() => {
-                        setOnSelect(true);
-                      }}
-                      onChange={(e) => {
-                        if (onSelect) {
-                          handleAddStudentToArr(dataStudent[e.target.value], e);
-                        }
-                      }}
-                      value={inputStudentValue}
-                      className="w-full p-4 outline-none shadow-3xl rounded-md border"
-                    />
-                    <datalist id="dataListStudent">
-                      {dataStudent?.map((data: any, i: number) => {
-                        return (
-                          <option
-                            key={data.id}
-                            value={i}
-                            onClick={() => {
-                              setOnSelect(true);
-                            }}
-                          >
-                            {data?.fullName}
-                          </option>
-                        );
-                      })}
-                    </datalist>
-                  </div>
-                ) : null
-              ) : null}
               <TableTemplate
-                title=""
+                title={``}
                 dataSource={arrStudent || []}
                 columns={ColumnsStudent}
+                hidePaging={arrStudent.length < 10}
+                // addButton={{ onClick: () => setOpenAddChildDialog(true) }}
                 actions={[
                   {
                     icon: (
@@ -366,24 +429,28 @@ const AddTeacherPage = () => {
                       </span>
                     ),
                     onClick: (x) => {
-                      handleRemoveStudentInArr(x.childID);
+                      handleRemoveStudentInArr(x.childID, x);
                     },
                   },
                 ]}
               />
+            </div>
+
+            <div className="flex justify-between items-center">
+              <p className="text-lg">Ghi chú</p>
             </div>
 
             <textarea
               {...register("Note", { required: false })}
-              className={`border-2 rounded-md p-4 text-xl w-full outline-none bg-white font-light transition border-slate-300 h-40 focus:border-orange-500`}
+              className={`border rounded-md p-4 text-xl w-full outline-none bg-white font-light transition border-slate-300 h-40 focus:border-orange-500`}
               placeholder="Ghi chú"
               id="Note"
             />
           </div>
 
-          <div className="flex justify-end mt-10">
+          <div className=" w-full flex justify-end mt-10">
             <button
-              className="text-white bg-main hover:bg-mainBlur focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
+              className="text-white bg-main hover:bg-mainBlur focus:ring-4 focus:outline-none font-medium rounded-md text-lg w-full px-5 py-2.5 text-center "
               onClick={handleSubmit(onSubmit)}
             >
               Tạo lớp
