@@ -29,6 +29,8 @@ const ChildrenPutForm = ({ data, setData, editable }: Props) => {
     setData({ ...data, [name]: value });
   };
 
+  console.log(data);
+
   return (
     <>
       <form>

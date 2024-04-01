@@ -13,6 +13,9 @@ import { compareName } from "@/utils/compare";
 import { getImageUrl } from "@/utils/image";
 import useFetch from "@/utils/useFetch";
 import { useMemo } from "react";
+import { CgArrowsExchangeAltV } from "react-icons/cg";
+import { MdOutlineChangeCircle } from "react-icons/md";
+import { SiGoogleclassroom } from "react-icons/si";
 
 const Columns: TableTemplateColumn<ChildrenData>[] = [
   {
@@ -108,6 +111,10 @@ const ChildPage = () => {
         value: "Tất cả",
         filter: () => true,
       },
+      {
+        value: "Chưa có lớp",
+        filter: (obj) => obj.classRoom === null,
+      },
     ];
     var classes = (classData as any[])?.map((x) => x.name);
     if (classes)
@@ -130,9 +137,19 @@ const ChildPage = () => {
       title="Danh sách trẻ"
       dataSource={dataChildren || []}
       columns={Columns}
-      actions={[Action]}
+      actions={[
+        // {
+        //   icon: (
+        //     <span className="hover hover:text-main text-gray-500">
+        //       Chuyển lớp
+        //     </span>
+        //   ),
+        //   onClick: (x) => {},
+        // },
+        Action,
+      ]}
       addButton={{ link: "/admin/children/add" }}
-      searchColumns={[Columns[0], Columns[1]]}
+      searchColumns={[Columns[1], Columns[2]]}
       searchPlaceHolder="Nhập tên hoặc mã số trẻ"
       sortOptions={sorts}
       filters={[filterClasses, filterGender]}

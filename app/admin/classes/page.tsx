@@ -104,7 +104,7 @@ const ClassesPage = () => {
   const years = [];
   for (var i = 2024; i >= 2022; i--) years.push(i);
   const selectYear = (
-    <div className="bg-gray-100 shadow-sm rounded-lg mx-4">
+    <div className="bg-white border shadow-sm rounded-sm mx-4">
       <Select
         onValueChange={(value: any) => {
           setYear(value);

@@ -259,11 +259,10 @@ function TableTemplate<T extends IObject = any>({
 
       <div className="bg-white shadow-3xl rounded-md">
         <div className="flex justify-between items-center mb-2 py-3 mx-2">
-          <div className="flex items-center flex-wrap">
+          <div className="flex items-center flex-wrap gap-4">
             {/* search */}
             {searchColumns?.length && (
-              <div className="flex items-center mx-4 mb-3">
-                <p className="text-xl"></p>
+              <div className="flex items-center ml-4">
                 <div className="w-[300px] bg-white">
                   <SearchBar
                     dataSource={searchHints}
@@ -280,7 +279,10 @@ function TableTemplate<T extends IObject = any>({
 
             {/* filters */}
             {filters?.map((filterOptions, i) => (
-              <div key={i} className="bg-gray-100 shadow-sm rounded-lg mx-4">
+              <div
+                key={i}
+                className="border flex justify-center items-center shadow-sm rounded-sm"
+              >
                 <Select
                   onValueChange={(value: any) => {
                     var arr = [...filterOpt];
@@ -289,7 +291,7 @@ function TableTemplate<T extends IObject = any>({
                   }}
                 >
                   <SelectTrigger className="min-w-[200px] text-lg">
-                    <p className="mr-2">{filterOptions.name}:</p>
+                    <p className="mr-2 text-gray-600">{filterOptions.name}:</p>
                     <SelectValue
                       placeholder={filterOptions.options[0]?.value}
                       defaultValue={"0"}
@@ -308,14 +310,14 @@ function TableTemplate<T extends IObject = any>({
 
             {/* sorts */}
             {sortOptions?.length && (
-              <div className="bg-gray-100 shadow-sm rounded-lg mx-4">
+              <div className="bg-white border shadow-sm rounded-sm mx-4">
                 <Select
                   onValueChange={(value: any) => {
                     setSort(value);
                   }}
                 >
                   <SelectTrigger className="min-w-[200px] text-lg">
-                    <p className="mr-2">Sắp xếp:</p>
+                    <p className="mr-2 text-gray-600">Sắp xếp:</p>
                     <SelectValue
                       placeholder={sortOptions[0].title}
                       defaultValue={"0"}
@@ -375,7 +377,7 @@ function TableTemplate<T extends IObject = any>({
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
             <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                {!hideIndex && <th className="px-6 py-3">Số thứ tự</th>}
+                {!hideIndex && <th className="px-6 py-3">#</th>}
 
                 {columns.map((x) => (
                   <th key={x.title} scope="col" className="px-6 py-3">
@@ -408,7 +410,7 @@ function TableTemplate<T extends IObject = any>({
                       </td>
                     ))}
                     <td className="md:px-6 md:py-4">
-                      <div className="flex">
+                      <div className="flex items-center">
                         {actions?.map((act, i) => (
                           <Link
                             key={i}
