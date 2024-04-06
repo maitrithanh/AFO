@@ -36,7 +36,7 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
     title: "Lớp",
     getData: (x) => {
       return x.classRoom ? (
-        <span className="text-green-600">{x.classRoom}</span>
+        <span className="">{x.classRoom}</span>
       ) : (
         <span className="text-rose-600">Chưa có lớp</span>
       );
@@ -49,6 +49,17 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
   {
     title: "Giới tính",
     getData: (x) => x.gender,
+  },
+  {
+    title: "Trạng thái",
+    getData: (x) =>
+      x.status.toLocaleLowerCase() == "còn học" ? (
+        <span className="text-green-600">{x.status}</span>
+      ) : x.status.toLocaleLowerCase() == "nghỉ học" ? (
+        <span className="text-rose-600">{x.status}p</span>
+      ) : (
+        <span className="text-yellow-600">{x.status}p</span>
+      ),
   },
   {
     title: "Người giám hộ",

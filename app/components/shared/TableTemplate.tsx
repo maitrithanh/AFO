@@ -310,7 +310,7 @@ function TableTemplate<T extends IObject = any>({
 
             {/* sorts */}
             {sortOptions?.length && (
-              <div className="bg-white border shadow-sm rounded-sm mx-4">
+              <div className="bg-white border shadow-sm rounded-sm">
                 <Select
                   onValueChange={(value: any) => {
                     setSort(value);

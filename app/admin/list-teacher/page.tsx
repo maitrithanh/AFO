@@ -24,6 +24,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { GiShieldDisabled } from "react-icons/gi";
+import { FaUserLock } from "react-icons/fa6";
 
 const Columns: TableTemplateColumn<any>[] = [
   {
@@ -74,7 +76,9 @@ const ListTeacherPage = () => {
   const [classId, setClassId] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [refresh, setRefresh] = useState(false);
-
+  const [openDialogLock, setOpenDialogLock] = useState(false);
+  const [idUserLock, setIdUserLock] = useState("");
+  const [nameAccountLock, setNameAccountLock] = useState("");
   const { data: dataTeacher } = useFetch("Teacher/getList", refresh);
 
   //Khi update tự động cập nhật
@@ -114,6 +118,23 @@ const ListTeacherPage = () => {
       setOpenDialog(true);
     }
   };
+  const handleOpenDialogLock = (id: string, name: string) => {
+    setIdUserLock(id);
+    setNameAccountLock(name);
+    setOpenDialog(true);
+  };
+
+  const lockAccount = () => {
+    callApiWithToken()
+      .post(`Auth/locked?parentID=${idUserLock}`)
+      .then((response) => {
+        toast.success(`Đã khoá tài khoản ${nameAccountLock}`);
+      })
+      .catch((error) => {
+        toast.error("Có lỗi xảy ra!");
+      });
+  };
+
   return (
     <>
       <AlertDialog
@@ -144,6 +165,36 @@ const ListTeacherPage = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {/* LockAccount */}
+      <AlertDialog
+        onOpenChange={() => {
+          setOpenDialogLock((curr) => !curr);
+        }}
+        open={openDialogLock}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Bạn có chắc chắn khoá tài khoản giáo viên này?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-rose-600 font-bold">
+              {nameAccountLock}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Huỷ</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-rose-600 hover:bg-rose-900"
+              onClick={() => {
+                lockAccount();
+              }}
+            >
+              Xác nhận khoá tài khoản
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <TableTemplate
         title="Danh sách giáo viên"
         dataSource={dataTeacher || []}
@@ -161,6 +212,16 @@ const ListTeacherPage = () => {
               </span>
             ),
             getLink: (x) => `/admin/list-teacher/edit/${x.id}`,
+          },
+          {
+            icon: (
+              <span className="text-gray-600" title="Khoá tài khoản">
+                <FaUserLock />
+              </span>
+            ),
+            onClick: (x) => {
+              handleOpenDialogLock(x.id, x.fullName);
+            },
           },
           {
             icon: (

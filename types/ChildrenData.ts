@@ -8,7 +8,7 @@ export interface ChildrenData {
     nation: string,
     address: string,
     joinDate: string,
-    status: boolean,
+    status: string,
     note: string,
     classRoom: string,
     parentName: string,
