@@ -151,13 +151,16 @@ const DetailClasses = (id: any) => {
     formData.append("classId", id.id);
     formData.append("childID", childID);
 
-    fetch("http://localhost:5088/api/ClassRoom/removeStudentOutClass", {
-      method: "DELETE",
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_ENPOINT}ClassRoom/removeStudentOutClass`,
+      {
+        method: "DELETE",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
       .then((response) => {
         handleRefresh();
         toast.success("Đã gỡ trẻ ra khỏi lớp");
@@ -217,7 +220,7 @@ const DetailClasses = (id: any) => {
     formData.append("classId", id.id);
     formData.append("childID", childID);
 
-    fetch("http://localhost:5088/api/ClassRoom/addStudentToClass", {
+    fetch(`${process.env.NEXT_PUBLIC_API_ENPOINT}ClassRoom/addStudentToClass`, {
       method: "POST",
       body: formData,
       headers: {
