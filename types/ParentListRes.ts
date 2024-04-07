@@ -16,5 +16,6 @@ export default interface ParentListRes {
         fullName: string,
         joinDate: string
         avatar: string
-    }[]
+    }[],
+    active: boolean
 }

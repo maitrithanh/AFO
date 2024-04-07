@@ -55,6 +55,15 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
     title: "Tên Trẻ",
     getData: (x) => <pre>{x.children.map((x) => x.fullName).join(",\n")}</pre>,
   },
+  {
+    title: "Trạng thái",
+    getData: (x) =>
+      x.active ? (
+        <span className="text-rose-600">Đã khoá</span>
+      ) : (
+        <span className="text-green-600">Hoạt động</span>
+      ),
+  },
 ];
 
 const searchCols = [Columns[0], Columns[1]];
@@ -105,15 +114,26 @@ const filterGender: TableTemplateFilter = {
 };
 
 const ParentPage = () => {
-  const { data: dataParent } = useFetch<ParentListRes[]>("Parent/GetList");
   const [openDialog, setOpenDialog] = useState(false);
   const [idUserLock, setIdUserLock] = useState("");
   const [nameAccountLock, setNameAccountLock] = useState("");
+  const [statusAccountLock, setStatusAccountLock] = useState(Boolean);
+  const [refresh, setRefresh] = useState(Boolean);
+  const { data: dataParent } = useFetch<ParentListRes[]>(
+    "Parent/GetList",
+    refresh
+  );
 
-  console.log(dataParent);
+  const handleRefresh = () => {
+    setRefresh(true);
+    setTimeout(() => {
+      setRefresh(false);
+    }, 1000);
+  };
 
-  const handleOpenDialog = (id: string, name: string) => {
+  const handleOpenDialog = (id: string, name: string, status: boolean) => {
     setIdUserLock(id);
+    setStatusAccountLock(status);
     setNameAccountLock(name);
     setOpenDialog(true);
   };
@@ -122,7 +142,12 @@ const ParentPage = () => {
     callApiWithToken()
       .post(`Auth/locked?parentID=${idUserLock}`)
       .then((response) => {
-        toast.success(`Đã khoá tài khoản ${nameAccountLock}`);
+        toast.success(
+          `${
+            statusAccountLock ? "Đã mở khoá tài khoản" : "Đã khoá tài khoản"
+          } ${nameAccountLock}`
+        );
+        handleRefresh();
       })
       .catch((error) => {
         toast.error("Có lỗi xảy ra!");
@@ -139,22 +164,39 @@ const ParentPage = () => {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              Bạn có chắc chắn khoá tài khoản phụ huynh này?
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-rose-600 font-bold">
+            {statusAccountLock ? (
+              <AlertDialogTitle>
+                Bạn có chắc chắn mở khoá tài khoản phụ huynh này?
+              </AlertDialogTitle>
+            ) : (
+              <AlertDialogTitle>
+                Bạn có chắc chắn khoá tài khoản phụ huynh này?
+              </AlertDialogTitle>
+            )}
+
+            <AlertDialogDescription
+              className={`${
+                statusAccountLock ? "text-green-600" : "text-rose-600"
+              } font-bold text-lg`}
+            >
               {nameAccountLock}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Huỷ</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-rose-600 hover:bg-rose-900"
+              className={` ${
+                statusAccountLock
+                  ? "bg-green-600 hover:bg-green-900"
+                  : "bg-rose-600 hover:bg-rose-900"
+              }`}
               onClick={() => {
                 lockAccount();
               }}
             >
-              Xác nhận khoá tài khoản
+              {statusAccountLock
+                ? "Xác nhận mở khoá tài khoản"
+                : "Xác nhận khoá tài khoản"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -172,7 +214,11 @@ const ParentPage = () => {
               </span>
             ),
             onClick: (x) => {
-              handleOpenDialog(x.id ? x.id : "", x.fullName ? x.fullName : "");
+              handleOpenDialog(
+                x.id ? x.id : "",
+                x.fullName ? x.fullName : "",
+                x.active
+              );
             },
           },
           Action,
