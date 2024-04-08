@@ -10,9 +10,9 @@ const layout = ({ children }: { children: React.ReactNode }) => {
       <div>
         <Navbar />
       </div>
-      <div className="absolute w-full xl:translate-y-full shadow-lg translate-y-0 xl:hidden transition-all bottom-0 z-20 bg-[#fffc] backdrop-blur-lg overflow-hidden">
+      {/* <div className="absolute w-full xl:translate-y-full shadow-lg translate-y-0 xl:hidden transition-all bottom-0 z-20 bg-[#fffc] backdrop-blur-lg overflow-hidden">
         <FunctionMenu />
-      </div>
+      </div> */}
       <div className="m-4 mt-24 body-content">{children}</div>
     </div>
   );
