@@ -63,9 +63,10 @@ export interface FilterOptions<T = any> {
   filter: (obj: T) => boolean;
 }
 
-export interface TableTemplateFilter {
+export interface TableTemplateFilter<T = any> {
   name: string;
   options: FilterOptions[];
+  autoFilter?: (obj: T) => string
 }
 
 export interface TableTemplateRange<T = any> {
@@ -101,6 +102,7 @@ interface Props<T extends IObject> {
   dateRange?: TableTemplateRange;
   //extra
   extraElementsToolBar?: JSX.Element;
+  getKey?: (obj: T) => string;
 
   //options
   hideIndex?: boolean;
@@ -123,9 +125,37 @@ function TableTemplate<T extends IObject = any>({
   hideIndex,
   hidePaging,
   rowPerPage,
+  getKey
 }: Props<T>) {
   //init
   if (!rowPerPage) rowPerPage = DefaultRowPerPage;
+  if (!getKey) getKey = (obj) => obj['id'];
+
+  //auto filter
+  useEffect(() => { 
+    filters?.forEach(x => { 
+      if (x.autoFilter) { 
+        var opts = Array.from(new Set(dataSource.map(y => x.autoFilter!(y))));
+
+        x.options = opts.map(y => { 
+          var opt: FilterOptions = {
+            value: y,
+            filter: (obj) => x.autoFilter!(obj) == y
+          }
+          return opt;
+        })
+
+        //all
+        if (opts.length > 1) {
+          var opt: FilterOptions = {
+            value: 'Tất cả',
+            filter: () => true
+          }
+          x.options = [opt, ...x.options]
+        }
+      }
+    })
+  }, [dataSource])
 
   //filter for searching
   const filter = (obj: T): boolean => {
@@ -167,7 +197,7 @@ function TableTemplate<T extends IObject = any>({
   }, [filters]);
 
   const filteredData = useMemo(() => {
-    var list = dataSource;
+    var list = [...dataSource];
     if (searchColumns?.length && keyword) list = list.filter(filter);
 
     if (filters?.length) {
@@ -259,10 +289,10 @@ function TableTemplate<T extends IObject = any>({
 
       <div className="bg-white shadow-3xl rounded-md">
         <div className="flex justify-between items-center mb-2 py-3 mx-2">
-          <div className="flex items-center flex-wrap gap-4">
+          <div className="flex items-center flex-wrap gap-4 pl-4">
             {/* search */}
             {searchColumns?.length && (
-              <div className="flex items-center ml-4">
+              <div className="flex items-center">
                 <div className="w-[300px] bg-white">
                   <SearchBar
                     dataSource={searchHints}
@@ -336,7 +366,7 @@ function TableTemplate<T extends IObject = any>({
 
             {/* date range */}
             {dateRange && (
-              <div className="bg-gray-100 shadow-sm rounded-lg mx-4 whitespace-nowrap px-3 py-2">
+              <div className="bg-gray-100 shadow-sm rounded-lg whitespace-nowrap px-3 py-2">
                 <span className="mr-2">{dateRange.name}</span>
                 <input
                   type="date"
@@ -393,7 +423,7 @@ function TableTemplate<T extends IObject = any>({
                 .slice((page - 1) * rowPerPage!, page * rowPerPage!)
                 .map((row, i) => (
                   <tr
-                    key={row["id"] ?? i}
+                    key={getKey!(row) ?? i}
                     className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                   >
                     <td className="pl-6 py-4">
@@ -402,7 +432,7 @@ function TableTemplate<T extends IObject = any>({
 
                     {columns.map((col, j) => (
                       <td
-                        key={row["id"] ?? i + "-" + j}
+                        key={i + "-" + j}
                         scope="row"
                         className="px-6 py-4 max-w-[200px] font-medium text-gray-900 dark:text-white"
                       >

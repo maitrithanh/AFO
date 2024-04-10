@@ -188,7 +188,7 @@ const DetailMenu = ({ id }: Props) => {
         >
           <FaCopy />
         </button>
-        <button title="Xóa cột" onClick={() => onRemove(idMeal, day)}>
+        <button title="Xóa" onClick={() => onRemove(idMeal, day)}>
           <FaTrashCan />
         </button>
       </span>
@@ -389,7 +389,7 @@ const DetailMenu = ({ id }: Props) => {
                             key={`${x.id}-${i}-${j}`}
                             className="group/item md:flex "
                           >
-                            <span className="group-hover/item:text-blue-400 ">
+                            <span className="group-hover/item:text-blue-400 mb-2">
                               {z.nameFood}
                             </span>
                             <button
@@ -410,6 +410,8 @@ const DetailMenu = ({ id }: Props) => {
                               onAddItem(x.id, i, food.id, food.name);
                             }}
                             dataSource={dataFood || []}
+                            getName={(x) => x.name}
+                            getKey={x => x.id + ''}
                           />
                         </div>
                       </td>

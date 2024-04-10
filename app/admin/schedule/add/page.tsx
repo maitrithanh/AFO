@@ -1,6 +1,6 @@
 "use client"; // dùng tạm //dùng luôn đi
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
     Select,
     SelectContent,
@@ -15,27 +15,16 @@ import { getCookie } from "cookies-next";
 import { time } from "console";
 import ScheduleTable from "@/app/components/schedule/scheduleTable";
 
-interface TimeStamp {
-    begin: string;
-    end: string;
-}
-
-interface CellData {
-    colSpan: number;
-    rowSpan?: number;
-    activity?: string;
-    key?: string;
-    isCurr?: boolean;
-}
-
 const AddSchedulePage = () => {
     const { t } = useTranslation();
-    const id = '24MN000000';
-    const { data } = useFetch<ScheduleDetail>(
-        "Schedule/ScheduleOfChild/" + id,
-        null,
-        id
-    );
+    const defaultData: ScheduleDetail = {
+        name: '',
+        start: '',
+        end: '',
+        items: []
+    };
+
+    const [data, setData] = useState(defaultData);
 
     return (
         <div className="px-5 w-full m-auto">
@@ -57,7 +46,7 @@ const AddSchedulePage = () => {
                 </div>
             </div>
             <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default h-full">
-                {data && <ScheduleTable dataSrc={data} />}
+                {data && <ScheduleTable dataSrc={data} edit/>}
             </div>
         </div>
     );

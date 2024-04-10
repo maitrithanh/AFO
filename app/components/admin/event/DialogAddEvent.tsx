@@ -80,7 +80,7 @@ const DialogAddEvent = ({
       <div className="bg-white p-4 rounded-xl  mx-4 w-fit h-fit">
         <div className="flex justify-between items-center mb-4 py-2 border-b">
           <h3 className="text-2xl ">Thêm lịch sự kiện</h3>
-          <button className="text-gray-600" onClick={onClose}>
+          <button className="text-gray-600" onClick={onClose} title="Đóng">
             <IoMdClose size={28} />
           </button>
         </div>

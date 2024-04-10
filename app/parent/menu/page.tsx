@@ -138,7 +138,7 @@ const MenuPage = () => {
                     <td
                       key={`${x.id}-${i}`}
                       className={`${
-                        isCurrentMeal(i, x.id) ? `text-[#FFC694] font-bold` : ""
+                        isCurrentMeal(i, x.id) ? `font-bold` : ""
                       } md:px-6 pt-2 min-h-[200px] border md:p-2`}
                     >
                       {getListFood(i, x.id).map((z, j) => (

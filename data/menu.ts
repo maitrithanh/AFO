@@ -128,8 +128,28 @@ export const  menu = [
     {
         text: 'schoolFee',
         icon: GiTeacher,
-        pathname: '/admin/schoolfee',
-        img: 'cost.webp'
+        pathname: '#',
+        img: 'cost.webp',
+        child: [
+            {
+                text: 'Danh sách học phí',
+                icon: GiTeacher,
+                pathname: '/admin/schoolfee',
+                img: 'cost.webp'
+            }, 
+            {
+                text: 'Lịch sử đóng tiền',
+                icon: GiTeacher,
+                pathname: '/admin/payment',
+                img: 'cost.webp'
+            }, 
+            {
+                text: 'Lịch sử chuyển khoản',
+                icon: GiTeacher,
+                pathname: '/admin/transaction',
+                img: 'cost.webp'
+            }, 
+        ]
     }, 
     {
         text: 'notification',

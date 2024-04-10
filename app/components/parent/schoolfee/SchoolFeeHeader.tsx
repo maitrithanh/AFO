@@ -6,7 +6,7 @@ const SchoolFeeHeader = () => {
   const { t } = useTranslation();
   return (
     <>
-      <div className="pb-2 w-full">
+      <div className="w-full p-4 pb-0 md:p-10 md:pb-0">
         <p className="w-fit rounded-2xl text-2xl font-bold ">
           {t("infoTuition")}
         </p>

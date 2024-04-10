@@ -3,6 +3,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ScheduleDetail, { ScheduleItem } from "@/types/ScheduleDetail";
+import { FaTrashCan } from "react-icons/fa6";
+import AddItem from "../admin/menu/addItem";
+import useFetch from "@/utils/useFetch";
+import Activity from "@/types/Activity";
 
 interface TimeStamp {
     begin: string;
@@ -26,8 +30,14 @@ interface Props {
     edit?: boolean
 }
 
+const StartTime = "07:00";
+const EndTime = "17:00";
+
 const ScheduleTable = ({ dataSrc, edit }: Props) => {
+
     const [data, setData] = useState(dataSrc);
+
+    const { data: dataActivity } = useFetch<Activity[]>('/schedule/listActivities');
 
     const { t } = useTranslation();
     const days = [
@@ -60,10 +70,11 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
                 return { begin: x.begin, end: x.end };
             }) || []),
         ];
-        list.sort(sortByBegin);
 
-        var n = list.length;
-        for (var i = 0; i < n; i++) {
+        list.sort(sortByBegin);
+        
+        for (var i = 0; i < list.length; i++) {
+            var n = list.length;
             if (i + 1 >= n) {
                 if (i < n) res.push(list[i]);
                 break;
@@ -97,7 +108,34 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
             list.sort(sortByBegin);
         }
 
-        return res;
+        //fill all gap inbetween
+        var filledList: TimeStamp[] = [];
+        if (res.length > 1) { 
+            filledList.push(res[0]);
+
+            for (var i = 1; i < res.length; i++) {
+                var curr = res[i - 1];
+                var next = res[i];
+
+                if (curr.end < next.begin) { 
+                    filledList.push({
+                        begin: curr.end,
+                        end: next.begin
+                    });
+                }
+                filledList.push(next);
+            }
+        }
+
+        //return res;
+
+        //add placeholder at the end
+        var placeholder: TimeStamp = {
+            begin: filledList.length > 0 ? filledList[filledList.length - 1].end : StartTime,
+            end: EndTime
+        };
+        if (placeholder.begin < EndTime) filledList.push(placeholder);
+        return filledList;
     }, [data]);
 
     const tableData = useMemo<CellData[][]>(() => {
@@ -132,6 +170,11 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
                     cell.dayEnd = day;
                     cell.timeStart = time.begin;
                     cell.timeEnd = time.end;
+                } else { 
+                    cell.dayStart = day;
+                    cell.dayEnd = day;
+                    cell.timeStart = time.begin;
+                    cell.timeEnd = time.end;
                 }
 
                 res[i].push(cell);
@@ -146,7 +189,7 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
                     var curr = res[i][j];
 
                     //find duplicated activity
-                    if (dup.colSpan && dup.rowSpan && dup.activity == curr.activity) {
+                    if (dup.colSpan && dup.rowSpan && dup.activity == curr.activity && dup.dayEnd != null && dup.dayEnd + 1 == curr.dayStart) {
                         curr.colSpan = 0; //delete this cell
                         dup.colSpan++; //merge dup cell
                         if (curr.isCurr) dup.isCurr = true;
@@ -167,7 +210,7 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
                 if (!curr.colSpan || !curr.rowSpan) continue;
 
                 //find duplicated activity
-                if (dup.colSpan && dup.rowSpan && dup.activity == curr.activity) {
+                if (dup.colSpan && dup.rowSpan && dup.activity == curr.activity && dup.timeEnd == curr.timeStart) {
                     curr.colSpan = 0; //delete this cell
                     dup.rowSpan++; //merge dup cell
                     if (curr.isCurr) dup.isCurr = true;
@@ -191,6 +234,24 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
         });
     }
 
+    const onCellAdd = (a: Activity, day: number, begin: string, end: string) => {
+        if (begin >= end) return;
+
+        setData(data => {
+            return {
+                ...data,
+                items: [...data.items, {
+                    day: day,
+                    begin: begin,
+                    end: end,
+                    note: '',
+                    activity: a.name,
+                    idActivity: a.id
+                }]
+            }
+        });
+    }
+
     return (
         <table className="w-full">
             <thead>
@@ -204,7 +265,7 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
                         <>
                             <th
                                 key={x}
-                                className={`${getToday() == i ? "bg-white text-main rounded-md" : ""
+                                className={`${getToday() == i && !edit ? "bg-white text-main rounded-md" : ""
                                     } flex h-15 items-center justify-center rounded-tl-sm p-1 text-xs font-semibold sm:text-base xl:p-5`}
                             >
                                 <span className="hidden lg:block"> {t(x)} </span>
@@ -223,19 +284,25 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
                                 <div className="group w-full flex-grow cursor-pointer ">
                                     <div
                                         className={`${ts.begin <= getCurrentTimeHHmm() &&
-                                            ts.end >= getCurrentTimeHHmm()
+                                            ts.end >= getCurrentTimeHHmm() && !edit
                                             ? "border-[3px]"
                                             : ""
                                             } event bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm text-center border-main bg-gray px-3 py-1 group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}
                                     >
-                                        <span>{ts.begin + "-" + ts.end}</span>
+                                        <span>{ts.begin + " - " + (ts.end)}</span>
                                     </div>
                                 </div>
                             </th>
 
                             {days.map((dayName, day) => (
                                 <>
-                                    <ScheduleItemEl cellData={tableData[tsIndex][day]} onDelete={onCellDelete} />
+                                    <ScheduleItemEl
+                                        cellData={tableData[tsIndex][day]}
+                                        onDelete={onCellDelete}
+                                        onAdd={onCellAdd}
+                                        edit={edit}
+                                        activities={dataActivity || []}
+                                    />
                                 </>
                             ))}
                         </>
@@ -247,22 +314,62 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
 
 interface ScheduleItemElProp { 
     cellData: CellData,
-    onDelete: (day: number | undefined, begin: string | undefined) => void;
+    onDelete: (day: number | undefined, begin: string | undefined) => void
+    onAdd: (a: Activity, day:number, begin: string, end: string ) => void
+    edit: boolean | undefined
+    activities: Activity[]
 }
 
-const ScheduleItemEl = ({ cellData, onDelete }: ScheduleItemElProp) => {
-    if(!cellData.key) return <td></td>
-
+const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities }: ScheduleItemElProp) => {
     const { colSpan, activity, key, rowSpan, isCurr, dayStart, dayEnd, timeStart, timeEnd } = cellData;
+
+    const addMinute = (time: string, add: number): string => { 
+        var arr = time.split(':');
+        if (arr.length < 2) return '';
+        var h: number = +arr[0];
+        var m: number = +arr[1];
+
+        m += add;
+        h += Math.floor(m / 60);
+        m %= 60;
+        h %= 24;
+
+        const format = (n: number): string => n < 10 ? '0' + n : '' + n;
+
+        return format(h) + ':' + format(m);
+    }
+
+    if (!cellData.key) return <td
+        className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31`}>
+        {edit &&
+            <div>
+                <AddItem<Activity>
+                    onAdd={(x) => {
+                        var end = addMinute(timeStart!, x.time);
+                        if (end > EndTime) end = EndTime;
+                        if (timeEnd && end > timeEnd) end = timeEnd;
+                        //onAdd(x, dayStart!, timeStart!, timeEnd!);
+                        onAdd(x, dayStart!, timeStart!, end);
+                    }}
+                    dataSource={activities}
+                    getName={(x) => (x.name ?? '')}
+                    getKey={x => x.id + ''}
+                    placeholder="Hoạt động"
+                    width="150%"
+                />
+            </div>
+        }
+    </td>
+
     if (!colSpan || !rowSpan) return <></>;
 
-    var sp = isCurr ? "bg-mainBlur border-r-[3px]  border-l-[3px]" : "";
+    var sp = isCurr && !edit ? "bg-mainBlur border-r-[3px]  border-l-[3px]" : "";
 
     const getDays = (a: number | undefined, b: number | undefined): string => {
         if (a == undefined || b == undefined) return '';
-        if (a == b) return `T${a + 2}`;
+        if (a == b) return `Thứ ${a + 2}`;
 
-        return `T${a + 2} - T${b + 2}`;
+        return `Thứ ${a + 2} - Thứ ${b + 2}`;
     }
 
     return (
@@ -279,18 +386,25 @@ const ScheduleItemEl = ({ cellData, onDelete }: ScheduleItemElProp) => {
                     <span className={`event-name text-sm font-semibold text-center`}>
                         {activity}
                     </span>
-                    <span>
-                        <button onClick={() => onDelete(dayStart, timeStart)}>delete</button>
-                    </span>
+                    {
+                        edit &&
+                        <div className="absolute right-0 top-0 pt-1 pe-2 hidden group-hover:block">
+                            <button onClick={() => onDelete(dayStart, timeStart)} title="Xóa">
+                                <FaTrashCan />
+                            </button>
+                        </div>
+                    }
                     {/* <span>
-                            {rowSpan + '-' + colSpan}
-                        </span> */}
+                        {dayStart} {timeStart + ' ' + timeEnd}
+                    </span> */}
                 </div>
             </div>
 
-            <div className={`absolute left-[20px] top-0 italic ${!sp ? 'hidden' : ''} group-hover:block`}>
-                {getDays(dayStart, dayEnd)}, {timeStart + ' - ' + timeEnd}
-            </div>
+            {
+                !edit && <div className={`absolute left-[20px] top-0 italic ${!sp ? 'hidden' : ''} group-hover:block`}>
+                    {getDays(dayStart, dayEnd)}, {timeStart + ' - ' + timeEnd}
+                </div>
+            }
         </td>
     );
 };

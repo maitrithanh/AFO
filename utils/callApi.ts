@@ -4,8 +4,7 @@ import { getCookie } from "cookies-next";
 // export const baseURL = "http://rowoji9583-001-site1.anytempurl.com/api/";
 //  export const baseURL = "https://localhost:7254/api/";
 //export const baseURL = "http://localhost:5088/api/";
-export const baseURL = process.env.NEXT_PUBLIC_API_ENPOINT;
-
+export const baseURL = process.env.NEXT_PUBLIC_API_ENPOINT ?? process.env.NEXT_PUBLIC_BASE_ENDPOINT + 'api/';
 
 const callApi = axios.create({baseURL})
 
