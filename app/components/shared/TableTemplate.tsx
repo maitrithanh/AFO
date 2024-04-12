@@ -66,7 +66,7 @@ export interface FilterOptions<T = any> {
 export interface TableTemplateFilter<T = any> {
   name: string;
   options: FilterOptions[];
-  autoFilter?: (obj: T) => string
+  autoFilter?: (obj: T) => string;
 }
 
 export interface TableTemplateRange<T = any> {
@@ -125,37 +125,37 @@ function TableTemplate<T extends IObject = any>({
   hideIndex,
   hidePaging,
   rowPerPage,
-  getKey
+  getKey,
 }: Props<T>) {
   //init
   if (!rowPerPage) rowPerPage = DefaultRowPerPage;
-  if (!getKey) getKey = (obj) => obj['id'];
+  if (!getKey) getKey = (obj) => obj["id"];
 
   //auto filter
-  useEffect(() => { 
-    filters?.forEach(x => { 
-      if (x.autoFilter) { 
-        var opts = Array.from(new Set(dataSource.map(y => x.autoFilter!(y))));
+  useEffect(() => {
+    filters?.forEach((x) => {
+      if (x.autoFilter) {
+        var opts = Array.from(new Set(dataSource.map((y) => x.autoFilter!(y))));
 
-        x.options = opts.map(y => { 
+        x.options = opts.map((y) => {
           var opt: FilterOptions = {
             value: y,
-            filter: (obj) => x.autoFilter!(obj) == y
-          }
+            filter: (obj) => x.autoFilter!(obj) == y,
+          };
           return opt;
-        })
+        });
 
         //all
         if (opts.length > 1) {
           var opt: FilterOptions = {
-            value: 'Tất cả',
-            filter: () => true
-          }
-          x.options = [opt, ...x.options]
+            value: "Tất cả",
+            filter: () => true,
+          };
+          x.options = [opt, ...x.options];
         }
       }
-    })
-  }, [dataSource])
+    });
+  }, [dataSource]);
 
   //filter for searching
   const filter = (obj: T): boolean => {
@@ -288,7 +288,7 @@ function TableTemplate<T extends IObject = any>({
       </div>
 
       <div className="bg-white shadow-3xl rounded-md">
-        <div className="flex justify-between items-center mb-2 py-3 mx-2">
+        <div className="md:flex md:justify-between items-center mb-2 py-3 mx-2">
           <div className="flex items-center flex-wrap gap-4 pl-4">
             {/* search */}
             {searchColumns?.length && (
@@ -388,7 +388,7 @@ function TableTemplate<T extends IObject = any>({
           </div>
 
           {addButton && (
-            <div className="flex-1 flex justify-end px-4">
+            <div className="flex-1 flex justify-end px-4 md:m-0 my-2">
               <Link href={addButton.link ?? ""} className="whitespace-nowrap">
                 {addButton.button || DefaultAddBtn}
               </Link>

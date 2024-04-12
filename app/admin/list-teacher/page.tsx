@@ -1,8 +1,10 @@
 "use client";
 
 import TableTemplate, {
+  FilterOptions,
   TableTemplateAction,
   TableTemplateColumn,
+  TableTemplateFilter,
   TableTemplateSort,
 } from "@/app/components/shared/TableTemplate";
 import DefaultImage from "@/app/components/shared/defaultImage";
@@ -77,8 +79,84 @@ const Columns: TableTemplateColumn<any>[] = [
       ),
   },
 ];
+//lọc giới tính
+const genderOptions: FilterOptions<any>[] = [
+  {
+    value: "Tất cả",
+    filter: () => true,
+  },
+  {
+    value: "Nam",
+    filter: (obj) => obj.gender == "Nam",
+  },
+  {
+    value: "Nữ",
+    filter: (obj) => obj.gender == "Nữ",
+  },
+];
 
-const searchCols = [Columns[0], Columns[1]];
+const filterGender: TableTemplateFilter = {
+  name: "Giới tính",
+  options: genderOptions,
+};
+//lọc trình độ
+const educationOptions: FilterOptions<any>[] = [
+  {
+    value: "Tất cả",
+    filter: () => true,
+  },
+  {
+    value: "Tiến Sĩ",
+    filter: (obj) => obj.education == "Tiến Sĩ",
+  },
+  {
+    value: "Thạc Sĩ",
+    filter: (obj) => obj.education == "Thạc Sĩ",
+  },
+  {
+    value: "Đại Học",
+    filter: (obj) => obj.education == "Đại Học",
+  },
+  {
+    value: "Cao Đẳng",
+    filter: (obj) => obj.education == "Cao Đẳng",
+  },
+  {
+    value: "Trung Cấp",
+    filter: (obj) => obj.education == "Trung Cấp",
+  },
+];
+
+const filterEducation: TableTemplateFilter = {
+  name: "Trình độ",
+  options: educationOptions,
+};
+//lọc lớp
+const classOptions: FilterOptions<any>[] = [
+  {
+    value: "Tất cả",
+    filter: () => true,
+  },
+  {
+    value: "Mầm",
+    filter: (obj) => obj.className.includes("Mầm"),
+  },
+  {
+    value: "Chồi",
+    filter: (obj) => obj.className.includes("Chồi"),
+  },
+  {
+    value: "Lá",
+    filter: (obj) => obj.className.includes("Lá"),
+  },
+];
+
+const filterClass: TableTemplateFilter = {
+  name: "Lớp phụ trách",
+  options: classOptions,
+};
+
+const searchCols = [Columns[1], Columns[2], Columns[3], Columns[7]];
 
 const ListTeacherPage = () => {
   const [nameTeacher, setNameTeacher] = useState("");
@@ -234,6 +312,7 @@ const ListTeacherPage = () => {
         addButton={{ link: "/admin/list-teacher/add" }}
         columns={Columns}
         searchColumns={searchCols}
+        filters={[filterGender, filterEducation, filterClass]}
         actions={[
           {
             icon: (

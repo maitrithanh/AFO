@@ -53,12 +53,12 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
   {
     title: "Trạng thái",
     getData: (x) =>
-      x.status.toLocaleLowerCase() == "còn học" ? (
+      x.status.toLocaleLowerCase() == "đang học" ? (
         <span className="text-green-600">{x.status}</span>
       ) : x.status.toLocaleLowerCase() == "nghỉ học" ? (
-        <span className="text-rose-600">{x.status}p</span>
+        <span className="text-rose-600">{x.status}</span>
       ) : (
-        <span className="text-yellow-600">{x.status}p</span>
+        <span className="text-yellow-600">{x.status}</span>
       ),
   },
   {

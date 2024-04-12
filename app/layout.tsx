@@ -21,7 +21,7 @@ const font_asap_condensed = Asap_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "AFO",
+  title: "AFO - PreSchool App",
   description: "PreSchool App",
 };
 
