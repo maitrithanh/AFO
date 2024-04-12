@@ -39,11 +39,11 @@ const AddTeacherPage = () => {
       Education: "",
       Note: "",
       File: "",
+      Email: "",
     },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
     if (!(data.PhoneNumber.length == 10)) {
       toast.error("Số điện thoại phải đủ 10 số");
       return;
@@ -65,7 +65,7 @@ const AddTeacherPage = () => {
       formData.append("File", currAvatar);
     }
     callApiWithToken()
-      .post(`Teacher/addTeacher`, formData, {
+      .post(`Teacher/addTeacher?email=${data["Email"]}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

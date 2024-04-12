@@ -10,7 +10,7 @@ const Dashboard = () => {
   const router = useRouter();
   return (
     <div className="w-full bg-white shadow-3xl rounded-md p-4 flex justify-center items-center">
-      <div className="my-16 grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 h-full">
+      <div className="my-16 grid 2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-6 h-full">
         {menu.map((item: any) => {
           return (
             <div
@@ -21,7 +21,7 @@ const Dashboard = () => {
               }
               key={item.name}
               style={{ backgroundColor: item.color }}
-              className={`relative hover:scale-105 cursor-pointer border-2 border-gray-100 hover:border-orange-200 shadow-3xl transition-all w-[200px] h-[#200px] rounded-xl`}
+              className={`relative hover:scale-105 cursor-pointer border-2 border-gray-100 hover:border-orange-200 shadow-3xl transition-all max-w-[200px] max-h-[#200px] rounded-xl`}
             >
               <Image
                 src={`/bg-card.webp`}
