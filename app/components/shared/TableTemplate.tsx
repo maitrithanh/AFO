@@ -15,6 +15,13 @@ import {
 } from "@/components/ui/select";
 import { t } from "i18next";
 import { toYMD } from "@/utils/dateTime";
+import { Asap_Condensed } from "next/font/google";
+
+const font_asap_condensed = Asap_Condensed({
+  weight: "400", // if single weight, otherwise you use array like [400, 500, 700],
+  style: "normal", // if single style, otherwise you use array like ['normal', 'italic']
+  subsets: ["latin"],
+});
 
 //default values
 //icon của action
@@ -283,8 +290,12 @@ function TableTemplate<T extends IObject = any>({
 
   return (
     <>
-      <div>
-        <h2 className="text-2xl font-bold mb-2">{title}</h2>
+      <div className="">
+        <h2
+          className={`text-2xl font-bold mb-2 ${font_asap_condensed.className}`}
+        >
+          {title}
+        </h2>
       </div>
 
       <div className="bg-white shadow-3xl rounded-md">

@@ -7,7 +7,7 @@ import Navbar from "../dashboard/navbar/Navbar";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <div className="flex h-screen bg-[#fafafb]">
+      <div className="flex h-screen bg-[#f0f2f5]">
         <Toaster />
         <div className="flex">
           <Sidebar />

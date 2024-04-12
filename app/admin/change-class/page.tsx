@@ -169,7 +169,6 @@ const ChangeClassPage = () => {
 
   return (
     <>
-      <BackAction />
       <TableTemplate
         title={`Danh sách xin chuyển lớp`}
         dataSource={classData || []}

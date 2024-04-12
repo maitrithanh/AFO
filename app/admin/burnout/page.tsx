@@ -161,7 +161,6 @@ const BurnOutPage = () => {
   };
   return (
     <>
-      <BackAction />
       <TableTemplate
         title={`Danh sách xin nghỉ`}
         dataSource={classData || []}
