@@ -1,6 +1,7 @@
+import ClassRoom from "./ClassRoom"
 
 export interface ScheduleItem { 
-    //id: number,
+    //id?: number,
     day: number,
     begin: string,
     end: string,
@@ -10,8 +11,11 @@ export interface ScheduleItem {
 }
 
 export default interface ScheduleDetail { 
+    id?: string,
     name: string,
+    desc: string,
     start: string,
     end: string,
     items: ScheduleItem[]
+    classes: ClassRoom[]
 }

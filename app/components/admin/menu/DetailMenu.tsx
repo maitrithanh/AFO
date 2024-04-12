@@ -21,6 +21,7 @@ import { callApiWithToken } from "@/utils/callApi";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import BackAction from "../BackAction";
+import toast from "react-hot-toast";
 
 interface Props {
   id?: string;
@@ -196,7 +197,7 @@ const DetailMenu = ({ id }: Props) => {
   };
 
   const onSubmit = () => {
-    if (weekEnd < weekStart) alert("Tuần kết thúc phải >= tuần bắt đầu");
+    if (weekEnd < weekStart) toast.error("Tuần kết thúc phải >= tuần bắt đầu")
 
     const obj: DetailMenuRes = {
       menu: {
@@ -212,22 +213,23 @@ const DetailMenu = ({ id }: Props) => {
       callApiWithToken()
         .put("Menu/update/" + id, obj)
         .then(() => {
-          alert("Thành công");
+          
+          toast.success("Lưu thành công");
           router.push("/admin/menu/");
         })
         .catch(() => {
-          alert("Thất bại");
+          toast.error("Có lỗi xảy ra");
         });
     } else {
       //add
       callApiWithToken()
         .post("Menu/Add", obj)
         .then(() => {
-          alert("Thành công");
+          toast.success("Lưu thành công");
           router.push("/admin/menu/");
         })
         .catch(() => {
-          alert("Thất bại");
+          toast.error("Có lỗi xảy ra");
         });
     }
   };
@@ -238,11 +240,11 @@ const DetailMenu = ({ id }: Props) => {
     callApiWithToken()
       .delete("Menu/delete/" + id)
       .then(() => {
-        alert("Thành công");
+        toast.success("Xóa thành công");
         router.push("/admin/menu/");
       })
       .catch(() => {
-        alert("Thất bại");
+        toast.error("Có lỗi xảy ra");
       });
   };
 
@@ -252,10 +254,10 @@ const DetailMenu = ({ id }: Props) => {
       <h2 className="pl-2 text-3xl">{edit ? "Chỉnh sửa Menu" : "Thêm Menu"}</h2>
       <div className="bg-white shadow-sm m-auto md:px-2 px-4 pt-4 rounded-xl">
         {/* top */}
-        <div className="w-full ">
+        <div className="w-full mb-5">
           {(dataMenu || !edit) && (
             <div className="">
-              <div className="flex group items-baseline">
+              <div className="flex group items-baseline mb-3">
                 <span className="mr-2 italic"> Tên menu:</span>
                 {editNameMenu || !edit ? (
                   <input
@@ -288,8 +290,8 @@ const DetailMenu = ({ id }: Props) => {
                 )}
               </div>
               <div className="group pr-2 w-full">
-                <p className=" italic ">
-                  <span className="mr-2"> Mô tả:</span>
+                <p className=" italic flex">
+                  <span className="mr-2 whitespace-nowrap"> Mô tả:</span>
                   {editDescMenu || !edit ? (
                     <textarea
                       title="Mô tả"
@@ -297,7 +299,7 @@ const DetailMenu = ({ id }: Props) => {
                       onChange={(e) => {
                         setDescMenu(e.currentTarget.value);
                       }}
-                      className="outline-main border-main bg-gray-100 p-2 w-full rounded-md"
+                      className="outline-main border-main bg-gray-100 p-2 flex-1 rounded-md"
                     />
                   ) : (
                     <span className="text-gray-600">{menuDesc}</span>

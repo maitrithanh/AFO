@@ -70,7 +70,7 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
         <div
           className={`w-full  transition-all duration-300 ${
             home ? "" : "text-white"
-          } ${isStickyNav ? "fixed" : "absolute"}  z-30 top-0  ${
+          } ${isStickyNav ? "fixed" : "absolute"}  z-40 top-0  ${
             home
               ? isStickyNav
                 ? "bg-[#ffffffb3] backdrop-blur-xl shadow-lg"

@@ -69,8 +69,22 @@ export const  menu = [
     {
         text: 'studySchedule',
         icon: MdOutlineInventory,
-        pathname: '/admin/schedule',
-        img: 'weekly.webp'
+        pathname: '#',
+        img: 'weekly.webp',
+        child: [
+            {
+                text: 'Môn học',
+                icon: MdOutlineInventory,
+                pathname: '/admin/activity',
+                img: 'weekly.webp'
+            },
+            {
+                text: 'Thời khóa biểu',
+                icon: MdOutlineInventory,
+                pathname: '/admin/schedule',
+                img: 'weekly.webp'
+            },
+        ]
     },
     ,
     {

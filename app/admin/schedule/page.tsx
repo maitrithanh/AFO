@@ -7,7 +7,7 @@ import useFetch from "@/utils/useFetch";
 
 const columns: TableTemplateColumn<ScheduleList>[] = [
     {
-        title: 'Tên',
+        title: 'Tên thời khóa biểu',
         getData: (x) => x.name
     },
     {

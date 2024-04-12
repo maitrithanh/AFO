@@ -27,15 +27,21 @@ interface CellData {
 
 interface Props {
     dataSrc: ScheduleDetail,
-    edit?: boolean
+    setData?: React.Dispatch<React.SetStateAction<ScheduleDetail>>,
+    edit?: boolean,
 }
 
 const StartTime = "07:00";
 const EndTime = "17:00";
 
-const ScheduleTable = ({ dataSrc, edit }: Props) => {
+const ScheduleTable = ({ dataSrc, setData, edit }: Props) => {
 
-    const [data, setData] = useState(dataSrc);
+    const data = dataSrc;
+    //const [data, setData] = useState(dataSrc);
+
+    const resetData = () => { 
+        if(setData) setData(x => { return { ...x, items: []} });
+    }
 
     const { data: dataActivity } = useFetch<Activity[]>('/schedule/listActivities');
 
@@ -108,9 +114,10 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
             list.sort(sortByBegin);
         }
 
+        console.log('r', res);
         //fill all gap inbetween
         var filledList: TimeStamp[] = [];
-        if (res.length > 1) { 
+        if (res.length) { 
             filledList.push(res[0]);
 
             for (var i = 1; i < res.length; i++) {
@@ -135,6 +142,12 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
             end: EndTime
         };
         if (placeholder.begin < EndTime) filledList.push(placeholder);
+
+        //placeholder start
+        if (filledList.length > 0 && filledList[0].begin > StartTime) {
+            filledList = [{ begin: StartTime, end: filledList[0].begin }, ...filledList]
+        }
+
         return filledList;
     }, [data]);
 
@@ -226,7 +239,7 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
     }, [data]);
 
     const onCellDelete = (day: number | undefined, begin: string | undefined) => { 
-        setData(data => {
+        if (setData) setData(data => {
             return {
                 ...data,
                 items: data.items.filter(x => x.day != day || x.begin != begin)
@@ -234,10 +247,19 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
         });
     }
 
+    //check if [a:b], [c:d] is overlapped
+    const timeOverlapped = (a: string, b: string, c: string, d: string): boolean => { 
+        if (a > c) return timeOverlapped(c, d, a, b);
+        if (c < b) return true;
+
+        return false;
+    }
+
     const onCellAdd = (a: Activity, day: number, begin: string, end: string) => {
         if (begin >= end) return;
+        if (data.items.find(x => x.day == day && timeOverlapped(begin, end, x.begin, x.end))) return;
 
-        setData(data => {
+        if (setData) setData(data => {
             return {
                 ...data,
                 items: [...data.items, {
@@ -308,6 +330,7 @@ const ScheduleTable = ({ dataSrc, edit }: Props) => {
                         </>
                     ))}
             </tbody>
+            {/* <button onClick={resetData}>reeeeeset</button> */}
         </table>
     );
 };
@@ -340,7 +363,7 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities }: Schedul
     }
 
     if (!cellData.key) return <td
-        className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31`}>
+        className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31 z-20`}>
         {edit &&
             <div>
                 <AddItem<Activity>
@@ -382,21 +405,34 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities }: Schedul
             className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31`}
         >
             <div className="w-full h-full flex-grow cursor-pointer ">
-                <div className={`${sp} event h-full items-center justify-center bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}>
-                    <span className={`event-name text-sm font-semibold text-center`}>
-                        {activity}
-                    </span>
-                    {
-                        edit &&
-                        <div className="absolute right-0 top-0 pt-1 pe-2 hidden group-hover:block">
-                            <button onClick={() => onDelete(dayStart, timeStart)} title="Xóa">
-                                <FaTrashCan />
-                            </button>
-                        </div>
-                    }
-                    {/* <span>
+                <div className="h-full flex flex-col">
+                    <div className={`${sp} event flex-1 items-center justify-center bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}>
+                        <span className={`event-name text-sm font-semibold text-center`}>
+                            {activity}
+                        </span>
+                        {
+                            edit &&
+                            <div className="absolute right-0 top-0 pt-1 pe-2 hidden group-hover:block">
+                                <button onClick={() => onDelete(dayStart, timeStart)} title="Xóa">
+                                    <FaTrashCan />
+                                </button>
+                            </div>
+                        }
+
+                        {/* <span>
                         {dayStart} {timeStart + ' ' + timeEnd}
                     </span> */}
+
+                    </div>
+
+                    {/* time */}
+                    {/* {
+                        edit &&
+                        <div className="w-full">
+                            <div className="flex-1 whitespace-nowrap">Số phút:</div>
+                            <input type="number" value={7} title="f" className="mb- w-full" />
+                        </div>
+                    } */}
                 </div>
             </div>
 

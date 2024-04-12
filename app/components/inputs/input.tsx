@@ -17,6 +17,8 @@ interface InputProps {
   showLockIcon?: boolean;
   defaultValue?: string;
   list?: any;
+  min?: number
+  step?: number
 }
 const Input: React.FC<InputProps> = ({
   id,
@@ -32,6 +34,8 @@ const Input: React.FC<InputProps> = ({
   showLockIcon,
   defaultValue,
   list,
+  min,
+  step
 }) => {
   return (
     <div className="w-full relative">
@@ -45,6 +49,8 @@ const Input: React.FC<InputProps> = ({
         {...register(id, { required })}
         placeholder=""
         type={type}
+        min={min}
+        step={step}
         className={`peer text-xl w-full pt-4 outline-none font-light transition disabled:opacity-70 disabled:cursor-not-allowed 
         ${
           borderBottom

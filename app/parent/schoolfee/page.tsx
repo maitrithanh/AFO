@@ -20,7 +20,7 @@ import SchoolFeeItem from "@/app/components/parent/schoolfee/SchoolFee";
 import SchoolFeeFooter from "@/app/components/parent/schoolfee/SchoolFeeFooter";
 import useFetch from "@/utils/useFetch";
 import PaymentModel from "@/types/payment";
-import TableTemplate, { TableTemplateFilter } from "@/app/components/shared/TableTemplate";
+import TableTemplate, { TableTemplateFilter, TableTemplateSort } from "@/app/components/shared/TableTemplate";
 import { toYMD } from "@/utils/dateTime";
 import { getCookie } from "cookies-next";
 
@@ -30,9 +30,21 @@ const filterStatus: TableTemplateFilter<PaymentModel> = {
   autoFilter: (x) => x.status
 }
 
+const sorts: TableTemplateSort<PaymentModel>[] = [
+  {
+    title: 'Mới nhất',
+    compare: (a, b) => toYMD(a.startTime) > toYMD(b.startTime) ? 1 : -1
+  },
+  {
+    title: 'Cũ nhất',
+    compare: (a, b) => toYMD(a.startTime) > toYMD(b.startTime) ? -1 : 1
+  }
+];
+
 const SchoolFeePage = () => {
   const id = getCookie("child");
   const { data } = useFetch<PaymentModel[]>('Tuition/GetTuitionByChild?childID=' + id);
+  //const { data } = useFetch<PaymentModel[]>('Tuition/getalltuition?month=4&year=2024');
 
   const debt = useMemo(() => { 
     var s = 0;
@@ -58,10 +70,8 @@ const SchoolFeePage = () => {
           name: 'Ngày: ',
           filter: (obj, from, to) => (from == '' || toYMD(obj.endTime) >= from) && (to == '' || toYMD(obj.startTime) <= to)
         }}
+        sortOptions={sorts}
       />
-      {/* {
-        data?.map(x => <SchoolFeeItem data={x} />)
-      } */}
 
       <SchoolFeeFooter debt={debt.toLocaleString('en')} />
     </div>

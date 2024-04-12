@@ -11,9 +11,10 @@ interface Props<T> {
     getKey: (x: T) => string,
     placeholder?: string,
     width?: string,
+    visible?: boolean
 }
 
-function AddItem<T = FoodRes> ({ onAdd, dataSource, getName, getKey, placeholder,width }: Props<T>) {
+function AddItem<T = FoodRes> ({ onAdd, dataSource, getName, getKey, placeholder,width, visible }: Props<T>) {
     const [keyword, setKeyword] = useState('');
 
     if (!placeholder) placeholder = "Thêm món";
@@ -36,12 +37,12 @@ function AddItem<T = FoodRes> ({ onAdd, dataSource, getName, getKey, placeholder
         setKeyword('');
     }
 
-    return <div className={`${keyword == '' ? 'invisible': ''} group-hover:visible z-10`}>
+    return <div className={`${keyword == '' && !visible ? 'invisible': ''} group-hover:visible z-10`}>
         <div className="flex relative group/search">
             <input type="text" name="food" placeholder={placeholder} className={`${hints?.length > 0? '' : 'text-red-400'} w-full outline-none peer`}
                 onChange={(e) => setKeyword(e.currentTarget.value)} value={keyword} onKeyDown={e => { if(e.key === 'Enter') onSubmit()}}
             />
-            <div className={`absolute left-0 bottom-0 translate-y-[100%] w-[${width}] bg-gray-200 max-h-[150px] overflow-auto invisible peer-focus:visible hover:visible z-10`}>
+            <div style={{width: width}} className={`absolute left-0 bottom-0 translate-y-[100%] bg-gray-200 max-h-[150px] overflow-auto invisible peer-focus:visible hover:visible z-10`}>
                 {hints.map(x => <div key={getKey(x)} className="hover:bg-white py-[5px] px-1 cursor-pointer" onClick={() => onChooseHint(x)}>
                     {getName(x)}
                 </div>)}
