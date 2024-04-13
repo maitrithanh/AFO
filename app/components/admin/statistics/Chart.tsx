@@ -1,5 +1,5 @@
 "use client";
-import React, { PureComponent, useState } from "react";
+import React, { PureComponent, ReactNode, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -214,7 +214,24 @@ const dataBar = [
   },
 ];
 
-const Chart = () => {
+interface ChartProps {
+  quantyTeach: any;
+  quantyParent: any;
+  quantyChild: any;
+}
+
+const Chart: React.FC<ChartProps> = ({
+  quantyTeach,
+  quantyParent,
+  quantyChild,
+}) => {
+  //pieChart
+
+  const dataPie = [
+    { name: "Giáo viên", value: quantyTeach },
+    { name: "Học sinh", value: quantyChild },
+    { name: "Phụ huynh", value: quantyParent },
+  ];
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [yearBar, setYearBar] = useState(new Date().getFullYear().toString());
 

@@ -59,7 +59,7 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
           <div className="flex items-center">
             <ul className="flex gap-2 mx-2 ">
               <DropdownNotification />
-              <DropdownMessage />
+              {role == "Admin" ? null : <DropdownMessage />}
             </ul>
             <div>
               <ShortProfile />

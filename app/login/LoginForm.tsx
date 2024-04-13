@@ -146,7 +146,7 @@ const LoginForm = () => {
             <div className="absolute z-10 top-0 left-0 -translate-y-[50%] justify-center w-full ">
               <Link href={"/"}>
                 <Image
-                  className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-lg bg-white"
+                  className="mx-auto h-[120px] w-[120px] rounded-full object-cover shadow-3xl bg-white"
                   src="/Logo.webp"
                   alt="AFO"
                   width={100}
