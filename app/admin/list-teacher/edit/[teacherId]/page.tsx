@@ -52,6 +52,8 @@ const EditTeacherPage = (params: any) => {
     }
   }, [detailTeacher]);
 
+  console.log(detailTeacher);
+
   const values = {
     FullName: detailTeacher?.fullName,
     teacherID: params.params.teacherId,
@@ -63,6 +65,7 @@ const EditTeacherPage = (params: any) => {
     Education: detailTeacher?.education,
     Email: detailTeacher?.email,
     Note: detailTeacher?.note,
+    Email: detailTeacher?.email,
     ClassId:
       detailTeacher?.classId != null
         ? `${detailTeacher?.classId + "-" + detailTeacher?.className}`
@@ -86,6 +89,7 @@ const EditTeacherPage = (params: any) => {
       Note: "",
       ClassId: "",
       teacherID: "",
+      Email: "",
     },
     values,
   });
@@ -158,7 +162,7 @@ const EditTeacherPage = (params: any) => {
       }
 
       callApiWithToken()
-        .put(`Teacher/putTeacher`, formData, {
+        .put(`Teacher/putTeacher?email=${data["Email"]}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

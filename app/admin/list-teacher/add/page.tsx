@@ -42,6 +42,7 @@ const AddTeacherPage = () => {
       Email: "",
       Note: "",
       File: "",
+      Email: "",
     },
   });
 
@@ -69,7 +70,7 @@ const AddTeacherPage = () => {
       formData.append("File", currAvatar);
     }
     callApiWithToken()
-      .post(`Teacher/addTeacher`, formData, {
+      .post(`Teacher/addTeacher?email=${data["Email"]}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

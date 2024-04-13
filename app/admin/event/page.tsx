@@ -15,13 +15,14 @@ import { CiEdit } from "react-icons/ci";
 
 const Columns: TableTemplateColumn[] = [
   {
-    title: "sự kiện",
+    title: "tên sự kiện",
+    getData: (x) => <div className="flex">{x.title}</div>,
+  },
+  {
+    title: "Số ngày nghỉ",
     getData: (x) => (
       <div className="flex">
-        {x.title}
-        <p className="bg-main w-5 h-5 flex items-center justify-center text-white rounded-full ml-2">
-          {x.countDay}
-        </p>
+        <span className="font-bold mx-1 text-main">{x.countDay}</span> ngày
       </div>
     ),
   },
@@ -72,24 +73,23 @@ const searchs: TableTemplateColumn[] = [
 
 const filterOptions: FilterOptions[] = [
   {
-    value: 'Tất cả',
-    filter: () => true
+    value: "Tất cả",
+    filter: () => true,
   },
   {
-    value: 'Chưa diễn ra',
-    filter: (x) => getDayDiff(x.startDate) > 0
+    value: "Chưa diễn ra",
+    filter: (x) => getDayDiff(x.startDate) > 0,
   },
   {
-    value: 'Đã diễn ra',
-    filter: (x) => getDayDiff(x.startDate) < 0
+    value: "Đã diễn ra",
+    filter: (x) => getDayDiff(x.startDate) < 0,
   },
-]
+];
 
-const filter: TableTemplateFilter =
-{
-  name: 'Hiển thị',
-  options: filterOptions
-}
+const filter: TableTemplateFilter = {
+  name: "Hiển thị",
+  options: filterOptions,
+};
 
 const EventPage = () => {
   const [editMode, setEditMode] = useState(false);
@@ -161,8 +161,10 @@ const EventPage = () => {
       sortOptions={sorts}
       filters={[filter]}
       dateRange={{
-        name: 'Ngày: ',
-        filter: (obj, from, to) => (from == '' || toYMD(obj.endDate) >= from) && (to == '' || toYMD(obj.startDate) <= to)
+        name: "Ngày: ",
+        filter: (obj, from, to) =>
+          (from == "" || toYMD(obj.endDate) >= from) &&
+          (to == "" || toYMD(obj.startDate) <= to),
       }}
     />
   );

@@ -145,13 +145,13 @@ export const  menu = [
             },
         ]
     }
-    ,
-    {
-        text: 'Album',
-        icon: GiTeacher,
-        pathname: '/admin/album',
-        img: 'album.webp'
-    }
+    // ,
+    // {
+    //     text: 'Album',
+    //     icon: GiTeacher,
+    //     pathname: '/admin/album',
+    //     img: 'album.webp'
+    // }
     ,
     {
         text: 'schoolFee',
@@ -185,11 +185,11 @@ export const  menu = [
         pathname: '/admin/notification',
         img: 'notification.webp'
     }
-    ,
-    {
-        text: 'feedback',
-        icon: GiTeacher,
-        pathname: '/admin/feedback',
-        img: 'feedback.webp'
-    }
+    // ,
+    // {
+    //     text: 'feedback',
+    //     icon: GiTeacher,
+    //     pathname: '/admin/feedback',
+    //     img: 'feedback.webp'
+    // }
 ]

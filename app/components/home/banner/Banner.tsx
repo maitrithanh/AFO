@@ -4,9 +4,11 @@ import React from "react";
 import { SiAzuredataexplorer } from "react-icons/si";
 import { FaPhoneVolume } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 const Banner = () => {
   const { t } = useTranslation();
+  const router = useRouter();
   return (
     <div className="relative h-screen grid xl:grid-cols-2 grid-cols-1 bg-[url(/banner-homepage.webp)] bg-no-repeat bg-cover">
       <div className="md:mx-24 mx-8">
@@ -22,7 +24,12 @@ const Banner = () => {
                 </span>
                 Hotline: 1900 8080
               </button>
-              <button className="transition-all duration-500  m-2 border-main hover:scale-105 border-[2px] p-4 rounded-full text-main font-bold uppercase flex items-center justify-center">
+              <button
+                onClick={() => {
+                  router.push("/login");
+                }}
+                className="transition-all duration-500  m-2 border-main hover:scale-105 border-[2px] p-4 rounded-full text-main font-bold uppercase flex items-center justify-center"
+              >
                 {t("exploreNow")}
                 <span className="mx-2 transition-all duration-500">
                   <SiAzuredataexplorer />
