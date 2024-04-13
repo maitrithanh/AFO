@@ -33,7 +33,7 @@ const SelectParent = ({ selectId, setSelectId }: Props) => {
 
   return (
     <>
-      <div className="flex w-full justify-center items-center mb-5">
+      <div className="flex w-full justify-center items-center my-5">
         <div className="w-[350px]">
           <SearchBar
             dataSource={searchHints}

@@ -363,7 +363,7 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities }: Schedul
     }
 
     if (!cellData.key) return <td
-        className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31 z-20`}>
+        className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31`}>
         {edit &&
             <div>
                 <AddItem<Activity>
@@ -406,7 +406,7 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities }: Schedul
         >
             <div className="w-full h-full flex-grow cursor-pointer ">
                 <div className="h-full flex flex-col">
-                    <div className={`${sp} event flex-1 items-center justify-center bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}>
+                    <div className={`${sp} event flex-1 items-center justify-center bg-[#eff4fb] left-2 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}>
                         <span className={`event-name text-sm font-semibold text-center`}>
                             {activity}
                         </span>

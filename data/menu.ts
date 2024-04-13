@@ -128,8 +128,22 @@ export const  menu = [
     {
         text: 'menu',
         icon: GiTeacher,
-        pathname: '/admin/menu',
-        img: 'menu.webp'
+        pathname: '#',
+        img: 'menu.webp',
+        child: [
+            {
+                text: 'Lịch ăn',
+                icon: GiTeacher,
+                pathname: '/admin/menu',
+                img: 'menu.webp',
+            },
+            {
+                text: 'Món ăn',
+                icon: GiTeacher,
+                pathname: '/admin/food',
+                img: 'menu.webp',
+            },
+        ]
     }
     ,
     {

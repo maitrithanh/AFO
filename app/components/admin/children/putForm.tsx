@@ -9,6 +9,8 @@ import { getImageUrl } from "@/utils/image";
 import Image from "next/image";
 import BackAction from "../BackAction";
 import { Asap_Condensed } from "next/font/google";
+import AddItem from "../menu/addItem";
+import SelectAddress from "../../shared/selectAddress";
 
 const font_asap_condensed = Asap_Condensed({
   weight: "600", // if single weight, otherwise you use array like [400, 500, 700],
@@ -29,7 +31,13 @@ const ChildrenPutForm = ({ data, setData, editable }: Props) => {
     setData({ ...data, [name]: value });
   };
 
-  console.log(data);
+  const setAddress = (addr: string) => { 
+    setData({ ...data, address: addr });
+  }
+
+  const decodeAddress = (encoded: string): string => {
+    return encoded.split('&').filter(x => x.length).join(', ');
+  }
 
   return (
     <>
@@ -115,7 +123,7 @@ const ChildrenPutForm = ({ data, setData, editable }: Props) => {
 
                 <div className="flex gap-4">
                   <div className="w-full my-2">
-                    <label htmlFor="birthDay" className="text-lg">
+                    <label htmlFor="BirthDay" className="text-lg">
                       Ngày sinh
                       <span className={`text-rose-600 `}>*</span>
                     </label>
@@ -154,7 +162,7 @@ const ChildrenPutForm = ({ data, setData, editable }: Props) => {
                   </div>
                 </div>
 
-                <div className="my-4">
+                {/* <div className="my-4">
                   <div className="w-full my-2">
                     <label htmlFor="birthDay" className="text-lg">
                       Địa chỉ
@@ -172,7 +180,20 @@ const ChildrenPutForm = ({ data, setData, editable }: Props) => {
                       disabled={!editable}
                     />
                   </div>
+                </div> */}
+
+                <div className="my-4">
+                  <label htmlFor="birthDay" className="text-lg">
+                    Địa chỉ
+                    <span className={`text-rose-600 `}>*</span>
+                  </label>
+                  <SelectAddress setAddress={setAddress} address={data?.address ?? ''} disable={!editable} />
+                  <p>
+                    {decodeAddress(data?.address ?? '')}
+                  </p>
                 </div>
+                {/* /test */}
+
                 <div className="my-4">
                   {/* Ghi chú */}
                   <label htmlFor="Note" className="text-lg">

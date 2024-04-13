@@ -41,7 +41,7 @@ const DetailChildrenPage = ({ params }: any) => {
         }
     }
 
-    return <div className="w-[60%] mx-auto">
+    return <div className="w-full p-4">
 
         <div className="flex justify-between mt-[20px]">
             <h2 className="font-bold text-xl mb-3">Thông tin người giám hộ: </h2>

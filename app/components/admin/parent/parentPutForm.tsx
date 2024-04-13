@@ -3,6 +3,7 @@
 import AddParentReq from "@/types/AddParentReq";
 import { toYMD } from "@/utils/dateTime";
 import { ChangeEvent } from "react";
+import SelectAddress from "../../shared/selectAddress";
 
 interface Props {
   data?: AddParentReq;
@@ -17,6 +18,15 @@ const ParentPutForm = ({ data, setData, editable }: Props) => {
 
     setData({ ...data, [name]: value });
   };
+
+
+  const setAddress = (addr: string) => {
+    setData({ ...data, address: addr });
+  }
+
+  const decodeAddress = (encoded: string): string => {
+    return encoded.split('&').filter(x => x.length).join(', ');
+  }
 
   return (
     <>
@@ -51,6 +61,7 @@ const ParentPutForm = ({ data, setData, editable }: Props) => {
                     <div className={`flex border  p-2.5 rounded-md `}>
                       <div className="flex items-center rounded-full ">
                         <input
+                          title="Nam"
                           id="Gender-male"
                           type="radio"
                           radioGroup="gender-parent"
@@ -72,6 +83,7 @@ const ParentPutForm = ({ data, setData, editable }: Props) => {
                         className={`flex items-center ps-4 rounded-full dark:border-gray-700`}
                       >
                         <input
+                          title="Nữ"
                           id="Gender-female"
                           type="radio"
                           radioGroup="gender-children"
@@ -97,6 +109,7 @@ const ParentPutForm = ({ data, setData, editable }: Props) => {
                       <span className={`text-rose-600 `}>*</span>
                     </label>
                     <input
+                      title="Ngày sinh"
                       type="date"
                       name="birthDay"
                       id="BirthDay"
@@ -124,6 +137,23 @@ const ParentPutForm = ({ data, setData, editable }: Props) => {
                       required
                       onChange={onInputChange}
                       value={data?.phoneNumber}
+                      disabled={!editable}
+                    />
+                  </div>
+                  <div className="w-full my-2">
+                    <label htmlFor="Email" className="text-lg">
+                      Email
+                      <span className={`text-rose-600 `}>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="email"
+                      id="Email"
+                      className={`border p-3 block rounded-md w-full focus-visible:border-main focus-visible:outline-none border-slate-300`}
+                      placeholder="Email"
+                      required
+                      onChange={onInputChange}
+                      value={data?.email}
                       disabled={!editable}
                     />
                   </div>
@@ -163,7 +193,7 @@ const ParentPutForm = ({ data, setData, editable }: Props) => {
                   </div>
                 </div>
 
-                <div className="my-4">
+                {/* <div className="my-4">
                   <div className="w-full my-2">
                     <label htmlFor="birthDay" className="text-lg">
                       Địa chỉ
@@ -181,7 +211,19 @@ const ParentPutForm = ({ data, setData, editable }: Props) => {
                       disabled={!editable}
                     />
                   </div>
+                </div> */}
+
+                <div className="my-4">
+                  <label htmlFor="birthDay" className="text-lg">
+                    Địa chỉ
+                    <span className={`text-rose-600 `}>*</span>
+                  </label>
+                  <SelectAddress setAddress={setAddress} address={data?.address ?? ''} disable={!editable} />
+                  <p>
+                    {decodeAddress(data?.address ?? '')}
+                  </p>
                 </div>
+
                 <div className="my-4">
                   {/* Ghi chú */}
                   <label htmlFor="Note" className="text-lg">

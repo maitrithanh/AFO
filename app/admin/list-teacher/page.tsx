@@ -32,7 +32,9 @@ const Columns: TableTemplateColumn<any>[] = [
   {
     title: "Hình",
     getData: (x) => (
-      <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+      <div className="w-[40px] h-[40px]">
+        <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+      </div>
     ),
   },
   {

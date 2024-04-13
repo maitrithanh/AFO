@@ -9,6 +9,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Input from "@/app/components/shared/Input";
 import { Asap_Condensed } from "next/font/google";
+import SelectAddress from "@/app/components/shared/selectAddress";
 
 const font_asap_condensed = Asap_Condensed({
   weight: "600", // if single weight, otherwise you use array like [400, 500, 700],
@@ -23,6 +24,7 @@ const AddTeacherPage = () => {
   const date = new Date();
   const year = date.getFullYear();
   const { data: dataClass } = useFetch(`ClassRoom/List/${year}`);
+  const [address, setAddress] = useState<string>('');
 
   const {
     register,
@@ -37,13 +39,13 @@ const AddTeacherPage = () => {
       BirthDay: "",
       IDNumber: "",
       Education: "",
+      Email: "",
       Note: "",
       File: "",
     },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
     if (!(data.PhoneNumber.length == 10)) {
       toast.error("Số điện thoại phải đủ 10 số");
       return;
@@ -60,6 +62,8 @@ const AddTeacherPage = () => {
     for (let key in data) {
       formData.append(key, data[key]);
     }
+
+    formData.set('Address', address ?? '');
 
     if (currAvatar) {
       formData.append("File", currAvatar);
@@ -80,6 +84,15 @@ const AddTeacherPage = () => {
         toast.error("Có lỗi xảy ra!");
       });
   };
+
+  const changeAddress = (addr: string) => {
+    setAddress(addr);
+  }
+
+  const decodeAddress = (encoded: string): string => {
+    return encoded.split('&').filter(x => x.length).join(', ');
+  }
+
   return (
     <>
       <BackAction />
@@ -231,7 +244,7 @@ const AddTeacherPage = () => {
                 />
               </div>
 
-              <div className="my-4">
+              {/* <div className="my-4">
                 <Input
                   label="Địa chỉ"
                   id="Address"
@@ -241,7 +254,18 @@ const AddTeacherPage = () => {
                   errors={errors}
                   required
                 />
+              </div> */}
+              <div className="my-4">
+                <label htmlFor="birthDay" className="text-lg">
+                  Địa chỉ
+                  <span className={`text-rose-600 `}>*</span>
+                </label>
+                <SelectAddress setAddress={changeAddress} address={address} />
+                <p>
+                  {decodeAddress(address ?? '')}
+                </p>
               </div>
+
               <div className="my-4">
                 {/* Ghi chú */}
                 <label htmlFor="Note" className="text-lg">
@@ -308,6 +332,7 @@ const AddTeacherPage = () => {
                   </div>
                 </div>
                 <input
+                  title="Avatar"
                   id={"File"}
                   type={"file"}
                   className="hidden"

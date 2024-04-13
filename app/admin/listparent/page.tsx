@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useState } from "react";
+import { Children, useState } from "react";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
 
@@ -32,9 +32,17 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
     getData: (x) => x.fullName,
   },
   {
-    title: "Mối quan hệ",
-    getData: (x) => x.relationship,
+    title: "Tên Trẻ Giám hộ",
+    getData: (x) => <div>
+      {x.children.map((y, i) => <div>
+        {(y.relationship != null ? `(${y.relationship} của) ` : '') + y.fullName}{i < x.children.length - 1 ? ',' : ''}
+      </div>)}
+    </div>,
   },
+  // {
+  //   title: "Mối quan hệ",
+  //   getData: (x) => x.relationship,
+  // },
   {
     title: "Số điện thoại",
     getData: (x) => x.phoneNumber,
@@ -52,10 +60,6 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
     getData: (x) => x.address,
   },
   {
-    title: "Tên Trẻ",
-    getData: (x) => <pre>{x.children.map((x) => x.fullName).join(",\n")}</pre>,
-  },
-  {
     title: "Trạng thái",
     getData: (x) =>
       x.active ? (
@@ -66,7 +70,7 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
   },
 ];
 
-const searchCols = [Columns[0], Columns[1]];
+const searchCols = [Columns[0], Columns[2]];
 
 const Action: TableTemplateAction<ParentListRes> = {
   getLink: (x) => `/admin/listparent/${x.id}`,

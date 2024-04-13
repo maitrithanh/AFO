@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Asap_Condensed } from "next/font/google";
+import SelectAddress from "@/app/components/shared/selectAddress";
 
 const font_asap_condensed = Asap_Condensed({
   weight: "600", // if single weight, otherwise you use array like [400, 500, 700],
@@ -39,11 +40,15 @@ const EditTeacherPage = (params: any) => {
     (info: any) => info.id == params.params.teacherId
   );
 
+  const [address, setAddress] = useState<string | null>(null);
+
   useEffect(() => {
     if (detailTeacher) {
       setTeacherClassID(
         detailTeacher?.classId == null ? "" : `${detailTeacher?.classId}`
       );
+
+      setAddress(detailTeacher?.encodedAddress ?? '')
     }
   }, [detailTeacher]);
 
@@ -56,6 +61,7 @@ const EditTeacherPage = (params: any) => {
     BirthDay: toYMD(detailTeacher?.birthDay),
     IDNumber: detailTeacher?.idNumber,
     Education: detailTeacher?.education,
+    Email: detailTeacher?.email,
     Note: detailTeacher?.note,
     ClassId:
       detailTeacher?.classId != null
@@ -145,6 +151,8 @@ const EditTeacherPage = (params: any) => {
         }
       }
 
+      formData.set('Address', address ?? '') ;
+
       if (currAvatar) {
         formData.append("File", currAvatar);
       }
@@ -164,6 +172,15 @@ const EditTeacherPage = (params: any) => {
         });
     }
   };
+
+  const changeAddress = (addr: string) => {
+    setAddress(addr);
+  }
+
+  const decodeAddress = (encoded: string): string => {
+    return encoded.split('&').filter(x => x.length).join(', ');
+  }
+
   return (
     <>
       <BackAction />
@@ -322,7 +339,7 @@ const EditTeacherPage = (params: any) => {
                 />
               </div>
 
-              <div className="my-4">
+              {/* <div className="my-4">
                 <Input
                   label="Địa chỉ"
                   id="Address"
@@ -332,7 +349,19 @@ const EditTeacherPage = (params: any) => {
                   errors={errors}
                   required
                 />
+              </div> */}
+              <div className="my-4">
+                <label htmlFor="birthDay" className="text-lg">
+                  Địa chỉ
+                  <span className={`text-rose-600 `}>*</span>
+                </label>
+                {address != null && <SelectAddress setAddress={changeAddress} address={address} />}
+                <p>
+                  {decodeAddress(address ?? '')}
+                </p>
               </div>
+
+
               <div className="my-4">
                 {/* Ghi chú */}
                 <label htmlFor="Note" className="text-lg">
@@ -399,6 +428,7 @@ const EditTeacherPage = (params: any) => {
                   </div>
                 </div>
                 <input
+                  title="Avatar"
                   id={"File"}
                   type={"file"}
                   className="hidden"

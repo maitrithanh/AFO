@@ -13,4 +13,5 @@ export interface ChildrenData {
     classRoom: string,
     parentName: string,
     phone: string,
+    relationship: string,
 }
