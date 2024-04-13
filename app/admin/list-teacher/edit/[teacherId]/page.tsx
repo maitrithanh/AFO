@@ -65,7 +65,6 @@ const EditTeacherPage = (params: any) => {
     Education: detailTeacher?.education,
     Email: detailTeacher?.email,
     Note: detailTeacher?.note,
-    Email: detailTeacher?.email,
     ClassId:
       detailTeacher?.classId != null
         ? `${detailTeacher?.classId + "-" + detailTeacher?.className}`
