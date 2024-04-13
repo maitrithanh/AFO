@@ -216,6 +216,7 @@ const dataBar = [
 
 const Chart = () => {
   const [year, setYear] = useState(new Date().getFullYear().toString());
+  const [yearBar, setYearBar] = useState(new Date().getFullYear().toString());
 
   const years = [];
   for (var i = 2024; i >= 2022; i--) years.push(i);
@@ -224,6 +225,28 @@ const Chart = () => {
       <Select
         onValueChange={(value: any) => {
           setYear(value);
+        }}
+      >
+        <SelectTrigger className="w-[180px] text-lg">
+          <p>Năm học:</p>
+          <SelectValue placeholder={year} defaultValue={year} />
+        </SelectTrigger>
+        <SelectContent>
+          {years.map((x) => (
+            <>
+              <SelectItem value={x + ""}>{x}</SelectItem>
+            </>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+
+  const selectYearBar = (
+    <div className="bg-white border shadow-sm rounded-sm">
+      <Select
+        onValueChange={(value: any) => {
+          setYearBar(value);
         }}
       >
         <SelectTrigger className="w-[180px] text-lg">
@@ -463,6 +486,7 @@ const Chart = () => {
             </svg>
             <h5 className="text-lg">Tỷ lệ học sinh mới / học sinh cũ</h5>
           </div>
+          <div>{selectYearBar}</div>
         </div>
         <ResponsiveContainer width="100%" height={550}>
           <BarChart

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import SidebarItem from "./SidebarItem";
 import { menu } from "@/data/menu";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "next-i18next";
 import { IoMenu } from "react-icons/io5";
 
@@ -13,6 +13,8 @@ const Sidebar = () => {
   const [expanded, setExpanded] = useState(true);
   const { t } = useTranslation();
   const [showSidebarBg, setShowSidebarBg] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     setShowSidebarBg(localStorage.getItem("bgSidebar") === "true");
@@ -67,16 +69,24 @@ const Sidebar = () => {
           className="h-screen min-h-full flex flex-col bg-white border-r shadow-sm fixed w-full md:w-fit"
         >
           <div className="p-4 pb-2 mb-2 flex justify-between items-center">
-            <Image
-              priority
-              src="/Logo.webp"
-              alt="Logo"
-              className={`overflow-hidden transition-all  ${
-                expanded ? "w-[52px]" : "w-0"
-              }`}
-              width={200}
-              height={200}
-            />
+            <div
+              onClick={() => {
+                router.push("/admin");
+              }}
+              className="cursor-pointer"
+            >
+              <Image
+                priority
+                src="/Logo.webp"
+                alt="Logo"
+                className={`overflow-hidden transition-all  ${
+                  expanded ? "w-[52px]" : "w-0"
+                }`}
+                width={200}
+                height={200}
+              />
+            </div>
+
             <p className="text-2xl">{!expanded ? "" : "AFO"}</p>
             <button
               className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
