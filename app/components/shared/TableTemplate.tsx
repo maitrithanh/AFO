@@ -415,8 +415,8 @@ function TableTemplate<T extends IObject = any>({
               {filteredData.length} dòng
             </div>
           )}
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
-            <thead className="text-md text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full text-md text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
+            <thead className="text-md text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
               <tr>
                 {!hideIndex && <th className="px-6 py-3">#</th>}
 
@@ -426,7 +426,7 @@ function TableTemplate<T extends IObject = any>({
                   </th>
                 ))}
 
-                <th>{/* actions */}</th>
+                <th>{/* actions */} Thao tác</th>
               </tr>
             </thead>
             <tbody>
