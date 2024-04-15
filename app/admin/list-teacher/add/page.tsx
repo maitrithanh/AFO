@@ -24,7 +24,7 @@ const AddTeacherPage = () => {
   const date = new Date();
   const year = date.getFullYear();
   const { data: dataClass } = useFetch(`ClassRoom/List/${year}`);
-  const [address, setAddress] = useState<string>('');
+  const [address, setAddress] = useState<string>("");
 
   const {
     register,
@@ -42,7 +42,6 @@ const AddTeacherPage = () => {
       Email: "",
       Note: "",
       File: "",
-      Email: "",
     },
   });
 
@@ -64,7 +63,7 @@ const AddTeacherPage = () => {
       formData.append(key, data[key]);
     }
 
-    formData.set('Address', address ?? '');
+    formData.set("Address", address ?? "");
 
     if (currAvatar) {
       formData.append("File", currAvatar);
@@ -88,11 +87,14 @@ const AddTeacherPage = () => {
 
   const changeAddress = (addr: string) => {
     setAddress(addr);
-  }
+  };
 
   const decodeAddress = (encoded: string): string => {
-    return encoded.split('&').filter(x => x.length).join(', ');
-  }
+    return encoded
+      .split("&")
+      .filter((x) => x.length)
+      .join(", ");
+  };
 
   return (
     <>
@@ -262,9 +264,7 @@ const AddTeacherPage = () => {
                   <span className={`text-rose-600 `}>*</span>
                 </label>
                 <SelectAddress setAddress={changeAddress} address={address} />
-                <p>
-                  {decodeAddress(address ?? '')}
-                </p>
+                <p>{decodeAddress(address ?? "")}</p>
               </div>
 
               <div className="my-4">
