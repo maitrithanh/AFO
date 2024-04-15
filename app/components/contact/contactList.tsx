@@ -77,7 +77,7 @@ const ContactList = ({ onSelect, titleChat }: Props) => {
     <div className="flex flex-col p-3 overflow-y-auto h-full">
       <div
         className={`text-3xl mb-3 font-bold ${font_asap_condensed.className} ${
-          titleChat ? "visible" : "invisible"
+          titleChat ? "visible" : "hidden"
         }`}
       >
         Danh sách liên hệ
