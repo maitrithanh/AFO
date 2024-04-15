@@ -3,6 +3,7 @@
 import DefaultImage from "@/app/components/shared/defaultImage";
 import { useGlobalContext } from "@/app/contexts/GlobalContext";
 import GetMessagesRes from "@/types/GetMessagesRes";
+import { getImageUrl } from "@/utils/image";
 import {
   ContactListData,
   OnReadMessage,
@@ -12,12 +13,20 @@ import {
 } from "@/utils/signalr/chatHub";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { Asap_Condensed } from "next/font/google";
+
+const font_asap_condensed = Asap_Condensed({
+  weight: "400", // if single weight, otherwise you use array like [400, 500, 700],
+  style: "normal", // if single style, otherwise you use array like ['normal', 'italic']
+  subsets: ["latin"],
+});
 
 interface Props {
   onSelect: (id: ContactListData) => void;
+  titleChat?: boolean;
 }
 
-const ContactList = ({ onSelect }: Props) => {
+const ContactList = ({ onSelect, titleChat }: Props) => {
   const [list, setList] = useState<ContactListData[]>([]);
   const { contactList: contactData, currChat } = useGlobalContext();
 
@@ -66,7 +75,13 @@ const ContactList = ({ onSelect }: Props) => {
 
   return (
     <div className="flex flex-col p-3 overflow-y-auto h-full">
-      <div className="text-xl mb-3 font-bold">Danh sách liên hệ</div>
+      <div
+        className={`text-3xl mb-3 font-bold ${font_asap_condensed.className} ${
+          titleChat ? "visible" : "invisible"
+        }`}
+      >
+        Danh sách liên hệ
+      </div>
 
       {list &&
         list.map((x) => (
@@ -79,7 +94,7 @@ const ContactList = ({ onSelect }: Props) => {
           >
             <div className="mr-3 relative">
               <DefaultImage
-                img={x.avatar}
+                img={getImageUrl(x.avatar)}
                 fallback="/avatar.webp"
                 className={`w-14 h-14 rounded-full cursor-pointer`}
                 custom="w-[50px] h-[50px]"

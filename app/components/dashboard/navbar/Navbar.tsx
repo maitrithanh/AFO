@@ -102,6 +102,14 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                 </div>
                 {!home ? (
                   <div className="flex gap-2 mr-6 text-black list-none">
+                    <div className="relative p-2 flex h-8.5 w-8.5 hover:text-main hover:scale-110 transition-all items-center justify-center rounded-full bg-[#ffffff50] group shadow-sm text-white">
+                      <Link
+                        href={`/${role?.toLowerCase()}`}
+                        title="Trở lại trang ứng dụng"
+                      >
+                        <IoApps size={24} />
+                      </Link>
+                    </div>
                     <DropdownNotification />
                     <DropdownMessage />
                   </div>
@@ -113,14 +121,6 @@ const Navbar: React.FC<navbarProps> = ({ admin = false, home = false }) => {
                   {login ? (
                     <div className="flex items-center justify-center">
                       <ShortProfile />
-                      <div className="mx-4 text-main hover:scale-110 transition-all">
-                        <Link
-                          href={`/${role?.toLowerCase()}`}
-                          title="Trở lại trang ứng dụng"
-                        >
-                          <IoApps size={24} />
-                        </Link>
-                      </div>
                     </div>
                   ) : (
                     <Link

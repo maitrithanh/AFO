@@ -127,7 +127,7 @@ const DropdownNotification = () => {
               <AlertDialogCancel className="bg-rose-600 hover:bg-rose-900 text-white hover:text-white">
                 Đóng
               </AlertDialogCancel>
-              {role == "Admin" ? (
+              {role == "Admin" && detailNoti?.title.includes("xin nghỉ") ? (
                 <AlertDialogAction
                   className="bg-orange-600 hover:bg-orange-900"
                   onClick={() => {
@@ -135,6 +135,16 @@ const DropdownNotification = () => {
                   }}
                 >
                   Danh sách xin nghỉ
+                </AlertDialogAction>
+              ) : null}
+              {role == "Admin" && detailNoti?.title.includes("chuyển lớp") ? (
+                <AlertDialogAction
+                  className="bg-orange-600 hover:bg-orange-900"
+                  onClick={() => {
+                    router.push("/admin/change-class");
+                  }}
+                >
+                  Danh sách xin chuyển lớp
                 </AlertDialogAction>
               ) : null}
             </AlertDialogFooter>

@@ -282,8 +282,8 @@ const Chart: React.FC<ChartProps> = ({
   );
   return (
     <>
-      <div className="flex gap-4">
-        <div className="bg-white w-2/3 p-4 my-4 text-sm font-thin">
+      <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
+        <div className="bg-white w-full md:col-span-2 p-4 md:my-4 mt-4 text-sm font-thin">
           <div className="mb-4 flex justify-between items-center">
             <div className="flex items-center gap-2">
               <svg
@@ -340,7 +340,7 @@ const Chart: React.FC<ChartProps> = ({
           </ResponsiveContainer>
         </div>
         {/* PieChart */}
-        <div className="bg-white w-1/3 p-4 my-4 text-sm font-thin">
+        <div className="bg-white w-full md:col-span-1 p-4 md:my-4 mb-4 text-sm font-thin">
           <div className=" flex justify-between items-center">
             <div className="flex items-center gap-2">
               <svg

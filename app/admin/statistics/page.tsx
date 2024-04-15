@@ -19,13 +19,11 @@ const Statistics = () => {
     return new Date(toYMD(paramDate)).getMonth() + 1;
   };
 
-  console.log(classData);
-
   return (
     <div className="">
       <div className="flex gap-4 flex-col md:flex-row">
         <div className="h-fit md:w-4/12 w-12/12 border-[#e6ebf1] bg-white shadow-sm p-[18px] rounded-sm">
-          <div className="flex items-center">
+          <div className="flex items-center md:justify-start justify-between">
             <p className="text-lg text-gray-400">Tổng số giáo viên:</p>
             <div className="bg-[#0088FE] text-white flex items-center rounded-sm px-2 ml-2">
               <p className="text-2xl font-bold">
@@ -34,12 +32,19 @@ const Statistics = () => {
             </div>
           </div>
           <p className="pt-[18px]">
-            Tháng này có <span className="text-main">2</span> giáo viên mới.
+            Tháng này có{" "}
+            <span className="text-main">
+              {
+                dataTeacher?.filter((x: any) => getMonth(x.joinDate) == month)
+                  .length
+              }
+            </span>{" "}
+            giáo viên mới.
           </p>
         </div>
 
         <div className="h-fit md:w-4/12 w-12/12 border-[#e6ebf1] bg-white shadow-sm p-[18px] rounded-sm">
-          <div className="flex items-center">
+          <div className="flex items-center md:justify-start justify-between">
             <p className="text-lg text-gray-400">Tổng số học sinh:</p>
             <div className="bg-[#00C49F] text-white flex items-center rounded-sm px-2 ml-2">
               <p className="text-2xl font-bold">
@@ -60,7 +65,7 @@ const Statistics = () => {
         </div>
 
         <div className="h-fit md:w-4/12 w-12/12 border-[#e6ebf1] bg-white shadow-sm p-[18px] rounded-sm">
-          <div className="flex items-center">
+          <div className="flex items-center md:justify-start justify-between">
             <p className="text-lg text-gray-400">Tổng số phụ huynh:</p>
             <div className="bg-[#FFBB28] text-white flex items-center rounded-sm px-2 ml-2">
               <p className="text-2xl font-bold">
@@ -82,7 +87,7 @@ const Statistics = () => {
         </div>
 
         <div className="h-fit md:w-4/12 w-12/12 border-[#e6ebf1] bg-white shadow-sm p-[18px] rounded-sm">
-          <div className="flex items-center">
+          <div className="flex items-center md:justify-start justify-between">
             <p className="text-lg text-gray-400">Tổng số lớp học:</p>
             <div className="bg-[#FF8042] text-white flex items-center rounded-sm px-2 ml-2">
               <p className="text-2xl font-bold">{classData?.length}</p>

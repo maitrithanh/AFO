@@ -93,7 +93,66 @@ const BurnOutPage = () => {
         })
         .then((response) => {
           toast.success("Tạo thành công");
-          handleSendNotiChangeClass();
+          callApiWithToken()
+            .post(
+              `Notification/sendUser`,
+              {
+                PhoneNumber: "admin",
+                Title: `${infoChild?.fullName} xin nghỉ`,
+                Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
+              },
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            )
+            .then((response) => {})
+            .catch((errors) => {
+              toast.error("Có lỗi", errors);
+            });
+          //GV1
+          callApiWithToken()
+            .post(
+              `Notification/sendUser`,
+              {
+                PhoneNumber: infoTeacher?.find((x: any) => {
+                  return x.id == detailClass?.teachers[0]?.teacherID;
+                })?.phoneNumber,
+                Title: `${infoChild?.fullName} xin nghỉ`,
+                Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
+              },
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            )
+            .then((response) => {})
+            .catch((errors) => {
+              toast.error("Có lỗi", errors);
+            });
+          //GV2
+          callApiWithToken()
+            .post(
+              `Notification/sendUser`,
+              {
+                PhoneNumber: infoTeacher?.find((x: any) => {
+                  return x.id == detailClass?.teachers[1]?.teacherID;
+                })?.phoneNumber,
+                Title: `${infoChild?.fullName} xin nghỉ`,
+                Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
+              },
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            )
+            .then((response) => {})
+            .catch((errors) => {
+              toast.error("Có lỗi", errors);
+            });
           onClose();
           setRefresh(true);
         })
@@ -103,68 +162,68 @@ const BurnOutPage = () => {
     }
   };
 
-  const handleSendNotiChangeClass = () => {
-    callApiWithToken()
-      .post(
-        `Notification/sendUser`,
-        {
-          PhoneNumber: "admin",
-          Title: `${infoChild?.fullName} xin nghỉ`,
-          Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((response) => {})
-      .catch((errors) => {
-        toast.error("Có lỗi", errors);
-      });
-    //GV1
-    callApiWithToken()
-      .post(
-        `Notification/sendUser`,
-        {
-          PhoneNumber: infoTeacher?.find((x: any) => {
-            return x.id == detailClass?.teachers[0]?.teacherID;
-          })?.phoneNumber,
-          Title: `${infoChild?.fullName} xin nghỉ`,
-          Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((response) => {})
-      .catch((errors) => {
-        toast.error("Có lỗi", errors);
-      });
-    //GV2
-    callApiWithToken()
-      .post(
-        `Notification/sendUser`,
-        {
-          PhoneNumber: infoTeacher?.find((x: any) => {
-            return x.id == detailClass?.teachers[1]?.teacherID;
-          })?.phoneNumber,
-          Title: `${infoChild?.fullName} xin nghỉ`,
-          Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((response) => {})
-      .catch((errors) => {
-        toast.error("Có lỗi", errors);
-      });
-  };
+  // const handleSendNotiChangeClass = () => {
+  //   callApiWithToken()
+  //     .post(
+  //       `Notification/sendUser`,
+  //       {
+  //         PhoneNumber: "admin",
+  //         Title: `${infoChild?.fullName} xin nghỉ`,
+  //         Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {})
+  //     .catch((errors) => {
+  //       toast.error("Có lỗi", errors);
+  //     });
+  //   //GV1
+  //   callApiWithToken()
+  //     .post(
+  //       `Notification/sendUser`,
+  //       {
+  //         PhoneNumber: infoTeacher?.find((x: any) => {
+  //           return x.id == detailClass?.teachers[0]?.teacherID;
+  //         })?.phoneNumber,
+  //         Title: `${infoChild?.fullName} xin nghỉ`,
+  //         Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {})
+  //     .catch((errors) => {
+  //       toast.error("Có lỗi", errors);
+  //     });
+  //   //GV2
+  //   callApiWithToken()
+  //     .post(
+  //       `Notification/sendUser`,
+  //       {
+  //         PhoneNumber: infoTeacher?.find((x: any) => {
+  //           return x.id == detailClass?.teachers[1]?.teacherID;
+  //         })?.phoneNumber,
+  //         Title: `${infoChild?.fullName} xin nghỉ`,
+  //         Content: `Học sinh ${infoChild?.fullName} xin nghỉ`,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {})
+  //     .catch((errors) => {
+  //       toast.error("Có lỗi", errors);
+  //     });
+  // };
 
   const onSubmitDelete = (reqId: any) => {
     callApiWithToken()

@@ -13,7 +13,7 @@ import { getImageUrl } from "@/utils/image";
 import useFetch from "@/utils/useFetch";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { MdBlock } from "react-icons/md";
+import { MdBlock, MdEdit } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import {
   AlertDialog,
@@ -322,7 +322,7 @@ const ListTeacherPage = () => {
                 className="text-gray-600"
                 title="Chỉnh sửa thông tin giáo viên"
               >
-                <CiEdit size={24} />
+                <MdEdit size={24} />
               </span>
             ),
             getLink: (x) => `/admin/list-teacher/edit/${x.id}`,

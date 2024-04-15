@@ -33,11 +33,17 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
   },
   {
     title: "Tên Trẻ Giám hộ",
-    getData: (x) => <div>
-      {x.children.map((y, i) => <div>
-        {(y.relationship != null ? `(${y.relationship} của) ` : '') + y.fullName}{i < x.children.length - 1 ? ',' : ''}
-      </div>)}
-    </div>,
+    getData: (x) => (
+      <div>
+        {x.children.map((y, i) => (
+          <div key={i}>
+            {(y.relationship != null ? `(${y.relationship} của) ` : "") +
+              y.fullName}
+            {i < x.children.length - 1 ? "," : ""}
+          </div>
+        ))}
+      </div>
+    ),
   },
   // {
   //   title: "Mối quan hệ",

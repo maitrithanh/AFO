@@ -109,7 +109,24 @@ const ChangeClassPage = () => {
           .then((response) => {
             handlRefresh();
             toast.success("Đã duyệt");
-            handleSendNotiChangeClass(idReq);
+            callApiWithToken()
+              .post(
+                `Notification/sendUser`,
+                {
+                  PhoneNumber: childData?.parent?.phoneNumber,
+                  Title: "Đơn xin chuyển lớp đã được duyệt",
+                  Content: `Đơn xin chuyển lớp có mã:${idReq} đã được duyệt`,
+                },
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  },
+                }
+              )
+              .then((response) => {})
+              .catch((errors) => {
+                toast.error("Có lỗi", errors);
+              });
           })
           .catch((error) => {
             toast.error("Có lỗi xảy ra!");

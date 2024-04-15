@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import React, { useMemo } from "react";
@@ -20,37 +20,42 @@ import SchoolFeeItem from "@/app/components/parent/schoolfee/SchoolFee";
 import SchoolFeeFooter from "@/app/components/parent/schoolfee/SchoolFeeFooter";
 import useFetch from "@/utils/useFetch";
 import PaymentModel from "@/types/payment";
-import TableTemplate, { TableTemplateFilter, TableTemplateSort } from "@/app/components/shared/TableTemplate";
+import TableTemplate, {
+  TableTemplateFilter,
+  TableTemplateSort,
+} from "@/app/components/shared/TableTemplate";
 import { toYMD } from "@/utils/dateTime";
 import { getCookie } from "cookies-next";
 
 const filterStatus: TableTemplateFilter<PaymentModel> = {
-  name: 'Trạng thái',
+  name: "Trạng thái",
   options: [],
-  autoFilter: (x) => x.status
-}
+  autoFilter: (x) => x.status,
+};
 
 const sorts: TableTemplateSort<PaymentModel>[] = [
   {
-    title: 'Mới nhất',
-    compare: (a, b) => toYMD(a.startTime) > toYMD(b.startTime) ? 1 : -1
+    title: "Mới nhất",
+    compare: (a, b) => (toYMD(a.startTime) > toYMD(b.startTime) ? 1 : -1),
   },
   {
-    title: 'Cũ nhất',
-    compare: (a, b) => toYMD(a.startTime) > toYMD(b.startTime) ? -1 : 1
-  }
+    title: "Cũ nhất",
+    compare: (a, b) => (toYMD(a.startTime) > toYMD(b.startTime) ? -1 : 1),
+  },
 ];
 
 const SchoolFeePage = () => {
   const id = getCookie("child");
-  const { data } = useFetch<PaymentModel[]>('Tuition/GetTuitionByChild?childID=' + id);
+  const { data } = useFetch<PaymentModel[]>(
+    "Tuition/GetTuitionByChild?childID=" + id
+  );
   //const { data } = useFetch<PaymentModel[]>('Tuition/getalltuition?month=4&year=2024');
 
-  const debt = useMemo(() => { 
+  const debt = useMemo(() => {
     var s = 0;
-    data?.forEach(x => s += x.total - x.paid)
+    data?.forEach((x) => (s += x.total - x.paid));
     return s;
-  }, [data])
+  }, [data]);
 
   return (
     <div className="w-full min-h-[88vh] m-auto rounded-lg bg-white">
@@ -61,26 +66,32 @@ const SchoolFeePage = () => {
         dataSource={data || []}
         columns={[
           {
-            title: '',
-            getData: (x) => <SchoolFeeItem data={x} />
-          }
+            title: "",
+            getData: (x) => <SchoolFeeItem data={x} />,
+          },
         ]}
         filters={[filterStatus]}
         dateRange={{
-          name: 'Ngày: ',
-          filter: (obj, from, to) => (from == '' || toYMD(obj.endTime) >= from) && (to == '' || toYMD(obj.startTime) <= to)
+          name: "Ngày: ",
+          filter: (obj, from, to) =>
+            (from == "" || toYMD(obj.endTime) >= from) &&
+            (to == "" || toYMD(obj.startTime) <= to),
         }}
         sortOptions={sorts}
       />
+      <div className="flex w-full justify-center items-center">
+        {data?.length == 0 ? "Không có dữ liệu" : null}
+      </div>
 
-      <SchoolFeeFooter debt={debt.toLocaleString('en')} />
+      <SchoolFeeFooter debt={debt.toLocaleString("en")} />
     </div>
   );
 };
 
 export default SchoolFeePage;
 
-{/* <div className="relative py-4 my-4 bg-white flex items-center w-full border-b">
+{
+  /* <div className="relative py-4 my-4 bg-white flex items-center w-full border-b">
   <div className="mr-2 text-green-400">
     <FaCheckCircle size={22} />
   </div>
@@ -128,4 +139,5 @@ export default SchoolFeePage;
       </AlertDialogContent>
     </AlertDialog>
   </div>
-</div> */}
+</div> */
+}

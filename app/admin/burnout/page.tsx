@@ -130,7 +130,24 @@ const BurnOutPage = () => {
       .put(`CheckIn/putRequest?reqID=${idReq}`)
       .then((response) => {
         toast.success("Đã duyệt");
-        handleSendNotiChangeClass(idReq);
+        callApiWithToken()
+          .post(
+            `Notification/sendUser`,
+            {
+              PhoneNumber: childData?.parent?.phoneNumber,
+              Title: "Đơn xin nghỉ đã được duyệt",
+              Content: `Đơn xin nghỉ có mã:${idReq} đã được duyệt`,
+            },
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          )
+          .then((response) => {})
+          .catch((errors) => {
+            toast.error(errors, errors);
+          });
         setRefresh(true);
         handlRefresh();
       })
@@ -139,26 +156,26 @@ const BurnOutPage = () => {
       });
   };
 
-  const handleSendNotiChangeClass = (idReq: string) => {
-    callApiWithToken()
-      .post(
-        `Notification/sendUser`,
-        {
-          PhoneNumber: childData?.parent?.phoneNumber,
-          Title: "Đơn xin nghỉ đã được duyệt",
-          Content: `Đơn xin nghỉ có mã:${idReq} đã được duyệt`,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((response) => {})
-      .catch((errors) => {
-        toast.error("Có lỗi", errors);
-      });
-  };
+  // const handleSendNotiChangeClass = (idReq: string) => {
+  //   callApiWithToken()
+  //     .post(
+  //       `Notification/sendUser`,
+  //       {
+  //         PhoneNumber: childData?.parent?.phoneNumber,
+  //         Title: "Đơn xin nghỉ đã được duyệt",
+  //         Content: `Đơn xin nghỉ có mã:${idReq} đã được duyệt`,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {})
+  //     .catch((errors) => {
+  //       toast.error(errors, errors);
+  //     });
+  // };
   return (
     <>
       <TableTemplate
