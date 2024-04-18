@@ -426,7 +426,9 @@ function TableTemplate<T extends IObject = any>({
                   </th>
                 ))}
 
-                <th>{/* actions */} Thao tác</th>
+                {actions?.length && 
+                  <th>{/* actions */} Thao tác</th>
+                }
               </tr>
             </thead>
             <tbody>
@@ -450,26 +452,29 @@ function TableTemplate<T extends IObject = any>({
                         {col.getData(row)}
                       </td>
                     ))}
-                    <td className="md:px-6 md:py-4">
-                      <div className="flex items-center">
-                        {actions?.map((act, i) => (
-                          <Link
-                            key={i}
-                            href={act.getLink ? act.getLink(row) : ""}
-                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                            onClick={
-                              act.onClick
-                                ? () => {
+                    {
+                      actions?.length &&
+                      <td className="md:px-6 md:py-4">
+                        <div className="flex items-center">
+                          {actions?.map((act, i) => (
+                            <Link
+                              key={i}
+                              href={act.getLink ? act.getLink(row) : ""}
+                              className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                              onClick={
+                                act.onClick
+                                  ? () => {
                                     act.onClick!(row);
                                   }
-                                : () => {}
-                            }
-                          >
-                            {act.icon ?? DefaultActionIcon}
-                          </Link>
-                        ))}
-                      </div>
-                    </td>
+                                  : () => { }
+                              }
+                            >
+                              {act.icon ?? DefaultActionIcon}
+                            </Link>
+                          ))}
+                        </div>
+                      </td>
+                    }
                   </tr>
                 ))}
             </tbody>

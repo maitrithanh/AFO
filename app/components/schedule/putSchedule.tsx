@@ -87,7 +87,7 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
   };
 
   return (
-    <div>
+    <div className="pb-[120px]">
       <div className="w-full mb-5 px-5">
         <h2 className="text-3xl mb-3">
           {edit ? "Chỉnh sửa " : "Thêm "} Thời khóa biểu
@@ -140,7 +140,7 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
             </div>
           )}
           <button
-            title="Sửa tên menu"
+            title=""
             className={`${
               editDesc ? "text-green-600" : "invisible"
             } ml-2 group-hover:visible`}
@@ -153,6 +153,9 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
 
       {/* items */}
       <div className="px-5 w-full m-auto">
+        <div className="mr-2 whitespace-nowrap italic text-xl mb-3">
+          Thời khóa biểu:
+        </div>
         <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default h-full">
           {items && <ScheduleTable dataSrc={items} setData={setItems} edit />}
         </div>

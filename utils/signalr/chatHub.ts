@@ -1,7 +1,8 @@
 import GetMessagesRes from '@/types/GetMessagesRes';
 import { HubConnectionBuilder, HttpTransportType, HubConnectionState, HubConnection } from '@microsoft/signalr';
 
-const chatHubUrl = "https://jzeno.io.vn:4321/chatHub/";
+const chatHubUrl = process.env.NEXT_PUBLIC_BASE_ENDPOINT ? process.env.NEXT_PUBLIC_BASE_ENDPOINT + 'chatHub/' : "https://jzeno.io.vn:4321/chatHub/";
+
 
 var connection: HubConnection = new HubConnectionBuilder()
     .withUrl(chatHubUrl, {

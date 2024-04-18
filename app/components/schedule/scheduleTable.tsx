@@ -23,18 +23,21 @@ interface CellData {
     dayEnd?: number;
     timeStart?: string;
     timeEnd?: string;
+
+    item?: ScheduleItem
 }
 
 interface Props {
     dataSrc: ScheduleDetail,
     setData?: React.Dispatch<React.SetStateAction<ScheduleDetail>>,
     edit?: boolean,
+    isCurrWeek?: boolean
 }
 
 const StartTime = "07:00";
 const EndTime = "17:00";
 
-const ScheduleTable = ({ dataSrc, setData, edit }: Props) => {
+const ScheduleTable = ({ dataSrc, setData, edit, isCurrWeek }: Props) => {
 
     const data = dataSrc;
     //const [data, setData] = useState(dataSrc);
@@ -70,6 +73,7 @@ const ScheduleTable = ({ dataSrc, setData, edit }: Props) => {
 
         const sortByBegin = (a: TimeStamp, b: TimeStamp) =>
             a.begin > b.begin ? 1 : -1;
+        
         //sort + by begin
         var list: TimeStamp[] = [
             ...(data?.items.map((x) => {
@@ -82,7 +86,9 @@ const ScheduleTable = ({ dataSrc, setData, edit }: Props) => {
         for (var i = 0; i < list.length; i++) {
             var n = list.length;
             if (i + 1 >= n) {
-                if (i < n) res.push(list[i]);
+                if (i < n) {
+                    res.push(list[i]);
+                }
                 break;
             }
 
@@ -102,19 +108,22 @@ const ScheduleTable = ({ dataSrc, setData, edit }: Props) => {
 
             //b > c
             //b > d => a-c, c-d, d-b vd: 9-12 + 10-11 =>9-10 + 10-11+ 11-12
-            //edge case: a==c: 9-10 9-12
-            if (x.begin != y.begin) res.push({ begin: x.begin, end: y.begin }); //a-c
+            if (x.begin != y.begin) {
+                res.push({ begin: x.begin, end: y.begin })  //a-c
+                
+            }
+
             if (x.end > y.end) {
                 list.push({ begin: y.end, end: x.end }); //d-b
             } else {
                 //b < d => a-c, c-b, b-d vd 5-9 + 7-10 => 5-7 + 7-9 + 9-10
-                y.begin = x.end;
                 list.push({ begin: y.begin, end: x.end });
+                y.begin = x.end;
             }
             list.sort(sortByBegin);
         }
 
-        console.log('r', res);
+
         //fill all gap inbetween
         var filledList: TimeStamp[] = [];
         if (res.length) { 
@@ -183,6 +192,7 @@ const ScheduleTable = ({ dataSrc, setData, edit }: Props) => {
                     cell.dayEnd = day;
                     cell.timeStart = time.begin;
                     cell.timeEnd = time.end;
+                    cell.item = item;
                 } else { 
                     cell.dayStart = day;
                     cell.dayEnd = day;
@@ -268,7 +278,7 @@ const ScheduleTable = ({ dataSrc, setData, edit }: Props) => {
                     end: end,
                     note: '',
                     activity: a.name,
-                    idActivity: a.id
+                    idActivity: a.id,
                 }]
             }
         });
@@ -287,7 +297,7 @@ const ScheduleTable = ({ dataSrc, setData, edit }: Props) => {
                         <>
                             <th
                                 key={x}
-                                className={`${getToday() == i && !edit ? "bg-white text-main rounded-md" : ""
+                                className={`${!edit && isCurrWeek && getToday() == i  ? "bg-white text-main rounded-md" : ""
                                     } flex h-15 items-center justify-center rounded-tl-sm p-1 text-xs font-semibold sm:text-base xl:p-5`}
                             >
                                 <span className="hidden lg:block"> {t(x)} </span>
@@ -306,7 +316,7 @@ const ScheduleTable = ({ dataSrc, setData, edit }: Props) => {
                                 <div className="group w-full flex-grow cursor-pointer ">
                                     <div
                                         className={`${ts.begin <= getCurrentTimeHHmm() &&
-                                            ts.end >= getCurrentTimeHHmm() && !edit
+                                            ts.end >= getCurrentTimeHHmm() && !edit && isCurrWeek
                                             ? "border-[3px]"
                                             : ""
                                             } event bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm text-center border-main bg-gray px-3 py-1 group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}
@@ -324,6 +334,7 @@ const ScheduleTable = ({ dataSrc, setData, edit }: Props) => {
                                         onAdd={onCellAdd}
                                         edit={edit}
                                         activities={dataActivity || []}
+                                        isCurrWeek={isCurrWeek}
                                     />
                                 </>
                             ))}
@@ -340,11 +351,11 @@ interface ScheduleItemElProp {
     onDelete: (day: number | undefined, begin: string | undefined) => void
     onAdd: (a: Activity, day:number, begin: string, end: string ) => void
     edit: boolean | undefined
-    activities: Activity[]
+    activities: Activity[], isCurrWeek?: boolean
 }
 
-const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities }: ScheduleItemElProp) => {
-    const { colSpan, activity, key, rowSpan, isCurr, dayStart, dayEnd, timeStart, timeEnd } = cellData;
+const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities, isCurrWeek }: ScheduleItemElProp) => {
+    const { colSpan, activity, key, rowSpan, isCurr, dayStart, dayEnd, timeStart, timeEnd, item } = cellData;
 
     const addMinute = (time: string, add: number): string => { 
         var arr = time.split(':');
@@ -386,7 +397,9 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities }: Schedul
 
     if (!colSpan || !rowSpan) return <></>;
 
-    var sp = isCurr && !edit ? "bg-mainBlur border-r-[3px]  border-l-[3px]" : "";
+    var sp = isCurrWeek && isCurr && !edit ? "bg-mainBlur border-r-[3px]  border-l-[3px]" : "";
+
+    var decoration = item?.decoration == 1 ? 'bg-[#FDF1D5]' : '';
 
     const getDays = (a: number | undefined, b: number | undefined): string => {
         if (a == undefined || b == undefined) return '';
@@ -406,7 +419,7 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities }: Schedul
         >
             <div className="w-full h-full flex-grow cursor-pointer ">
                 <div className="h-full flex flex-col">
-                    <div className={`${sp} event flex-1 items-center justify-center bg-[#eff4fb] left-2 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}>
+                    <div className={`${decoration} ${sp} event flex-1 items-center justify-center bg-[#eff4fb] left-2 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}>
                         <span className={`event-name text-sm font-semibold text-center`}>
                             {activity}
                         </span>

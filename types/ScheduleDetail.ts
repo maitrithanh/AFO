@@ -7,7 +7,8 @@ export interface ScheduleItem {
     end: string,
     note: string,
     activity: string,
-    idActivity: number
+    idActivity: number,
+    decoration?: number
 }
 
 export default interface ScheduleDetail { 
