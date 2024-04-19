@@ -16,6 +16,9 @@ import {
 import { t } from "i18next";
 import { toYMD } from "@/utils/dateTime";
 import { Asap_Condensed } from "next/font/google";
+import { baseURL } from "@/utils/callApi";
+import { FaDownload, FaFileExcel } from "react-icons/fa6";
+import SelectAddress from "./selectAddress";
 
 const font_asap_condensed = Asap_Condensed({
   weight: "400", // if single weight, otherwise you use array like [400, 500, 700],
@@ -103,6 +106,11 @@ interface Props<T extends IObject> {
     link?: string;
     onClick?: () => void;
   };
+  //url download excel
+  exportExcel?: string;
+  //getAddress
+  searchAddress?: (obj: T) => string;
+
   //dropdown filter
   filters?: TableTemplateFilter[];
   //date range
@@ -133,6 +141,8 @@ function TableTemplate<T extends IObject = any>({
   hidePaging,
   rowPerPage,
   getKey,
+  exportExcel,
+  searchAddress
 }: Props<T>) {
   //init
   if (!rowPerPage) rowPerPage = DefaultRowPerPage;
@@ -192,6 +202,7 @@ function TableTemplate<T extends IObject = any>({
   const [filterOpt, setFilterOpt] = useState<number[]>([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [address, setAddress] = useState('');
 
   useEffect(() => {
     setPage(1);
@@ -226,6 +237,30 @@ function TableTemplate<T extends IObject = any>({
       list = list.filter((x) => dateRange.filter(x, fromDate, toDate));
     }
 
+    if (searchAddress) { 
+      console.log('addr', address.split('&'));//
+      list = list.filter((x) => {
+        if (!address.replace('&', '').length) return true;
+
+        //get address info from current item
+        var currAddr = searchAddress(x);
+        var arr = currAddr.split('&');
+        if (arr.length < 4) return false;
+        const [st, ward, dist, city] = arr;
+
+        //address info from search inputs
+        arr = address.split('&')
+        //compare city
+        if (arr.length > 3 && arr[3] && city != arr[3]) return false;
+        //compare district
+        if (arr.length > 2 && arr[2] && dist != arr[2]) return false;
+        //compare ward
+        if (arr.length > 1 && arr[1] && ward != arr[1]) return false;
+
+        return true;
+      });
+    }
+
     if (sortOptions?.length && sortOptions?.length > sort) {
       var comp = sortOptions[sort].compare;
       list = [...list].sort(comp);
@@ -241,6 +276,8 @@ function TableTemplate<T extends IObject = any>({
     filters,
     fromDate,
     toDate,
+    address,
+    searchAddress
   ]);
 
   const PageCount = useMemo(() => {
@@ -396,8 +433,30 @@ function TableTemplate<T extends IObject = any>({
                 />
               </div>
             )}
+
+            {/* search address */}
+            {
+              searchAddress &&
+              <div className="w-[500px]">
+                  <SelectAddress setAddress={(addr) => setAddress(addr)} address={address} hideStreet />
+              </div>
+            }
+
+            {/* export excel button */}
+            {exportExcel &&
+              <a href={baseURL + 'File/' + exportExcel} target="_blank"
+                className="flex py-2 px-3 border-solid border border-gray-300 text-gray-600 rounded-lg gap-2 hover:text-green-700 hover:border-green-700">
+                
+                <FaFileExcel />
+                <button className="">
+                  Xuất file Excel
+                </button>
+                <FaDownload />
+              </a>
+            }
           </div>
 
+          {/* add button */}
           {addButton && (
             <div className="flex-1 flex justify-end px-4 md:m-0 my-2">
               <Link href={addButton.link ?? ""} className="whitespace-nowrap">

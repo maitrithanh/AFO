@@ -8,10 +8,11 @@ import Province, { District, Ward } from "@/types/province";
 interface Props { 
     setAddress: (addr: string) => void,
     address: string,
-    disable?: boolean
+    disable?: boolean,
+    hideStreet?: boolean
 }
 
-const SelectAddress = ({ setAddress, address, disable }: Props) => {
+const SelectAddress = ({ setAddress, address, disable, hideStreet }: Props) => {
 
     const [street, setStreet] = useState('');
     const [province, setProvince] = useState<string>('')
@@ -89,19 +90,22 @@ const SelectAddress = ({ setAddress, address, disable }: Props) => {
                 emptyMsg="Vui lòng chọn Quận / huyện"
                 visible hideBtn disable={disable}/>
         </div>
-        <div className="flex-[2]">
-            <input
-                type="text"
-                name="address"
-                id="Address"
-                className={`border p-3 w-full block rounded-md focus-visible:border-main focus-visible:outline-none border-slate-300`}
-                placeholder="Số nhà, tên đường"
-                required
-                onChange={e => setStreet(e.target.value)}
-                value={street}
-                disabled={disable}
-            />
-        </div>
+        {
+            !hideStreet &&
+            <div className="flex-[2]">
+                <input
+                    type="text"
+                    name="address"
+                    id="Address"
+                    className={`border p-3 w-full block rounded-md focus-visible:border-main focus-visible:outline-none border-slate-300`}
+                    placeholder="Số nhà, tên đường"
+                    required
+                    onChange={e => setStreet(e.target.value)}
+                    value={street}
+                    disabled={disable}
+                />
+            </div>
+        }
     </div>
 }
 

@@ -164,6 +164,7 @@ const ChildPage = () => {
       searchPlaceHolder="Nhập tên hoặc mã số trẻ"
       sortOptions={sorts}
       filters={[filterClasses, filterGender]}
+      exportExcel="ExportChildren"
     />
   );
 };

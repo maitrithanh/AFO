@@ -36,6 +36,7 @@ const MenuPage = () => {
     searchPlaceHolder="Nhập tên thực đơn..."
     addButton={{ link: '/admin/menu/add' }}
     actions={[{ getLink: (x) => `/admin/menu/${x.id}` }]}
+    exportExcel="ExportMenu"
   />
 }
 

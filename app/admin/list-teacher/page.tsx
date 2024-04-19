@@ -408,6 +408,7 @@ const ListTeacherPage = () => {
         addButton={{ link: "/admin/list-teacher/add" }}
         columns={Columns}
         searchColumns={searchCols}
+        searchPlaceHolder="Nhập tên hoặc số điện thoại..."
         filters={[filterGender, filterEducation, filterClass]}
         actions={[
           {
@@ -442,7 +443,7 @@ const ListTeacherPage = () => {
             },
           },
         ]}
-        searchPlaceHolder="Nhập tên hoặc số điện thoại..."
+        exportExcel="exportTeacher"
         //   sortOptions={sorts}
       />
     </>

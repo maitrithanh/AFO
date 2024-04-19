@@ -331,6 +331,8 @@ const ParentPage = () => {
         searchPlaceHolder="Nhập tên hoặc số điện thoại phụ huynh"
         sortOptions={sorts}
         filters={[filterGender]}
+        exportExcel="exportParent"
+        searchAddress={(x) => x.encodedAddress ?? ''}
       />
     </>
   );
