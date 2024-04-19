@@ -204,8 +204,8 @@ const AddTeacherPage = () => {
 
     if (index > -1) {
       arrTeacher.splice(index, 1);
-      handleRefresh();
       handleAddTeacherAlert(infoTeacher);
+      handleRefresh();
     }
   };
   const handleRemoveTeacherAlert = (teacherID: any) => {
@@ -379,7 +379,50 @@ const AddTeacherPage = () => {
                 </button>
               </div>
 
-              <TableTemplate
+              <table className="w-full text-md text-left rtl:text-right bg-white my-2 text-gray-500 dark:text-gray-400 max-h-[600px]">
+                <thead className="text-md text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
+                  <tr>
+                    <th className="px-6 py-3">#</th>
+                    <th className="px-6 py-3">Mã giáo viên</th>
+                    <th className="px-6 py-3">Hình</th>
+                    <th className="px-6 py-3">Tên</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {arrTeacher?.map((x: any, i: any) => (
+                    <tr
+                      key={x.teacherID}
+                      className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    >
+                      <td className="pl-6 py-4">{i + 1}</td>
+                      <td className="pl-6 py-4">{x.teacherID}</td>
+                      <td className="pl-6 py-4">
+                        <DefaultImage
+                          img={getImageUrl(x.avatar)}
+                          fallback="/avatar.webp"
+                        />
+                      </td>{" "}
+                      <td className="pl-6 py-4">{x.fullName}</td>
+                      <td>
+                        <span
+                          onClick={() =>
+                            handleRemoveTeacherInArr(x.teacherID, x)
+                          }
+                          className="hover:cursor-pointer hover:text-main text-gray-500"
+                        >
+                          <CiCircleRemove size={24} />
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <span className="w-full justify-center items-center flex">
+                {arrTeacher?.length == 0 ? "Chưa có giáo viên nào" : null}
+              </span>
+
+              {/* <TableTemplate
                 title=""
                 dataSource={arrTeacher || []}
                 columns={ColumnsTeacher}
@@ -397,7 +440,7 @@ const AddTeacherPage = () => {
                     },
                   },
                 ]}
-              />
+              /> */}
             </div>
 
             <div className="rounded-md my-4">
@@ -415,7 +458,48 @@ const AddTeacherPage = () => {
                 </button>
               </div>
 
-              <TableTemplate
+              <table className="w-full text-md text-left rtl:text-right bg-white my-2 text-gray-500 dark:text-gray-400 max-h-[600px]">
+                <thead className="text-md text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
+                  <tr>
+                    <th className="px-6 py-3">#</th>
+                    <th className="px-6 py-3">Mã trẻ</th>
+                    <th className="px-6 py-3">Hình</th>
+                    <th className="px-6 py-3">Tên</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {arrStudent?.map((x: any, i: any) => (
+                    <tr
+                      key={x.childID}
+                      className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    >
+                      <td className="pl-6 py-4">{i + 1}</td>
+                      <td className="pl-6 py-4">{x.childID}</td>
+                      <td className="pl-6 py-4">
+                        <DefaultImage
+                          img={getImageUrl(x.avatar)}
+                          fallback="/avatar.webp"
+                        />
+                      </td>{" "}
+                      <td className="pl-6 py-4">{x.fullName}</td>
+                      <td>
+                        <span
+                          onClick={() => handleRemoveStudentInArr(x.childID, x)}
+                          className="hover:cursor-pointer hover:text-main text-gray-500"
+                        >
+                          <CiCircleRemove size={24} />
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <span className="w-full justify-center items-center flex">
+                {arrStudent?.length == 0 ? "Chưa có học sinh nào" : null}
+              </span>
+
+              {/* <TableTemplate
                 title={``}
                 dataSource={arrStudent || []}
                 columns={ColumnsStudent}
@@ -433,7 +517,7 @@ const AddTeacherPage = () => {
                     },
                   },
                 ]}
-              />
+              /> */}
             </div>
 
             <div className="flex justify-between items-center">

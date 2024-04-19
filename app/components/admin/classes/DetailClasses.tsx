@@ -71,7 +71,7 @@ const DetailClasses = (id: any) => {
     `ClassRoom/Detail/id=${id.id}&year=${year}`,
     refresh
   );
-  const { data: dataTeacher } = useFetch("ClassRoom/teacherFilter");
+  const { data: dataTeacher } = useFetch("ClassRoom/teacherFilter", refresh);
   const { data: dataStudent } = useFetch("ClassRoom/studentFilter", refresh);
 
   const values = {

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { IoIosLogOut } from "react-icons/io";
-import { CgProfile } from "react-icons/cg";
+import { CgMenuGridO, CgProfile } from "react-icons/cg";
 import { usePathname, useRouter } from "next/navigation";
 import { deleteCookie, getCookie } from "cookies-next";
 import toast from "react-hot-toast";
@@ -25,6 +25,7 @@ const ModalsList: React.FC<ModalsListProps> = ({
 }) => {
   const router = useRouter();
   const pathName = usePathname();
+  const role = getCookie("role");
   const { refreshContactList } = useGlobalContext();
 
   const handleLogout = () => {
@@ -64,7 +65,7 @@ const ModalsList: React.FC<ModalsListProps> = ({
           setModalListOpen(false);
         }}
       >
-        <li className="border-b p-2 px-4 hover:bg-gray-100 cursor-pointer">
+        <li className="border-b rounded-t-md  p-2 px-4 hover:bg-gray-100 cursor-pointer">
           <button
             className="w-full flex items-center justify-left"
             onClick={() => router.push("/profile")}
@@ -76,13 +77,22 @@ const ModalsList: React.FC<ModalsListProps> = ({
         <li className="border-b p-2 px-4 hover:bg-gray-100 cursor-pointer">
           <button
             className="w-full flex items-center justify-left"
+            onClick={() => router.push(`/${role?.toLocaleLowerCase()}`)}
+          >
+            <CgMenuGridO size={20} />
+            <span className="ml-2"> Menu</span>
+          </button>
+        </li>
+        {/* <li className="border-b p-2 px-4 hover:bg-gray-100 cursor-pointer">
+          <button
+            className="w-full flex items-center justify-left"
             onClick={() => router.push("/admin/settings")}
           >
             <IoSettingsOutline size={20} />
             <span className="ml-2"> {t("setting")}</span>
           </button>
-        </li>
-        <li className="p-2 px-4 hover:bg-gray-100 cursor-pointer">
+        </li> */}
+        <li className="p-2 px-4 rounded-b-md hover:bg-gray-100 cursor-pointer">
           <button
             className="w-full flex items-center justify-left"
             onClick={() => handleLogout()}

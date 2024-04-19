@@ -426,9 +426,7 @@ function TableTemplate<T extends IObject = any>({
                   </th>
                 ))}
 
-                {actions?.length && 
-                  <th>{/* actions */} Thao tác</th>
-                }
+                {actions?.length && <th>{/* actions */} Thao tác</th>}
               </tr>
             </thead>
             <tbody>
@@ -452,8 +450,7 @@ function TableTemplate<T extends IObject = any>({
                         {col.getData(row)}
                       </td>
                     ))}
-                    {
-                      actions?.length &&
+                    {actions?.length && (
                       <td className="md:px-6 md:py-4">
                         <div className="flex items-center">
                           {actions?.map((act, i) => (
@@ -464,9 +461,9 @@ function TableTemplate<T extends IObject = any>({
                               onClick={
                                 act.onClick
                                   ? () => {
-                                    act.onClick!(row);
-                                  }
-                                  : () => { }
+                                      act.onClick!(row);
+                                    }
+                                  : () => {}
                               }
                             >
                               {act.icon ?? DefaultActionIcon}
@@ -474,7 +471,7 @@ function TableTemplate<T extends IObject = any>({
                           ))}
                         </div>
                       </td>
-                    }
+                    )}
                   </tr>
                 ))}
             </tbody>

@@ -25,10 +25,11 @@ import {
 import { Children, useState } from "react";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
+import { IoClose } from "react-icons/io5";
 
 const Columns: TableTemplateColumn<ParentListRes>[] = [
   {
-    title: "Tên Phụ Huynh",
+    title: "Tên Người Giám Hộ",
     getData: (x) => x.fullName,
   },
   {
@@ -124,10 +125,13 @@ const filterGender: TableTemplateFilter = {
 };
 
 const ParentPage = () => {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [idUserLock, setIdUserLock] = useState("");
-  const [nameAccountLock, setNameAccountLock] = useState("");
-  const [statusAccountLock, setStatusAccountLock] = useState(Boolean);
+  const [idUserUser, setIdUserUser] = useState("");
+  const [nameAccountUser, setNameAccountUser] = useState("");
+  const [phoneNumberUser, setPhoneNumberUser] = useState("");
+  const [statusAccountUser, setStatusAccountUser] = useState(Boolean);
+  const [openDialogAction, setOpenDialogAction] = useState(false);
+  const [openDialogLock, setOpenDialogLock] = useState(false);
+  const [openDialogForgot, setOpenDialogForgot] = useState(false);
   const [refresh, setRefresh] = useState(Boolean);
   const { data: dataParent } = useFetch<ParentListRes[]>(
     "Parent/GetList",
@@ -141,22 +145,40 @@ const ParentPage = () => {
     }, 1000);
   };
 
-  const handleOpenDialog = (id: string, name: string, status: boolean) => {
-    setIdUserLock(id);
-    setStatusAccountLock(status);
-    setNameAccountLock(name);
-    setOpenDialog(true);
+  const handleOpenDialogAction = (
+    id: string,
+    name: string,
+    status: boolean,
+    phoneNumber: string
+  ) => {
+    setIdUserUser(id);
+    setStatusAccountUser(status);
+    setNameAccountUser(name);
+    setPhoneNumberUser(phoneNumber);
+    setOpenDialogAction(true);
   };
 
   const lockAccount = () => {
     callApiWithToken()
-      .post(`Auth/locked?parentID=${idUserLock}`)
+      .post(`Auth/locked?parentID=${idUserUser}`)
       .then((response) => {
         toast.success(
           `${
-            statusAccountLock ? "Đã mở khoá tài khoản" : "Đã khoá tài khoản"
-          } ${nameAccountLock}`
+            statusAccountUser ? "Đã mở khoá tài khoản" : "Đã khoá tài khoản"
+          } ${nameAccountUser}`
         );
+        handleRefresh();
+      })
+      .catch((error) => {
+        toast.error("Có lỗi xảy ra!");
+      });
+  };
+  //Khôi phục tài khoản
+  const forgotAccount = () => {
+    callApiWithToken()
+      .put(`Auth/forgotPass?phoneNumber=${phoneNumberUser}`)
+      .then((response) => {
+        toast.success(`Đã khôi phục mật khẩu tài khoản ${nameAccountUser}`);
         handleRefresh();
       })
       .catch((error) => {
@@ -166,15 +188,58 @@ const ParentPage = () => {
 
   return (
     <>
+      {/* DialogActionAccount */}
       <AlertDialog
         onOpenChange={() => {
-          setOpenDialog((curr) => !curr);
+          setOpenDialogAction((curr) => !curr);
         }}
-        open={openDialog}
+        open={openDialogAction}
+      >
+        <AlertDialogContent className="p-10 m-0">
+          <AlertDialogHeader>
+            <div
+              onClick={() => {
+                setOpenDialogAction((curr) => !curr);
+              }}
+              className="absolute right-0 top-0 p-2 m-1 hover:bg-[#c2c2c266] rounded-full cursor-pointer"
+            >
+              <IoClose size={28} className="text-rose-600" />
+            </div>
+            <AlertDialogDescription className="text-xl flex gap-4 justify-center items-center p-4">
+              <button
+                onClick={() => {
+                  setOpenDialogLock((curr) => !curr);
+                  setOpenDialogAction((curr) => !curr);
+                }}
+                className={`${
+                  statusAccountUser ? "bg-green-600" : "bg-rose-600"
+                } p-2 px-4 rounded-md text-white hover:scale-105 hover:opacity-80 transition-all`}
+              >
+                {statusAccountUser ? "Mở khoá tài khoản" : "Khoá tài khoản"}
+              </button>
+              <button
+                onClick={() => {
+                  setOpenDialogForgot((curr) => !curr);
+                  setOpenDialogAction((curr) => !curr);
+                }}
+                className="bg-blue-600 p-2 px-4 rounded-md text-white hover:scale-105 hover:opacity-80 transition-all"
+              >
+                Khôi phục mật khẩu
+              </button>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+        </AlertDialogContent>
+      </AlertDialog>
+      {/* LockAccount */}
+      <AlertDialog
+        onOpenChange={() => {
+          setOpenDialogLock((curr) => !curr);
+        }}
+        open={openDialogLock}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            {statusAccountLock ? (
+            {statusAccountUser ? (
               <AlertDialogTitle>
                 Bạn có chắc chắn mở khoá tài khoản phụ huynh này?
               </AlertDialogTitle>
@@ -186,17 +251,17 @@ const ParentPage = () => {
 
             <AlertDialogDescription
               className={`${
-                statusAccountLock ? "text-green-600" : "text-rose-600"
+                statusAccountUser ? "text-green-600" : "text-rose-600"
               } font-bold text-lg`}
             >
-              {nameAccountLock}
+              {nameAccountUser}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Huỷ</AlertDialogCancel>
             <AlertDialogAction
               className={` ${
-                statusAccountLock
+                statusAccountUser
                   ? "bg-green-600 hover:bg-green-900"
                   : "bg-rose-600 hover:bg-rose-900"
               }`}
@@ -204,14 +269,42 @@ const ParentPage = () => {
                 lockAccount();
               }}
             >
-              {statusAccountLock
+              {statusAccountUser
                 ? "Xác nhận mở khoá tài khoản"
                 : "Xác nhận khoá tài khoản"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
+      {/* ForgotAccount */}
+      <AlertDialog
+        onOpenChange={() => {
+          setOpenDialogForgot((curr) => !curr);
+        }}
+        open={openDialogForgot}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Bạn có chắc chắn khôi phục mật khẩu tài khoản này?
+            </AlertDialogTitle>
+            <AlertDialogDescription className={`text-orange-600 text-2xl`}>
+              {nameAccountUser} {phoneNumberUser}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Huỷ</AlertDialogCancel>
+            <AlertDialogAction
+              className={`bg-orange-600 hover:bg-orange-900`}
+              onClick={() => {
+                forgotAccount();
+              }}
+            >
+              Xác nhận khôi phục mật khẩu
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <TableTemplate<ParentListRes>
         title="Danh sách phụ huynh"
         dataSource={dataParent || []}
@@ -224,10 +317,11 @@ const ParentPage = () => {
               </span>
             ),
             onClick: (x) => {
-              handleOpenDialog(
+              handleOpenDialogAction(
                 x.id ? x.id : "",
                 x.fullName ? x.fullName : "",
-                x.active
+                x.active,
+                x.phoneNumber ? x.phoneNumber : ""
               );
             },
           },
