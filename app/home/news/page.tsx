@@ -21,11 +21,16 @@ const NewsPage = () => {
           {allNews?.map((newsItem: any) => {
             return (
               <div key={newsItem.id} className="shadow-3xl p-4 rounded-md">
-                <img
-                  src={getImageUrl(newsItem.image)}
+                <Image
+                  src={getImageUrl(
+                    newsItem.image ? newsItem.image : "/news/default-thumb.webp"
+                  )}
                   alt={newsItem.title}
+                  width={1920}
+                  height={1080}
                   className="w-full h-[176px] rounded-sm"
                 />
+
                 <Link
                   href={`/home/news/${newsItem.id}`}
                   className="hover:cursor-pointer"

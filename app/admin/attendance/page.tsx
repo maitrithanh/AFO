@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toYMD } from "@/utils/dateTime";
+import { IoIosWarning } from "react-icons/io";
 
 const Columns: TableTemplateColumn[] = [
   {
@@ -67,7 +68,7 @@ const AttendancePage = () => {
         columns={Columns}
         searchColumns={[Columns[0]]}
         searchPlaceHolder="Nhập tên lớp..."
-        addButton={{ link: "#" }}
+        // addButton={{ link: "#" }}
         actions={[
           { getLink: (x) => `/admin/attendance/${x.id}?date=${valueDate}` },
         ]}
@@ -75,7 +76,14 @@ const AttendancePage = () => {
       />
       {attendanceByDate?.length <= 0 || attendanceByDate == null ? (
         <p className="flex justify-center items-center">
-          Ngày {valueDate} chưa có dữ liệu điểm danh nào
+          {valueDate ? (
+            `Ngày ${valueDate} chưa có dữ liệu điểm danh nào`
+          ) : (
+            <span className="flex justify-center items-center gap-2">
+              <IoIosWarning size={24} className="text-yellow-600" />
+              Vui lòng chọn ngày
+            </span>
+          )}
         </p>
       ) : null}
     </>

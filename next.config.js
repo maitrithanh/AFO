@@ -18,6 +18,11 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'www.8newsnow.com',
                 pathname: '**'
+            },
+            {
+                protocol: 'https',
+                hostname: 'jzeno.io.vn',
+                pathname: '**'
             }
         ]
     },

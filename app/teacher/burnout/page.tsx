@@ -101,7 +101,24 @@ const BurnOutPage = () => {
       .then((response) => {
         toast.success("Đã duyệt");
         setRefresh(true);
-        handleSendNotiChangeClass(idReq);
+        callApiWithToken()
+          .post(
+            `Notification/sendUser`,
+            {
+              PhoneNumber: childData?.parent?.phoneNumber,
+              Title: "Đơn xin nghỉ đã được duyệt",
+              Content: `Đơn xin nghỉ có mã:${idReq} đã được duyệt`,
+            },
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          )
+          .then((response) => {})
+          .catch((errors) => {
+            toast.error("Có lỗi", errors);
+          });
         setTimeout(() => {
           setRefresh(false);
         }, 1000);
@@ -111,26 +128,26 @@ const BurnOutPage = () => {
       });
   };
 
-  const handleSendNotiChangeClass = (idReq: string) => {
-    callApiWithToken()
-      .post(
-        `Notification/sendUser`,
-        {
-          PhoneNumber: childData?.parent?.phoneNumber,
-          Title: "Đơn xin nghỉ đã được duyệt",
-          Content: `Đơn xin nghỉ có mã:${idReq} đã được duyệt`,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((response) => {})
-      .catch((errors) => {
-        toast.error("Có lỗi", errors);
-      });
-  };
+  // const handleSendNotiChangeClass = (idReq: string) => {
+  //   callApiWithToken()
+  //     .post(
+  //       `Notification/sendUser`,
+  //       {
+  //         PhoneNumber: childData?.parent?.phoneNumber,
+  //         Title: "Đơn xin nghỉ đã được duyệt",
+  //         Content: `Đơn xin nghỉ có mã:${idReq} đã được duyệt`,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {})
+  //     .catch((errors) => {
+  //       toast.error("Có lỗi", errors);
+  //     });
+  // };
   return (
     <div className="w-full flex justify-center items-center">
       <div className="w-full bg-white p-4 rounded-md h-[88vh] overflow-auto">

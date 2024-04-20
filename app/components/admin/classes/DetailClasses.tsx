@@ -71,8 +71,12 @@ const DetailClasses = (id: any) => {
     `ClassRoom/Detail/id=${id.id}&year=${year}`,
     refresh
   );
+
   const { data: dataTeacher } = useFetch("ClassRoom/teacherFilter", refresh);
-  const { data: dataStudent } = useFetch("ClassRoom/studentFilter", refresh);
+  const { data: dataStudent, loading } = useFetch(
+    "ClassRoom/studentFilter",
+    refresh
+  );
 
   const values = {
     Name: detailClassData?.name,
@@ -434,6 +438,10 @@ const DetailClasses = (id: any) => {
                                         setOnSelect(true);
                                       }}
                                     >
+                                      <DefaultImage
+                                        img={data.avatar}
+                                        fallback="/avatar.webp"
+                                      />{" "}
                                       {data?.fullName}
                                     </option>
                                   );
@@ -645,6 +653,9 @@ const DetailClasses = (id: any) => {
                   })}
               </tbody>
             </table>
+            <div className="text-2xl flex justify-center items-center p-4">
+              {loading ? "Đang tải..." : null}
+            </div>
           </div>
         </div>
         {editMode == "true" ? (
