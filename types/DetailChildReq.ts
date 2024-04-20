@@ -6,6 +6,7 @@ export default interface DetailChildReq {
     nation?: string,
     gender?: number,
     address?: string,
+    encodedAddress?: string,
     note?: string,
     avatarFile?: File | null,
     avatar?: string,

@@ -21,7 +21,7 @@ const ParentPutForm = ({ data, setData, editable }: Props) => {
 
 
   const setAddress = (addr: string) => {
-    setData({ ...data, address: addr });
+    setData({ ...data, encodedAddress: addr });
   }
 
   const decodeAddress = (encoded: string): string => {
@@ -218,7 +218,7 @@ const ParentPutForm = ({ data, setData, editable }: Props) => {
                     Địa chỉ
                     <span className={`text-rose-600 `}>*</span>
                   </label>
-                  <SelectAddress setAddress={setAddress} address={data?.address ?? ''} disable={!editable} />
+                  <SelectAddress setAddress={setAddress} address={data?.encodedAddress ?? ''} disable={!editable} />
                   <p>
                     {decodeAddress(data?.address ?? '')}
                   </p>

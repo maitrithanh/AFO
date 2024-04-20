@@ -7,6 +7,7 @@ import { FaTrashCan } from "react-icons/fa6";
 import AddItem from "../admin/menu/addItem";
 import useFetch from "@/utils/useFetch";
 import Activity from "@/types/Activity";
+import moment from "moment";
 
 interface TimeStamp {
     begin: string;
@@ -367,10 +368,19 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities, isCurrWee
         h += Math.floor(m / 60);
         m %= 60;
         h %= 24;
-
         const format = (n: number): string => n < 10 ? '0' + n : '' + n;
 
         return format(h) + ':' + format(m);
+    }
+
+    //abs(a-b) in minutes; a,b HH:mm
+    const minuteDiff = (a?: string, b?: string): number => { 
+        if (!a || !b) return 0;
+
+        var timeA = moment(a, "HH:mm");
+        var timeB = moment(b, "HH:mm");
+        var diff = timeA.diff(timeB, 'minutes');
+        return Math.abs(diff)
     }
 
     if (!cellData.key) return <td
@@ -439,9 +449,17 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities, isCurrWee
                     </div>
 
                     {/* time */}
+                    {
+                        edit &&
+                        <div className="invisible group-hover:visible">
+                            <div className="italic text-center">
+                                ({minuteDiff(timeStart, timeEnd)} phút)
+                            </div>
+                        </div>
+                    }
                     {/* {
                         edit &&
-                        <div className="w-full">
+                        <div className="w-full flex">
                             <div className="flex-1 whitespace-nowrap">Số phút:</div>
                             <input type="number" value={7} title="f" className="mb- w-full" />
                         </div>

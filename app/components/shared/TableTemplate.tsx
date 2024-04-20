@@ -434,14 +434,6 @@ function TableTemplate<T extends IObject = any>({
               </div>
             )}
 
-            {/* search address */}
-            {
-              searchAddress &&
-              <div className="w-[500px]">
-                  <SelectAddress setAddress={(addr) => setAddress(addr)} address={address} hideStreet />
-              </div>
-            }
-
             {/* export excel button */}
             {exportExcel &&
               <a href={baseURL + 'File/' + exportExcel} target="_blank"
@@ -454,6 +446,15 @@ function TableTemplate<T extends IObject = any>({
                 <FaDownload />
               </a>
             }
+
+            {/* search address */}
+            {
+              searchAddress &&
+              <div className="w-[500px]">
+                <SelectAddress setAddress={(addr) => setAddress(addr)} address={address} hideStreet />
+              </div>
+            }
+
           </div>
 
           {/* add button */}

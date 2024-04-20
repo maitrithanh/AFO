@@ -6,6 +6,7 @@ export default interface AddParentReq{
     email?: string,
     gender?: number,
     address?: string,
+    encodedAddress?: string,
     birthDay?: string,
     idNumber?: string,
     job?: string,

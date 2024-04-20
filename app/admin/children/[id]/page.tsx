@@ -37,7 +37,9 @@ const DetailChildrenPage = ({ params }: any) => {
     const onSuccess = () => {};
 
     if (editChild) {
-      let formData = getFormData(child);
+      var _child: DetailChildReq = { ...child, address: child?.encodedAddress };
+
+      let formData = getFormData(_child);
       callApiWithToken()
         .put("child/update/" + id, formData, {
           headers: {
@@ -54,7 +56,7 @@ const DetailChildrenPage = ({ params }: any) => {
     }
 
     if (editParent) {
-      const data = { ...parent, birthDay: toDMY(parent?.birthDay || "") };
+      const data: AddParentReq = { ...parent, birthDay: toDMY(parent?.birthDay || ""), address: parent?.encodedAddress };
       callApiWithToken()
         .put("parent/updateParent/" + parent?.id, data)
         .then((res) => {
