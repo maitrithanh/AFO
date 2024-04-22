@@ -25,7 +25,9 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
   {
     title: "Hình",
     getData: (x) => (
-      <div className="w-[40px] h-[40px]"><DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" /></div>
+      <div className="w-[40px] h-[40px]">
+        <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+      </div>
     ),
   },
   {
@@ -63,7 +65,8 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
   },
   {
     title: "Người giám hộ",
-    getData: (x) => x.parentName + (x.relationship != null ? ` (${x.relationship})`: ''),
+    getData: (x) =>
+      x.parentName + (x.relationship != null ? ` (${x.relationship})` : ""),
   },
   {
     title: "Số điện thoại",

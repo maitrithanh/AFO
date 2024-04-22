@@ -182,7 +182,7 @@ const BurnOutPage = () => {
         title={`Danh sách xin nghỉ`}
         dataSource={classData || []}
         columns={Columns}
-        searchColumns={[Columns[0]]}
+        searchColumns={[Columns[0], Columns[2]]}
         searchPlaceHolder="Tìm kiếm..."
         filters={[filterActive]}
         // addButton={{ link: "#" }}

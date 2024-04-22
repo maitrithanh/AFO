@@ -27,6 +27,7 @@ const EduPage = () => {
           alt="banner"
           width={800}
           height={640}
+          priority
           className="transition-all duration-5000"
         />
       </div>

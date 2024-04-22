@@ -14,6 +14,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Asap_Condensed } from "next/font/google";
 import SelectAddress from "@/app/components/shared/selectAddress";
+import { FaSave } from "react-icons/fa";
 
 const font_asap_condensed = Asap_Condensed({
   weight: "600", // if single weight, otherwise you use array like [400, 500, 700],
@@ -48,7 +49,7 @@ const EditTeacherPage = (params: any) => {
         detailTeacher?.classId == null ? "" : `${detailTeacher?.classId}`
       );
 
-      setAddress(detailTeacher?.encodedAddress ?? '')
+      setAddress(detailTeacher?.encodedAddress ?? "");
     }
   }, [detailTeacher]);
 
@@ -154,7 +155,7 @@ const EditTeacherPage = (params: any) => {
         }
       }
 
-      formData.set('Address', address ?? '') ;
+      formData.set("Address", address ?? "");
 
       if (currAvatar) {
         formData.append("File", currAvatar);
@@ -178,11 +179,14 @@ const EditTeacherPage = (params: any) => {
 
   const changeAddress = (addr: string) => {
     setAddress(addr);
-  }
+  };
 
   const decodeAddress = (encoded: string): string => {
-    return encoded.split('&').filter(x => x.length).join(', ');
-  }
+    return encoded
+      .split("&")
+      .filter((x) => x.length)
+      .join(", ");
+  };
 
   return (
     <>
@@ -358,12 +362,11 @@ const EditTeacherPage = (params: any) => {
                   Địa chỉ
                   <span className={`text-rose-600 `}>*</span>
                 </label>
-                {address != null && <SelectAddress setAddress={changeAddress} address={address} />}
-                <p>
-                  {decodeAddress(address ?? '')}
-                </p>
+                {address != null && (
+                  <SelectAddress setAddress={changeAddress} address={address} />
+                )}
+                <p>{decodeAddress(address ?? "")}</p>
               </div>
-
 
               <div className="my-4">
                 {/* Ghi chú */}
@@ -416,11 +419,15 @@ const EditTeacherPage = (params: any) => {
                       ) : (
                         <span className="cursor-pointer relative">
                           <Image
-                            src={"/user-default.webp"}
+                            src={`${
+                              detailTeacher?.avatar
+                                ? getImageUrl(detailTeacher?.avatar)
+                                : "/user-default.webp"
+                            }`}
                             alt="Hình 3x4"
                             width={105}
                             height={135}
-                            className="min-w-[105px] min-h-[135px] rounded-sm"
+                            className="w-[105px] h-[135px] rounded-sm"
                           />
                           <span className="absolute bottom-0 text-white w-full flex justify-center bg-main">
                             Tải lên
@@ -455,9 +462,10 @@ const EditTeacherPage = (params: any) => {
 
           <div className="flex justify-center mt-10">
             <button
-              className="text-white bg-main hover:bg-mainBlur focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center "
+              className="text-white flex justify-center items-center gap-2 bg-main hover:bg-mainBlur focus:outline-none font-medium rounded-md text-lg w-full sm:w-auto px-5 py-2.5 text-center "
               onClick={handleSubmit(onSubmit)}
             >
+              <FaSave />
               Lưu hồ sơ
             </button>
           </div>

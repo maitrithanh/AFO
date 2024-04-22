@@ -28,6 +28,7 @@ const NewsPage = () => {
                   alt={newsItem.title}
                   width={1920}
                   height={1080}
+                  loading="lazy"
                   className="w-full h-[176px] rounded-sm"
                 />
 

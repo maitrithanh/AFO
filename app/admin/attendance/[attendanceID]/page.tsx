@@ -32,13 +32,23 @@ const Columns: TableTemplateColumn[] = [
   {
     title: "Vào lớp",
     getData: (x) => (
-      <input type="checkbox" defaultChecked={x.started} className="scale-150" />
+      <input
+        type="checkbox"
+        defaultChecked={x.started}
+        className="scale-150 cursor-not-allowed"
+        readOnly
+      />
     ),
   },
   {
     title: "Ra về",
     getData: (x) => (
-      <input type="checkbox" defaultChecked={x.ended} className="scale-150" />
+      <input
+        type="checkbox"
+        defaultChecked={x.ended}
+        className="scale-150 cursor-not-allowed"
+        readOnly
+      />
     ),
   },
   {

@@ -169,6 +169,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const onUpdateAvatarClick = () => {
     uploadAvatarRef.current?.click();
   };
+  console.log(currentUser);
 
   //Translate
   const { t } = useTranslation();
@@ -224,7 +225,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               />
               <CardInfoLine
                 lineName={t("gender")}
-                contentLine={infoChild?.gender === 1 ? "Nam" : "Nữ"}
+                contentLine={currentUser?.gender === 1 ? "Nam" : "Nữ"}
               />
               <CardInfoLine
                 lineName={t("phoneNumber")}

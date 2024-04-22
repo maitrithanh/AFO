@@ -31,7 +31,9 @@ const Columns: TableTemplateColumn[] = [
 
   {
     title: "Nội dung",
-    getData: (x) => <p className="descriptNewsTable w-[490px]">{x.content}</p>,
+    getData: (x) => (
+      <p className="descriptNewsTable max-w-[490px]">{x.content}</p>
+    ),
   },
   {
     title: "Người nhận",
@@ -142,13 +144,6 @@ const NotificationPage = () => {
 
   return (
     <div>
-      <div className="bg-white shadow-3xl my-2 px-2 py-1.5 rounded-md w-fit flex gap-2 hover:cursor-pointer">
-        <div
-          className={`bg-[#ff660d] text-white shadow-lg px-4 py-1.5 rounded-md text-lg transition-transform ease-in-out delay-150`}
-        >
-          Thông báo chung
-        </div>
-      </div>
       {/* Alert xoá thông báo */}
       <AlertDialog
         onOpenChange={() => {
@@ -279,9 +274,9 @@ const NotificationPage = () => {
       </AlertDialog>
 
       {/* Table danh sách thông báo đã tạo */}
-      <div className="bg-white shadow-3xl p-4 rounded-md">
+      <div className="">
         <TableTemplate
-          title={``}
+          title={`Danh sách thông báo`}
           dataSource={notificationData || []}
           columns={Columns}
           searchColumns={[Columns[0]]}
