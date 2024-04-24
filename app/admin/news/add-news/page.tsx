@@ -33,17 +33,25 @@ const AddNewsPage = () => {
       formData.append("image", currThumb);
     }
 
+    console.log(value);
+
     callApiWithToken()
-      .post(`News/postNew?title=${data.title}&content=${value}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      .post(
+        `News/postNew?title=${data.title}&content=${value.toString()}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then((response) => {
         toast.success("Đăng bài thành công");
         router.push("/admin/news");
       })
       .catch((errors) => {
+        console.log(errors);
+
         toast.error("Có lỗi xảy ra!");
       });
   };
@@ -65,10 +73,15 @@ const AddNewsPage = () => {
           <div className="my-4">
             <p>Nội dung</p>
             <Editor
+              textareaName="content"
               id="editor"
-              onEditorChange={(newValue, editer) => {
+              value={value}
+              onInit={(evt, editor) => {
+                setContent(editor.getContent({ format: "text" }));
+              }}
+              onEditorChange={(newValue, editor) => {
                 setValue(newValue);
-                setContent(editer.getContent({ format: "text" }));
+                setContent(editor.getContent({ format: "text" }));
               }}
               initialValue=""
               apiKey="zvv7z5v07qqtpspaw2oyjrtw868nqvvb6x1aa9wpzvtoaxul"

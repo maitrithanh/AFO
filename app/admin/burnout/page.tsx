@@ -206,7 +206,9 @@ const BurnOutPage = () => {
           <p>{classData.length <= 0 ? "Không có dữ liệu" : null}</p>
         </div>
       ) : (
-        "Đang tải"
+        <span className="w-full flex items-center justify-center">
+          Đang tải...
+        </span>
       )}
     </>
   );

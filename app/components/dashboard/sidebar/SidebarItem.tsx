@@ -41,11 +41,12 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   return (
     <>
       <li
+        title={t(text)}
         onClick={() => {
           router.push(pathname);
           setOpenChild((curr) => !curr);
         }}
-        className={`relative flex items-center py-2 px-3 h-12  my-1 font-thin rounded-xl cursor-pointer duration-300 hover:scale-105 transition-all 
+        className={`relative flex items-center py-2 px-3 h-12 my-1 font-thin rounded-xl cursor-pointer duration-300 hover:scale-105 transition-all 
       group ${showSidebarBg ? "bg-[#dad9d963]" : ""} 
     ${
       active
@@ -61,7 +62,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
         <span
           className={`overflow-hidden transition-all flex justify-between items-center ${
-            expanded ? "w-52 ml-3" : "w-0"
+            expanded ? "lg:w-52 w-full ml-3" : "w-0"
           }`}
         >
           {t(text)}{" "}
@@ -95,7 +96,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
         {!expanded && (
           <div
-            className={`absolute left-full w-fit z-10 rounded-md px-2 py-1 ml-6 bg-[#F8853E] text-white text-sm
+            className={`absolute left-full w-fit z-50 rounded-md px-2 py-1 ml-6 bg-[#F8853E] text-white text-sm
           invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
           >
             {text}
@@ -112,6 +113,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           {child.map((item: any) => {
             return (
               <li
+                title={t(item.text)}
                 key={item.text}
                 onClick={() => {
                   router.push(item.pathname);

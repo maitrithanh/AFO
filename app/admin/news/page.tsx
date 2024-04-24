@@ -28,10 +28,12 @@ const Columns: TableTemplateColumn[] = [
     title: "Hình thu nhỏ",
     getData: (x) =>
       x.image ? (
-        <img
+        <Image
           src={getImageUrl(x.image)}
           alt={x.title}
-          className="rounded-md min-h-[100px] max-h-[100px] min-w-[200px] max-w-[200px]"
+          width={200}
+          height={150}
+          className=" object-cover rounded-sm"
         />
       ) : (
         <Image

@@ -42,7 +42,7 @@ const ChangeClassPage = () => {
       Title: "Đơn xin chuyển lớp",
       ChildID: childID,
       Content: "",
-      OldClass: "",
+      OldClass: infoChild?.classRoom?.classID,
       NewClass: "",
     },
     values,
@@ -152,9 +152,19 @@ const ChangeClassPage = () => {
             register={register}
             errors={errors}
             onclick={() => {}}
+            readonly
             required
           />
-          <SelectOption
+          <div className="relative h-full w-full">
+            <div className="outline-none text-xl border-slate-300 border-2 rounded-md w-full h-full p-4">
+              {infoChild?.classRoom?.className}
+            </div>
+            <div className="text-gray-500 bg-white h-fit absolute top-0 left-2 -translate-y-3">
+              Lớp hiện tại
+            </div>
+          </div>
+
+          {/* <SelectOption
             id="OldClass"
             register={register}
             label="Lớp hiện tại"
@@ -164,7 +174,7 @@ const ChangeClassPage = () => {
                 name: infoChild?.classRoom?.className,
               },
             ]}
-          />
+          /> */}
 
           <SelectOption
             id="NewClass"

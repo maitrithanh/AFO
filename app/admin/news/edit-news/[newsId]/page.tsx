@@ -47,7 +47,9 @@ const EditNewsPage = (params: any) => {
 
     callApiWithToken()
       .put(
-        `News/putNew?id=${params.params.newsId}&title=${data.title}&content=${value}`,
+        `News/putNew?id=${params.params.newsId}&title=${
+          data.title
+        }&content=${value.toString()}`,
         formData,
         {
           headers: {
@@ -81,44 +83,23 @@ const EditNewsPage = (params: any) => {
           <div className="my-4">
             <p>Nội dung</p>
             <Editor
+              textareaName="content"
               id="editor"
-              onEditorChange={(newValue, editer) => {
+              value={value}
+              onInit={(evt, editor) => {
+                setContent(editor.getContent({ format: "text" }));
+              }}
+              onEditorChange={(newValue, editor) => {
                 setValue(newValue);
-                setContent(editer.getContent({ format: "text" }));
+                setContent(editor.getContent({ format: "text" }));
               }}
               initialValue={detailNews?.content}
               apiKey="zvv7z5v07qqtpspaw2oyjrtw868nqvvb6x1aa9wpzvtoaxul"
               init={{
-                language: "vi",
-                height: 500,
-                menubar: false,
-                plugins: [
-                  "advlist",
-                  "autolink",
-                  "lists",
-                  "link",
-                  "image",
-                  "charmap",
-                  "preview",
-                  "anchor",
-                  "searchreplace",
-                  "visualblocks",
-                  "code",
-                  "fullscreen",
-                  "insertdatetime",
-                  "media",
-                  "table",
-                  "code",
-                  "help",
-                  "wordcount",
-                ],
+                plugins:
+                  "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker",
                 toolbar:
-                  "undo redo | blocks | " +
-                  "bold italic forecolor | alignleft aligncenter " +
-                  "alignright alignjustify | bullist numlist outdent indent | " +
-                  "removeformat | help",
-                content_style:
-                  "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                  "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat",
               }}
             />
           </div>

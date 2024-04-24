@@ -70,13 +70,13 @@ export const  menu = [
         text: 'studySchedule',
         icon: MdOutlineInventory,
         pathname: '#',
-        img: 'weekly.webp',
+        img: 'study-time.webp',
         child: [
             {
                 text: 'Môn học',
                 icon: MdOutlineInventory,
                 pathname: '/admin/activity',
-                img: 'weekly.webp'
+                img: 'subject.webp'
             },
             {
                 text: 'Thời khóa biểu',
@@ -135,13 +135,13 @@ export const  menu = [
                 text: 'Lịch ăn',
                 icon: GiTeacher,
                 pathname: '/admin/menu',
-                img: 'menu.webp',
+                img: 'foodTime.webp',
             },
             {
                 text: 'Món ăn',
                 icon: GiTeacher,
                 pathname: '/admin/food',
-                img: 'menu.webp',
+                img: 'food.webp',
             },
         ]
     }
@@ -163,19 +163,19 @@ export const  menu = [
                 text: 'Danh sách học phí',
                 icon: GiTeacher,
                 pathname: '/admin/schoolfee',
-                img: 'cost.webp'
+                img: 'listFee.webp'
             }, 
             {
                 text: 'Lịch sử đóng tiền',
                 icon: GiTeacher,
                 pathname: '/admin/payment',
-                img: 'cost.webp'
+                img: 'paymentCheck.webp'
             }, 
             {
                 text: 'Lịch sử chuyển khoản',
                 icon: GiTeacher,
                 pathname: '/admin/transaction',
-                img: 'cost.webp'
+                img: 'transferHistory.webp'
             }, 
         ]
     }, 

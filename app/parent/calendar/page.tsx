@@ -12,7 +12,7 @@ import moment from "moment";
 const CalendarPage = () => {
   const { t } = useTranslation();
 
-  const currWeek = moment().format("YYYY") + "-W" + moment().format("WW")
+  const currWeek = moment().format("YYYY") + "-W" + moment().format("WW");
   const [weekStart, setWeekStart] = useState(currWeek);
 
   const id = getCookie("child");
@@ -24,7 +24,6 @@ const CalendarPage = () => {
 
   return (
     <div className=" w-full m-auto">
-
       {/* select week */}
       <div className="flex justify-between items-center w-full ">
         <div className="bg-white p-3 rounded-lg mb-3">
@@ -52,10 +51,9 @@ const CalendarPage = () => {
       </div>
 
       <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default h-full">
-        {
-          data &&
+        {data && (
           <ScheduleTable dataSrc={data} isCurrWeek={weekStart == currWeek} />
-        }
+        )}
       </div>
     </div>
   );

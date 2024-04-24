@@ -176,80 +176,76 @@ const DropdownNotification = () => {
             </span>
           </Link>
         </div>
-      </div>
-      <div
-        className={`fixed w-screen h-screen right-0 opacity-0 top-0 z-50 transition-all duration-300 ${
-          dropdownOpen === true
-            ? "bg-[#18181875] opacity-100"
-            : "w-0 -translate-x-full"
-        }`}
-      >
         <div
-          ref={dropdown}
-          onFocus={() => setDropdownOpen(true)}
-          onBlur={() => setDropdownOpen(false)}
-          className={`bg-white absolute md:w-[400px] transition-all duration-500 md:right-0 top-0 inset-0 left-0 h-screen z-50 hover:cursor-pointer overflow-hidden `}
+          className={`absolute shadow-3xl border p-4 bg-white md:-translate-x-80 cursor-pointer -translate-x-64 z-50 md:w-[400px] w-[350px] rounded-md ${
+            dropdownOpen === true
+              ? "bg-[#18181875] opacity-100"
+              : "w-0 -translate-x-full hidden"
+          }`}
         >
-          <div className="w-full flex justify-between items-center py-1 border-b">
-            <div className="px-4.5 py-2 flex justify-center">
-              <h5 className="px-2 text-2xl flex justify-center items-center w-fit rounded-full text-cool">
-                {t("notification")}
-              </h5>
-            </div>
-            <div
-              className="bg-white p-1 rounded-md text-rose-600"
+          <div className="flex justify-between ">
+            <p className="text-xl pb-2">Thông báo</p>
+            <span
+              className="text-rose-700 cursor-pointer"
               onClick={() => {
-                setDropdownOpen(false);
+                setDropdownOpen(!dropdownOpen);
               }}
             >
-              <IoClose size={28} />
-            </div>
+              <IoClose size={30} />
+            </span>
           </div>
           {notiData?.length <= 0 ? (
             <div className="w-full flex justify-center items-center p-8">
               Không có thông báo
             </div>
           ) : null}
-          <ul className="flex flex-col overflow-y-auto h-[90%]">
-            {notiData?.map((notiData: any) => {
-              return (
-                <li
-                  key={notiData.id}
-                  className="hover:bg-gray-100 border-b"
-                  onClick={() => {
-                    handleReadDetail(notiData.id);
-                  }}
-                >
-                  <div className=" text-lg relative flex justify-between items-center mx-4 text-left p-2  my-1 rounded-lg gap-1 py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 ">
-                    <div>
-                      <p className="font-semibold text-gray-500 ">
-                        {notiData.title}
-                      </p>
-                      {/* <p className="text-sm">{notiData.content}</p> */}
+          <ul className="flex flex-col overflow-y-auto max-h-[600px]">
+            {notiData
+              ?.map((notiData: any) => {
+                return (
+                  <li
+                    key={notiData.id}
+                    className="hover:bg-gray-100 border-b"
+                    onClick={() => {
+                      handleReadDetail(notiData.id);
+                    }}
+                  >
+                    <div className=" text-lg relative flex justify-between items-center mx-4 text-left p-2  my-1 rounded-lg gap-1 py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 ">
+                      <div>
+                        <div>
+                          <p className="font-semibold text-black ">
+                            {notiData.title}
+                          </p>
+                          <span className="font-thin text-sm">
+                            {notiData.content}
+                          </span>
+                        </div>
+                        {/* <p className="text-sm">{notiData.content}</p> */}
 
-                      <p className="text-xs italic text-gray-500">
-                        {notiData.sendTime}
-                      </p>
+                        <p className="text-xs italic text-gray-500">
+                          {notiData.sendTime}
+                        </p>
+                      </div>
+                      <div className="flex justify-center items-center">
+                        {notiData.viewed ? (
+                          <span className={` right-0 inline text-sm`}>
+                            Đã xem
+                          </span>
+                        ) : (
+                          <span
+                            className={` right-0 bg-main z-1 h-3 w-3 rounded-full bg-meta-1 ${
+                              notifying === false ? "block" : "inline"
+                            }`}
+                          >
+                            <span className=" -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex justify-center items-center">
-                      {notiData.viewed ? (
-                        <span className={` right-0 inline text-sm`}>
-                          Đã xem
-                        </span>
-                      ) : (
-                        <span
-                          className={` right-0 bg-main z-1 h-3 w-3 rounded-full bg-meta-1 ${
-                            notifying === false ? "block" : "inline"
-                          }`}
-                        >
-                          <span className=" -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
+                  </li>
+                );
+              })
+              .reverse()}
           </ul>
         </div>
       </div>

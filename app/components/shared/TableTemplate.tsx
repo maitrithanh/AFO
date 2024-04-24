@@ -142,7 +142,7 @@ function TableTemplate<T extends IObject = any>({
   rowPerPage,
   getKey,
   exportExcel,
-  searchAddress
+  searchAddress,
 }: Props<T>) {
   //init
   if (!rowPerPage) rowPerPage = DefaultRowPerPage;
@@ -202,7 +202,7 @@ function TableTemplate<T extends IObject = any>({
   const [filterOpt, setFilterOpt] = useState<number[]>([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
     setPage(1);
@@ -237,19 +237,19 @@ function TableTemplate<T extends IObject = any>({
       list = list.filter((x) => dateRange.filter(x, fromDate, toDate));
     }
 
-    if (searchAddress) { 
-      console.log('addr', address.split('&'));//
+    if (searchAddress) {
+      console.log("addr", address.split("&")); //
       list = list.filter((x) => {
-        if (!address.replace('&', '').length) return true;
+        if (!address.replace("&", "").length) return true;
 
         //get address info from current item
         var currAddr = searchAddress(x);
-        var arr = currAddr.split('&');
+        var arr = currAddr.split("&");
         if (arr.length < 4) return false;
         const [st, ward, dist, city] = arr;
 
         //address info from search inputs
-        arr = address.split('&')
+        arr = address.split("&");
         //compare city
         if (arr.length > 3 && arr[3] && city != arr[3]) return false;
         //compare district
@@ -277,7 +277,7 @@ function TableTemplate<T extends IObject = any>({
     fromDate,
     toDate,
     address,
-    searchAddress
+    searchAddress,
   ]);
 
   const PageCount = useMemo(() => {
@@ -435,26 +435,28 @@ function TableTemplate<T extends IObject = any>({
             )}
 
             {/* export excel button */}
-            {exportExcel &&
-              <a href={baseURL + 'File/' + exportExcel} target="_blank"
-                className="flex py-2 px-3 border-solid border border-gray-300 text-gray-600 rounded-lg gap-2 hover:text-green-700 hover:border-green-700">
-                
+            {exportExcel && (
+              <a
+                href={baseURL + "File/" + exportExcel}
+                target="_blank"
+                className="flex py-2 px-3 border-solid border border-gray-300 text-gray-600 rounded-lg gap-2 hover:text-green-700 hover:border-green-700"
+              >
                 <FaFileExcel />
-                <button className="">
-                  Xuất file Excel
-                </button>
+                <button className="">Xuất file Excel</button>
                 <FaDownload />
               </a>
-            }
+            )}
 
             {/* search address */}
-            {
-              searchAddress &&
+            {searchAddress && (
               <div className="w-[500px]">
-                <SelectAddress setAddress={(addr) => setAddress(addr)} address={address} hideStreet />
+                <SelectAddress
+                  setAddress={(addr) => setAddress(addr)}
+                  address={address}
+                  hideStreet
+                />
               </div>
-            }
-
+            )}
           </div>
 
           {/* add button */}
@@ -467,7 +469,7 @@ function TableTemplate<T extends IObject = any>({
           )}
         </div>
 
-        <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
+        <div className="relative shadow-3xl sm:rounded-lg ">
           {filteredData?.length > 0 && (
             <div className="italic px-6 py-1">
               Hiển thị dòng {(page - 1) * rowPerPage! + 1} -{" "}
@@ -476,9 +478,9 @@ function TableTemplate<T extends IObject = any>({
             </div>
           )}
           <table className="w-full text-md text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
-            <thead className="text-md text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
-              <tr>
-                {!hideIndex && <th className="px-6 py-3">#</th>}
+            <thead className="text-md w-full text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
+              <tr className="table table-fixed w-full">
+                {!hideIndex && <th className="px-6 py-3 w-14">#</th>}
 
                 {columns.map((x) => (
                   <th key={x.title} scope="col" className="px-6 py-3">
@@ -486,18 +488,22 @@ function TableTemplate<T extends IObject = any>({
                   </th>
                 ))}
 
-                {actions?.length && <th>{/* actions */} Thao tác</th>}
+                {actions?.length && (
+                  <th className="flex justify-center px-6 py-3">
+                    {/* actions */} Thao tác
+                  </th>
+                )}
               </tr>
             </thead>
-            <tbody>
+            <tbody className=" block overflow-auto max-h-[570px] rounded-lg">
               {filteredData
                 .slice((page - 1) * rowPerPage!, page * rowPerPage!)
                 .map((row, i) => (
                   <tr
                     key={getKey!(row) ?? i}
-                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    className="odd:bg-white table table-fixed w-full odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                   >
-                    <td className="pl-6 py-4">
+                    <td className="pl-6 py-4 w-14">
                       {i + 1 + (page - 1) * rowPerPage!}
                     </td>
 
@@ -511,8 +517,8 @@ function TableTemplate<T extends IObject = any>({
                       </td>
                     ))}
                     {actions?.length && (
-                      <td className="md:px-6 md:py-4">
-                        <div className="flex items-center">
+                      <td className="md:px-6 md:py-4 ">
+                        <div className="flex justify-center items-center">
                           {actions?.map((act, i) => (
                             <Link
                               key={i}

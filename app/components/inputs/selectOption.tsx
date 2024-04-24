@@ -26,7 +26,7 @@ const SelectOption: React.FC<SelectOptionProps> = ({
         {...register(id, { required: required })}
         className="outline-none text-xl border-slate-300 border-2 rounded-md w-full h-full p-4"
       >
-        {option.map((x: any) => {
+        {option?.map((x: any) => {
           if (x.value != null) {
             return (
               <option key={x.value} value={x.value}>

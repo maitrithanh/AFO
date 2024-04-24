@@ -9,6 +9,8 @@ const EventPageC = () => {
   const year = day.getFullYear();
   const month = day.getMonth() + 1;
 
+  console.log(day);
+
   const { data: eventData } = useFetch(`Events/getList?year=${year}`);
 
   return (
@@ -32,7 +34,8 @@ const EventPageC = () => {
             <div
               key={event?.id}
               className={`relative p-4 w-full shadow-lg my-4 rounded-lg ${
-                getMonth(event?.startDate) == month
+                getMonth(event?.startDate) == month ||
+                getMonth(event?.endDate) == month
                   ? "bg-main text-white"
                   : "bg-white"
               }`}
@@ -49,12 +52,15 @@ const EventPageC = () => {
                   <p
                     className={`text-sm font-normal ml-4 w-fit px-2 h-8 flex justify-center items-center
                     ${
-                      getMonth(event?.endDate) < month
+                      getMonth(event?.endDate) < month &&
+                      getMonth(event?.startDate) < month
                         ? "bg-gray-400"
                         : "bg-green-500"
                     }  text-white p-1 rounded-full`}
                   >
-                    {getMonth(event?.endDate) < month ? (
+                    {" "}
+                    {getMonth(event?.endDate) < month &&
+                    getMonth(event?.startDate) < month ? (
                       "Đã diễn ra"
                     ) : (
                       <p>
@@ -62,7 +68,12 @@ const EventPageC = () => {
                         <span className="bg-rose-500 px-2 rounded-full mx-1">
                           {event?.countDay}
                         </span>
-                        ngày trong tháng {getMonth(event?.startDate)}
+                        ngày trong tháng{" "}
+                        {getMonth(event?.startDate) == getMonth(event?.endDate)
+                          ? getMonth(event?.startDate)
+                          : `${getMonth(event?.startDate)} và ${getMonth(
+                              event?.endDate
+                            )}`}
                       </p>
                     )}
                   </p>

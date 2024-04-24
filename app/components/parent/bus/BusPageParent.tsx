@@ -81,7 +81,7 @@ const BusPage = () => {
                   );
                 }}
               >
-                <SelectTrigger className="w-fit flex px-2 text-xl bg-white outline-none">
+                <SelectTrigger className="w-fit flex px-2 text-3xl font-bold bg-white outline-none">
                   Chi tiết tuyến:
                   <strong className="text-main mx-2">{stationName}</strong>
                   {/* <div className="mx-2 text-main font-bold">

@@ -103,7 +103,7 @@ const Sidebar = () => {
           </div>
 
           <ul
-            className="flex-1 px-3 overflow-y-auto overflow-x-hidden no-select"
+            className="flex-1 px-3 overflow-y-auto overflow-hidden no-select"
             onClick={() => {
               handleExpanedMobile();
             }}

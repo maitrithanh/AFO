@@ -330,7 +330,7 @@ const BurnOutPage = () => {
                   <th scope="col" className="px-6 py-3">
                     Trạng thái
                   </th>
-                  <th scope="col" className="px-6 py-3"></th>
+                  {/* <th scope="col" className="px-6 py-3"></th> */}
                 </tr>
               </thead>
               <tbody>
@@ -358,20 +358,20 @@ const BurnOutPage = () => {
                           <span className="text-yellow-600">Đã gửi</span>
                         )}
                       </td>
-                      <td
+                      {/* <td
                         className={`md:px-6 md:py-4 hover hover:text-rose-600  ${
                           !item.isActive
-                            ? "cursor-pointer"
-                            : "cursor-not-allowed"
+                            ? "cursor-pointer visible"
+                            : "cursor-not-allowed invisible"
                         }`}
                         onClick={() => {
                           {
-                            !item.isActive ? onSubmitDelete(item.reqId) : "";
+                            !item.isActive ? onSubmitDelete(item.reqId) : null;
                           }
                         }}
                       >
                         <MdCancelScheduleSend size={24} />
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })}

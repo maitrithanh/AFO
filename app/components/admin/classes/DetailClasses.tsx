@@ -57,6 +57,7 @@ const DetailClasses = (id: any) => {
   const [dataStudentDetail, setDataStudentDetail] = useState({});
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
+  const [searchTeacher, setSearchTeacher] = useState("");
   const router = useRouter();
   const token = getCookie("token");
   const [openDialog, setOpenDialog] = useState(false);
@@ -150,6 +151,12 @@ const DetailClasses = (id: any) => {
     return matchName || matchPhone;
   };
 
+  const searchTeacherInClass = (c: any): boolean => {
+    const matchName: boolean = c.fullName.toLowerCase().includes(searchTeacher);
+    const matchPhone: boolean = c.teacherID?.includes(searchTeacher);
+    return matchName || matchPhone;
+  };
+
   const handleRemoveChildOutClass = (childID: string) => {
     const formData = new FormData();
     formData.append("classId", id.id);
@@ -197,7 +204,7 @@ const DetailClasses = (id: any) => {
   }, [refresh, arrTeacher]);
 
   //Xử lý thêm giáo viên vào mảng
-  const handleAddTeacherToArr = (teacherInfo: any, event: any) => {
+  const handleAddTeacherToArr = (teacherInfo: any, event?: any) => {
     if (arrTeacher.length >= 2) {
       alert("Một lớp tối đa 2 giáo viên!");
     } else {
@@ -210,7 +217,7 @@ const DetailClasses = (id: any) => {
           return;
         }
       }
-      setInputTeacherValue(event?.target?.value || "");
+      setInputTeacherValue(teacherInfo || "");
       arrTeacher.push(teacherInfo);
       setTimeout(() => {
         setInputTeacherValue("");
@@ -340,7 +347,7 @@ const DetailClasses = (id: any) => {
             ) : null}
           </div>
         </div>
-        <div className="relative overflow-x-auto shadow-sm bg-white pt-2 sm:rounded-lg">
+        <div className="relative shadow-sm bg-white pt-2 sm:rounded-lg">
           <div className="px-2">
             <div className="flex items-center justify-between">
               <div>
@@ -406,89 +413,101 @@ const DetailClasses = (id: any) => {
                     ) : (
                       <>
                         {arrTeacher?.length < 1 ? (
-                          <span
-                            className={`italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
+                          <div
+                            className={`relative italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
                           >
-                            <div className="">
+                            <div className="group">
                               <input
                                 type="text"
-                                list={"dataListTeacher"}
-                                placeholder="Giáo viên"
+                                // list={"dataListTeacher"}
+                                placeholder={`Giáo viên`}
                                 onClick={() => {
                                   setOnSelect(true);
                                 }}
                                 onChange={(e) => {
-                                  if (onSelect) {
-                                    handleAddTeacherToArr(
-                                      dataTeacher[e.target.value],
-                                      e
-                                    );
-                                  }
+                                  setSearchTeacher(e.target.value);
                                 }}
-                                value={inputTeacherValue}
+                                defaultValue={inputTeacherValue}
                                 className="w-full p-4 outline-none shadow-3xl rounded-md border"
                               />
-                              <datalist id="dataListTeacher">
-                                {dataTeacher?.map((data: any, i: number) => {
-                                  return (
-                                    <option
-                                      key={data.id}
-                                      value={i}
-                                      onClick={() => {
-                                        setOnSelect(true);
-                                      }}
-                                    >
-                                      <DefaultImage
-                                        img={data.avatar}
-                                        fallback="/avatar.webp"
-                                      />{" "}
-                                      {data?.fullName}
-                                    </option>
-                                  );
-                                })}
-                              </datalist>
+                              <div className="absolute max-h-[200px] group-hover:visible invisible cursor-pointer bg-white shadow-3xl border p-4 rounded-md w-[94%] overflow-auto">
+                                {dataTeacher
+                                  ?.filter(searchTeacherInClass)
+                                  ?.map((data: any, i: number) => {
+                                    return (
+                                      <div
+                                        key={data.id}
+                                        onClick={() => {
+                                          setOnSelect(true);
+                                          handleAddTeacherToArr(data);
+                                        }}
+                                      >
+                                        <div className="flex items-center gap-2">
+                                          <DefaultImage
+                                            img={getImageUrl(data.avatar)}
+                                            fallback="/avatar.webp"
+                                          />{" "}
+                                          <div>
+                                            {data?.fullName}
+                                            <p className="font-thin text-sm">
+                                              {data?.teacherID}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                              </div>
                             </div>
-                          </span>
+                          </div>
                         ) : null}
-                        <span
-                          className={`italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
+                        <div
+                          className={`relative italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
                         >
-                          <div className="">
+                          <div className="group">
                             <input
                               type="text"
-                              list={"dataListTeacher"}
-                              placeholder="Giáo viên"
+                              // list={"dataListTeacher"}
+                              placeholder={`Giáo viên`}
                               onClick={() => {
                                 setOnSelect(true);
                               }}
                               onChange={(e) => {
-                                if (onSelect) {
-                                  handleAddTeacherToArr(
-                                    dataTeacher[e.target.value],
-                                    e
-                                  );
-                                }
+                                setSearchTeacher(e.target.value);
                               }}
-                              value={inputTeacherValue}
+                              defaultValue={inputTeacherValue}
                               className="w-full p-4 outline-none shadow-3xl rounded-md border"
                             />
-                            <datalist id="dataListTeacher">
-                              {dataTeacher?.map((data: any, i: number) => {
-                                return (
-                                  <option
-                                    key={data.id}
-                                    value={i}
-                                    onClick={() => {
-                                      setOnSelect(true);
-                                    }}
-                                  >
-                                    {data?.fullName}
-                                  </option>
-                                );
-                              })}
-                            </datalist>
+                            <div className="absolute max-h-[200px] group-hover:visible invisible cursor-pointer bg-white shadow-3xl border p-4 rounded-md w-[94%] overflow-auto">
+                              {dataTeacher
+                                ?.filter(searchTeacherInClass)
+                                ?.map((data: any, i: number) => {
+                                  return (
+                                    <div
+                                      key={data.id}
+                                      onClick={() => {
+                                        setOnSelect(true);
+                                        handleAddTeacherToArr(data);
+                                      }}
+                                    >
+                                      <div className="flex items-center gap-2">
+                                        <DefaultImage
+                                          img={getImageUrl(data.avatar)}
+                                          fallback="/avatar.webp"
+                                        />{" "}
+                                        <div>
+                                          {data?.fullName}
+                                          <p className="font-thin text-sm">
+                                            {data?.teacherID}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                            </div>
                           </div>
-                        </span>
+                        </div>
                       </>
                     )
                   ) : null}
