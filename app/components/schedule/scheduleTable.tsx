@@ -346,7 +346,7 @@ const ScheduleTable = ({ dataSrc, setData, edit, isCurrWeek }: Props) => {
         </tr>
       </thead>
 
-      <tbody className="grid grid-cols-7">
+      <tbody className="grid grid-cols-7 text-lg">
         {data?.items &&
           timeStamps.map((ts, tsIndex) => (
             <>
@@ -493,12 +493,12 @@ const ScheduleItemEl = ({
       }}
       className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31`}
     >
-      <div className="w-full h-full flex-grow cursor-pointer ">
+      <div className="w-full h-full flex-grow cursor-pointer">
         <div className="h-full flex flex-col">
           <div
             className={`${decoration} ${sp} event flex-1 items-center justify-center left-2 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}
           >
-            <span className={`event-name text-sm font-semibold text-center`}>
+            <span className={`event-name text-lg font-semibold text-center`}>
               {activity}
             </span>
             {edit && (

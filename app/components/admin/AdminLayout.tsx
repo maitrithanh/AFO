@@ -16,7 +16,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className="border-b shadow-sm">
             <Navbar admin />
           </div>
-          <div className="p-4">{children}</div>
+          <div className="p-4 ">{children}</div>
         </div>
       </div>
     </>

@@ -26,6 +26,7 @@ const Columns: TableTemplateColumn[] = [
         custom="w-[40px] h-[40px]"
       />
     ),
+    width: "60",
   },
   {
     title: "Họ tên",

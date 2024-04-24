@@ -74,14 +74,14 @@ const LearningResultPage = () => {
             <div className="flex lg:flex-row flex-col items-center justify-between">
               <div className="md:text-3xl flex items-center">
                 Kết quả học tập Lớp {currentUserTeacher?.className}
-                <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-bold text-3xl ">
+                <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-semibold text-3xl ">
                   <Select
                     defaultValue={monthDefault}
                     onValueChange={(value: any) => {
                       setMonthDefault(value);
                     }}
                   >
-                    <SelectTrigger className="md:w-fill w-full text-lg">
+                    <SelectTrigger className="md:w-fill w-full text-2xl">
                       <p className="text-gray-600 mr-2">
                         <IoCalendarOutline />
                       </p>
@@ -90,7 +90,11 @@ const LearningResultPage = () => {
                     <SelectContent>
                       {allMonth.map((item: any, index: any) => {
                         return (
-                          <SelectItem key={index} value={item}>
+                          <SelectItem
+                            key={index}
+                            value={item}
+                            className="text-lg"
+                          >
                             Tháng {item}
                           </SelectItem>
                         );
@@ -119,7 +123,7 @@ const LearningResultPage = () => {
                 </p>
               </div>
             </div>
-            <p className="md:text-xl">Số học sinh: {detailClassData?.count}</p>
+            <p className="text-2xl">Số học sinh: {detailClassData?.count}</p>
             <div className="md:flex justify-between items-center">
               <div className="bg-white flex items-center md:mb-2 mb-4">
                 <div className=" shadow-lg rounded-lg md:w-[480px] w-full flex">
@@ -138,8 +142,8 @@ const LearningResultPage = () => {
 
           <div className="overflow-y-auto max-h-[590px]">
             <table className="relative w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px] ">
-              <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr className="text-center">
+              <thead className="text-md text-white font-bold uppercase bg-main dark:bg-gray-700 dark:text-gray-400">
+                <tr className="text-center text-lg">
                   <th scope="col" className="px-6 py-3">
                     STT
                   </th>
@@ -173,7 +177,7 @@ const LearningResultPage = () => {
                     return (
                       <tr
                         key={dataStudent.id}
-                        className="odd:bg-white text-center odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                        className="odd:bg-white text-lg text-black text-center odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                       >
                         <th
                           scope="row"
@@ -181,7 +185,7 @@ const LearningResultPage = () => {
                         >
                           {index + 1}
                         </th>
-                        <td className="px-6 py-4 text-left">
+                        <td className="px-6 py-4 text-left scale-125 flex justify-center items-center">
                           <DefaultImage
                             img={getImageUrl(dataStudent.avatar)}
                             fallback="/avatar.webp"
@@ -197,7 +201,9 @@ const LearningResultPage = () => {
                         <td className="px-6 py-4">
                           {dataStudent.countNoCheck}
                         </td>
-                        <td className="px-6 py-4">{dataStudent.point}</td>
+                        <td className="px-6 py-4 text-main font-bold">
+                          {dataStudent.point}
+                        </td>
                         <td className="px-6 py-4">{dataStudent.status}</td>
                       </tr>
                     );

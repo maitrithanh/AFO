@@ -14,7 +14,7 @@ const font_asap_condensed = Asap_Condensed({
   subsets: ["latin"],
 });
 const font = Baloo_Bhaijaan_2({
-  weight: "400", // if single weight, otherwise you use array like [400, 500, 700],
+  weight: ["400", "500", "600", "700"], // if single weight, otherwise you use array like [400, 500, 700],
   style: "normal", // if single style, otherwise you use array like ['normal', 'italic']
   subsets: ["latin"],
 });

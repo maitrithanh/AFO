@@ -83,10 +83,9 @@ const IntroSection = () => {
       <div className="grid md:grid-cols-3 grid-cols-1 container gap-4 justify-center">
         <div
           style={{
-            background: "#ec1460",
             clipPath: "polygon(0 0, 100% 5%, 100% 100%, 0% 100%)",
           }}
-          className="p-[15px] pt-[30px] rounded-sm max-w-[370px]"
+          className="p-[15px] pt-[30px] rounded-sm max-w-[370px] bg-[#ec1460cd] backdrop-blur-xl"
         >
           <h4 className="text-2xl text-white font-bold">
             {t("weeklyProgram")}

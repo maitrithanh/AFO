@@ -31,6 +31,7 @@ const Columns: TableTemplateColumn[] = [
     getData: (x) => (
       <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
     ),
+    width: "60",
   },
   {
     title: "Họ tên",

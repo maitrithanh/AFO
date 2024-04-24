@@ -33,9 +33,9 @@ const HealthPage = () => {
   };
 
   return (
-    <div className="bg-white md:w-full h-[88vh] overflow-auto m-auto rounded-xl">
-      <div className="flex justify-between px-10 py-8 ">
-        <div className="text-xl flex justify-center items-center">
+    <div className="relative bg-white md:w-full h-[88vh] overflow-auto m-auto rounded-xl ">
+      <div className="absolute right-4 top-4 flex justify-between pt-2 px-4">
+        <div className="text-3xl flex justify-center items-center">
           Khám sức khoẻ
           <div className="bg-gray-100 shadow-sm rounded-lg ml-2">
             <Select
@@ -43,7 +43,7 @@ const HealthPage = () => {
                 setGetMonth(value);
               }}
             >
-              <SelectTrigger className="md:w-fit w-full text-lg">
+              <SelectTrigger className="md:w-fit w-full text-2xl">
                 <p className="text-gray-600 mr-2">
                   <MdCalendarMonth />
                 </p>
@@ -55,7 +55,7 @@ const HealthPage = () => {
               <SelectContent>
                 {healthEvent?.map((data: any, i: number) => {
                   return (
-                    <SelectItem key={i} value={data?.id}>
+                    <SelectItem key={i} value={data?.id} className="text-lg">
                       {data?.examDate}
                     </SelectItem>
                   );

@@ -26,6 +26,7 @@ const Columns: TableTemplateColumn[] = [
   {
     title: "Số lượng trẻ",
     getData: (x) => x.count,
+    width: "140",
   },
   {
     title: "Bắt đầu",
@@ -52,24 +53,23 @@ const Columns: TableTemplateColumn[] = [
 
 const filterOptions: FilterOptions[] = [
   {
-    value: 'Tất cả',
-    filter: () => true
+    value: "Tất cả",
+    filter: () => true,
   },
   {
-    value: 'Đang hoạt động',
-    filter: (x) => x.status
+    value: "Đang hoạt động",
+    filter: (x) => x.status,
   },
   {
-    value: 'Đã dừng',
-    filter: (x) => !x.status
+    value: "Đã dừng",
+    filter: (x) => !x.status,
   },
-]
+];
 
-const filter: TableTemplateFilter =
-{
-  name: 'Tình trạng',
-  options: filterOptions
-}
+const filter: TableTemplateFilter = {
+  name: "Tình trạng",
+  options: filterOptions,
+};
 
 const BusPage = () => {
   const [refresh, setRefresh] = useState(false);
@@ -206,7 +206,8 @@ const BusPage = () => {
               {values?.RouteName}
             </strong>
           </h3>
-          <button title="đóng"
+          <button
+            title="đóng"
             className="text-gray-600"
             onClick={() => {
               onClose();
@@ -361,8 +362,10 @@ const BusPage = () => {
           { getLink: (x) => `/admin/bus/${x.id}` },
         ]}
         dateRange={{
-          name: 'Ngày bắt đầu: ',
-          filter: (obj, from, to) => (from == '' || toYMD(obj.startTime) >= from) && (to == '' || toYMD(obj.startTime) <= to)
+          name: "Ngày bắt đầu: ",
+          filter: (obj, from, to) =>
+            (from == "" || toYMD(obj.startTime) >= from) &&
+            (to == "" || toYMD(obj.startTime) <= to),
         }}
       />
     </>

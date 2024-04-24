@@ -35,14 +35,14 @@ const LearningResult = () => {
         <div className="p-4">
           <div className="text-3xl flex justify-center items-center border-b pb-4">
             Kết quả học tập{" "}
-            <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-bold text-3xl ">
+            <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-semibold text-3xl ">
               <Select
                 defaultValue={month}
                 onValueChange={(value: any) => {
                   setMonth(value);
                 }}
               >
-                <SelectTrigger className="md:w-fill w-full text-lg">
+                <SelectTrigger className="md:w-fill w-full text-3xl">
                   <p className="text-gray-600 mr-2">
                     <IoCalendarOutline />
                   </p>
@@ -52,7 +52,7 @@ const LearningResult = () => {
                 <SelectContent>
                   {allMonth.map((item: any, index: any) => {
                     return (
-                      <SelectItem key={index} value={item}>
+                      <SelectItem key={index} value={item} className="text-lg">
                         Tháng {item}
                       </SelectItem>
                     );
@@ -66,19 +66,22 @@ const LearningResult = () => {
         <div className="p-4">
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-xl">
-                Họ tên: <span>{dataAttendanceByChild?.child?.fullName}</span>
+              <p className="text-2xl">
+                Họ tên:{" "}
+                <span className="font-semibold">
+                  {dataAttendanceByChild?.child?.fullName}
+                </span>
               </p>
               <p className="text-xl">
                 Đánh giá:{" "}
-                <span className=" text-gray-600">
+                <span className=" text-gray-600 italic">
                   {dataAttendanceByChild?.child?.status}
                 </span>
               </p>
             </div>
             <table className="border">
               <thead>
-                <tr className="text-center border">
+                <tr className="text-center border text-lg">
                   <td className="border p-2">Đi học</td>
                   <td className="border p-2">Có phép</td>
                   <td className="border p-2">Không phép</td>
@@ -105,8 +108,8 @@ const LearningResult = () => {
           </div>
           <div>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px] ">
-              <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr className="text-center">
+              <thead className="text-md text-white font-bold uppercase bg-main text-lg dark:bg-gray-700 dark:text-gray-400">
+                <tr className="text-center text-lg">
                   <th scope="col" className="px-6 py-3">
                     Ngày
                   </th>
@@ -132,9 +135,11 @@ const LearningResult = () => {
                   return (
                     <tr
                       key={dataCheckIn.date}
-                      className="odd:bg-white text-center odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                      className="odd:bg-white text-center text-lg to-black odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                     >
-                      <td className="px-6 py-4">{dataCheckIn.date}</td>
+                      <td className="px-6 py-4 text-black">
+                        {dataCheckIn.date}
+                      </td>
                       <td className="px-6 py-4">
                         <p className="flex justify-center">
                           {dataCheckIn.started ? (
@@ -164,7 +169,7 @@ const LearningResult = () => {
                       <td className="md:px-6 md:py-4 hover">
                         {dataCheckIn.reason ? dataCheckIn.reason : "''"}
                       </td>
-                      <td className="md:px-6 md:py-4 hover text-main font-bold text-xl">
+                      <td className="md:px-6 md:py-4 hover text-main font-bold text-2xl">
                         {dataCheckIn.point}
                       </td>
                       <td className="md:px-6 md:py-4 hover ">

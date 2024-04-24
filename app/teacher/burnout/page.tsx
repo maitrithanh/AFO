@@ -28,8 +28,11 @@ const Columns: TableTemplateColumn[] = [
   {
     title: "Hình",
     getData: (x) => (
-      <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+      <div className=" scale-125 w-[50px] h-[50px]">
+        <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+      </div>
     ),
+    width: "60",
   },
   {
     title: "Họ tên",
@@ -155,7 +158,7 @@ const BurnOutPage = () => {
           title={`Danh sách xin nghỉ của lớp ${currentUserTeacher?.className}`}
           dataSource={classData || []}
           columns={Columns}
-          searchColumns={[Columns[0]]}
+          searchColumns={[Columns[0], Columns[2]]}
           searchPlaceHolder="Tìm kiếm..."
           // addButton={{ link: "#" }}
           actions={[

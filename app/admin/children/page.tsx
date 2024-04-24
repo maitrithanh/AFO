@@ -19,16 +19,18 @@ import { SiGoogleclassroom } from "react-icons/si";
 
 const Columns: TableTemplateColumn<ChildrenData>[] = [
   {
-    title: "Mã số",
-    getData: (x) => x.id,
-  },
-  {
     title: "Hình",
     getData: (x) => (
-      <div className="w-[40px] h-[40px]">
+      <div className="w-[40px] h-[40px] flex">
         <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
       </div>
     ),
+    width: "60",
+  },
+  {
+    title: "Mã số",
+    getData: (x) => x.id,
+    width: "150",
   },
   {
     title: "Họ tên",
@@ -43,14 +45,17 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
         <span className="text-rose-600">Chưa có lớp</span>
       );
     },
+    width: "140",
   },
   {
     title: "ngày sinh",
     getData: (x) => x.birthDay,
+    width: "150",
   },
   {
     title: "Giới tính",
     getData: (x) => x.gender,
+    width: "120",
   },
   {
     title: "Trạng thái",
@@ -62,15 +67,18 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
       ) : (
         <span className="text-yellow-600">{x.status}</span>
       ),
+    width: "120",
   },
   {
     title: "Người giám hộ",
     getData: (x) =>
       x.parentName + (x.relationship != null ? ` (${x.relationship})` : ""),
   },
+
   {
     title: "Số điện thoại",
     getData: (x) => x.phone,
+    width: "120",
   },
 ];
 

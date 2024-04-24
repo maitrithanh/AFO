@@ -1,6 +1,11 @@
-"use client"
+"use client";
 
-import TableTemplate, { FilterOptions, TableTemplateColumn, TableTemplateFilter, TableTemplateSort } from "@/app/components/shared/TableTemplate"
+import TableTemplate, {
+  FilterOptions,
+  TableTemplateColumn,
+  TableTemplateFilter,
+  TableTemplateSort,
+} from "@/app/components/shared/TableTemplate";
 import FeeRes from "@/types/Fee";
 import { getWeekName, toYMD } from "@/utils/dateTime";
 import useFetch from "@/utils/useFetch";
@@ -9,33 +14,35 @@ import DialogAddFee from "@/app/components/schoolfee/addDialog";
 
 const Columns: TableTemplateColumn<FeeRes>[] = [
   {
-    title: 'TÊN PHÍ',
-    getData: (x) => x.name
+    title: "TÊN PHÍ",
+    getData: (x) => x.name,
   },
   {
-    title: 'SỐ TIỀN',
-    getData: (x) => x.price.toLocaleString('en')
+    title: "SỐ TIỀN",
+    getData: (x) => x.price.toLocaleString("en"),
   },
   {
-    title: 'KHỐI ÁP DỤNG',
-    getData: (x) => x.grade
+    title: "KHỐI ÁP DỤNG",
+    getData: (x) => x.grade,
   },
   {
-    title: 'NGÀY ÁP DỤNG',
-    getData: (x) => x.addDate
+    title: "NGÀY ÁP DỤNG",
+    getData: (x) => x.addDate,
   },
   {
-    title: 'LOẠI PHÍ',
-    getData: (x) => x.type
+    title: "LOẠI PHÍ",
+    getData: (x) => x.type,
   },
   {
-    title: 'TRẠNG THÁI',
-    getData: (x) => x.isActive ?
-      <span className="text-green-500">ĐANG ÁP DỤNG</span>
-      :
-      <span className="text-red-500">ĐÃ HỦY</span>
+    title: "TRẠNG THÁI",
+    getData: (x) =>
+      x.isActive ? (
+        <span className="text-green-500">ĐANG ÁP DỤNG</span>
+      ) : (
+        <span className="text-red-500">ĐÃ HỦY</span>
+      ),
   },
-]
+];
 
 const gradeOptions: FilterOptions<FeeRes>[] = [
   {
@@ -84,20 +91,20 @@ const filterActive: TableTemplateFilter = {
 const filterType: TableTemplateFilter<FeeRes> = {
   name: "Loại phí",
   options: [],
-  autoFilter: (x) => x.type
+  autoFilter: (x) => x.type,
 };
 
-const defaultSort = (a: FeeRes, b: FeeRes): number => { 
+const defaultSort = (a: FeeRes, b: FeeRes): number => {
   if (b.isActive && !a.isActive) return 1;
   if (a.isActive && !b.isActive) return -1;
-  return toYMD(a.addDate) > toYMD(b.addDate) ? -1 : 1
-}
+  return toYMD(a.addDate) > toYMD(b.addDate) ? -1 : 1;
+};
 
-const dateSort = (a: FeeRes, b: FeeRes): number => { 
-  if(a.addDate == b.addDate) return a.id - b.id
+const dateSort = (a: FeeRes, b: FeeRes): number => {
+  if (a.addDate == b.addDate) return a.id - b.id;
 
   return toYMD(a.addDate) > toYMD(b.addDate) ? -1 : 1;
-}
+};
 
 const sorts: TableTemplateSort<FeeRes>[] = [
   {
@@ -130,33 +137,41 @@ const SchoolFee = () => {
 
   const dialog = (
     <div
-      className={`${!openDialog ? "hidden opacity-0" : "block opacity-100"
-        } transition-all`}
+      className={`${
+        !openDialog ? "hidden opacity-0" : "block opacity-100"
+      } transition-all`}
     >
       <DialogAddFee
         onClose={() => setOpenDialog(false)}
-        onRefresh={() => setRefresh(x => !x)}
+        onRefresh={() => setRefresh((x) => !x)}
       />
     </div>
   );
 
+  return (
+    <TableTemplate<FeeRes>
+      title="Danh sách học phí"
+      getKey={(x) => x.id + "_" + x.typeCode}
+      dataSource={MenuData || []}
+      columns={Columns}
+      searchColumns={[Columns[0]]}
+      searchPlaceHolder="Nhập tên phí..."
+      addButton={{
+        onClick: () => {
+          setOpenDialog(true);
+        },
+      }}
+      filters={[filterGrade, filterActive, filterType]}
+      sortOptions={sorts}
+      extraElementsToolBar={dialog}
+      dateRange={{
+        name: "Ngày áp dụng: ",
+        filter: (obj, from, to) =>
+          (from == "" || toYMD(obj.addDate) >= from) &&
+          (to == "" || toYMD(obj.addDate) <= to),
+      }}
+    />
+  );
+};
 
-  return <TableTemplate<FeeRes>
-    title="Danh sách học phí"
-    getKey={(x) => x.id + '_' + x.typeCode}
-    dataSource={MenuData || []}
-    columns={Columns}
-    searchColumns={[Columns[0]]}
-    searchPlaceHolder="Nhập tên phí..."
-    addButton={{ onClick: () => { setOpenDialog(true) } }}
-    filters={[filterGrade, filterActive, filterType]}
-    sortOptions={sorts}
-    extraElementsToolBar={dialog}
-    dateRange={{
-      name: 'Ngày áp dụng: ',
-      filter: (obj, from, to) => (from == '' || toYMD(obj.addDate) >= from) && (to == '' || toYMD(obj.addDate) <= to)
-    }}
-  />
-}
-
-export default SchoolFee
+export default SchoolFee;

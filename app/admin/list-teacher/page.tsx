@@ -39,6 +39,7 @@ const Columns: TableTemplateColumn<any>[] = [
         <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
       </div>
     ),
+    width: "60",
   },
   {
     title: "Tên giáo viên",

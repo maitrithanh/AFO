@@ -31,6 +31,7 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
   {
     title: "Tên Người Giám Hộ",
     getData: (x) => x.fullName,
+    width: "150",
   },
   {
     title: "Tên Trẻ Giám hộ",
@@ -45,6 +46,7 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
         ))}
       </div>
     ),
+    width: "200",
   },
   // {
   //   title: "Mối quan hệ",
@@ -53,14 +55,17 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
   {
     title: "Số điện thoại",
     getData: (x) => x.phoneNumber,
+    width: "150",
   },
   {
     title: "Giới tính",
     getData: (x) => (x.gender ? "Nam" : "Nữ"),
+    width: "120",
   },
   {
     title: "Ngày sinh",
     getData: (x) => x.birthDay,
+    width: "150",
   },
   {
     title: "Địa chỉ",
@@ -74,6 +79,7 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
       ) : (
         <span className="text-green-600">Hoạt động</span>
       ),
+    width: "140",
   },
 ];
 
@@ -332,7 +338,7 @@ const ParentPage = () => {
         sortOptions={sorts}
         filters={[filterGender]}
         exportExcel="exportParent"
-        searchAddress={(x) => x.encodedAddress ?? ''}
+        searchAddress={(x) => x.encodedAddress ?? ""}
       />
     </>
   );

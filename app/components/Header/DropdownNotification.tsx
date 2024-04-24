@@ -176,6 +176,7 @@ const DropdownNotification = () => {
             </span>
           </Link>
         </div>
+
         <div
           className={`absolute shadow-3xl border p-4 bg-white md:-translate-x-80 cursor-pointer -translate-x-64 z-50 md:w-[400px] w-[350px] rounded-md ${
             dropdownOpen === true
@@ -210,7 +211,7 @@ const DropdownNotification = () => {
                       handleReadDetail(notiData.id);
                     }}
                   >
-                    <div className=" text-lg relative flex justify-between items-center mx-4 text-left p-2  my-1 rounded-lg gap-1 py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 ">
+                    <div className=" text-lg relative flex justify-between items-center mx-2 text-left my-1 rounded-lg gap-1 py-2 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 ">
                       <div>
                         <div>
                           <p className="font-semibold text-black ">

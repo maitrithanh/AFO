@@ -19,20 +19,22 @@ const Columns: TableTemplateColumn[] = [
   {
     title: "Mã yêu cầu",
     getData: (x) => x.reqId,
-  },
-  {
-    title: "Ngày",
-    getData: (x) => x.date,
+    width: "120",
   },
   {
     title: "Hình",
     getData: (x) => (
       <DefaultImage img={getImageUrl(x.childAvatar)} fallback="/avatar.webp" />
     ),
+    width: "60",
   },
   {
     title: "Họ tên",
     getData: (x) => x.childName,
+  },
+  {
+    title: "Ngày",
+    getData: (x) => x.date,
   },
   {
     title: "Lớp cũ",

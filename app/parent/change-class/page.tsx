@@ -233,8 +233,8 @@ const ChangeClassPage = () => {
           </div>
           <div>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px] ">
-              <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr className="">
+              <thead className="text-md text-white font-bold uppercase bg-main dark:bg-gray-700 dark:text-gray-400">
+                <tr className="text-lg">
                   <th scope="col" className="px-6 py-3">
                     Mã yêu cầu
                   </th>
@@ -264,7 +264,7 @@ const ChangeClassPage = () => {
                   return (
                     <tr
                       key={item.reqId}
-                      className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                      className="odd:bg-white text-black text-lg odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                     >
                       <td
                         className={`px-6 py-4 ${

@@ -18,6 +18,7 @@ import GetClass from "@/utils/classes/getClass";
 import { CiCircleMore } from "react-icons/ci";
 import { MdCalendarMonth } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import TableTemplate, { TableTemplateColumn } from "../../shared/TableTemplate";
 
 const ClassesTable = () => {
   const { t } = useTranslation();
@@ -46,6 +47,34 @@ const ClassesTable = () => {
     return matchName || matchPhone;
   };
 
+  const Columns: TableTemplateColumn[] = [
+    {
+      title: "Hình",
+      getData: (x) => (
+        <div className=" scale-125 w-[50px] h-[50px]">
+          <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+        </div>
+      ),
+      width: "60",
+    },
+    {
+      title: "Họ tên",
+      getData: (x) => x.fullName,
+    },
+    {
+      title: t("dateOfBirth"),
+      getData: (x) => x.birthDay,
+    },
+    {
+      title: t("phoneNumber"),
+      getData: (x) => x.phone,
+    },
+    {
+      title: " Người giám hộ",
+      getData: (x) => x.parentName,
+    },
+  ];
+
   return (
     <>
       {closeDialog ? (
@@ -60,136 +89,52 @@ const ClassesTable = () => {
       )}
       <div className=" bg-white md:w-full h-[88vh] overflow-auto m-auto rounded-xl">
         <div className="relative overflow-x-auto shadow-sm bg-white pt-2 sm:rounded-lg">
-          <div className="p-4">
-            <div>
-              <div className="flex lg:flex-row flex-col items-center justify-between">
-                <div className="flex justify-between w-full">
-                  <div className="md:text-3xl flex items-center">
-                    Điểm danh Lớp {detailClassData?.name}
-                  </div>
-                  <div>
-                    <p className="md:text-xl flex items-center">
-                      Giáo viên chủ nhiệm:
-                      {detailClassData?.teachers.map((teacher: any) => {
-                        return (
-                          <span
-                            className={`italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
-                            key={teacher.teacherID}
-                          >
-                            <DefaultImage
-                              img={getImageUrl(teacher.avatar)}
-                              fallback="/avatar.webp"
-                            />
-                            {teacher.fullName}
-                          </span>
-                        );
-                      })}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="">
-                <p className="md:text-xl">
-                  Số học sinh: {detailClassData?.count}
-                </p>
-              </div>
-            </div>
-            <div className="md:flex justify-between items-center">
-              <div></div>
-              <div className="bg-white flex items-center md:mb-2 mb-4">
-                <div className="mx-2 shadow-lg rounded-lg md:w-[480px] w-full flex">
-                  <Input
-                    type="email"
-                    placeholder="Tìm kiếm..."
-                    className="p-4 "
-                    onChange={(event) => {
-                      setSearch(event.target.value.toLowerCase());
-                    }}
-                  />
-                </div>
-              </div>
+          <div>
+            <div className="absolute right-4 top-14">
+              <p className="md:text-xl flex items-center">
+                Giáo viên chủ nhiệm:
+                {detailClassData?.teachers.map((teacher: any) => {
+                  return (
+                    <span
+                      className={`italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
+                      key={teacher.teacherID}
+                    >
+                      <DefaultImage
+                        img={getImageUrl(teacher.avatar)}
+                        fallback="/avatar.webp"
+                      />
+                      {teacher.fullName}
+                    </span>
+                  );
+                })}
+              </p>
             </div>
           </div>
-
-          <div className="overflow-y-auto max-h-[650px]">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px] ">
-              <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    STT
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Hình
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Họ tên
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    {t("dateOfBirth")}
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    {t("phoneNumber")}
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Người giám hộ
-                  </th>
-                  <th scope="col" className="px-6 py-3"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {detailClassData?.students
-                  ?.filter(searchChildInClass)
-                  .map((dataStudent: any, index: any) => {
-                    return (
-                      <tr
-                        key={dataStudent.id}
-                        className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
-                      >
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {index + 1}
-                        </th>
-                        <td className="px-6 py-4">
-                          <DefaultImage
-                            img={getImageUrl(dataStudent.avatar)}
-                            className={`w-10 h-10 rounded-full cursor-pointer`}
-                            custom="w-[50px] h-[50px]"
-                            fallback="/avatar.webp"
-                          />
-                        </td>
-                        <td
-                          className="px-6 py-4 cursor-pointer"
-                          onClick={() => {
-                            router.push(
-                              `/teacher/detailChild/${dataStudent.id}`
-                            );
-                          }}
-                        >
-                          {dataStudent.fullName}
-                        </td>
-                        <td className="px-6 py-4">{dataStudent.birthDay}</td>
-                        <td className="px-6 py-4">{dataStudent.phone}</td>
-                        <td className="px-6 py-4">{dataStudent.parentName}</td>
-                        <td
-                          className="md:px-6 md:py-4 hover hover:text-main"
-                          onClick={() => {
-                            setDataStudentDetail({
-                              avatar: dataStudent.avatar,
-                              id: dataStudent.id,
-                            });
-                            setCloseDialog(true);
-                          }}
-                        >
-                          <CiCircleMore size={24} />
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
-          </div>
+          <TableTemplate
+            title={`Danh sách trẻ lớp ${detailClassData?.name} - số lượng: ${detailClassData?.count}`}
+            dataSource={detailClassData?.students || []}
+            columns={Columns}
+            searchColumns={[Columns[1]]}
+            searchPlaceHolder="Tìm kiếm..."
+            // addButton={{ link: "#" }}
+            actions={[
+              {
+                icon: (
+                  <span className="text-black">
+                    <CiCircleMore size={24} />
+                  </span>
+                ),
+                onClick: (x) => {
+                  setDataStudentDetail({
+                    avatar: x.avatar,
+                    id: x.id,
+                  });
+                  setCloseDialog(true);
+                },
+              },
+            ]}
+            // extraElementsToolBar={selectMonth}
+          />
         </div>
       </div>
     </>

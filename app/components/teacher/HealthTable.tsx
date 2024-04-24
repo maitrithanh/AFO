@@ -6,11 +6,53 @@ import DefaultImage from "../shared/defaultImage";
 import { getImageUrl } from "@/utils/image";
 import DialogUpdateHealth from "./DialogUpdateHealth";
 import { CiEdit } from "react-icons/ci";
+import TableTemplate, { TableTemplateColumn } from "../shared/TableTemplate";
 
 interface HeathTableProps {
   month: any;
   classId: any;
 }
+
+const Columns: TableTemplateColumn[] = [
+  {
+    title: "Hình",
+    getData: (x) => (
+      <div className=" scale-125 w-[50px] h-[50px]">
+        <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+      </div>
+    ),
+    width: "60",
+  },
+  {
+    title: "Họ tên",
+    getData: (x) => x.fullName,
+  },
+  {
+    title: "Chiều cao",
+    getData: (x) => x.height,
+  },
+  {
+    title: "Cân nặng",
+    getData: (x) => x.weight,
+  },
+  {
+    title: "BMI",
+    getData: (x) => x.bmi,
+  },
+  {
+    title: "Mắt",
+    getData: (x) => x.eye,
+  },
+  {
+    title: "Tình trạng",
+    getData: (x) =>
+      x.status == "Khỏe Mạnh" ? (
+        <span className="text-green-600">{x.status}</span>
+      ) : (
+        <span className="text-yellow-600">{x.status}</span>
+      ),
+  },
+];
 
 const HealthTable = ({ month, classId }: HeathTableProps) => {
   const { t } = useTranslation();
@@ -46,84 +88,35 @@ const HealthTable = ({ month, classId }: HeathTableProps) => {
           refresh={handleRefresh}
         />
       </div>
-      <div className="h-fit">
-        <div className="bg-white shadow-3xl rounded-md mt-4">
-          <div className="relative max-h-[650px] overflow-auto shadow-3xl sm:rounded-lg ">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
-              <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    Hình
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Tên
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Chiều cao
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Cân nặng
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    BMI
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Mắt
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Tình trạng
-                  </th>
-                  <th scope="col" className="px-6 py-3"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {healthListStudent?.map((studentHealth: any, index: any) => {
-                  return (
-                    <tr key={studentHealth.id}>
-                      <td className="md:px-6 md:py-4">
-                        <DefaultImage
-                          img={getImageUrl(studentHealth.avatar)}
-                          className={`w-10 h-10 rounded-full cursor-pointer`}
-                          custom="w-[50px] h-[50px]"
-                          fallback="/avatar.webp"
-                        />
-                      </td>
-                      <td className="md:px-6 md:py-4">
-                        {studentHealth.fullName}
-                      </td>
-                      <td className="md:px-6 md:py-4">
-                        {studentHealth.height}
-                      </td>
-                      <td className="md:px-6 md:py-4">
-                        {studentHealth.weight}
-                      </td>
-                      <td className="md:px-6 md:py-4">{studentHealth.bmi}</td>
-                      <td className="md:px-6 md:py-4">{studentHealth.eye}</td>
-                      <td className="md:px-6 md:py-4">
-                        {studentHealth.status}
-                      </td>
-                      <td
-                        className="hover"
-                        onClick={() => handleUpdateHealth(studentHealth)}
-                      >
-                        <CiEdit size={24} />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div className="flex justify-center items-center p-2">
-              {healthListStudent ? (
-                healthListStudent.length <= 0 ? (
-                  <p>Không có dữ liệu</p>
-                ) : null
-              ) : (
-                "Đang tải"
-              )}
-            </div>
-          </div>
-        </div>
+      <TableTemplate
+        title={``}
+        dataSource={healthListStudent || []}
+        columns={Columns}
+        searchColumns={[Columns[1]]}
+        searchPlaceHolder="Tìm kiếm..."
+        // addButton={{ link: "#" }}
+        actions={[
+          {
+            icon: (
+              <span className="text-black">
+                <CiEdit size={24} />
+              </span>
+            ),
+            onClick: (x) => {
+              handleUpdateHealth(x);
+            },
+          },
+        ]}
+        // extraElementsToolBar={selectMonth}
+      />
+      <div className="flex justify-center items-center p-2">
+        {healthListStudent ? (
+          healthListStudent.length <= 0 ? (
+            <p>Không có dữ liệu</p>
+          ) : null
+        ) : (
+          "Đang tải"
+        )}
       </div>
     </>
   );

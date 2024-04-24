@@ -174,14 +174,14 @@ const AttendancePage = () => {
                 <div className="flex justify-between w-full">
                   <div className="md:text-3xl flex items-center">
                     Điểm danh Lớp {detailClassData?.name}{" "}
-                    <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-bold text-3xl ">
+                    <div className="bg-gray-100 shadow-sm rounded-lg mx-2 font-thin text-3xl ">
                       <Select
                         defaultValue={classId[0]?.trim()}
                         onValueChange={(value: any) => {
                           setAttendance(value);
                         }}
                       >
-                        <SelectTrigger className="md:w-fill w-full text-lg">
+                        <SelectTrigger className="md:w-fill w-full text-2xl">
                           <p className="text-gray-600 mr-2">
                             <IoCalendarOutline />
                           </p>
@@ -190,16 +190,20 @@ const AttendancePage = () => {
                             defaultValue={idAttendanceByClassFirst}
                           />
                         </SelectTrigger>
-                        <SelectContent>
-                          {arrGetAttendanceByClass?.map(
-                            (data: any, index: any) => {
+                        <SelectContent className="text-lg">
+                          {arrGetAttendanceByClass
+                            ?.map((data: any, index: any) => {
                               return (
-                                <SelectItem key={data?.id} value={data?.id}>
+                                <SelectItem
+                                  key={data?.id}
+                                  value={data?.id}
+                                  className="text-lg"
+                                >
                                   {data?.classOfDay?.split("-")[1]}
                                 </SelectItem>
                               );
-                            }
-                          )}
+                            })
+                            .reverse()}
                         </SelectContent>
                       </Select>
                     </div>
@@ -256,14 +260,14 @@ const AttendancePage = () => {
           <div className="overflow-y-auto max-h-[650px]">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px] ">
               <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr className="text-center">
+                <tr className="text-center text-lg">
                   <th scope="col" className="px-6 py-3">
                     STT
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Hình
                   </th>
-                  <th scope="col" className="px-6 py-3">
+                  <th scope="col" className="px-6 py-3 text-left">
                     Họ tên
                   </th>
                   <th scope="col" className="px-6 py-3">
@@ -292,7 +296,7 @@ const AttendancePage = () => {
                     return (
                       <tr
                         key={dataStudent.id}
-                        className="odd:bg-white text-center odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                        className="odd:bg-white text-lg text-black text-center odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                       >
                         <th
                           scope="row"
@@ -300,13 +304,13 @@ const AttendancePage = () => {
                         >
                           {dataStudent.id}
                         </th>
-                        <td className="px-6 py-4 text-left">
+                        <td className="px-6 py-4 text-left scale-125 flex justify-center items-center">
                           <DefaultImage
                             img={getImageUrl(dataStudent.avatar)}
                             fallback="/avatar.webp"
                           />
                         </td>
-                        <td className="px-6 py-4 text-left">
+                        <td className="px-6 py-4 text-left font-semibold">
                           {dataStudent.childName}
                         </td>
                         <td className="px-6 py-4">
@@ -334,7 +338,7 @@ const AttendancePage = () => {
                         <td className="px-6 py-4">
                           {dataStudent.reason ? dataStudent.reason : "''"}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 scale-125">
                           <input
                             id={`Point-${dataStudent.id}`}
                             {...register(`Point-${dataStudent.id}`, {
