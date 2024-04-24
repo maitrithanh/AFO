@@ -11,7 +11,7 @@ export default function Home() {
       <div className="">
         <Banner />
         {/* <Slider /> */}
-        <div className="mb-24">
+        <div className="mb-24" id="atAFO">
           <IntroSection />
         </div>
         <Footer />

@@ -5,6 +5,8 @@ import { SiAzuredataexplorer } from "react-icons/si";
 import { FaPhoneVolume } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
+import { FaLongArrowAltDown } from "react-icons/fa";
+import Link from "next/link";
 
 const Banner = () => {
   const { t } = useTranslation();
@@ -41,15 +43,29 @@ const Banner = () => {
         </div>
         <div className="my-2"></div>
       </div>
-      <div className=" lg:bottom-32 right-2 bottom-14  flex justify-center items-center  ">
-        <Image
-          src={"/banner/an-preschool.webp"}
-          alt="banner"
-          width={800}
-          height={640}
-          className="transition-all duration-5000"
-        />
+      <div className=" lg:bottom-32 right-2 bottom-14 flex justify-center items-center">
+        <div className="relative">
+          <Image
+            src={"/banner/an-preschool.webp"}
+            alt="banner"
+            width={800}
+            height={640}
+            className="transition-all duration-5000 "
+          />
+          <Image
+            src={"/plane.gif"}
+            alt="banner"
+            width={200}
+            height={640}
+            className="transition-all duration-5000 absolute right-24 bottom-0"
+          />
+        </div>
       </div>
+      <Link href={"#atAFO"}>
+        <div className="absolute flex justify-center items-center w-full bottom-8 text-main animate-pulse">
+          <FaLongArrowAltDown size={34} />
+        </div>
+      </Link>
     </div>
   );
 };
