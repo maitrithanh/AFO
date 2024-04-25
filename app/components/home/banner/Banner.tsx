@@ -57,14 +57,15 @@ const Banner = () => {
             alt="banner"
             width={200}
             height={640}
-            className="transition-all duration-5000 absolute right-24 bottom-0"
+            className="transition-all duration-5000 absolute right-24 bottom-0 md:visible invisible"
           />
         </div>
       </div>
-      <Link href={"#atAFO"}>
-        <div className="absolute flex justify-center items-center w-full bottom-8 text-main animate-pulse">
-          <FaLongArrowAltDown size={34} />
-        </div>
+      <Link
+        href={"#atAFO"}
+        className="absolute flex justify-center items-center w-full bottom-8 text-main animate-pulse"
+      >
+        <FaLongArrowAltDown size={34} />
       </Link>
     </div>
   );

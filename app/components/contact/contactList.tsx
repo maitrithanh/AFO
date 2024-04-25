@@ -88,8 +88,8 @@ const ContactList = ({ onSelect, titleChat }: Props) => {
           <div
             key={x.userId}
             className={`${
-              x.userId === currId ? "bg-slate-300" : ""
-            } flex p-3 hover:bg-slate-200 cursor-pointer rounded-xl items-center mb-3`}
+              x.userId === currId ? "bg-mainBlur" : ""
+            } flex p-3 hover:bg-gray-100 cursor-pointer rounded-xl items-center mb-3`}
             onClick={() => onSelect(x)}
           >
             <div className="mr-3 relative">
@@ -102,7 +102,9 @@ const ContactList = ({ onSelect, titleChat }: Props) => {
 
               <div
                 className={`${
-                  x.isOnline ? "bg-green-500" : "bg-slate-500"
+                  x.isOnline
+                    ? "bg-green-500 border-2 border-white"
+                    : "bg-gray-200 border-2 border-white"
                 } absolute right-0 bottom-0 h-[15px] w-[15px] rounded-full`}
               ></div>
             </div>

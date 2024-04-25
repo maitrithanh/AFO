@@ -45,11 +45,13 @@ const EditNewsPage = (params: any) => {
       formData.append("image", currThumb);
     }
 
+    if (value) {
+      formData.append("content", value.toString());
+    }
+
     callApiWithToken()
       .put(
-        `News/putNew?id=${params.params.newsId}&title=${
-          data.title
-        }&content=${value.toString()}`,
+        `News/putNew?id=${params.params.newsId}&title=${data.title}`,
         formData,
         {
           headers: {

@@ -42,8 +42,13 @@ const Columns: TableTemplateColumn<any>[] = [
     width: "60",
   },
   {
-    title: "Tên giáo viên",
+    title: "Họ tên",
     getData: (x) => x.fullName,
+    width: "200",
+  },
+  {
+    title: "Ngày sinh",
+    getData: (x) => x.birthDay,
   },
   {
     title: "Số điện thoại",
@@ -56,15 +61,13 @@ const Columns: TableTemplateColumn<any>[] = [
   {
     title: "Giới tính",
     getData: (x) => x.gender,
+    width: "100",
   },
-  {
-    title: "Ngày sinh",
-    getData: (x) => x.birthDay,
-  },
-  {
-    title: "Địa chỉ",
-    getData: (x) => <p className="descriptNewsTable">{x.address}</p>,
-  },
+
+  // {
+  //   title: "Địa chỉ",
+  //   getData: (x) => <p className="descriptNewsTable">{x.address}</p>,
+  // },
   {
     title: "Lớp phụ trách",
     getData: (x) => x.className,

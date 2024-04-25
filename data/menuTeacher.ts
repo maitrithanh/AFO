@@ -8,7 +8,7 @@ export const menuTeacher = [
     {
       name: "teacherSchedule",
       image: "weekly.webp",
-      path: "/",
+      path: "/teacher/calendar",
       color: "#fef7ec"
     },
     {
