@@ -69,7 +69,12 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
         ref={dropdown}
         className={`w-full flex justify-between items-center overflow-hidden transition-all`}
       >
-        <div className="w-full flex items-center">
+        <div
+          className="w-full flex items-center"
+          onClick={() => {
+            setModalListOpen((curr) => !curr);
+          }}
+        >
           <DefaultImage
             key={user?.avatar}
             img={getImageUrl(user?.avatar)}
@@ -79,9 +84,6 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
             }`}
             width={100}
             height={100}
-            onClick={() => {
-              setModalListOpen((curr) => !curr);
-            }}
           />
 
           <div
@@ -89,12 +91,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
               expanded ? (borderTop ? "w-full" : "sm:w-full") : " w-0"
             }`}
           >
-            <div
-              className="leading-4 cursor-pointer"
-              onClick={() => {
-                setModalListOpen((curr) => !curr);
-              }}
-            >
+            <div className="leading-4 cursor-pointer">
               {borderTop ? (
                 loading ? (
                   "Đang tải..."
@@ -117,31 +114,15 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
             </div>
 
             {borderTop ? (
-              <button
-                title="btn"
-                className="p-1.5 hover:opacity-50"
-                onClick={() => {
-                  setModalListOpen((curr) => !curr);
-                }}
-              >
+              <button title="btn" className="p-1.5 hover:opacity-50">
                 <IoMdMore size={24} />
               </button>
             ) : modalListOpen ? (
-              <div
-                className="flex items-center"
-                onClick={() => {
-                  setModalListOpen((curr) => !curr);
-                }}
-              >
+              <div className="flex items-center">
                 <IoIosArrowDown />
               </div>
             ) : (
-              <div
-                className="flex items-center"
-                onClick={() => {
-                  setModalListOpen((curr) => !curr);
-                }}
-              >
+              <div className="flex items-center">
                 <IoIosArrowForward />
               </div>
             )}
