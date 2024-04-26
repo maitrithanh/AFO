@@ -5,8 +5,8 @@ import useFetch from "@/utils/useFetch";
 import DefaultImage from "../shared/defaultImage";
 import { getImageUrl } from "@/utils/image";
 import DialogUpdateHealth from "./DialogUpdateHealth";
-import { CiEdit } from "react-icons/ci";
 import TableTemplate, { TableTemplateColumn } from "../shared/TableTemplate";
+import { MdEditNote } from "react-icons/md";
 
 interface HeathTableProps {
   month: any;
@@ -99,7 +99,7 @@ const HealthTable = ({ month, classId }: HeathTableProps) => {
           {
             icon: (
               <span className="text-black">
-                <CiEdit size={24} />
+                <MdEditNote size={24} />
               </span>
             ),
             onClick: (x) => {

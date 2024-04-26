@@ -14,7 +14,7 @@ import useFetch from "@/utils/useFetch";
 import { useRouter } from "next/navigation";
 import { CiCircleMore } from "react-icons/ci";
 import DialogAddEvent from "./DialogAddEvent";
-import { CiEdit } from "react-icons/ci";
+import { MdEditNote } from "react-icons/md";
 
 const EventTable = () => {
   const { t } = useTranslation();
@@ -145,7 +145,7 @@ const EventTable = () => {
                         className="hover hover:text-main"
                         onClick={() => handleEdit(event.id)}
                       >
-                        <CiEdit size={24} />
+                        <MdEditNote size={24} />
                       </td>
                     </tr>
                   );

@@ -56,6 +56,7 @@ interface IObject {
 }
 
 export interface TableTemplateColumn<T = any> {
+  minTable?: boolean;
   width?: any;
   //tên cột
   title: string;
@@ -87,6 +88,7 @@ export interface TableTemplateRange<T = any> {
 
 //T khỏi truyền cũng được
 interface Props<T extends IObject> {
+  minTable?: boolean;
   width?: any;
   //tên trang
   title: string;
@@ -128,6 +130,7 @@ interface Props<T extends IObject> {
 }
 
 function TableTemplate<T extends IObject = any>({
+  minTable,
   width,
   title,
   dataSource,
@@ -472,7 +475,7 @@ function TableTemplate<T extends IObject = any>({
           )}
         </div>
 
-        <div className="relative shadow-3xl sm:rounded-lg ">
+        <div className="relative shadow-3xl  overflow-auto tableTemplate">
           {filteredData?.length > 0 && (
             <div className="italic px-6 py-1">
               Hiển thị dòng {(page - 1) * rowPerPage! + 1} -{" "}
@@ -480,9 +483,13 @@ function TableTemplate<T extends IObject = any>({
               {filteredData.length} dòng
             </div>
           )}
-          <table className="w-full text-md text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]">
+          <table
+            className={`${
+              minTable ? null : "min-w-[1024px]"
+            } text-md text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]`}
+          >
             <thead className="text-md w-full flex text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
-              <tr className="lg:table lg:table-fixed w-full">
+              <tr className="table table-fixed w-full">
                 {!hideIndex && <th className="px-6 py-3 p-3 w-14">STT</th>}
 
                 {columns.map((x) => (
@@ -505,15 +512,15 @@ function TableTemplate<T extends IObject = any>({
                 )}
               </tr>
             </thead>
-            <tbody className=" md:block overflow-auto max-h-[570px] rounded-lg">
+            <tbody className=" md:block overflow-auto max-h-[570px] w-full rounded-lg">
               {filteredData
                 .slice((page - 1) * rowPerPage!, page * rowPerPage!)
                 .map((row, i) => (
                   <tr
                     key={getKey!(row) ?? i}
-                    className="odd:bg-white lg:table lg:table-fixed w-full odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    className="odd:bg-white table table-fixed w-full odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                   >
-                    <td className="pl-6 py-4 w-14 p-3">
+                    <td className={`px-6 py-3 p-3 w-14`}>
                       {i + 1 + (page - 1) * rowPerPage!}
                     </td>
 
@@ -521,19 +528,21 @@ function TableTemplate<T extends IObject = any>({
                       <td
                         key={i + "-" + j}
                         scope="row"
-                        className={`max-w-[200px] p-3 font-medium text-gray-900 dark:text-white ${`w-[${col.width}px]`}`}
+                        className={`max-w-[200px] p-3 font-medium text-gray-900 dark:text-white ${`w-${
+                          col.width ? `[${col.width}px]` : "fit"
+                        }`}`}
                       >
                         {col.getData(row)}
                       </td>
                     ))}
                     {actions?.length && (
-                      <td className=" w-24 p-3">
-                        <div className="flex justify-center items-center">
+                      <td className="w-24 p-3">
+                        <div className="flex justify-center items-center ">
                           {actions?.map((act, i) => (
                             <Link
                               key={i}
                               href={act.getLink ? act.getLink(row) : ""}
-                              className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                              className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1 "
                               onClick={
                                 act.onClick
                                   ? () => {

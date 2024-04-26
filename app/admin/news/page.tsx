@@ -10,7 +10,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { AiTwotoneDelete } from "react-icons/ai";
-import { CiEdit } from "react-icons/ci";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,6 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { MdEditNote } from "react-icons/md";
 
 const Columns: TableTemplateColumn[] = [
   {
@@ -139,7 +139,7 @@ const NewsPage = () => {
           {
             icon: (
               <span className="text-gray-600" title="Chỉnh sửa bài đăng">
-                <CiEdit size={24} />
+                <MdEditNote size={24} />
               </span>
             ),
             getLink: (x) => `/admin/news/edit-news/${x.id}`,

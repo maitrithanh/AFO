@@ -31,7 +31,7 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
   {
     title: "Tên Người Giám Hộ",
     getData: (x) => x.fullName,
-    width: "150",
+    width: "200",
   },
   {
     title: "Tên Trẻ Giám hộ",
@@ -55,7 +55,7 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
   {
     title: "Số điện thoại",
     getData: (x) => x.phoneNumber,
-    width: "150",
+    width: "200",
   },
   {
     title: "Giới tính",
@@ -75,11 +75,15 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
     title: "Trạng thái",
     getData: (x) =>
       x.active ? (
-        <span className="text-rose-600">Đã khoá</span>
+        <span className="text-rose-600 flex justify-center items-center">
+          Đã khoá
+        </span>
       ) : (
-        <span className="text-green-600">Hoạt động</span>
+        <span className="text-green-600 flex justify-center items-center">
+          Hoạt động
+        </span>
       ),
-    width: "140",
+    width: "120",
   },
 ];
 

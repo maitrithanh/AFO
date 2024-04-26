@@ -21,11 +21,11 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
   {
     title: "Hình",
     getData: (x) => (
-      <div className="w-[40px] h-[40px] flex">
+      <div className="scale-125 flex">
         <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
       </div>
     ),
-    width: "60",
+    width: "80",
   },
   {
     title: "Mã số",
@@ -35,6 +35,7 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
   {
     title: "Họ tên",
     getData: (x) => x.fullName,
+    width: "200",
   },
   {
     title: "Lớp",
@@ -45,7 +46,7 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
         <span className="text-rose-600">Chưa có lớp</span>
       );
     },
-    width: "140",
+    width: "120",
   },
   {
     title: "ngày sinh",
@@ -73,12 +74,13 @@ const Columns: TableTemplateColumn<ChildrenData>[] = [
     title: "Người giám hộ",
     getData: (x) =>
       x.parentName + (x.relationship != null ? ` (${x.relationship})` : ""),
+    width: "200",
   },
 
   {
     title: "Số điện thoại",
     getData: (x) => x.phone,
-    width: "120",
+    width: "200",
   },
 ];
 
@@ -155,28 +157,30 @@ const ChildPage = () => {
   }, [dataChildren, classData]);
 
   return (
-    <TableTemplate<ChildrenData>
-      title="Danh sách trẻ"
-      dataSource={dataChildren || []}
-      columns={Columns}
-      actions={[
-        // {
-        //   icon: (
-        //     <span className="hover hover:text-main text-gray-500">
-        //       Chuyển lớp
-        //     </span>
-        //   ),
-        //   onClick: (x) => {},
-        // },
-        Action,
-      ]}
-      addButton={{ link: "/admin/children/add" }}
-      searchColumns={[Columns[1], Columns[2]]}
-      searchPlaceHolder="Nhập tên hoặc mã số trẻ"
-      sortOptions={sorts}
-      filters={[filterClasses, filterGender]}
-      exportExcel="ExportChildren"
-    />
+    <>
+      <TableTemplate<ChildrenData>
+        title="Danh sách trẻ"
+        dataSource={dataChildren || []}
+        columns={Columns}
+        actions={[
+          // {
+          //   icon: (
+          //     <span className="hover hover:text-main text-gray-500">
+          //       Chuyển lớp
+          //     </span>
+          //   ),
+          //   onClick: (x) => {},
+          // },
+          Action,
+        ]}
+        addButton={{ link: "/admin/children/add" }}
+        searchColumns={[Columns[1], Columns[2]]}
+        searchPlaceHolder="Nhập tên hoặc mã số trẻ"
+        sortOptions={sorts}
+        filters={[filterClasses, filterGender]}
+        exportExcel="ExportChildren"
+      />
+    </>
   );
 };
 

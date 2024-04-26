@@ -90,11 +90,11 @@ const AddTeacherPage = () => {
 
   useEffect(() => {
     setListStudent(dataStudent);
-  }, [dataStudent]);
+  }, [dataStudent, refresh]);
 
   useEffect(() => {
     setListTeacher(dataTeacher);
-  }, [dataTeacher]);
+  }, [dataTeacher, refresh]);
 
   const {
     register,
@@ -157,6 +157,7 @@ const AddTeacherPage = () => {
         }
       }
       arrTeacher.push(teacherInfo);
+      handleRefresh();
       toast.success("Đã thêm giáo viên");
       handleRemoveTeacherAlert(teacherInfo.teacherID);
     }
@@ -180,6 +181,7 @@ const AddTeacherPage = () => {
     handleRemoveStudentAlert(id);
     setInputStudentValue(id || "");
     arrStudent.push(studentInfo);
+    handleRefresh();
     toast.success("Đã thêm");
   };
   //Xử lý thêm học sinh vào alert
@@ -265,24 +267,48 @@ const AddTeacherPage = () => {
         <AlertDialogContent className="max-w-[800px]">
           <AlertDialogHeader>
             <AlertDialogTitle>Thêm giáo viên phụ trách</AlertDialogTitle>
-            <div>
-              <TableTemplate
-                title=""
-                dataSource={listTeacher || []}
-                columns={ColumnsTeacher}
-                actions={[
-                  {
-                    icon: (
-                      <span className="hover hover:text-main text-gray-500">
-                        <IoIosAddCircle size={24} />
-                      </span>
-                    ),
-                    onClick: (x) => {
-                      handleAddTeacherToArr(x);
-                    },
-                  },
-                ]}
-              />
+            <div className="">
+              <div>
+                <table className="w-full text-md text-left rtl:text-right bg-white my-2 text-gray-500 dark:text-gray-400 max-h-[600px]">
+                  <thead className="text-md text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
+                    <tr>
+                      <th className="px-6 py-3">#</th>
+                      <th className="px-6 py-3">Mã giáo viên</th>
+                      <th className="px-6 py-3">Hình</th>
+                      <th className="px-6 py-3">Tên</th>
+                      <th className="px-6 py-3 flex justify-center items-center">
+                        Thao tác
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {listTeacher?.map((x: any, i: any) => (
+                      <tr
+                        key={x.teacherID}
+                        className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                      >
+                        <td className="pl-6 py-4">{i + 1}</td>
+                        <td className="pl-6 py-4">{x.teacherID}</td>
+                        <td className="pl-6 py-4">
+                          <DefaultImage
+                            img={getImageUrl(x.avatar)}
+                            fallback="/avatar.webp"
+                          />
+                        </td>{" "}
+                        <td className="pl-6 py-4">{x.fullName}</td>
+                        <td>
+                          <span
+                            onClick={() => handleAddTeacherToArr(x)}
+                            className="hover:cursor-pointer flex justify-center items-center hover:text-main text-gray-500"
+                          >
+                            <IoIosAddCircle size={24} />
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               {dataTeacher?.length <= 0 ? (
                 <p className="flex w-full justify-center items-center">
                   <span className="text-yellow-500 mx-1">
@@ -309,23 +335,47 @@ const AddTeacherPage = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Thêm trẻ vào lớp</AlertDialogTitle>
             <div>
-              <TableTemplate
-                title=""
-                dataSource={listStudent || []}
-                columns={ColumnsStudent}
-                actions={[
-                  {
-                    icon: (
-                      <span className="hover hover:text-main text-gray-500">
-                        <IoIosAddCircle size={24} />
-                      </span>
-                    ),
-                    onClick: (x) => {
-                      handleAddStudentToArr(x, x.childID);
-                    },
-                  },
-                ]}
-              />
+              <div>
+                <table className="w-full text-md text-left rtl:text-right bg-white my-2 text-gray-500 dark:text-gray-400 max-h-[600px]">
+                  <thead className="text-md text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
+                    <tr>
+                      <th className="px-6 py-3">#</th>
+                      <th className="px-6 py-3">Mã trẻ</th>
+                      <th className="px-6 py-3">Hình</th>
+                      <th className="px-6 py-3">Tên</th>
+                      <th className="px-6 py-3 flex justify-center items-center">
+                        Thao tác
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {listStudent?.map((x: any, i: any) => (
+                      <tr
+                        key={x.childID}
+                        className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                      >
+                        <td className="pl-6 py-4">{i + 1}</td>
+                        <td className="pl-6 py-4">{x.childID}</td>
+                        <td className="pl-6 py-4">
+                          <DefaultImage
+                            img={getImageUrl(x.avatar)}
+                            fallback="/avatar.webp"
+                          />
+                        </td>{" "}
+                        <td className="pl-6 py-4">{x.fullName}</td>
+                        <td>
+                          <span
+                            onClick={() => handleAddStudentToArr(x, x.childID)}
+                            className="hover:cursor-pointer flex items-center justify-center hover:text-main text-gray-500"
+                          >
+                            <IoIosAddCircle size={24} />
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               {dataStudent?.length <= 0 ? (
                 <p className="flex w-full justify-center items-center">
                   <span className="text-yellow-500 mx-1">
@@ -386,7 +436,9 @@ const AddTeacherPage = () => {
                     <th className="px-6 py-3">Mã giáo viên</th>
                     <th className="px-6 py-3">Hình</th>
                     <th className="px-6 py-3">Tên</th>
-                    <th></th>
+                    <th className="px-6 py-3 flex justify-center items-center">
+                      Thao tác
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -409,7 +461,7 @@ const AddTeacherPage = () => {
                           onClick={() =>
                             handleRemoveTeacherInArr(x.teacherID, x)
                           }
-                          className="hover:cursor-pointer hover:text-main text-gray-500"
+                          className="hover:cursor-pointer flex justify-center items-center hover:text-main text-gray-500"
                         >
                           <CiCircleRemove size={24} />
                         </span>
@@ -462,10 +514,12 @@ const AddTeacherPage = () => {
                 <thead className="text-md text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
                   <tr>
                     <th className="px-6 py-3">#</th>
-                    <th className="px-6 py-3">Mã trẻ</th>
+                    <th className="px-6 py-3">Mã học sinh</th>
                     <th className="px-6 py-3">Hình</th>
                     <th className="px-6 py-3">Tên</th>
-                    <th></th>
+                    <th className="px-6 py-3 flex justify-center items-center">
+                      Thao tác
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -486,7 +540,7 @@ const AddTeacherPage = () => {
                       <td>
                         <span
                           onClick={() => handleRemoveStudentInArr(x.childID, x)}
-                          className="hover:cursor-pointer hover:text-main text-gray-500"
+                          className="hover:cursor-pointer flex justify-center items-center hover:text-main text-gray-500"
                         >
                           <CiCircleRemove size={24} />
                         </span>
@@ -495,6 +549,7 @@ const AddTeacherPage = () => {
                   ))}
                 </tbody>
               </table>
+
               <span className="w-full justify-center items-center flex">
                 {arrStudent?.length == 0 ? "Chưa có học sinh nào" : null}
               </span>

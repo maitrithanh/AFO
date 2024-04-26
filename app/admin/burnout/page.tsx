@@ -29,9 +29,11 @@ const Columns: TableTemplateColumn[] = [
   {
     title: "Hình",
     getData: (x) => (
-      <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+      <div className="scale-125">
+        <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+      </div>
     ),
-    width: "60",
+    width: "80",
   },
   {
     title: "Họ tên",
@@ -189,7 +191,11 @@ const BurnOutPage = () => {
         // addButton={{ link: "#" }}
         actions={[
           {
-            icon: <FaCheck size={24} />,
+            icon: (
+              <span className="text-main" title="Duyệt">
+                <FaCheck size={24} />
+              </span>
+            ),
             onClick: (x) => {
               if (!x.isActive) {
                 setChildID(x.childId);

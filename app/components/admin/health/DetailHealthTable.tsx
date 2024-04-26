@@ -15,8 +15,8 @@ import { useRouter } from "next/navigation";
 import { getImageUrl } from "@/utils/image";
 import DefaultImage from "../../shared/defaultImage";
 import DialogUpdateHealth from "../../teacher/DialogUpdateHealth";
-import { CiEdit } from "react-icons/ci";
 import MyPagination from "@/components/ui/pagination";
+import { MdEditNote } from "react-icons/md";
 
 interface HeathTableProps {
   eventId: any;
@@ -134,7 +134,7 @@ const DetailHealthTable = ({ eventId, classId }: HeathTableProps) => {
                           className="hover hover:text-main"
                           onClick={() => handleUpdateHealth(studentHealth)}
                         >
-                          <CiEdit size={24} />
+                          <MdEditNote size={24} />
                         </td>
                       </tr>
                     );

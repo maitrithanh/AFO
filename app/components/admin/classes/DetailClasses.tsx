@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import useFetch from "@/utils/useFetch";
 import { useTranslation } from "react-i18next";
-import { CiCircleRemove, CiEdit } from "react-icons/ci";
+import { CiCircleRemove } from "react-icons/ci";
 import DefaultImage from "@/app/components/shared/defaultImage";
 import { useRouter, useSearchParams } from "next/navigation";
 import DialogProfile from "../../profile/DialogProfile";
@@ -30,6 +30,7 @@ import { IoWarning } from "react-icons/io5";
 import Input from "@/app/components/inputs/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import TableTemplate, { TableTemplateColumn } from "../../shared/TableTemplate";
+import { MdEditNote } from "react-icons/md";
 
 const ColumnsStudent: TableTemplateColumn[] = [
   {
@@ -147,9 +148,12 @@ const DetailClasses = (id: any) => {
 
   const searchChildInClass = (c: any): boolean => {
     const matchName: boolean = c.fullName.toLowerCase().includes(search);
+    const matchID: boolean = c.id.toLowerCase().includes(search);
     const matchPhone: boolean = c.phone.includes(search);
-    return matchName || matchPhone;
+    return matchName || matchID || matchPhone;
   };
+
+  console.log(detailClassData);
 
   const searchTeacherInClass = (c: any): boolean => {
     const matchName: boolean = c.fullName.toLowerCase().includes(searchTeacher);
@@ -297,6 +301,7 @@ const DetailClasses = (id: any) => {
             <div>
               <TableTemplate
                 title=""
+                minTable
                 dataSource={dataStudent || []}
                 columns={ColumnsStudent}
                 actions={[
@@ -574,8 +579,8 @@ const DetailClasses = (id: any) => {
           </div>
 
           <div className="overflow-y-auto max-h-[590px]">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px] ">
-              <thead className="text-md text-gray-700 font-bold uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table className="w-full text-sm text-left rtl:text-right text-black dark:text-gray-400 max-h-[600px] ">
+              <thead className="text-md text-white text-lg font-bold uppercase bg-main dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-6 py-3">
                     STT
@@ -593,12 +598,14 @@ const DetailClasses = (id: any) => {
                     {t("dateOfBirth")}
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    Người giám hộ
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     {t("phoneNumber")}
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Người giám hộ
+                    Thao tác
                   </th>
-                  <th scope="col" className="px-6 py-3"></th>
                 </tr>
               </thead>
               <tbody>
@@ -611,7 +618,7 @@ const DetailClasses = (id: any) => {
                         // onClick={() => {
                         //   router.push(`/admin/detailChild/${dataStudent.id}`);
                         // }}
-                        className="odd:bg-white cursor-pointer odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                        className="odd:bg-white text-lg cursor-pointer odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                       >
                         <th
                           scope="row"
@@ -627,14 +634,28 @@ const DetailClasses = (id: any) => {
                             fallback="/avatar.webp"
                           />
                         </td>
-                        <td className="px-6 py-4">{dataStudent.id}</td>
-                        <td className="px-6 py-4">{dataStudent.fullName}</td>
-                        <td className="px-6 py-4">{dataStudent.birthDay}</td>
-                        <td className="px-6 py-4">{dataStudent.phone}</td>
-                        <td className="px-6 py-4">{dataStudent.parentName}</td>
+                        <td className="px-6 py-4" title="Mã trẻ">
+                          {dataStudent.id}
+                        </td>
+                        <td className="px-6 py-4" title="Họ tên trẻ">
+                          {dataStudent.fullName}
+                        </td>
+                        <td className="px-6 py-4" title="Sinh nhật trẻ">
+                          {dataStudent.birthDay}
+                        </td>
+                        <td className="px-6 py-4" title="Họ tên người giám hộ">
+                          {dataStudent.parentName}
+                        </td>
+                        <td
+                          className="px-6 py-4"
+                          title="Số điện thoại người giám hộ"
+                        >
+                          {dataStudent.phone}
+                        </td>
                         <td className="md:px-6 md:py-4 hover flex">
                           <span
-                            className="hover:text-main mx-1"
+                            className="hover:text-main mx-1 "
+                            title="Chỉnh sửa"
                             onClick={() => {
                               setDataStudentDetail({
                                 avatar: dataStudent.avatar,
@@ -643,10 +664,11 @@ const DetailClasses = (id: any) => {
                               setCloseDialog(true);
                             }}
                           >
-                            <CiEdit size={24} />
+                            <MdEditNote size={24} />
                           </span>
                           <span
-                            className="hover:text-main mx-1"
+                            className="hover:text-main mx-1 "
+                            title="Chi tiết"
                             onClick={() => {
                               router.push(
                                 `/admin/detailChild/${dataStudent.id}`
@@ -657,7 +679,7 @@ const DetailClasses = (id: any) => {
                           </span>
                           {editMode == "true" ? (
                             <span
-                              className="hover:text-main mx-1"
+                              className="hover:text-main mx-1 "
                               onClick={() => {
                                 setChildID(dataStudent.id);
                                 setOpenDialog(true);

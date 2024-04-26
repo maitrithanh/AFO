@@ -34,17 +34,19 @@ import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
 import DefaultImage from "@/app/components/shared/defaultImage";
 import { getImageUrl } from "@/utils/image";
-import { CiEdit } from "react-icons/ci";
 import { link } from "fs";
+import { MdEditNote } from "react-icons/md";
 
 const Columns: TableTemplateColumn[] = [
   {
     title: "tên lớp",
     getData: (x) => x.name,
+    width: "200",
   },
   {
     title: "số học sinh",
     getData: (x) => x.count,
+    width: "200",
   },
   {
     title: "giáo viên chủ nhiệm",
@@ -135,7 +137,7 @@ const ClassesPage = () => {
           {
             icon: (
               <span className="hover hover:text-main text-gray-500">
-                <CiEdit size={24} />
+                <MdEditNote size={24} />
               </span>
             ),
             getLink: (x) => `/admin/classes/${x.id}?&year=${year}?&edit=true`,

@@ -11,7 +11,7 @@ import TableTemplate, {
 import { toYMD } from "@/utils/dateTime";
 import useFetch from "@/utils/useFetch";
 import { useState } from "react";
-import { CiEdit } from "react-icons/ci";
+import { MdEditNote } from "react-icons/md";
 
 const Columns: TableTemplateColumn[] = [
   {
@@ -143,7 +143,7 @@ const EventPage = () => {
     },
     icon: (
       <span className="hover hover:text-main text-gray-500">
-        <CiEdit size={24} />
+        <MdEditNote size={24} />
       </span>
     ),
   };
