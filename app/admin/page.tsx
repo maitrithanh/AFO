@@ -222,7 +222,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="w-full flex justify-center items-center">
-        <div className="pb-16 grid 2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-6 h-full">
+        <div className="pb-16 px-4 grid 2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-6 h-full">
           {menu.map((item: any) => {
             return (
               <div
