@@ -26,10 +26,21 @@ import { Children, useState } from "react";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
+import DefaultImage from "@/app/components/shared/defaultImage";
+import { getImageUrl } from "@/utils/image";
 
 const Columns: TableTemplateColumn<ParentListRes>[] = [
   {
-    title: "Tên Người Giám Hộ",
+    title: "Hình",
+    getData: (x) => (
+      <div className="w-[40px] h-[40px]">
+        <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
+      </div>
+    ),
+    width: "60",
+  },
+  {
+    title: "Họ tên",
     getData: (x) => x.fullName,
     width: "200",
   },

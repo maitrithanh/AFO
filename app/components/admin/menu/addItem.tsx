@@ -69,7 +69,7 @@ function AddItem<T = FoodRes>({
           placeholder={placeholder}
           className={`${hints?.length > 0 ? "" : "text-red-400"} ${
             hightLightPlaceholder ? "placeholder:text-black" : ""
-          } w-full outline-none peer border border-slate-300 p-3 rounded-md flex-1 px-8`}
+          } w-full outline-none peer border border-slate-300 p-3 rounded-md flex-1 px-4`}
           onChange={(e) => setKeyword(e.currentTarget.value)}
           value={keyword}
           onKeyDown={(e) => {

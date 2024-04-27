@@ -408,11 +408,14 @@ const ListTeacherPage = () => {
       <TableTemplate
         title="Danh sách giáo viên"
         dataSource={dataTeacher || []}
-        addButton={{ link: "/admin/list-teacher/add" }}
+        addButton={{
+          link: "/admin/list-teacher/add",
+        }}
         columns={Columns}
         searchColumns={searchCols}
         searchPlaceHolder="Nhập tên hoặc số điện thoại..."
         filters={[filterGender, filterEducation, filterClass]}
+        // searchAddress={(x) => x.encodedAddress ?? ""}
         actions={[
           {
             icon: (
