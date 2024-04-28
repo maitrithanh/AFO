@@ -15,12 +15,9 @@ const CalendarPage = () => {
   const currWeek = moment().format("YYYY") + "-W" + moment().format("WW");
   const [weekStart, setWeekStart] = useState(currWeek);
 
-  const id = "24MN000010"; // Thay cái này sau khi có API
-
   const { data } = useFetch<ScheduleDetail>(
-    `Schedule/ScheduleOfChild/${id}?week=${weekStart}`, // Thay cái này sau khi có API
-    null,
-    id
+    `Schedule/ScheduleOfTeacher?week=${weekStart}`, // Thay cái này sau khi có API
+    null
   );
 
   return (

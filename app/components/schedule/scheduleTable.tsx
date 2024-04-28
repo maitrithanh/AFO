@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ScheduleDetail, { ScheduleItem } from "@/types/ScheduleDetail";
-import { FaTrashCan } from "react-icons/fa6";
+import { FaBan, FaCopy, FaPaste, FaTrashCan } from "react-icons/fa6";
 import AddItem from "../admin/menu/addItem";
 import useFetch from "@/utils/useFetch";
 import Activity from "@/types/Activity";
@@ -28,6 +28,19 @@ interface CellData {
   item?: ScheduleItem;
 }
 
+interface CopyItem {
+    day?: number,
+    time?: string
+}
+
+interface CopyItem {
+    day?: number,
+    time?: string
+}
+
+const StartTime = "07:00";
+const EndTime = "17:00";
+
 interface Props {
   dataSrc: ScheduleDetail;
   setData?: React.Dispatch<React.SetStateAction<ScheduleDetail>>;
@@ -35,12 +48,11 @@ interface Props {
   isCurrWeek?: boolean;
 }
 
-const StartTime = "07:00";
-const EndTime = "17:00";
-
 const ScheduleTable = ({ dataSrc, setData, edit, isCurrWeek }: Props) => {
-  const data = dataSrc;
-  //const [data, setData] = useState(dataSrc);
+
+    const data = dataSrc;
+    //const [data, setData] = useState(dataSrc);
+    const [copyItem, setCopyItem] = useState<CopyItem | null>(null);
 
   const resetData = () => {
     if (setData)
@@ -86,16 +98,17 @@ const ScheduleTable = ({ dataSrc, setData, edit, isCurrWeek }: Props) => {
       }) || []),
     ];
 
-    list.sort(sortByBegin);
-
-    for (var i = 0; i < list.length; i++) {
-      var n = list.length;
-      if (i + 1 >= n) {
-        if (i < n) {
-          res.push(list[i]);
-        }
-        break;
-      }
+        list.sort(sortByBegin);
+        
+        for (var i = 0; i < list.length; i++) {
+            var n = list.length;
+            if (i + 1 >= n) {
+                if (i < n) {
+                    var last = list[i];
+                    if(last.begin < last.end) res.push(last);
+                }
+                break;
+            }
 
       var x = list[i];
       var y = list[i + 1];
@@ -111,21 +124,22 @@ const ScheduleTable = ({ dataSrc, setData, edit, isCurrWeek }: Props) => {
         continue;
       }
 
-      //b > c
-      //b > d => a-c, c-d, d-b vd: 9-12 + 10-11 =>9-10 + 10-11+ 11-12
-      if (x.begin != y.begin) {
-        res.push({ begin: x.begin, end: y.begin }); //a-c
-      }
+            //b > c
+            //b > d => a-c, c-d, d-b vd: 9-12 + 10-11 =>9-10 + 10-11+ 11-12
+            if (x.begin < y.begin) {
+                res.push({ begin: x.begin, end: y.begin })  //a-c
+            }
 
-      if (x.end > y.end) {
-        list.push({ begin: y.end, end: x.end }); //d-b
-      } else {
-        //b < d => a-c, c-b, b-d vd 5-9 + 7-10 => 5-7 + 7-9 + 9-10
-        list.push({ begin: y.begin, end: x.end });
-        y.begin = x.end;
-      }
-      list.sort(sortByBegin);
-    }
+            if (x.end > y.end) {
+                list.push({ begin: y.end, end: x.end }); //d-b
+            } else {
+                //b < d => a-c, c-b, b-d vd 5-9 + 7-10 => 5-7 + 7-9 + 9-10
+                if(y.begin < x.end) list.push({ begin: y.begin, end: x.end });
+                y.begin = x.end;
+            }
+            list.sort(sortByBegin);
+        }
+
 
     //fill all gap inbetween
     var filledList: TimeStamp[] = [];
@@ -268,15 +282,90 @@ const ScheduleTable = ({ dataSrc, setData, edit, isCurrWeek }: Props) => {
     return res;
   }, [data]);
 
-  const onCellDelete = (day: number | undefined, begin: string | undefined) => {
-    if (setData)
-      setData((data) => {
-        return {
-          ...data,
-          items: data.items.filter((x) => x.day != day || x.begin != begin),
-        };
-      });
-  };
+    //merge cell in a day that has continuous timeStamp
+    const addItemsToScheduleData = (newItems: ScheduleItem[]) => { 
+        
+        //merge data
+        var items = data.items;
+        for (var i = 0; i < newItems.length; i++) { 
+            var x = newItems[i];
+
+            //merge after
+            var mergeAfter = items.find(y => x.day == y.day && y.begin == x.end && x.idActivity == y.idActivity)
+            if (mergeAfter) { 
+                x.end = mergeAfter.end;
+                mergeAfter.idActivity = -1;
+            }
+            //merge before
+            var mergeBefore = items.find(y => x.day == y.day && x.begin == y.end && x.idActivity == y.idActivity);
+            if (mergeBefore) {
+                x.begin = mergeBefore.begin;
+                mergeBefore.idActivity = -1;
+            }
+        }
+        items = items.filter(x => x.idActivity >= 0);
+        items = [...items, ...newItems];
+
+        if (setData) setData(x => { return { ...x, items } });
+    }
+
+    const onCellDelete = (day: number | undefined, time: string | undefined, timeEnd: string | undefined) => { 
+
+        var newItems = data.items.filter(x =>
+            (day != undefined && x.day != day) ||
+            (time != undefined && x.begin != time)
+        );
+        data.items = newItems;
+
+        if (setData) setData(data => {
+            return {
+                ...data,
+                items: newItems
+            }
+        });
+    }
+
+    const onCellCopy = (day: number | undefined, time: string | undefined) => { 
+        setCopyItem({ day, time });
+    }
+
+    const onCellCancel = () => { 
+        setCopyItem(null)
+    }
+
+    const onCellPaste = (day: number | undefined, time: string | undefined, timeEnd: string | undefined) => { 
+        if (!copyItem) return;
+        //delete old items
+        onCellDelete(day, time, timeEnd);
+
+        //paste new items
+        var newItems: ScheduleItem[] = [];
+        //get copied items
+        newItems = data.items.filter(x => 
+            (copyItem.day == undefined || x.day == copyItem.day) &&
+            //(copyItem.time == undefined || x.begin == copyItem.time)
+            (copyItem.time == undefined || (x.begin <= copyItem.time && x.end > copyItem.time))
+        );
+        //give copied items new values
+        newItems = newItems.map(x => {
+            var minutes = minuteDiff(x.begin, x.end);
+            var _timeEnd = time ? addMinute(time, minutes) : null;
+            if (_timeEnd && timeEnd && _timeEnd > timeEnd) _timeEnd = timeEnd; // paste with original endtime
+            if (_timeEnd && timeEnd ) _timeEnd = timeEnd; // paste with destination cell endtime
+            if (_timeEnd && _timeEnd > EndTime) _timeEnd = EndTime;
+
+            return {
+                ...x,
+                begin: time ?? x.begin,
+                end: _timeEnd ?? x.end,
+                day: day ?? x.day
+            }
+        })
+        
+        //if (setData) setData(x => { return { ...x, items: [...x.items, ...newItems] } });
+        addItemsToScheduleData(newItems);
+        setCopyItem(null);
+    }
 
   //check if [a:b], [c:d] is overlapped
   const timeOverlapped = (
@@ -300,24 +389,23 @@ const ScheduleTable = ({ dataSrc, setData, edit, isCurrWeek }: Props) => {
     )
       return;
 
-    if (setData)
-      setData((data) => {
-        return {
-          ...data,
-          items: [
-            ...data.items,
-            {
-              day: day,
-              begin: begin,
-              end: end,
-              note: "",
-              activity: a.name,
-              idActivity: a.id,
-            },
-          ],
-        };
-      });
-  };
+        var newItem: ScheduleItem = {
+            day: day,
+            begin: begin,
+            end: end,
+            note: '',
+            activity: a.name,
+            idActivity: a.id,
+        }
+
+        addItemsToScheduleData([newItem]);
+        // if (setData) setData(data => {
+        //     return {
+        //         ...data,
+        //         items: [...data.items, newItem]
+        //     }
+        // });
+    }
 
   return (
     <table className="w-full">
@@ -328,154 +416,190 @@ const ScheduleTable = ({ dataSrc, setData, edit, isCurrWeek }: Props) => {
             <span className="block lg:hidden"> </span>
           </th>
 
-          {days.map((x, i) => (
-            <>
-              <th
-                key={x}
-                className={`${
-                  !edit && isCurrWeek && getToday() == i
-                    ? "bg-main text-white"
-                    : ""
-                } flex h-15 items-center justify-center p-1 text-xs font-semibold sm:text-base xl:p-5`}
-              >
-                <span className="hidden lg:block"> {t(x)} </span>
-                <span className="block lg:hidden"> {"T" + (i + 2)} </span>
-              </th>
-            </>
-          ))}
-        </tr>
-      </thead>
+                    {days.map((x, i) => (
+                        <>
+                            <th
+                                key={x}
+                                className={`${!edit && isCurrWeek && getToday() == i  ? "bg-white text-main rounded-md" : ""
+                                    } group relative flex h-15 items-center justify-center rounded-tl-sm p-1 text-xs font-semibold sm:text-base xl:p-5`}
+                            >
+                                <span className="hidden lg:block"> {t(x)} </span>
+                                <span className="block lg:hidden"> {"T" + (i + 2)} </span>
+                                <CellActions
+                                    day={i} time={undefined} timeEnd={undefined}
+                                    onDelete={onCellDelete}
+                                    copyItem={copyItem}
+                                    onCopy={onCellCopy}
+                                    onPaste={onCellPaste}
+                                    onCancel={onCellCancel}
+                                />
+                            </th>
+                        </>
+                    ))}
+                </tr>
+            </thead>
 
-      <tbody className="grid grid-cols-7 text-lg">
-        {data?.items &&
-          timeStamps.map((ts, tsIndex) => (
-            <>
-              <th className="ease flex items-center relative h-full cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
-                <div className="group w-full flex-grow cursor-pointer ">
-                  <div
-                    className={`${
-                      ts.begin <= getCurrentTimeHHmm() &&
-                      ts.end >= getCurrentTimeHHmm() &&
-                      !edit &&
-                      isCurrWeek
-                        ? "border-[3px]"
-                        : ""
-                    } event left-2 z-30 mb-1 flex flex-col rounded-sm text-center border-main bg-gray px-3 py-1 group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}
-                  >
-                    <span>{ts.begin + " - " + ts.end}</span>
-                  </div>
-                </div>
-              </th>
+            <tbody className="grid grid-cols-7">
+                {data?.items &&
+                    timeStamps.map((ts, tsIndex) => (
+                        <>
+                            {/* time stamp */}
+                            <th className="group relative ease flex items-center h-full cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
+                                <div className="group w-full flex-grow cursor-pointer ">
+                                    <div
+                                        className={`${ts.begin <= getCurrentTimeHHmm() &&
+                                            ts.end >= getCurrentTimeHHmm() && !edit && isCurrWeek
+                                            ? "border-[3px]"
+                                            : ""
+                                            } event bg-[#eff4fb] left-2 z-30 mb-1 flex flex-col rounded-sm text-center border-main bg-gray px-3 py-1 group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}
+                                    >
+                                        <span>{ts.begin + " - " + (ts.end)}</span>
+                                    </div>
+                                </div>
 
-              {days.map((dayName, day) => (
-                <>
-                  <ScheduleItemEl
-                    cellData={tableData[tsIndex][day]}
-                    onDelete={onCellDelete}
-                    onAdd={onCellAdd}
-                    edit={edit}
-                    activities={dataActivity || []}
-                    isCurrWeek={isCurrWeek}
-                  />
-                </>
-              ))}
-            </>
-          ))}
-      </tbody>
-      {/* <button onClick={resetData}>reeeeeset</button> */}
-    </table>
-  );
+                                <CellActions
+                                    day={undefined} time={ts.begin} timeEnd={ts.end}
+                                    onDelete={onCellDelete}
+                                    copyItem={copyItem}
+                                    onCopy={onCellCopy}
+                                    onPaste={onCellPaste}
+                                    onCancel={onCellCancel}
+                                />
+                            </th>
+
+                            {days.map((dayName, day) => (
+                                <>
+                                    <ScheduleItemEl
+                                        cellData={tableData[tsIndex][day]}
+                                        onDelete={onCellDelete}
+                                        onAdd={onCellAdd}
+                                        edit={edit}
+                                        activities={dataActivity || []}
+                                        isCurrWeek={isCurrWeek}
+                                        copyItem={copyItem}
+                                        onCancel={onCellCancel}
+                                        onPaste={onCellPaste}
+                                        onCopy={onCellCopy}
+                                    />
+                                </>
+                            ))}
+                        </>
+                    ))}
+            </tbody>
+            {/* <button onClick={resetData}>reeeeeset</button> */}
+        </table>
+    );
 };
 
-interface ScheduleItemElProp {
-  cellData: CellData;
-  onDelete: (day: number | undefined, begin: string | undefined) => void;
-  onAdd: (a: Activity, day: number, begin: string, end: string) => void;
-  edit: boolean | undefined;
-  activities: Activity[];
-  isCurrWeek?: boolean;
+interface CellActionsProp { 
+    day: number | undefined,
+    time: string | undefined, //time begin
+    timeEnd: string | undefined, //time begin
+    onDelete: (day: number | undefined, begin: string | undefined, timeEnd: string | undefined) => void,
+    copyItem: CopyItem | null,
+    onCopy: (day: number | undefined, time: string | undefined) => void,
+    onPaste: (day: number | undefined, time: string | undefined, timeEnd: string | undefined) => void,
+    onCancel: () => void
 }
 
-const ScheduleItemEl = ({
-  cellData,
-  onDelete,
-  onAdd,
-  edit,
-  activities,
-  isCurrWeek,
-}: ScheduleItemElProp) => {
-  const {
-    colSpan,
-    activity,
-    key,
-    rowSpan,
-    isCurr,
-    dayStart,
-    dayEnd,
-    timeStart,
-    timeEnd,
-    item,
-  } = cellData;
+const compareNull = (a: any, b: any): boolean => {
+    if (a == null && b == null) return true;
+    if (a != null && b != null) return true;
 
-  const addMinute = (time: string, add: number): string => {
-    var arr = time.split(":");
-    if (arr.length < 2) return "";
-    var h: number = +arr[0];
-    var m: number = +arr[1];
+    return false;
+};
 
-    m += add;
-    h += Math.floor(m / 60);
-    m %= 60;
-    h %= 24;
-    const format = (n: number): string => (n < 10 ? "0" + n : "" + n);
+const CellActions = ({ day, time, timeEnd, onDelete, onCancel, onCopy, onPaste, copyItem } : CellActionsProp) => { 
+    return <div className={`${copyItem ? '' : 'hidden'} absolute right-0 top-0 pt-1 pe-2 group-hover:block`}>
+        {
+            copyItem ? 
+                <>
+                    {
+                        copyItem.day == day && copyItem.time == time ?
+                            <>
+                                <button onClick={onCancel} title="Hủy" className="mr-3">
+                                    <FaBan />
+                                </button>
+                            </>
+                            :
+                            (compareNull(day, copyItem.day) && compareNull(time, copyItem.time)) &&
+                            <>
+                                <button onClick={() => onPaste(day, time, timeEnd)} title="Chép" className="mr-3">
+                                    <FaPaste />
+                                </button>
+                            </>
+                    }
+                </>
+                :
+                <>
+                    <button onClick={() => onCopy(day, time)} title="Sao chép" className="mr-3">
+                        <FaCopy />
+                    </button>
 
-    return format(h) + ":" + format(m);
-  };
+                    <button onClick={() => onDelete(day, time, timeEnd)} title="Xóa">
+                        <FaTrashCan />
+                    </button>
+                </>
+        }
+    </div>
+}
 
-  //abs(a-b) in minutes; a,b HH:mm
-  const minuteDiff = (a?: string, b?: string): number => {
-    if (!a || !b) return 0;
+interface ScheduleItemElProp { 
+    cellData: CellData,
+    onDelete: (day: number | undefined, begin: string | undefined, timeEnd: string | undefined) => void
+    copyItem: CopyItem | null,
+    onCopy: (day: number | undefined, time: string | undefined) => void,
+    onPaste: (day: number | undefined, time: string | undefined, timeEnd: string | undefined) => void,
+    onCancel: () => void
+    onAdd: (a: Activity, day:number, begin: string, end: string ) => void
+    edit: boolean | undefined
+    activities: Activity[], isCurrWeek?: boolean
+}
 
-    var timeA = moment(a, "HH:mm");
-    var timeB = moment(b, "HH:mm");
-    var diff = timeA.diff(timeB, "minutes");
-    return Math.abs(diff);
-  };
 
-  if (!cellData.key)
-    return (
-      <td
-        className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31`}
-      >
-        {edit && (
-          <div>
-            <AddItem<Activity>
-              onAdd={(x) => {
-                var end = addMinute(timeStart!, x.time);
-                if (end > EndTime) end = EndTime;
-                if (timeEnd && end > timeEnd) end = timeEnd;
-                //onAdd(x, dayStart!, timeStart!, timeEnd!);
-                onAdd(x, dayStart!, timeStart!, end);
-              }}
-              dataSource={activities}
-              getName={(x) => x.name ?? ""}
-              getKey={(x) => x.id + ""}
-              placeholder="Hoạt động"
-              width="150%"
-            />
-          </div>
-        )}
-      </td>
-    );
+const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities, isCurrWeek, onCopy, onPaste, onCancel, copyItem }: ScheduleItemElProp) => {
+    const {
+        colSpan, activity, key, rowSpan, isCurr, dayStart, dayEnd, timeStart, timeEnd, item
+    } = cellData;
+
+    if (!cellData.key) return <td
+        className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31`}>
+        {edit &&
+            <div>
+                <AddItem<Activity>
+                    onAdd={(x) => {
+                        //var end = addMinute(timeStart!, x.time); //cal end from original length
+                        var end = (timeEnd && timeEnd != EndTime) ? timeEnd : addMinute(timeStart!, x.time); //follow cell time
+                        if (end > EndTime) end = EndTime;
+                        if (timeEnd && end > timeEnd) end = timeEnd; 
+
+                        //onAdd(x, dayStart!, timeStart!, timeEnd!);
+                        onAdd(x, dayStart!, timeStart!, end);
+                    }}
+                    dataSource={activities}
+                    getName={(x) => (x.name ?? '')}
+                    getKey={x => x.id + ''}
+                    placeholder="Hoạt động"
+                    width="150%"
+                />
+
+                <CellActions
+                    day={dayStart} time={timeStart} timeEnd={timeEnd}
+                    onDelete={onDelete}
+                    copyItem={copyItem}
+                    onCopy={onCopy}
+                    onPaste={onPaste}
+                    onCancel={onCancel}
+                />
+            </div>
+        }
+    </td>
 
   if (!colSpan || !rowSpan) return <></>;
 
-  var sp =
-    isCurrWeek && isCurr && !edit
-      ? "bg-mainBlur border-r-[3px]  border-l-[3px]"
-      : "";
-
-  var decoration = item?.decoration == 1 ? "bg-[#FDF1D5]" : "";
+    var sp = isCurrWeek && isCurr && !edit ? "bg-mainBlur border-r-[3px] border-l-[3px]" : ""; //current date color
+    var bg = sp ? '' : 'bg-[#eff4fb]' //normal date color
+    if (item?.decoration == 1) bg = 'bg-[#FDF1D5]' //event date color
 
   const getDays = (a: number | undefined, b: number | undefined): string => {
     if (a == undefined || b == undefined) return "";
@@ -484,48 +608,52 @@ const ScheduleItemEl = ({
     return `Thứ ${a + 2} - Thứ ${b + 2}`;
   };
 
-  return (
-    <td
-      key={key}
-      style={{
-        gridColumn: `span ${colSpan} / span ${colSpan}`,
-        gridRow: `span ${rowSpan} / span ${rowSpan}`,
-      }}
-      className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31`}
-    >
-      <div className="w-full h-full flex-grow cursor-pointer">
-        <div className="h-full flex flex-col">
-          <div
-            className={`${decoration} ${sp} event flex-1 items-center justify-center left-2 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}
-          >
-            <span className={`event-name text-lg font-semibold text-center`}>
-              {activity}
-            </span>
-            {edit && (
-              <div className="absolute right-0 top-0 pt-1 pe-2 hidden group-hover:block">
-                <button
-                  onClick={() => onDelete(dayStart, timeStart)}
-                  title="Xóa"
-                >
-                  <FaTrashCan />
-                </button>
-              </div>
-            )}
+    return (
+        <td
+            key={key}
+            style={{
+                gridColumn: `span ${colSpan} / span ${colSpan}`,
+                gridRow: `span ${rowSpan} / span ${rowSpan}`,
+            }}
+            className={`flex group items-center relative cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31`}
+        >
+            <div className="w-full h-full flex-grow cursor-pointer ">
+                <div className="h-full flex flex-col">
+                    <div className={`${sp} ${bg} event flex-1 items-center justify-center left-2 mb-1 flex flex-col rounded-sm border-main bg-gray px-3 py-1 text-left group-hover:opacity-100 dark:bg-meta-4 w-full md:opacity-100`}>
+                        <span className={`event-name text-sm font-semibold text-center`}>
+                            {activity}
+                        </span>
+                        {
+                            edit &&
+                            // <div className="absolute right-0 top-0 pt-1 pe-2 hidden group-hover:block">
+                            //     <button onClick={() => onDelete(dayStart, timeStart)} title="Xóa">
+                            //         <FaTrashCan />
+                            //     </button>
+                            // </div>
+                            <CellActions
+                                day={dayStart} time={timeStart} timeEnd={timeEnd}
+                                onDelete={onDelete}
+                                copyItem={copyItem}
+                                onCopy={onCopy}
+                                onPaste={onPaste}
+                                onCancel={onCancel}
+                            />
+                        }
 
-            {/* <span>
-                        {dayStart} {timeStart + ' ' + timeEnd}
-                    </span> */}
-          </div>
+                    </div>
 
-          {/* time */}
-          {edit && (
-            <div className="invisible group-hover:visible">
-              <div className="italic text-center">
-                ({minuteDiff(timeStart, timeEnd)} phút)
-              </div>
-            </div>
-          )}
-          {/* {
+                    {/* time */}
+                    {
+                        edit &&
+                        <div className="invisible group-hover:visible">
+                            <div className="italic text-center">
+                                ({minuteDiff(timeStart, timeEnd)} phút)
+                            </div>
+                                
+                            <SelectHour />
+                        </div>
+                    }
+                    {/* {
                         edit &&
                         <div className="w-full flex">
                             <div className="flex-1 whitespace-nowrap">Số phút:</div>
@@ -547,5 +675,34 @@ const ScheduleItemEl = ({
     </td>
   );
 };
+
+const SelectHour = () => { 
+    return <div>Bắt đầu: hh:mm</div>
+}
+
+//abs(a-b) in minutes; a,b HH:mm
+const minuteDiff = (a?: string, b?: string): number => {
+    if (!a || !b) return 0;
+
+    var timeA = moment(a, "HH:mm");
+    var timeB = moment(b, "HH:mm");
+    var diff = timeA.diff(timeB, 'minutes');
+    return Math.abs(diff)
+}
+
+const addMinute = (time: string, add: number): string => {
+    var arr = time.split(':');
+    if (arr.length < 2) return '';
+    var h: number = +arr[0];
+    var m: number = +arr[1];
+
+    m += add;
+    h += Math.floor(m / 60);
+    m %= 60;
+    h %= 24;
+    const format = (n: number): string => n < 10 ? '0' + n : '' + n;
+
+    return format(h) + ':' + format(m);
+}
 
 export default ScheduleTable;

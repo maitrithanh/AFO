@@ -23,7 +23,12 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'jzeno.io.vn',
                 pathname: '**'
-            }
+            },
+            {
+              protocol: 'https',
+              hostname: 'localhost',
+              pathname: '**'
+            },
         ]
     },
     async headers() {
