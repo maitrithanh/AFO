@@ -14,25 +14,14 @@ const AboutPage = () => {
         <div className="h-full flex md:items-center items-start mt-20 xl:mt-0">
           <div>
             <p className="md:text-6xl text-4xl text-[#00224a] font-bold uppercase drop-shadow-xl">
-              Giới thiệu
+              {t("about")}
             </p>
 
             <p className="italic text-xl text-justify">
-              Trường mầm non AFO là trường mẫu giáo theo chuẩn quốc tế, trường
-              hiện tại có hai cơ sở được xây dựng vô cùng tâm huyết cùng với các
-              chương trình giáo dục hiện đại vô cùng hiệu quả để tạo nên một môi
-              trường giáo dục mầm non chất lượng.
+              {t("aboutDescription1")}
             </p>
             <p className="italic text-xl my-2 text-justify">
-              Giáo dục mầm non là một bậc học không ép buộc nhưng đóng vai trò
-              vai trong trong những bước đầu đời để phát triển nhận thức của bé
-              về tinh thần, nhận thức và thể chất của bé. Với sự kết hợp hài hòa
-              giữa nét ưu việt giữa nền tảng chương trình khung của Bộ Giáo Dục
-              Việt Nam và chương trình IEYC, với sự kết hợp ấy sẽ mang lại cho
-              các bé những giờ học vui vẻ đầy ấp tiếng cười nhưng vẫn đi cùng
-              với chất lượng tốt nhất. Trường mầm non AFO giúp tạo cho các bé
-              nền tảng tốt nhất cho các bé bước vào môi trường học tập tiểu học
-              được và đời sống sinh hoạt đời thường.
+              {t("aboutDescription2")}
             </p>
           </div>
         </div>

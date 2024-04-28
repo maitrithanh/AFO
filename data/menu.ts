@@ -49,19 +49,19 @@ export const  menu = [
         img: 'blackboard.webp'
     },
     {
-        text: 'Điểm danh',
+        text: 'attendance',
         icon: LuUser2,
         pathname: '/admin/attendance',
         img: 'attendance.webp'
     },
     {
-        text: 'Danh sách xin nghỉ',
+        text: 'off',
         icon: GiTeacher,
         pathname: '/admin/burnout',
         img: 'burnout.webp'
     },
     {
-        text: 'Danh sách chuyển lớp',
+        text: 'changeClasses',
         icon: GiTeacher,
         pathname: '/admin/change-class',
         img: 'change-class.webp'
@@ -73,13 +73,13 @@ export const  menu = [
         img: 'study-time.webp',
         child: [
             {
-                text: 'Môn học',
+                text: 'subject',
                 icon: MdOutlineInventory,
                 pathname: '/admin/activity',
                 img: 'subject.webp'
             },
             {
-                text: 'Thời khóa biểu',
+                text: 'timeTable',
                 icon: MdOutlineInventory,
                 pathname: '/admin/schedule',
                 img: 'weekly.webp'
@@ -100,13 +100,13 @@ export const  menu = [
         img: 'bus.webp',
         child: [
             {
-                text: 'Tuyến xe',
+                text: 'busRoute',
                 icon: PiChalkboardTeacherDuotone,
                 pathname: '/admin/bus',
                 img: 'route.webp',
             },
             {
-                text: 'Tài xế',
+                text: 'driver',
                 pathname: '/admin/bus/driver',
                 img: 'driver.webp'
             },
@@ -132,13 +132,13 @@ export const  menu = [
         img: 'menu.webp',
         child: [
             {
-                text: 'Lịch ăn',
+                text: 'mealSchedule',
                 icon: GiTeacher,
                 pathname: '/admin/menu',
                 img: 'foodTime.webp',
             },
             {
-                text: 'Món ăn',
+                text: 'dish',
                 icon: GiTeacher,
                 pathname: '/admin/food',
                 img: 'food.webp',
@@ -160,19 +160,19 @@ export const  menu = [
         img: 'cost.webp',
         child: [
             {
-                text: 'Danh sách học phí',
+                text: 'List of tuition fees',
                 icon: GiTeacher,
                 pathname: '/admin/schoolfee',
                 img: 'listFee.webp'
             }, 
             {
-                text: 'Lịch sử đóng tiền',
+                text: 'Payment history',
                 icon: GiTeacher,
                 pathname: '/admin/payment',
                 img: 'paymentCheck.webp'
             }, 
             {
-                text: 'Lịch sử chuyển khoản',
+                text: 'Transfer history',
                 icon: GiTeacher,
                 pathname: '/admin/transaction',
                 img: 'transferHistory.webp'

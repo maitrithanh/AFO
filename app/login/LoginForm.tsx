@@ -157,7 +157,7 @@ const LoginForm = () => {
             <div
               className={`flex justify-center text-main pb-2 text-3xl ${font_asap_condensed.className}`}
             >
-              ĐĂNG NHẬP
+              {t("login")}
             </div>
             <form className="space-y-6 w-full" action="#" method="POST">
               <div>

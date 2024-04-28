@@ -1,18 +1,21 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import { FaPhoneVolume } from "react-icons/fa6";
 import { SiAzuredataexplorer } from "react-icons/si";
 import { IoIosMail } from "react-icons/io";
 import { IoLocationSharp } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 const ContactPage = () => {
+  const { t } = useTranslation();
   return (
     <div className="relative h-screen grid xl:grid-cols-2 grid-cols-1 bg-[url(/banner-homepage.webp)] bg-no-repeat bg-cover">
       <div className="md:mx-24 mx-8">
         <div className="h-full flex md:items-center items-start mt-20 xl:mt-0">
           <div>
             <p className="md:text-6xl text-4xl text-[#00224a] font-bold uppercase drop-shadow-xl">
-              Liên hệ
+              {t("contact")}
             </p>
 
             <div className="bottom-0 group my-2 bg-white p-4 rounded-md shadow-3xl">

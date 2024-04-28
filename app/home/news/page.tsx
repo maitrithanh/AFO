@@ -5,15 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const NewsPage = () => {
   const { data: allNews } = useFetch(`/News/getNews`);
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <div className="h-full mt-14">
       <div className=" w-full flex justify-center pt-8">
-        <h1 className="text-3xl font-bold uppercase text-main">Tin tức AFO</h1>
+        <h1 className="text-3xl font-bold uppercase text-main">
+          {t("news")} AFO
+        </h1>
       </div>
 
       <div className="flex items-center w-full justify-center">
@@ -50,7 +54,7 @@ const NewsPage = () => {
                     router.push(`/home/news/${newsItem.id}`);
                   }}
                 >
-                  Đọc tiếp
+                  {t("readMore")}
                 </button>
               </div>
             );

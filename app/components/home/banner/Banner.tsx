@@ -16,7 +16,7 @@ const Banner = () => {
       <div className="md:mx-24 mx-8">
         <div className="h-full flex md:items-center items-start mt-20 xl:mt-0">
           <div>
-            <p className="md:text-6xl text-4xl text-[#00224a] font-bold uppercase drop-shadow-xl">
+            <p className="md:text-6xl text-4xl text-[#00224a] font-bold uppercase drop-shadow-xl uppercase">
               {t("bannerTitle")}
             </p>
             <div className="bottom-0 group my-2 md:flex">

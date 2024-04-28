@@ -22,7 +22,7 @@ const Dashboard = () => {
     var currentHour = parseFloat(m.format("HH"));
 
     if (currentHour >= split_afternoon && currentHour <= split_evening) {
-      g = "buổi chiều";
+      g = t("afternoon");
       s = (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@ const Dashboard = () => {
         </svg>
       );
     } else if (currentHour >= split_evening) {
-      g = "buổi tối";
+      g = t("evening");
       s = (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +160,7 @@ const Dashboard = () => {
         </svg>
       );
     } else {
-      g = "buổi sáng";
+      g = t("morning");
       s = (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -215,7 +215,7 @@ const Dashboard = () => {
           {getGreetingTime(moment())?.s}
         </span>
         <div className="">
-          Chào {getGreetingTime(moment())?.g}
+          {getGreetingTime(moment())?.g}
           <p className="text-sm w-full justify-center items-center text-center text-gray-500 italic">
             AFO - Preschool App
           </p>

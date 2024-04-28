@@ -11,6 +11,7 @@ import DefaultImage from "../shared/defaultImage";
 import { baseURL } from "@/utils/callApi";
 import UserData from "@/types/UserData";
 import { getCookie } from "cookies-next";
+import { useTranslation } from "react-i18next";
 
 interface ShortProfileProps {
   borderTop?: boolean;
@@ -26,16 +27,18 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
   const { data: user, loading } = useFetch<UserData>("Auth/current");
   const role = getCookie("role");
   const [roleName, setRoleName] = useState("");
+  const { t } = useTranslation();
+
   useEffect(() => {
     switch (role) {
       case "Parent":
-        setRoleName("Phụ huynh");
+        setRoleName("Parents");
         break;
       case "Teacher":
-        setRoleName("Giáo viên");
+        setRoleName("Teacher");
         break;
       default:
-        setRoleName("Quản trị");
+        setRoleName("Administration");
         break;
     }
   }, []);
@@ -98,7 +101,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
                 ) : (
                   <>
                     <h4 className="font-semibold ml-2">{user?.fullName}</h4>
-                    <p>{roleName}</p>
+                    <p>{t(roleName)}</p>
                   </>
                 )
               ) : (
@@ -107,7 +110,7 @@ const ShortProfile: React.FC<ShortProfileProps> = ({
                     {user?.fullName}
                   </h4>
                   <p className="text-left mx-1 text-sm text-gray-600">
-                    {roleName}
+                    <p>{t(roleName)}</p>
                   </p>
                 </>
               )}

@@ -1,9 +1,11 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaPhone } from "react-icons/fa6";
 import { Asap_Condensed } from "next/font/google";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 const font_asap_condensed = Asap_Condensed({
   weight: "600", // if single weight, otherwise you use array like [400, 500, 700],
@@ -12,6 +14,7 @@ const font_asap_condensed = Asap_Condensed({
 });
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <div className="relative w-full h-fit py-14 border-t items-center bg-[#e0e6eb80]">
       {/* <div className=" bottom-0 w-full h-[80px] bg-white border-t flex justify-center items-center">
@@ -36,7 +39,7 @@ const Footer = () => {
               </p>
             </div>
             <div>
-              <p>WebApp chuyển đổi số trường mầm non</p>
+              <p> {t("bannerTitle")}</p>
               <p className="text-[#33344199]">
                 Copyright © 2024 - All rights reserved
               </p>
@@ -46,7 +49,7 @@ const Footer = () => {
             <p
               className={`flex items-center gap-1 text-xl ${font_asap_condensed.className} text-[#2f303c]`}
             >
-              Liên kết
+              {t("link")}
             </p>
             <div>
               <div>
@@ -54,7 +57,7 @@ const Footer = () => {
                   className="hover:text-main hover:scale-105"
                   href={"/home/about"}
                 >
-                  Giới thiệu
+                  {t("about")}
                 </Link>
               </div>
               <div>
@@ -62,7 +65,7 @@ const Footer = () => {
                   className="hover:text-main hover:scale-105"
                   href={"/home/edu"}
                 >
-                  Giáo dục
+                  {t("education")}
                 </Link>
               </div>
               <div>
@@ -70,7 +73,7 @@ const Footer = () => {
                   className="hover:text-main hover:scale-105"
                   href={"/home/contact"}
                 >
-                  Liên hệ
+                  {t("contact")}
                 </Link>
               </div>
               <div>
@@ -78,7 +81,7 @@ const Footer = () => {
                   className="hover:text-main hover:scale-105"
                   href={"/home/news"}
                 >
-                  Tin tức
+                  {t("news")}
                 </Link>
               </div>
             </div>
@@ -87,7 +90,7 @@ const Footer = () => {
             <p
               className={`flex items-center gap-1 text-xl ${font_asap_condensed.className} text-[#2f303c]`}
             >
-              Liên hệ
+              {t("contact")}
             </p>
             <p>(028) 3863 2052 - (028) 3862 9232</p>
             <p>828 Sư Vạn Hạnh, Phường 13, Quận 10, TP. HCM</p>

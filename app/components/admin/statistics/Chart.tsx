@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useTranslation } from "react-i18next";
 
 const data = [
   {
@@ -234,6 +235,7 @@ const Chart: React.FC<ChartProps> = ({
   ];
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [yearBar, setYearBar] = useState(new Date().getFullYear().toString());
+  const { t } = useTranslation();
 
   const years = [];
   for (var i = 2024; i >= 2022; i--) years.push(i);
@@ -245,7 +247,7 @@ const Chart: React.FC<ChartProps> = ({
         }}
       >
         <SelectTrigger className="w-[180px] text-lg">
-          <p>Năm học:</p>
+          <p>{t("School year")}:</p>
           <SelectValue placeholder={year} defaultValue={year} />
         </SelectTrigger>
         <SelectContent>
@@ -267,7 +269,7 @@ const Chart: React.FC<ChartProps> = ({
         }}
       >
         <SelectTrigger className="w-[180px] text-lg">
-          <p>Năm học:</p>
+          <p>{t("School year")}:</p>
           <SelectValue placeholder={year} defaultValue={year} />
         </SelectTrigger>
         <SelectContent>
@@ -308,7 +310,7 @@ const Chart: React.FC<ChartProps> = ({
                   ></path>
                 </g>
               </svg>
-              <h5 className="text-xl">Doanh thu</h5>
+              <h5 className="text-xl">{t("Revenue")}</h5>
             </div>
             <div>{selectYear}</div>
           </div>
@@ -420,7 +422,7 @@ const Chart: React.FC<ChartProps> = ({
                 </g>
               </svg>
               <h5 className="text-lg">
-                Tỷ lệ giáo viên / học sinh / phụ huynh
+                {t("Ratio")} {t("Teacher")} / {t("student")} / {t("Parents")}
               </h5>
             </div>
           </div>
@@ -448,13 +450,13 @@ const Chart: React.FC<ChartProps> = ({
           </ResponsiveContainer>
           <div className="flex items-center justify-center gap-2 w-full">
             <span className="bg-[#0088FE] p-1 rounded-sm text-white">
-              Tổng số giáo viên
+              {t("Total number of teachers")}
             </span>
             <span className=" bg-[#00C49F] p-1 rounded-sm text-white">
-              Tổng số học sinh
+              {t("Total number of students")}
             </span>
             <span className=" bg-[#FFBB28] p-1 rounded-sm text-white">
-              Tổng số phụ huynh
+              {t("Total number of classes")}
             </span>
           </div>
         </div>
@@ -501,7 +503,9 @@ const Chart: React.FC<ChartProps> = ({
                 ></path>
               </g>
             </svg>
-            <h5 className="text-lg">Tỷ lệ học sinh mới / học sinh cũ</h5>
+            <h5 className="text-lg">
+              {t("Ratio")} {t("New student")} / {t("Former kids")}
+            </h5>
           </div>
           <div>{selectYearBar}</div>
         </div>
