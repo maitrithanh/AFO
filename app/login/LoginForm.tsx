@@ -18,6 +18,18 @@ import { useTranslation } from "react-i18next";
 import { useGlobalContext } from "../contexts/GlobalContext";
 import { Asap_Condensed } from "next/font/google";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 const font_asap_condensed = Asap_Condensed({
   weight: "800", // if single weight, otherwise you use array like [400, 500, 700],
   style: "normal", // if single style, otherwise you use array like ['normal', 'italic']
@@ -28,6 +40,7 @@ const LoginForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [typePassword, setTypePassword] = useState(false);
+  const [openForgotPass, setOpenForgotPass] = useState(false);
   //translate
   const { t } = useTranslation();
   const { refreshContactList } = useGlobalContext();
@@ -131,6 +144,33 @@ const LoginForm = () => {
 
   return (
     <>
+      <AlertDialog
+        onOpenChange={() => setOpenForgotPass((curr) => !curr)}
+        open={openForgotPass}
+      >
+        <AlertDialogContent className="m-0 p-0 border-none">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-semibold p-4 bg-main rounded-t-md text-white">
+              Bạn quên mật khẩu?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-lg text-black font-thin px-2 flex justify-center items-center">
+              <Image
+                src={`/icons/oops.webp`}
+                alt="Oops"
+                width={100}
+                height={100}
+                className="mx-2"
+              />
+              Hiện tại chức năng này chúng tôi đang phát triển, bạn vui lòng
+              liên hệ với quản trị hoặc giáo viên để được cấp lại mật khẩu.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="px-4 mb-4">
+            <AlertDialogCancel>Đóng</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="relative">
         <div className="brightness-[.5]">
           <Image
@@ -192,6 +232,7 @@ const LoginForm = () => {
                   <div className="text-sm mt-1">
                     <a
                       href="#"
+                      onClick={() => setOpenForgotPass((curr) => !curr)}
                       className="font-semibold text-[#dc662b] hover:opacity-80"
                     >
                       {t("forgetPassword")}
@@ -210,7 +251,9 @@ const LoginForm = () => {
             </form>
             <div className="relative flex w-full justify-center my-1">
               <hr className="my-3 w-full" />
-              <p className="absolute top-0 bg-white px-2 text-gray-500"></p>
+              <p className="absolute top-0 bg-white px-2 text-gray-500">
+                {t("Or")}
+              </p>
             </div>
             <div className="grid gap-2 md:grid-cols-2 ">
               <button
