@@ -383,10 +383,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   {t("link") + " " + t("account")}
                 </div>
                 <div className="block md:flex mt-1 gap-4">
-                  {currentUser?.googleName ? (
-                    <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
-                      <FaGoogle size={24} />
-                      <p className="font-semibold">{currentUser.googleName}</p>
+                    {currentUserTeacher?.googleName ? (
+                      <div className="w-full bg-white text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center mb-4 md:m-0">
+                        <div className="flex-1 flex justify-center">
+                          <FaGoogle size={24} />
+                          <p className="font-semibold ml-2">{currentUserTeacher.googleName}</p>
+                        </div>
                       <div
                         className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
                         onClick={() => onUnlink("google")}
@@ -397,7 +399,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   ) : (
                     <>
                       <Button
-                        label={t("link") + " Google"}
+                        label={t("link") + " Google "}
                         outline
                         custom="mr-2 mb-4 md:m-0"
                         icon={FaGoogle}
@@ -405,12 +407,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                       />
                     </>
                   )}
-                  {currentUser?.facebookName ? (
-                    <div className="w-full text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
-                      <FaFacebook size={24} />
-                      <p className="font-semibold">
-                        {currentUser.facebookName}
-                      </p>
+                    {currentUserTeacher?.facebookName ? (
+                    <div className="w-full bg-white text-main border-main border-[2px] gap-2 p-2 rounded-md flex items-center justify-center mb-4 md:m-0">
+                      <div className="flex-1 flex justify-center">
+                          <FaFacebook size={24} />
+                          <p className="font-semibold ml-2">{currentUserTeacher.facebookName}</p>
+                        </div>
                       <div
                         className="ml-auto text-2xl cursor-pointer hover:text-red-500 hover:bg-[#dcdbdb80] rounded-full p-1"
                         onClick={() => onUnlink("facebook")}

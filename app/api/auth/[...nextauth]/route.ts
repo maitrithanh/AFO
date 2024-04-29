@@ -9,8 +9,10 @@ const handler = nextAuth({
             clientSecret: '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',
         }),
         FacebookProvider({
-            clientId: '886429626448261',
-            clientSecret: '37e807fb55e4099b8f2746084f5b824a',
+            // clientId: '886429626448261',
+            // clientSecret: '37e807fb55e4099b8f2746084f5b824a',
+            clientId: '950600633373138',
+            clientSecret: 'd8bc0a20070c63920ede9052380afdba',
         })
     ],
     callbacks: {
