@@ -29,6 +29,7 @@ import { GiShieldDisabled } from "react-icons/gi";
 import { FaUserLock } from "react-icons/fa6";
 import { IoMdTrash } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
+import Swal from "sweetalert2";
 
 const Columns: TableTemplateColumn<any>[] = [
   {
@@ -195,6 +196,11 @@ const ListTeacherPage = () => {
       .delete(`Teacher/remove?teacherID=${idTeacher}`)
       .then((response) => {
         if (!(response?.data?.data == "Vui lòng kiểm tra mã giáo viên")) {
+          Swal.fire({
+            title: "Xoá thành công!",
+            text: "",
+            icon: "success",
+          });
           toast.success(`Xoá thành công`);
         } else {
           toast.error("Giáo viên này đã từng dạy không thể xoá");
@@ -438,16 +444,16 @@ const ListTeacherPage = () => {
               handleOpenDialogAction(x.id, x.fullName, x.active, x.phoneNumber);
             },
           },
-          {
-            icon: (
-              <span className="text-gray-600" title="DeActive giáo viên">
-                <IoMdTrash size={24} />
-              </span>
-            ),
-            onClick: (x) => {
-              handleOpenDialog(x.id, x.fullName, x.classId);
-            },
-          },
+          // {
+          //   icon: (
+          //     <span className="text-gray-600" title="DeActive giáo viên">
+          //       <IoMdTrash size={24} />
+          //     </span>
+          //   ),
+          //   onClick: (x) => {
+          //     handleOpenDialog(x.id, x.fullName, x.classId);
+          //   },
+          // },
         ]}
         exportExcel="exportTeacher"
         //   sortOptions={sorts}

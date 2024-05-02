@@ -14,6 +14,7 @@ import { getImageUrl } from "@/utils/image";
 import { FaCheck } from "react-icons/fa6";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const Columns: TableTemplateColumn[] = [
   {
@@ -115,7 +116,14 @@ const ChangeClassPage = () => {
           .put(`ChangeClass/acceptRequest?reqID=${idReq}`)
           .then((response) => {
             handlRefresh();
-            toast.success("Đã duyệt");
+            Swal.fire({
+              title: "Đã duyệt",
+              icon: "success",
+              confirmButtonText: "Đóng",
+              confirmButtonColor: "#F8853E",
+              showConfirmButton: false,
+              timer: 1500,
+            });
             callApiWithToken()
               .post(
                 `Notification/sendUser`,
@@ -132,11 +140,23 @@ const ChangeClassPage = () => {
               )
               .then((response) => {})
               .catch((errors) => {
-                toast.error("Có lỗi", errors);
+                // Swal.fire({
+                //   title: "Có lỗi xảy ra!",
+                //   text: errors,
+                //   icon: "error",
+                //   confirmButtonText: "Đóng",
+                //   confirmButtonColor: "#F8853E",
+                // });
               });
           })
           .catch((error) => {
-            toast.error("Có lỗi xảy ra!");
+            Swal.fire({
+              title: "Có lỗi xảy ra!",
+              text: error,
+              icon: "error",
+              confirmButtonText: "Đóng",
+              confirmButtonColor: "#F8853E",
+            });
           });
       } else {
         toast("Vui lòng thử lại!");

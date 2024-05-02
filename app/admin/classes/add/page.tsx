@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Asap_Condensed } from "next/font/google";
 import { IoIosAddCircle } from "react-icons/io";
+import Swal from "sweetalert2";
 
 const font_asap_condensed = Asap_Condensed({
   weight: "600", // if single weight, otherwise you use array like [400, 500, 700],
@@ -133,12 +134,25 @@ const AddTeacherPage = () => {
         },
       })
       .then((response) => {
-        toast.success("Tạo lớp thành công");
+        Swal.fire({
+          title: "Tạo lớp thành công",
+          icon: "success",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         router.push(`/admin/classes`);
         handleRefresh();
       })
       .catch((errors) => {
-        toast.error("Có lỗi xảy ra!");
+        Swal.fire({
+          title: "Có lỗi xảy ra!",
+          text: errors,
+          icon: "error",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+        });
       });
   };
 

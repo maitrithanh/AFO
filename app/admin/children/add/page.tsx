@@ -9,6 +9,7 @@ import { callApiWithToken } from "@/utils/callApi";
 import { t } from "i18next";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const AddChildrenPage = () => {
   const initChild = {
@@ -69,11 +70,25 @@ const AddChildrenPage = () => {
           },
         })
         .then((res) => {
-          toast.success(t("toastUpdate"));
+          Swal.fire({
+            title: t("toastUpdate"),
+            icon: "success",
+            confirmButtonText: "Đóng",
+            confirmButtonColor: "#F8853E",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           onSuccess();
         })
         .catch((err) => {
-          toast.error(err?.response?.data?.error || "Lỗi");
+          Swal.fire({
+            title: err?.response?.data?.error || "Lỗi",
+            icon: "error",
+            confirmButtonText: "Đóng",
+            confirmButtonColor: "#F8853E",
+            // showConfirmButton: false,
+            // timer: 1000,
+          });
         });
     } else {
       if (!selectParent) {
@@ -88,7 +103,14 @@ const AddChildrenPage = () => {
           },
         })
         .then((res) => {
-          toast.success(t("toastUpdate"));
+          Swal.fire({
+            title: t("toastUpdate"),
+            icon: "success",
+            confirmButtonText: "Đóng",
+            confirmButtonColor: "#F8853E",
+            showConfirmButton: false,
+            timer: 1000,
+          });
           onSuccess();
         })
         .catch((err) => {

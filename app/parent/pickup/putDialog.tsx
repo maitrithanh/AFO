@@ -10,6 +10,7 @@ import PickUpListRes from "@/types/PickUpListRes";
 import { toYMD } from "@/utils/dateTime";
 import { getImageUrl } from "@/utils/image";
 import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 interface Prop {
   onClose: () => void;
@@ -63,7 +64,14 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
           },
         })
         .then((res) => {
-          toast.success(t("toastUpdate"));
+          Swal.fire({
+            title: t("toastUpdate"),
+            icon: "success",
+            confirmButtonText: "Đóng",
+            confirmButtonColor: "#F8853E",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           onClose();
           onSuccess();
         })
@@ -81,7 +89,14 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
           },
         })
         .then((res) => {
-          toast.success(t("toastUpdate"));
+          Swal.fire({
+            title: t("toastUpdate"),
+            icon: "success",
+            confirmButtonText: "Đóng",
+            confirmButtonColor: "#F8853E",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           onClose();
           onSuccess();
         })

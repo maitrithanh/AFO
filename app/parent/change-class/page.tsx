@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
+import Swal from "sweetalert2";
 
 const ChangeClassPage = () => {
   const [closeDialogBurnOut, setCloseDialogBurnOut] = useState(false);
@@ -79,7 +80,14 @@ const ChangeClassPage = () => {
           },
         })
         .then((response) => {
-          toast.success("Xin chuyển lớp thành công");
+          Swal.fire({
+            title: "Xin chuyển lớp thành công",
+            icon: "success",
+            confirmButtonText: "Đóng",
+            confirmButtonColor: "#F8853E",
+            showConfirmButton: false,
+            timer: 1500,
+          });
           handleSendNotiChangeClass();
           onClose();
           setRefresh(true);

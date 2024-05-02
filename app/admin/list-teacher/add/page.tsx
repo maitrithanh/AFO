@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import Input from "@/app/components/shared/Input";
 import { Asap_Condensed } from "next/font/google";
 import SelectAddress from "@/app/components/shared/selectAddress";
+import Swal from "sweetalert2";
 
 const font_asap_condensed = Asap_Condensed({
   weight: "600", // if single weight, otherwise you use array like [400, 500, 700],
@@ -75,13 +76,24 @@ const AddTeacherPage = () => {
         },
       })
       .then((response) => {
-        console.log(response);
-
-        toast.success("Hồ sơ đã được lưu");
+        Swal.fire({
+          title: "Hồ sơ đã được lưu",
+          icon: "success",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         router.push("/admin/list-teacher");
       })
       .catch((errors) => {
-        toast.error("Có lỗi xảy ra!");
+        Swal.fire({
+          title: "Có lỗi xảy ra!",
+          text: errors,
+          icon: "error",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+        });
       });
   };
 

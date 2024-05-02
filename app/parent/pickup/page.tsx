@@ -11,6 +11,7 @@ import PutPickupDialog from "./putDialog";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 const PickUpPage = () => {
   const [openDialog, SetOpenDialog] = useState("");
@@ -40,7 +41,14 @@ const PickUpPage = () => {
     callApiWithToken()
       .delete("parent/deletepickup/" + x.id)
       .then(() => {
-        toast.success(t("toastDelete"));
+        Swal.fire({
+          title: t("toastDelete"),
+          icon: "success",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setRefresh((x) => !x);
       })
       .catch(() => {
@@ -52,7 +60,14 @@ const PickUpPage = () => {
     callApiWithToken()
       .get("parent/togglepickup/" + id)
       .then(() => {
-        toast.success(t("toastUpdate"));
+        Swal.fire({
+          title: t("toastUpdate"),
+          icon: "success",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setRefresh((x) => !x);
       })
       .catch(() => {

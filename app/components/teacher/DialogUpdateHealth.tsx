@@ -13,6 +13,7 @@ interface DialogUpdateHealthProps {
   dataProp: any;
 }
 import { CiCalculator2 } from "react-icons/ci";
+import Swal from "sweetalert2";
 
 const DialogUpdateHealth = ({
   onClose,
@@ -59,7 +60,14 @@ const DialogUpdateHealth = ({
     callApiWithToken()
       .put(`Healthy/updateHealthy?healthyId=` + dataProp?.id, data)
       .then((res) => {
-        toast.success("Đã cập nhật");
+        Swal.fire({
+          title: "Đã cập nhật",
+          icon: "success",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          showConfirmButton: false,
+          timer: 1000,
+        });
         refresh();
         onClose();
         // location.reload();

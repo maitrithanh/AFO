@@ -14,9 +14,8 @@ import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { CiCircleMore } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
-import { MdCancelScheduleSend } from "react-icons/md";
+import Swal from "sweetalert2";
 
 const BurnOutPage = () => {
   const [closeDialogBurnOut, setCloseDialogBurnOut] = useState(false);
@@ -92,7 +91,15 @@ const BurnOutPage = () => {
           },
         })
         .then((response) => {
-          toast.success("Tạo thành công");
+          Swal.fire({
+            title: "Tạo đơn xin nghỉ thành công",
+            icon: "success",
+            confirmButtonText: "Đóng",
+            confirmButtonColor: "#F8853E",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // toast.success("Tạo thành công");
           callApiWithToken()
             .post(
               `Notification/sendUser`,

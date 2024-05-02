@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import GetClass from "@/utils/classes/getClass";
 import { IoCalendarOutline } from "react-icons/io5";
+import Swal from "sweetalert2";
 
 const AttendancePage = () => {
   const { t } = useTranslation();
@@ -117,8 +118,14 @@ const AttendancePage = () => {
         }
       }
     }
-
-    toast.success("Đã cập nhật");
+    Swal.fire({
+      title: t("toastUpdate"),
+      icon: "success",
+      confirmButtonText: "Đóng",
+      confirmButtonColor: "#F8853E",
+      showConfirmButton: false,
+      timer: 1500,
+    });
     location.reload();
 
     callApiWithToken()
@@ -127,7 +134,14 @@ const AttendancePage = () => {
         setRefresh(true);
       })
       .catch((errors) => {
-        toast.error("Có lỗi khi cập nhật trạng thái lưu điểm danh!");
+        Swal.fire({
+          title: "Có lỗi khi cập nhật trạng thái lưu điểm danh!",
+          icon: "error",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
 
     for (let i = 0; i < attendanceClassData.length; i++) {

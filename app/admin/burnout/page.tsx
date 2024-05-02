@@ -20,6 +20,7 @@ import { getImageUrl } from "@/utils/image";
 import { FaCheck } from "react-icons/fa6";
 import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const Columns: TableTemplateColumn[] = [
   {
@@ -132,7 +133,14 @@ const BurnOutPage = () => {
     callApiWithToken()
       .put(`CheckIn/putRequest?reqID=${idReq}`)
       .then((response) => {
-        toast.success("Đã duyệt");
+        Swal.fire({
+          title: "Đã duyệt",
+          icon: "success",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         callApiWithToken()
           .post(
             `Notification/sendUser`,
@@ -149,7 +157,13 @@ const BurnOutPage = () => {
           )
           .then((response) => {})
           .catch((errors) => {
-            toast.error(errors, errors);
+            Swal.fire({
+              title: "Có lỗi xảy ra!",
+              text: errors,
+              icon: "error",
+              confirmButtonText: "Đóng",
+              confirmButtonColor: "#F8853E",
+            });
           });
         setRefresh(true);
         handlRefresh();
