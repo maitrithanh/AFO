@@ -91,7 +91,7 @@ const Action: TableTemplateAction<ChildrenData> = {
 const sorts: TableTemplateSort<ChildrenData>[] = [
   {
     title: "Mới nhất",
-    compare: (a, b) => (a.joinDate <= b.joinDate ? 1 : -1),
+    compare: (a, b) => (a.joinDate <= b.joinDate ? -1 : 1),
   },
   {
     title: "Tên (A-Z)",

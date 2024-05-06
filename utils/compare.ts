@@ -8,7 +8,9 @@ const formatName = (s?: string): string => {
     if (!name) return s;
 
     arr = [name, ...arr];
-    return arr.join(' ');
+    var res = arr.join(' ');
+    res = removeVietnameseTones(res);
+    return res;
 }
 
 export const compareName = (a: string = '', b: string = ''): number => { 

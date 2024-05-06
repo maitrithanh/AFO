@@ -4,5 +4,6 @@ export default interface ClassRoom{
     name: string,
     count: number,
     teachers: string,
-    note: string
+    note: string,
+    scheduleId?: number,
 }

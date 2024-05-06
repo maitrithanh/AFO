@@ -2,7 +2,7 @@
 
 import ScheduleDetail from "@/types/ScheduleDetail";
 import ScheduleTable from "./scheduleTable";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import moment from "moment";
 import { menu } from "@/data/menu";
 import { FaCheck } from "react-icons/fa6";
@@ -20,12 +20,14 @@ interface Props {
 }
 
 const PutSchedulePage = ({ curr, edit }: Props) => {
+  const router = useRouter();
   const [weekStart, setWeekStart] = useState(
     curr.start || moment().format("YYYY") + "-W" + moment().format("WW")
   );
   const [weekEnd, setWeekEnd] = useState(
     curr.end || moment().format("YYYY") + "-W" + moment().format("WW")
   );
+  const [showAllClasses, setShowAllClasses] = useState<boolean>(false);
 
   const [name, setName] = useState(curr.name);
   const [desc, setDesc] = useState(curr.desc);
@@ -40,9 +42,16 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
     "classRoom/List/" + new Date().getFullYear().toString()
   );
 
-  const router = useRouter();
+  const filteredClasses = useMemo(() => { 
+    if (showAllClasses) return classes;
+
+    return classes?.filter(x => x.scheduleId == null );
+  }, [classes, showAllClasses])
 
   const onAddClass = (c: ClassRoom) => {
+    var dup = selectClass.find(x => x.id == c.id);
+    if (dup) return;
+
     setSelectClass((x) => [...x, c]);
   };
 
@@ -194,12 +203,28 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
             <span className="mr-3">Chọn các lớp áp dụng thời khóa biểu: </span>
             <AddItem<ClassRoom>
               onAdd={onAddClass}
-              dataSource={classes || []}
+              dataSource={filteredClasses || []}
               getName={(x) => x.name}
               getKey={(x) => x.id + ""}
               visible
               placeholder="Thêm lớp"
+              itemIcon={
+                (x) => <Box active={x.scheduleId != null}
+                  selected={selectClass.find(y => y.id == x.id) != undefined}
+                />
+              }
             />
+            <div>
+              <span className="ml-3 italic">
+                <input type="checkbox"
+                  className="mr-2"
+                  title="hiển thị lớp đã có thời khóa biểu"
+                  checked={showAllClasses}
+                  onChange={e => { setShowAllClasses(e.target.checked) }}
+                />
+                hiển thị lớp đã có thời khóa biểu
+              </span>
+           </div>
           </div>
 
           {/* chosen classes */}
@@ -246,3 +271,12 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
 };
 
 export default PutSchedulePage;
+
+const Box = ({ active, selected }: { active?: boolean, selected?: boolean }) => { 
+  if (selected) return <span className="text-green-500 inline-block">
+    <FaCheck />
+  </span>
+
+  var color = active ? 'bg-green-500' : 'bg-gray-400'
+  return <div className={`h-[0.8rem] w-[0.8rem] ${color} inline-block`}></div>
+}

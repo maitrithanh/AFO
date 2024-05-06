@@ -16,6 +16,7 @@ interface Props<T> {
   emptyMsg?: string;
   hightLightPlaceholder?: boolean;
   disable?: boolean;
+  itemIcon?: (item: T) => JSX.Element;
 }
 
 function AddItem<T = FoodRes>({
@@ -30,6 +31,7 @@ function AddItem<T = FoodRes>({
   hideBtn,
   emptyMsg,
   hightLightPlaceholder,
+  itemIcon
 }: Props<T>) {
   const [keyword, setKeyword] = useState("");
 
@@ -87,7 +89,12 @@ function AddItem<T = FoodRes>({
               className="hover:bg-gray-100 rounded-md py-[5px] m-1 px-2 cursor-pointer"
               onClick={() => onChooseHint(x)}
             >
-              {getName(x)}
+              {
+                itemIcon && itemIcon(x)
+              }
+              <span className="ml-2">
+                {getName(x)}
+              </span>
             </div>
           ))}
 

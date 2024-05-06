@@ -43,9 +43,10 @@ const AddChildrenPage = () => {
     let formData = new FormData();
 
     var pre = registerdParent ? "" : "child.";
+    var _child: DetailChildReq = { ...dataChildren, address: dataChildren?.encodedAddress };
 
     //append child
-    for (const [propName, propValue] of Object.entries(dataChildren)) {
+    for (const [propName, propValue] of Object.entries(_child)) {
       const fullKey = `${pre}${propName}`;
       formData.append(fullKey, propValue);
     }
@@ -58,7 +59,8 @@ const AddChildrenPage = () => {
 
     if (!registerdParent) {
       //append parent
-      for (const [propName, propValue] of Object.entries(dataParent)) {
+      const data: AddParentReq = {...dataParent, address: dataParent.encodedAddress}
+      for (const [propName, propValue] of Object.entries(data)) {
         const fullKey = `${"parent"}.${propName}`;
         formData.append(fullKey, propValue);
       }

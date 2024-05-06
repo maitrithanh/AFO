@@ -583,14 +583,14 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities, isCurrWee
                     width="150%"
                 />
 
-                <CellActions
+                {/* <CellActions
                     day={dayStart} time={timeStart} timeEnd={timeEnd}
                     onDelete={onDelete}
                     copyItem={copyItem}
                     onCopy={onCopy}
                     onPaste={onPaste}
                     onCancel={onCancel}
-                />
+                /> */}
             </div>
         }
     </td>
@@ -624,7 +624,7 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities, isCurrWee
                             {activity}
                         </span>
                         {
-                            edit &&
+                            edit && 
                             // <div className="absolute right-0 top-0 pt-1 pe-2 hidden group-hover:block">
                             //     <button onClick={() => onDelete(dayStart, timeStart)} title="Xóa">
                             //         <FaTrashCan />
@@ -650,7 +650,7 @@ const ScheduleItemEl = ({ cellData, onDelete, onAdd, edit, activities, isCurrWee
                                 ({minuteDiff(timeStart, timeEnd)} phút)
                             </div>
                                 
-                            <SelectHour />
+                            {/* <SelectHour /> */}
                         </div>
                     }
                     {/* {

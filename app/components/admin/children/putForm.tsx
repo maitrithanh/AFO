@@ -189,7 +189,7 @@ const ChildrenPutForm = ({ data, setData, editable }: Props) => {
                   </label>
                   <SelectAddress setAddress={setAddress} address={data?.encodedAddress ?? ''} disable={!editable} />
                   <p>
-                    {decodeAddress(data?.address ?? '')}
+                    {decodeAddress(data?.encodedAddress ?? '')}
                   </p>
                 </div>
                 {/* /test */}
