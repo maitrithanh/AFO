@@ -58,6 +58,7 @@ interface IObject {
 export interface TableTemplateColumn<T = any> {
   minTable?: boolean;
   width?: any;
+  maxWidth?: string;
   //tên cột
   title: string;
   //callback để lấy thuộc tính từ object, trả về string hoặc element
@@ -77,7 +78,7 @@ export interface FilterOptions<T = any> {
 
 export interface TableTemplateFilter<T = any> {
   name: string;
-  options: FilterOptions[];
+  options: FilterOptions<T>[];
   autoFilter?: (obj: T) => string;
 }
 
@@ -455,7 +456,7 @@ function TableTemplate<T extends IObject = any>({
 
             {/* search address */}
             {searchAddress && (
-              <div className="w-[500px]">
+              <div className="w-[660px]">
                 <SelectAddress
                   setAddress={(addr) => setAddress(addr)}
                   address={address}
@@ -484,26 +485,27 @@ function TableTemplate<T extends IObject = any>({
             </div>
           )}
           <table
-            className={`${
-              minTable ? null : "min-w-[1024px]"
-            } text-md text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]`}
+            // className={`${
+            //   minTable ? null : "min-w-[1024px]"
+            // } text-md text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]`}
+            className={`table w-full table-auto text-md text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]`}
           >
-            <thead className="text-md w-full flex text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
-              <tr className="table table-fixed w-full">
-                {!hideIndex && <th className="px-6 py-3 p-3 w-14">STT</th>}
+            <thead className="text-md text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
+              <tr>
+                {!hideIndex && <th scope="col" className="px-6 py-3 p-3">STT</th>}
 
                 {columns.map((x) => (
                   <th
                     key={x.title}
                     scope="col"
-                    className={`p-3 ${`w-[${x.width}px]`}`}
+                    className={`p-3`}
                   >
                     {x.title}
                   </th>
                 ))}
 
                 {actions?.length && (
-                  <th className="w-24 p-3">
+                  <th className="p-3" scope="col">
                     {/* actions */}{" "}
                     <span className="flex justify-center items-center">
                       Thao tác
@@ -512,31 +514,31 @@ function TableTemplate<T extends IObject = any>({
                 )}
               </tr>
             </thead>
-            <tbody className=" md:block overflow-auto max-h-[570px] w-full rounded-lg">
+            <tbody className="overflow-auto max-h-[570px] rounded-lg">
               {filteredData
                 .slice((page - 1) * rowPerPage!, page * rowPerPage!)
                 .map((row, i) => (
                   <tr
                     key={getKey!(row) ?? i}
-                    className="odd:bg-white table table-fixed w-full odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                   >
-                    <td className={`px-6 py-3 p-3 w-14`}>
+                    <td className={`px-6 py-3 p-3`}>
                       {i + 1 + (page - 1) * rowPerPage!}
                     </td>
 
                     {columns.map((col, j) => (
                       <td
                         key={i + "-" + j}
-                        scope="row"
-                        className={`max-w-[200px] p-3 font-medium text-gray-900 dark:text-white ${`w-${
-                          col.width ? `[${col.width}px]` : "fit"
-                        }`}`}
+                        // className={`max-w-[200px] p-3 font-medium text-gray-900 dark:text-white ${`w-${
+                        //   col.width ? `[${col.width}px]` : "fit"
+                        // }`}`}
+                        className={`${col.maxWidth ? `max-w-[${col.maxWidth}]` : ''} p-3 font-medium text-gray-900 dark:text-white`}
                       >
                         {col.getData(row)}
                       </td>
                     ))}
                     {actions?.length && (
-                      <td className="w-24 p-3">
+                      <td className="p-3">
                         <div className="flex justify-center items-center ">
                           {actions?.map((act, i) => (
                             <Link

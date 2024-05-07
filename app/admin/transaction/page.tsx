@@ -4,7 +4,16 @@ import TableTemplate, { TableTemplateColumn } from "@/app/components/shared/Tabl
 import TransactionModel from "@/types/Transaction";
 import { toYMD } from "@/utils/dateTime";
 import useFetch from "@/utils/useFetch";
+import { useState } from "react";
+import UpdateTransactionDialog from "./updateDialog";
 
+
+const getStatus = (x: TransactionModel) => { 
+    return x.complete ?
+        'Đã xử lý' :
+        x.valid ? 'Hợp lệ' :
+            'Không hợp lệ'
+}
 
 const Columns: TableTemplateColumn<TransactionModel>[] = [
     {
@@ -30,25 +39,60 @@ const Columns: TableTemplateColumn<TransactionModel>[] = [
         getData: (x) => x.time
     },
     {
-        title: 'SỐ NHẬN DẠNG',
-        getData: (x) => x.refNumber
+        title: 'TRẠNG THÁI',
+        getData: (x) => <span className={`${
+            x.complete ?
+                'text-blue-500' :
+                x.valid ? 'text-green-500' :
+                    'text-red-500'
+        }`}>
+            {getStatus(x)}
+        </span>
     },
 ]
 
 const TransactionPage = () => {
-    const { data } = useFetch(`Tuition/GetTransactions`);
+    const [curr, setCurr] = useState<TransactionModel>();
+    const [refresh, setRefresh] = useState(false);
 
-    return <TableTemplate<TransactionModel>
-        title="Lịch sử nhận chuyển khoản"
-        dataSource={data || []}
-        columns={Columns}
-        searchColumns={[Columns[1], Columns[2]]}
-        searchPlaceHolder="Nhập số tài khoản hoặc nội dung"
-        dateRange={{
-            name: 'Ngày chuyển: ',
-            filter: (obj, from, to) => (from == '' || toYMD(obj.time) >= from) && (to == '' || toYMD(obj.time) <= to)
-        }}
-    />
+    const { data } = useFetch(`Tuition/GetTransactions`, refresh);
+
+    return <>
+        <TableTemplate<TransactionModel>
+            title="Lịch sử nhận chuyển khoản"
+            dataSource={data || []}
+            columns={Columns}
+            searchColumns={[Columns[1], Columns[2]]}
+            searchPlaceHolder="Nhập số tài khoản hoặc nội dung"
+            dateRange={{
+                name: 'Ngày chuyển: ',
+                filter: (obj, from, to) => (from == '' || toYMD(obj.time) >= from) && (to == '' || toYMD(obj.time) <= to)
+            }}
+            filters={[
+                {
+                    name: 'Trạng thái',
+                    options: [],
+                    autoFilter: (x) => getStatus(x)
+                }
+            ]}
+            actions={[
+                {
+                    onClick: (x) => { setCurr(x) }
+                }
+            ]}
+        />
+
+        {
+            curr &&
+            <UpdateTransactionDialog
+                current={curr}
+                onClose={() => { setCurr(undefined) }}
+                onRefresh={() => setRefresh(x => !x)}
+                editMode={!curr.valid && !curr.complete}
+            />
+        }
+    </>
+  
 }
 
 export default TransactionPage

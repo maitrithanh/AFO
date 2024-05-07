@@ -50,7 +50,7 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
       <div>
         {x.children.map((y, i) => (
           <div key={i}>
-            {(y.relationship != null ? `(${y.relationship} của) ` : "") +
+            {(false && y.relationship != null ? `(${y.relationship} của) ` : "") +
               y.fullName}
             {i < x.children.length - 1 ? "," : ""}
           </div>
@@ -81,6 +81,7 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
   {
     title: "Địa chỉ",
     getData: (x) => x.address,
+    maxWidth: '200px'
   },
   {
     title: "Trạng thái",
@@ -113,7 +114,7 @@ const getJoinDate = (a: ParentListRes): string => {
 const sorts: TableTemplateSort<ParentListRes>[] = [
   {
     title: "Mới nhất",
-    compare: (a, b) => (getJoinDate(a) <= getJoinDate(b) ? 1 : -1),
+    compare: (a, b) => (getJoinDate(a) <= getJoinDate(b) ? -1 : 1),
   },
   {
     title: "Tên (A-Z)",

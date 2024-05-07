@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import DialogAddPayment from "@/app/components/payment/addDialog";
+import UpdatePaymentDialog from "@/app/components/payment/updateDialog";
 
 const Columns: TableTemplateColumn<PaymentModel>[] = [
   {
@@ -80,6 +81,7 @@ const PaymentPage = () => {
   const [month, setMonth] = useState((new Date().getMonth() + 1).toString());
   const [openDialog, setOpenDialog] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [curr, setCurr] = useState<PaymentModel>();
 
   const { data } = useFetch<PaymentModel[]>(
     `Tuition/GetAllTuition?month=${month}&year=${year}`,
@@ -172,10 +174,28 @@ const PaymentPage = () => {
             (from == "" || toYMD(obj.endTime) >= from) &&
             (to == "" || toYMD(obj.startTime) <= to),
         }}
+
+        actions={[
+          {
+            onClick: (x) => { 
+              setCurr(x);
+            }
+          },
+        ]}
       />
       <div className="flex w-full justify-center items-center">
         {data ? (data.length ? null : "Không có dữ liệu") : null}
       </div>
+
+      {
+        curr &&
+        <UpdatePaymentDialog
+          current={curr}
+          editMode={curr.statusCode != '4'}
+          onClose={() => setCurr(undefined)}
+          onRefresh={() => setRefresh((x) => !x)}
+        />
+      }
     </>
   );
 };

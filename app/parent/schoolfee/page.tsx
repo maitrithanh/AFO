@@ -29,8 +29,20 @@ import { getCookie } from "cookies-next";
 
 const filterStatus: TableTemplateFilter<PaymentModel> = {
   name: "Trạng thái",
-  options: [],
-  autoFilter: (x) => x.status,
+  options: [
+    {
+      value: 'Đã đóng',
+      filter: (x) => x.total >= x.paid
+    },
+    {
+      value: 'Đóng thiếu',
+      filter: (x) => x.total > x.paid
+    },
+    {
+      value: 'Đóng dư',
+      filter: (x) => x.total < x.paid
+    },
+  ],
 };
 
 const sorts: TableTemplateSort<PaymentModel>[] = [

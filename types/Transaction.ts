@@ -7,7 +7,7 @@ export default interface TransactionModel {
     time: string,
     srcAccount: string,
     refNumber: string,
-    valid: false,
-    // "complete": false,
+    valid: boolean,
+    complete: boolean,
     // "tuition": null
 }

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import AddItem from "../admin/menu/addItem";
 import useFetch from "@/utils/useFetch";
 import Province, { District, Ward } from "@/types/province";
+import { FaSquareMinus } from "react-icons/fa6";
 
 interface Props {
   setAddress: (addr: string) => void;
@@ -51,7 +52,15 @@ const SelectAddress = ({ setAddress, address, disable, hideStreet }: Props) => {
 
   return (
     <div className="w-full my-2 flex items-center gap-4">
-      <div className="">
+      <Wrapper onDelete={
+        () => {
+          setProvince('');
+          setDistrict('');
+          setWard('');
+        }
+      }
+        showDelete={province != ''}
+        >
         <AddItem<Province>
           onAdd={(x) => {
             if (x.name == province) return;
@@ -68,8 +77,14 @@ const SelectAddress = ({ setAddress, address, disable, hideStreet }: Props) => {
           hideBtn
           disable={disable}
         />
-      </div>
-      <div className="">
+      </Wrapper>
+
+      <Wrapper onDelete={() => {
+        setDistrict('');
+        setWard('');
+      }}
+        showDelete={district != ''}
+        >
         <AddItem<District>
           onAdd={(x) => {
             if (x.name == district) return;
@@ -86,8 +101,9 @@ const SelectAddress = ({ setAddress, address, disable, hideStreet }: Props) => {
           hideBtn
           disable={disable}
         />
-      </div>
-      <div className="">
+      </Wrapper>
+
+      <Wrapper onDelete={() => setWard('')} showDelete={ward != ''}>
         <AddItem<Ward>
           onAdd={(x) => {
             setWard(x.name);
@@ -102,7 +118,7 @@ const SelectAddress = ({ setAddress, address, disable, hideStreet }: Props) => {
           hideBtn
           disable={disable}
         />
-      </div>
+      </Wrapper>
       {!hideStreet && (
         <div className="flex-[2]">
           <input
@@ -121,5 +137,20 @@ const SelectAddress = ({ setAddress, address, disable, hideStreet }: Props) => {
     </div>
   );
 };
+
+const Wrapper = ({ children, onDelete, showDelete }: {children: JSX.Element, onDelete: () => void, showDelete: boolean}) => { 
+  return <div className="relative">
+    {children}
+    {
+      showDelete &&
+      <div
+        className="absolute top-0 right-2 cursor-pointer text-lg text-gray-500 hover:text-black"
+        onClick={onDelete}
+      >
+        x
+      </div>
+    }
+  </div>
+}
 
 export default SelectAddress;
