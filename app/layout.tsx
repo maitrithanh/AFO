@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Provider from "./components/shared/sessionProvider";
 import { Baloo_Bhaijaan_2 } from "next/font/google";
 import GlobalContextProvider from "./contexts/GlobalContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Asap_Condensed } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
-const font_asap_condensed = Asap_Condensed({
-  weight: "400", // if single weight, otherwise you use array like [400, 500, 700],
-  style: "normal", // if single style, otherwise you use array like ['normal', 'italic']
-  subsets: ["latin"],
-});
+// import { Inter } from "next/font/google";
+// import { Asap_Condensed } from "next/font/google";
+// const font_asap_condensed = Asap_Condensed({
+//   weight: "400", // if single weight, otherwise you use array like [400, 500, 700],
+//   style: "normal", // if single style, otherwise you use array like ['normal', 'italic']
+//   subsets: ["latin"],
+// });
 const font = Baloo_Bhaijaan_2({
   weight: ["400", "500", "600", "700"], // if single weight, otherwise you use array like [400, 500, 700],
   style: "normal", // if single style, otherwise you use array like ['normal', 'italic']
