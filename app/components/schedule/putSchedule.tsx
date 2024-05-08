@@ -42,14 +42,14 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
     "classRoom/List/" + new Date().getFullYear().toString()
   );
 
-  const filteredClasses = useMemo(() => { 
+  const filteredClasses = useMemo(() => {
     if (showAllClasses) return classes;
 
-    return classes?.filter(x => x.scheduleId == null );
-  }, [classes, showAllClasses])
+    return classes?.filter((x) => x.scheduleId == null);
+  }, [classes, showAllClasses]);
 
   const onAddClass = (c: ClassRoom) => {
-    var dup = selectClass.find(x => x.id == c.id);
+    var dup = selectClass.find((x) => x.id == c.id);
     if (dup) return;
 
     setSelectClass((x) => [...x, c]);
@@ -96,15 +96,18 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
   };
 
   return (
-    <div className="pb-[120px]">
-      <div className="w-full mb-5 px-5">
+    <div className="pb-[120px] bg-white p-2 rounded-md">
+      <div className="w-full mb-5 px-5 ">
         <h2 className="text-3xl mb-3">
           {edit ? "Chỉnh sửa " : "Thêm "} Thời khóa biểu
         </h2>
 
         {/* name */}
         <div className="flex group items-baseline mb-3">
-          <span className="mr-2 italic"> Tên thời khóa biểu:</span>
+          <span className="mr-2 font-semibold text-lg">
+            {" "}
+            Tên thời khóa biểu:
+          </span>
           {editName ? (
             <input
               type="text"
@@ -120,20 +123,28 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
               <h2 className="text-2xl p-2">{name}</h2>
             </div>
           )}
-          <button
-            title="Sửa tên thời khóa biểu"
-            className={`${
-              editName ? "text-green-600" : "invisible"
-            } ml-2 group-hover:visible`}
-            onClick={() => setEditName((curr) => !curr)}
-          >
-            {editName ? <FaCheck size={20} /> : <MdModeEditOutline size={20} />}
-          </button>
+          {edit ? (
+            <button
+              title="Sửa tên thời khóa biểu"
+              className={`${
+                editName ? "text-green-600" : "invisible"
+              } ml-2 group-hover:visible`}
+              onClick={() => setEditName((curr) => !curr)}
+            >
+              {editName ? (
+                <FaCheck size={20} />
+              ) : (
+                <MdModeEditOutline size={20} />
+              )}
+            </button>
+          ) : null}
         </div>
 
         {/* desc */}
         <div className="group pr-2 w-full flex items-center">
-          <span className="mr-2 whitespace-nowrap italic"> Mô tả:</span>
+          <span className="mr-2 whitespace-nowrap font-semibold text-lg">
+            Mô tả:
+          </span>
           {editDesc ? (
             <textarea
               value={desc}
@@ -208,23 +219,27 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
               getKey={(x) => x.id + ""}
               visible
               placeholder="Thêm lớp"
-              itemIcon={
-                (x) => <Box active={x.scheduleId != null}
-                  selected={selectClass.find(y => y.id == x.id) != undefined}
+              itemIcon={(x) => (
+                <Box
+                  active={x.scheduleId != null}
+                  selected={selectClass.find((y) => y.id == x.id) != undefined}
                 />
-              }
+              )}
             />
             <div>
               <span className="ml-3 italic">
-                <input type="checkbox"
+                <input
+                  type="checkbox"
                   className="mr-2"
                   title="hiển thị lớp đã có thời khóa biểu"
                   checked={showAllClasses}
-                  onChange={e => { setShowAllClasses(e.target.checked) }}
+                  onChange={(e) => {
+                    setShowAllClasses(e.target.checked);
+                  }}
                 />
                 hiển thị lớp đã có thời khóa biểu
               </span>
-           </div>
+            </div>
           </div>
 
           {/* chosen classes */}
@@ -272,11 +287,20 @@ const PutSchedulePage = ({ curr, edit }: Props) => {
 
 export default PutSchedulePage;
 
-const Box = ({ active, selected }: { active?: boolean, selected?: boolean }) => { 
-  if (selected) return <span className="text-green-500 inline-block">
-    <FaCheck />
-  </span>
+const Box = ({
+  active,
+  selected,
+}: {
+  active?: boolean;
+  selected?: boolean;
+}) => {
+  if (selected)
+    return (
+      <span className="text-green-500 inline-block">
+        <FaCheck />
+      </span>
+    );
 
-  var color = active ? 'bg-green-500' : 'bg-gray-400'
-  return <div className={`h-[0.8rem] w-[0.8rem] ${color} inline-block`}></div>
-}
+  var color = active ? "bg-green-500" : "bg-gray-400";
+  return <div className={`h-[0.8rem] w-[0.8rem] ${color} inline-block`}></div>;
+};

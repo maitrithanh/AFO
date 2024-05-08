@@ -31,6 +31,8 @@ import Input from "@/app/components/inputs/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import TableTemplate, { TableTemplateColumn } from "../../shared/TableTemplate";
 import { MdEditNote } from "react-icons/md";
+import Loading from "../../shared/Loading";
+import Image from "next/image";
 
 const ColumnsStudent: TableTemplateColumn[] = [
   {
@@ -69,7 +71,7 @@ const DetailClasses = (id: any) => {
   const [inputTeacherValue, setInputTeacherValue] = useState("");
   const [openAddChildDialog, setOpenAddChildDialog] = useState(false);
 
-  const { data: detailClassData } = useFetch(
+  const { data: detailClassData, loading: classLoading } = useFetch(
     `ClassRoom/Detail/id=${id.id}&year=${year}`,
     refresh
   );
@@ -253,471 +255,493 @@ const DetailClasses = (id: any) => {
 
   return (
     <>
-      {closeDialog ? (
-        <DialogProfile
-          handleDialog={handleDialog}
-          dataProps={dataStudentDetail}
-        />
-      ) : null}
-      <AlertDialog
-        onOpenChange={() => {
-          setOpenDialog((curr) => !curr);
-        }}
-        open={openDialog}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Bạn có chắc chắn xoá trẻ ra khỏi lớp?
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-rose-600 font-bold">
-              Xác nhận xoá trẻ có mã: {childID} ra khỏi lớp
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Huỷ</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-rose-600 hover:bg-rose-900"
-              onClick={() => {
-                handleRemoveChildOutClass(childID);
-              }}
-            >
-              Xác nhận xoá
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* KIDSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS */}
-      <AlertDialog
-        onOpenChange={() => {
-          setOpenAddChildDialog((curr) => !curr);
-        }}
-        open={openAddChildDialog}
-      >
-        <AlertDialogContent className="max-w-[800px]">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Thêm trẻ vào lớp</AlertDialogTitle>
-            <div>
-              <TableTemplate
-                title=""
-                minTable
-                dataSource={dataStudent || []}
-                columns={ColumnsStudent}
-                actions={[
-                  {
-                    icon: (
-                      <span className="hover hover:text-main text-gray-500">
-                        <IoIosAddCircle size={24} />
-                      </span>
-                    ),
-                    onClick: (x) => {
-                      handleAddChildInClass(x.childID);
-                    },
-                  },
-                ]}
-              />
-              {dataStudent?.length <= 0 ? (
-                <p className="flex w-full justify-center items-center">
-                  <span className="text-yellow-500 mx-1">
-                    <IoWarning size={20} />
-                  </span>
-                  Hiện không có học sinh nào chưa có lớp
-                </p>
-              ) : null}
-            </div>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Đóng</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      <div className="h-[600px]">
-        <div className="flex justify-between items-center mb-2">
-          <BackAction />
+      {classLoading ? (
+        <div className="w-full flex justify-center items-center h-full">
           <div>
-            {editMode == "true" ? (
-              <div className="flex w-full items-center justify-end mt-4">
-                <button
-                  className="text-white bg-main hover:bg-mainBlur focus:ring-4 focus:outline-none font-medium rounded-md text-lg px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
-                  onClick={handleSubmit(onSubmit)}
-                >
-                  <span className="flex gap-2 items-center justify-center">
-                    <FaSave />
-                    Lưu thay đổi
-                  </span>
-                </button>
-              </div>
-            ) : null}
+            <Image
+              className="relative"
+              src={`/Loading_2.gif`}
+              height={500}
+              width={500}
+              alt="loading..."
+            />
+            <p className=" bottom-80 flex justify-center items-center">
+              Đang tải...
+            </p>
           </div>
         </div>
-        <div className="relative shadow-sm bg-white pt-2 sm:rounded-lg">
-          <div className="px-2">
-            <div className="flex items-center justify-between">
+      ) : (
+        <>
+          {closeDialog ? (
+            <DialogProfile
+              handleDialog={handleDialog}
+              dataProps={dataStudentDetail}
+            />
+          ) : null}
+          <AlertDialog
+            onOpenChange={() => {
+              setOpenDialog((curr) => !curr);
+            }}
+            open={openDialog}
+          >
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Bạn có chắc chắn xoá trẻ ra khỏi lớp?
+                </AlertDialogTitle>
+                <AlertDialogDescription className="text-rose-600 font-bold">
+                  Xác nhận xoá trẻ có mã: {childID} ra khỏi lớp
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Huỷ</AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-rose-600 hover:bg-rose-900"
+                  onClick={() => {
+                    handleRemoveChildOutClass(childID);
+                  }}
+                >
+                  Xác nhận xoá
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          {/* KIDSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS */}
+          <AlertDialog
+            onOpenChange={() => {
+              setOpenAddChildDialog((curr) => !curr);
+            }}
+            open={openAddChildDialog}
+          >
+            <AlertDialogContent className="max-w-[800px]">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Thêm trẻ vào lớp</AlertDialogTitle>
+                <div>
+                  <TableTemplate
+                    title=""
+                    minTable
+                    dataSource={dataStudent || []}
+                    columns={ColumnsStudent}
+                    actions={[
+                      {
+                        icon: (
+                          <span className="hover hover:text-main text-gray-500">
+                            <IoIosAddCircle size={24} />
+                          </span>
+                        ),
+                        onClick: (x) => {
+                          handleAddChildInClass(x.childID);
+                        },
+                      },
+                    ]}
+                  />
+                  {dataStudent?.length <= 0 ? (
+                    <p className="flex w-full justify-center items-center">
+                      <span className="text-yellow-500 mx-1">
+                        <IoWarning size={20} />
+                      </span>
+                      Hiện không có học sinh nào chưa có lớp
+                    </p>
+                  ) : null}
+                </div>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Đóng</AlertDialogCancel>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          <div className="h-[600px]">
+            <div className="flex justify-between items-center mb-2">
+              <BackAction />
               <div>
                 {editMode == "true" ? (
-                  <span>
-                    <Input
-                      label="Tên lớp học"
-                      id="Name"
-                      errors={errors}
-                      register={register}
-                      required
-                    />
-                  </span>
-                ) : (
-                  <p className="md:text-3xl">
-                    Danh sách học sinh - Lớp {detailClassData?.name}
-                  </p>
-                )}
-                <p className="md:text-xl">
-                  Số học sinh: {detailClassData?.count}
-                </p>
-              </div>
-              <div className="md:text-xl flex items-center justify-center">
-                Giáo viên chủ nhiệm:
-                <p className={`flex items-center justify-center `}>
-                  {arrTeacher?.map((teacher: any) => {
-                    return (
-                      <span
-                        className={`italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
-                        key={teacher.teacherID}
-                      >
-                        <DefaultImage
-                          img={getImageUrl(teacher.avatar)}
-                          fallback="/avatar.webp"
-                        />
-                        {teacher.fullName}
-                        {editMode == "true" ? (
-                          <span
-                            className="cursor-pointer hover:text-rose-600"
-                            title="Gỡ giáo viên khỏi lớp"
-                            onClick={() => {
-                              handleRemoveTeacherInArr(
-                                teacher.teacherID,
-                                teacher.fullName
-                              );
-                            }}
-                          >
-                            <CiCircleRemove size={24} />
-                          </span>
-                        ) : null}
+                  <div className="flex w-full items-center justify-end mt-4">
+                    <button
+                      className="text-white bg-main hover:bg-mainBlur focus:ring-4 focus:outline-none font-medium rounded-md text-lg px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
+                      onClick={handleSubmit(onSubmit)}
+                    >
+                      <span className="flex gap-2 items-center justify-center">
+                        <FaSave />
+                        Lưu thay đổi
                       </span>
-                    );
-                  })}
-
-                  {arrTeacher?.length < 2 ? (
-                    dataTeacher?.length <= 0 ? (
-                      <p className="flex w-full justify-center items-center bg-gray-100 p-2 rounded-md mx-2">
-                        <span className="text-yellow-500 mx-1">
-                          <IoWarning size={20} />
-                        </span>
-                        Hiện không có giáo viên nào trống lớp
-                      </p>
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+            <div className="relative shadow-sm bg-white pt-2 sm:rounded-lg">
+              <div className="px-2">
+                <div className="flex items-center justify-between">
+                  <div>
+                    {editMode == "true" ? (
+                      <span>
+                        <Input
+                          label="Tên lớp học"
+                          id="Name"
+                          errors={errors}
+                          register={register}
+                          required
+                        />
+                      </span>
                     ) : (
-                      <>
-                        {arrTeacher?.length < 1 ? (
-                          <div
-                            className={`relative italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
+                      <p className="md:text-3xl">
+                        Danh sách học sinh - Lớp {detailClassData?.name}
+                      </p>
+                    )}
+                    <p className="md:text-xl">
+                      Số học sinh: {detailClassData?.count}
+                    </p>
+                  </div>
+                  <div className="md:text-xl flex items-center justify-center">
+                    Giáo viên chủ nhiệm:
+                    <p className={`flex items-center justify-center `}>
+                      {arrTeacher?.map((teacher: any) => {
+                        return (
+                          <span
+                            className={`italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
+                            key={teacher.teacherID}
                           >
-                            <div className="group">
-                              <input
-                                type="text"
-                                // list={"dataListTeacher"}
-                                placeholder={`Giáo viên`}
+                            <DefaultImage
+                              img={getImageUrl(teacher.avatar)}
+                              fallback="/avatar.webp"
+                            />
+                            {teacher.fullName}
+                            {editMode == "true" ? (
+                              <span
+                                className="cursor-pointer hover:text-rose-600"
+                                title="Gỡ giáo viên khỏi lớp"
                                 onClick={() => {
-                                  setOnSelect(true);
+                                  handleRemoveTeacherInArr(
+                                    teacher.teacherID,
+                                    teacher.fullName
+                                  );
                                 }}
-                                onChange={(e) => {
-                                  setSearchTeacher(e.target.value);
-                                }}
-                                defaultValue={inputTeacherValue}
-                                className="w-full p-4 outline-none shadow-3xl rounded-md border"
-                              />
-                              <div className="absolute max-h-[200px] group-hover:visible invisible cursor-pointer bg-white shadow-3xl border p-4 rounded-md w-[94%] overflow-auto">
-                                {dataTeacher
-                                  ?.filter(searchTeacherInClass)
-                                  ?.map((data: any, i: number) => {
-                                    return (
-                                      <div
-                                        key={data.id}
-                                        onClick={() => {
-                                          setOnSelect(true);
-                                          handleAddTeacherToArr(data);
-                                        }}
-                                      >
-                                        <div className="flex items-center gap-2">
-                                          <DefaultImage
-                                            img={getImageUrl(data.avatar)}
-                                            fallback="/avatar.webp"
-                                          />{" "}
-                                          <div>
-                                            {data?.fullName}
-                                            <p className="font-thin text-sm">
-                                              {data?.teacherID}
-                                            </p>
+                              >
+                                <CiCircleRemove size={24} />
+                              </span>
+                            ) : null}
+                          </span>
+                        );
+                      })}
+
+                      {arrTeacher?.length < 2 ? (
+                        dataTeacher?.length <= 0 ? (
+                          <p className="flex w-full justify-center items-center bg-gray-100 p-2 rounded-md mx-2">
+                            <span className="text-yellow-500 mx-1">
+                              <IoWarning size={20} />
+                            </span>
+                            Hiện không có giáo viên nào trống lớp
+                          </p>
+                        ) : (
+                          <>
+                            {arrTeacher?.length < 1 ? (
+                              <div
+                                className={`relative italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
+                              >
+                                <div className="group">
+                                  <input
+                                    type="text"
+                                    // list={"dataListTeacher"}
+                                    placeholder={`Giáo viên`}
+                                    onClick={() => {
+                                      setOnSelect(true);
+                                    }}
+                                    onChange={(e) => {
+                                      setSearchTeacher(e.target.value);
+                                    }}
+                                    defaultValue={inputTeacherValue}
+                                    className="w-full p-4 outline-none shadow-3xl rounded-md border"
+                                  />
+                                  <div className="absolute max-h-[200px] group-hover:visible invisible cursor-pointer bg-white shadow-3xl border p-4 rounded-md w-[94%] overflow-auto">
+                                    {dataTeacher
+                                      ?.filter(searchTeacherInClass)
+                                      ?.map((data: any, i: number) => {
+                                        return (
+                                          <div
+                                            key={data.id}
+                                            onClick={() => {
+                                              setOnSelect(true);
+                                              handleAddTeacherToArr(data);
+                                            }}
+                                          >
+                                            <div className="flex items-center gap-2">
+                                              <DefaultImage
+                                                img={getImageUrl(data.avatar)}
+                                                fallback="/avatar.webp"
+                                              />{" "}
+                                              <div>
+                                                {data?.fullName}
+                                                <p className="font-thin text-sm">
+                                                  {data?.teacherID}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
+                                  </div>
+                                </div>
+                              </div>
+                            ) : null}
+                            <div
+                              className={`relative italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
+                            >
+                              <div className="group">
+                                <input
+                                  type="text"
+                                  // list={"dataListTeacher"}
+                                  placeholder={`Giáo viên`}
+                                  onClick={() => {
+                                    setOnSelect(true);
+                                  }}
+                                  onChange={(e) => {
+                                    setSearchTeacher(e.target.value);
+                                  }}
+                                  defaultValue={inputTeacherValue}
+                                  className="w-full p-4 outline-none shadow-3xl rounded-md border"
+                                />
+                                <div className="absolute max-h-[200px] group-hover:visible invisible cursor-pointer bg-white shadow-3xl border p-4 rounded-md w-[94%] overflow-auto">
+                                  {dataTeacher
+                                    ?.filter(searchTeacherInClass)
+                                    ?.map((data: any, i: number) => {
+                                      return (
+                                        <div
+                                          key={data.id}
+                                          onClick={() => {
+                                            setOnSelect(true);
+                                            handleAddTeacherToArr(data);
+                                          }}
+                                        >
+                                          <div className="flex items-center gap-2">
+                                            <DefaultImage
+                                              img={getImageUrl(data.avatar)}
+                                              fallback="/avatar.webp"
+                                            />{" "}
+                                            <div>
+                                              {data?.fullName}
+                                              <p className="font-thin text-sm">
+                                                {data?.teacherID}
+                                              </p>
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    );
-                                  })}
+                                      );
+                                    })}
+                                </div>
                               </div>
                             </div>
+                          </>
+                        )
+                      ) : null}
+                    </p>
+                  </div>
+                </div>
+                <div className="md:flex justify-between items-center">
+                  <div className="bg-white w-full flex justify-between items-center md:mb-2 mb-4">
+                    <div className="rounded-lg md:w-[380px] w-full flex">
+                      <form className="flex items-center max-w-sm mx-auto w-full">
+                        <div className="relative w-full">
+                          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg
+                              className="w-4 h-4 me-2"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                              />
+                            </svg>
                           </div>
-                        ) : null}
-                        <div
-                          className={`relative italic ml-2 flex items-center justify-center gap-2 bg-gray-100 p-2 rounded-md`}
-                        >
-                          <div className="group">
-                            <input
-                              type="text"
-                              // list={"dataListTeacher"}
-                              placeholder={`Giáo viên`}
-                              onClick={() => {
-                                setOnSelect(true);
-                              }}
-                              onChange={(e) => {
-                                setSearchTeacher(e.target.value);
-                              }}
-                              defaultValue={inputTeacherValue}
-                              className="w-full p-4 outline-none shadow-3xl rounded-md border"
-                            />
-                            <div className="absolute max-h-[200px] group-hover:visible invisible cursor-pointer bg-white shadow-3xl border p-4 rounded-md w-[94%] overflow-auto">
-                              {dataTeacher
-                                ?.filter(searchTeacherInClass)
-                                ?.map((data: any, i: number) => {
-                                  return (
-                                    <div
-                                      key={data.id}
-                                      onClick={() => {
-                                        setOnSelect(true);
-                                        handleAddTeacherToArr(data);
-                                      }}
-                                    >
-                                      <div className="flex items-center gap-2">
-                                        <DefaultImage
-                                          img={getImageUrl(data.avatar)}
-                                          fallback="/avatar.webp"
-                                        />{" "}
-                                        <div>
-                                          {data?.fullName}
-                                          <p className="font-thin text-sm">
-                                            {data?.teacherID}
-                                          </p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    )
-                  ) : null}
-                </p>
-              </div>
-            </div>
-            <div className="md:flex justify-between items-center">
-              <div className="bg-white w-full flex justify-between items-center md:mb-2 mb-4">
-                <div className="rounded-lg md:w-[380px] w-full flex">
-                  <form className="flex items-center max-w-sm mx-auto w-full">
-                    <div className="relative w-full">
-                      <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg
-                          className="w-4 h-4 me-2"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                          <input
+                            type="text"
+                            onChange={(event) => {
+                              setSearch(event.target.value.toLowerCase());
+                            }}
+                            id="simple-search"
+                            className="bg-gray-50 border focus-visible:outline-main border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Tìm kiếm..."
+                            required
                           />
-                        </svg>
-                      </div>
-                      <input
-                        type="text"
-                        onChange={(event) => {
-                          setSearch(event.target.value.toLowerCase());
-                        }}
-                        id="simple-search"
-                        className="bg-gray-50 border focus-visible:outline-main border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Tìm kiếm..."
-                        required
-                      />
+                        </div>
+                      </form>
                     </div>
-                  </form>
-                </div>
-                <div>
-                  {editMode == "true" ? (
-                    <div className="flex w-full items-center justify-end mt-4">
-                      <button
-                        className="text-white bg-green-600 hover:bg-green-900 focus:outline-none font-medium rounded-full text-lg w-full px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
-                        onClick={() => setOpenAddChildDialog(true)}
-                      >
-                        <span className="flex gap-2 items-center justify-center">
-                          <IoMdAdd />
-                          Thêm trẻ
-                        </span>
-                      </button>
+                    <div>
+                      {editMode == "true" ? (
+                        <div className="flex w-full items-center justify-end mt-4">
+                          <button
+                            className="text-white bg-green-600 hover:bg-green-900 focus:outline-none font-medium rounded-full text-lg w-full px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
+                            onClick={() => setOpenAddChildDialog(true)}
+                          >
+                            <span className="flex gap-2 items-center justify-center">
+                              <IoMdAdd />
+                              Thêm trẻ
+                            </span>
+                          </button>
+                        </div>
+                      ) : null}
                     </div>
-                  ) : null}
-                </div>
-              </div>
-              <div>
-                {/* <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full my-5">
+                  </div>
+                  <div>
+                    {/* <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full my-5">
                   + {t("addNew")}
                 </button> */}
+                  </div>
+                </div>
+              </div>
+
+              <div className="overflow-y-auto max-h-[590px]">
+                <table className="w-full text-sm text-left rtl:text-right text-black dark:text-gray-400 max-h-[600px] ">
+                  <thead className="text-md text-white text-lg font-bold uppercase bg-main dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" className="px-6 py-3">
+                        STT
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Hình
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Mã trẻ
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Họ tên
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        {t("dateOfBirth")}
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Người giám hộ
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        {t("phoneNumber")}
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Thao tác
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {detailClassData?.students
+                      ?.filter(searchChildInClass)
+                      .map((dataStudent: any, index: any) => {
+                        return (
+                          <tr
+                            key={dataStudent.id}
+                            // onClick={() => {
+                            //   router.push(`/admin/detailChild/${dataStudent.id}`);
+                            // }}
+                            className="odd:bg-white text-lg cursor-pointer odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                          >
+                            <th
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                              {index + 1}
+                            </th>
+                            <td className="px-6 py-4">
+                              <DefaultImage
+                                img={getImageUrl(dataStudent.avatar)}
+                                className={`w-10 h-10 rounded-full cursor-pointer`}
+                                custom="w-[50px] h-[50px]"
+                                fallback="/avatar.webp"
+                              />
+                            </td>
+                            <td className="px-6 py-4" title="Mã trẻ">
+                              {dataStudent.id}
+                            </td>
+                            <td className="px-6 py-4" title="Họ tên trẻ">
+                              {dataStudent.fullName}
+                            </td>
+                            <td className="px-6 py-4" title="Sinh nhật trẻ">
+                              {dataStudent.birthDay}
+                            </td>
+                            <td
+                              className="px-6 py-4"
+                              title="Họ tên người giám hộ"
+                            >
+                              {dataStudent.parentName}
+                            </td>
+                            <td
+                              className="px-6 py-4"
+                              title="Số điện thoại người giám hộ"
+                            >
+                              {dataStudent.phone}
+                            </td>
+                            <td className="md:px-6 md:py-4 hover flex">
+                              <span
+                                className="hover:text-main mx-1 "
+                                title="Chỉnh sửa"
+                                onClick={() => {
+                                  setDataStudentDetail({
+                                    avatar: dataStudent.avatar,
+                                    id: dataStudent.id,
+                                  });
+                                  setCloseDialog(true);
+                                }}
+                              >
+                                <MdEditNote size={24} />
+                              </span>
+                              <span
+                                className="hover:text-main mx-1 "
+                                title="Chi tiết"
+                                onClick={() => {
+                                  router.push(
+                                    `/admin/detailChild/${dataStudent.id}`
+                                  );
+                                }}
+                              >
+                                <GoInfo size={24} />
+                              </span>
+                              {editMode == "true" ? (
+                                <span
+                                  className="hover:text-main mx-1 "
+                                  onClick={() => {
+                                    setChildID(dataStudent.id);
+                                    setOpenDialog(true);
+                                  }}
+                                >
+                                  <AiTwotoneDelete size={24} />
+                                </span>
+                              ) : null}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+                <div className="text-2xl flex justify-center items-center p-4">
+                  {loading ? "Đang tải..." : null}
+                </div>
               </div>
             </div>
+            {editMode == "true" ? (
+              <div className="mt-4">
+                <p className="ml-1 text-lg">Ghi chú</p>
+                <textarea
+                  {...register("Note", { required: false })}
+                  className={`border-2 rounded-md p-4 text-xl w-full outline-none bg-white font-light transition border-slate-300 h-40 focus:border-orange-500`}
+                  placeholder="Ghi chú"
+                  id="Note"
+                />
+              </div>
+            ) : (
+              <div className="mt-4">
+                <p className="ml-1 text-lg">Ghi chú</p>
+                <div className="border bg-[#e1e1e14a] border-slate-300 w-full p-2 rounded-md italic text-lg">
+                  {detailClassData?.note}
+                </div>
+              </div>
+            )}
           </div>
-
-          <div className="overflow-y-auto max-h-[590px]">
-            <table className="w-full text-sm text-left rtl:text-right text-black dark:text-gray-400 max-h-[600px] ">
-              <thead className="text-md text-white text-lg font-bold uppercase bg-main dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    STT
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Hình
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Mã trẻ
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Họ tên
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    {t("dateOfBirth")}
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Người giám hộ
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    {t("phoneNumber")}
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Thao tác
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {detailClassData?.students
-                  ?.filter(searchChildInClass)
-                  .map((dataStudent: any, index: any) => {
-                    return (
-                      <tr
-                        key={dataStudent.id}
-                        // onClick={() => {
-                        //   router.push(`/admin/detailChild/${dataStudent.id}`);
-                        // }}
-                        className="odd:bg-white text-lg cursor-pointer odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
-                      >
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {index + 1}
-                        </th>
-                        <td className="px-6 py-4">
-                          <DefaultImage
-                            img={getImageUrl(dataStudent.avatar)}
-                            className={`w-10 h-10 rounded-full cursor-pointer`}
-                            custom="w-[50px] h-[50px]"
-                            fallback="/avatar.webp"
-                          />
-                        </td>
-                        <td className="px-6 py-4" title="Mã trẻ">
-                          {dataStudent.id}
-                        </td>
-                        <td className="px-6 py-4" title="Họ tên trẻ">
-                          {dataStudent.fullName}
-                        </td>
-                        <td className="px-6 py-4" title="Sinh nhật trẻ">
-                          {dataStudent.birthDay}
-                        </td>
-                        <td className="px-6 py-4" title="Họ tên người giám hộ">
-                          {dataStudent.parentName}
-                        </td>
-                        <td
-                          className="px-6 py-4"
-                          title="Số điện thoại người giám hộ"
-                        >
-                          {dataStudent.phone}
-                        </td>
-                        <td className="md:px-6 md:py-4 hover flex">
-                          <span
-                            className="hover:text-main mx-1 "
-                            title="Chỉnh sửa"
-                            onClick={() => {
-                              setDataStudentDetail({
-                                avatar: dataStudent.avatar,
-                                id: dataStudent.id,
-                              });
-                              setCloseDialog(true);
-                            }}
-                          >
-                            <MdEditNote size={24} />
-                          </span>
-                          <span
-                            className="hover:text-main mx-1 "
-                            title="Chi tiết"
-                            onClick={() => {
-                              router.push(
-                                `/admin/detailChild/${dataStudent.id}`
-                              );
-                            }}
-                          >
-                            <GoInfo size={24} />
-                          </span>
-                          {editMode == "true" ? (
-                            <span
-                              className="hover:text-main mx-1 "
-                              onClick={() => {
-                                setChildID(dataStudent.id);
-                                setOpenDialog(true);
-                              }}
-                            >
-                              <AiTwotoneDelete size={24} />
-                            </span>
-                          ) : null}
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
-            <div className="text-2xl flex justify-center items-center p-4">
-              {loading ? "Đang tải..." : null}
-            </div>
-          </div>
-        </div>
-        {editMode == "true" ? (
-          <div className="mt-4">
-            <p className="ml-1 text-lg">Ghi chú</p>
-            <textarea
-              {...register("Note", { required: false })}
-              className={`border-2 rounded-md p-4 text-xl w-full outline-none bg-white font-light transition border-slate-300 h-40 focus:border-orange-500`}
-              placeholder="Ghi chú"
-              id="Note"
-            />
-          </div>
-        ) : (
-          <div className="mt-4">
-            <p className="ml-1 text-lg">Ghi chú</p>
-            <div className="border bg-[#e1e1e14a] border-slate-300 w-full p-2 rounded-md italic text-lg">
-              {detailClassData?.note}
-            </div>
-          </div>
-        )}
-      </div>
+        </>
+      )}
     </>
   );
 };

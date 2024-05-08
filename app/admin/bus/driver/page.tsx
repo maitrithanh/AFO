@@ -64,23 +64,23 @@ const DriverPage = () => {
     setCloseDialogEditEvent((curr) => !curr);
   };
 
-  const values = {
-    FullName: detailDriver?.fullName,
-    NumberID: detailDriver?.numberID,
-    Avatar: detailDriver?.avatar,
-    PhoneNumber: detailDriver?.phoneNumber,
-    BirthDay: toYMD(detailDriver?.birthDay),
-    License: detailDriver?.license,
-    Note: detailDriver?.note,
-  };
-
-  console.log(detailDriver);
+  const values = editMode
+    ? {
+        FullName: detailDriver?.fullName,
+        NumberID: detailDriver?.numberID,
+        Avatar: detailDriver?.avatar,
+        PhoneNumber: detailDriver?.phoneNumber,
+        BirthDay: toYMD(detailDriver?.birthDay),
+        License: detailDriver?.license,
+        Note: detailDriver?.note,
+      }
+    : {};
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful, isSubmitted },
   } = useForm<FieldValues>({
     defaultValues: {
       FullName: "",
@@ -95,7 +95,7 @@ const DriverPage = () => {
   });
 
   useEffect(() => {
-    if (isSubmitSuccessful || editMode == false) {
+    if (isSubmitSuccessful || editMode == false || isSubmitted) {
       reset({
         FullName: "",
         NumberID: "",
@@ -105,8 +105,9 @@ const DriverPage = () => {
         License: "",
         Note: "",
       });
+      setCurrAvatar(null);
     }
-  }, [isSubmitSuccessful, reset, editMode]);
+  }, [isSubmitSuccessful, reset, editMode, isSubmitted]);
 
   const handleRefresh = () => {
     setRefresh((curr) => !curr);
@@ -195,7 +196,7 @@ const DriverPage = () => {
                 <img
                   src={URL.createObjectURL(currAvatar)}
                   alt="Current Avatar"
-                  className="w-[60px] h-[60px] rounded-full"
+                  className="w-[60px] h-[60px] rounded-full scale-125 mx-2"
                 />
               )}
             </div>
@@ -284,12 +285,12 @@ const DriverPage = () => {
         </div>
         <div className="grid gap-4 my-4">
           <div className="flex relative items-center border-2 border-dashed rounded-md h-fit p-2">
-            <div className=" flex items-center p-2 ">
+            <div className=" flex items-center p-2 scale-125 mx-2">
               {!currAvatar && (
                 <DefaultImage
                   img={getImageUrl(detailDriver?.avatar)}
                   fallback="/avatar.webp"
-                  className="w-[60px] h-[60px] rounded-full"
+                  className="w-[120px] h-[120px] rounded-full"
                 />
               )}
 
@@ -297,7 +298,7 @@ const DriverPage = () => {
                 <img
                   src={URL.createObjectURL(currAvatar)}
                   alt="Current Avatar"
-                  className="w-[60px] h-[60px] rounded-full"
+                  className="w-[120px] h-[120px] rounded-full"
                 />
               )}
             </div>

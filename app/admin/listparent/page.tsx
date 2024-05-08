@@ -33,11 +33,11 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
   {
     title: "Hình",
     getData: (x) => (
-      <div className="w-[40px] h-[40px]">
+      <div className="scale-125 flex">
         <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
       </div>
     ),
-    width: "60",
+    width: "80",
   },
   {
     title: "Họ tên",

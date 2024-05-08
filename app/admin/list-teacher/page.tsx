@@ -35,11 +35,11 @@ const Columns: TableTemplateColumn<any>[] = [
   {
     title: "Hình",
     getData: (x) => (
-      <div className="w-[40px] h-[40px]">
+      <div className="scale-125 flex">
         <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
       </div>
     ),
-    width: "60",
+    width: "80",
   },
   {
     title: "Họ tên",
@@ -197,13 +197,22 @@ const ListTeacherPage = () => {
       .then((response) => {
         if (!(response?.data?.data == "Vui lòng kiểm tra mã giáo viên")) {
           Swal.fire({
-            title: "Xoá thành công!",
-            text: "",
+            title: "Xoá thành công",
             icon: "success",
+            confirmButtonText: "Đóng",
+            confirmButtonColor: "#F8853E",
+            showConfirmButton: false,
+            timer: 1500,
           });
-          toast.success(`Xoá thành công`);
+          // toast.success(`Xoá thành công`);
         } else {
-          toast.error("Giáo viên này đã từng dạy không thể xoá");
+          Swal.fire({
+            title: "Giáo viên này đã từng dạy không thể xoá",
+            icon: "error",
+            confirmButtonText: "Đóng",
+            confirmButtonColor: "#F8853E",
+          });
+          // toast.error("Giáo viên này đã từng dạy không thể xoá");
         }
         handleRefresh();
       })
@@ -240,15 +249,34 @@ const ListTeacherPage = () => {
     callApiWithToken()
       .post(`Auth/locked?parentID=${idUserUser}`)
       .then((response) => {
-        toast.success(
-          `${
+        Swal.fire({
+          title: `${
             statusAccountUser ? "Đã mở khoá tài khoản" : "Đã khoá tài khoản"
-          } ${nameAccountUser}`
-        );
+          } ${nameAccountUser}`,
+          icon: "success",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // toast.success(
+        //   `${
+        //     statusAccountUser ? "Đã mở khoá tài khoản" : "Đã khoá tài khoản"
+        //   } ${nameAccountUser}`
+        // );
         handleRefresh();
       })
       .catch((error) => {
-        toast.error("Có lỗi xảy ra!");
+        Swal.fire({
+          title: "Có lỗi xảy ra!",
+          text: error,
+          icon: "error",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          // showConfirmButton: false,
+          // timer: 1000,
+        });
+        // toast.error("Có lỗi xảy ra!");
       });
   };
   //Khôi phục tài khoản
@@ -256,11 +284,27 @@ const ListTeacherPage = () => {
     callApiWithToken()
       .put(`Auth/forgotPass?phoneNumber=${phoneNumberUser}`)
       .then((response) => {
-        toast.success(`Đã khôi phục mật khẩu tài khoản ${nameAccountUser}`);
+        Swal.fire({
+          title: `Đã khôi phục mật khẩu tài khoản ${nameAccountUser}`,
+          icon: "success",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // toast.success(`Đã khôi phục mật khẩu tài khoản ${nameAccountUser}`);
         handleRefresh();
       })
       .catch((error) => {
-        toast.error("Có lỗi xảy ra!");
+        Swal.fire({
+          title: "Có lỗi xảy ra!",
+          text: error,
+          icon: "error",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          // showConfirmButton: false,
+          // timer: 1000,
+        });
       });
   };
 

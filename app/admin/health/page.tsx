@@ -28,11 +28,20 @@ const Columns: TableTemplateColumn[] = [
 
 const HealthPage = () => {
   const [closeDialogAddEvent, setCloseDialogAddEvent] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
-  const { data: healthEvent } = useFetch("Healthy/getListEvent");
+  const { data: healthEvent } = useFetch("Healthy/getListEvent", refresh);
+
+  const handleRefresh = () => {
+    setRefresh(true);
+    setTimeout(() => {
+      setRefresh(false);
+    }, 1000);
+  };
 
   const onClose = () => {
     setCloseDialogAddEvent((curr) => !curr);
+    handleRefresh();
   };
 
   const dialog = (
@@ -96,8 +105,10 @@ const HealthPage = () => {
         </>
       }
       dateRange={{
-        name: 'Ngày khám: ',
-        filter: (obj, from, to) => (from == '' || toYMD(obj.examDate) >= from) && (to == '' || toYMD(obj.examDate) <= to)
+        name: "Ngày khám: ",
+        filter: (obj, from, to) =>
+          (from == "" || toYMD(obj.examDate) >= from) &&
+          (to == "" || toYMD(obj.examDate) <= to),
       }}
     />
   );

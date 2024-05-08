@@ -29,6 +29,11 @@ const nextConfig = {
               hostname: 'localhost',
               pathname: '**'
             },
+            {
+              protocol: 'http',
+              hostname: 'localhost',
+              pathname: '**'
+            },
         ]
     },
     async headers() {

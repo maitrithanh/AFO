@@ -5,7 +5,7 @@ const Loading = () => {
   return (
     <div className="bg-[#0000007d] w-full h-full left-0 top-0 fixed z-40">
       <div
-        className="h-screen flex items-center justify-center bg-[#8ef3ff]"
+        className="h-screen flex items-center justify-center bg-main"
         role="status"
       >
         {/* <svg
@@ -24,7 +24,28 @@ const Loading = () => {
             fill="currentFill"
           />
         </svg> */}
-        <Image src={"/loading.gif"} width={400} height={500} alt="loading" />
+        {/* <Image src={"/loading.gif"} width={400} height={500} alt="loading" /> bg-[#8ef3ff]*/}
+        <div>
+          <div className="">
+            <Image
+              className="relative"
+              src={"/load.gif"}
+              width={400}
+              height={100}
+              alt="loading"
+            />
+            <Image
+              className="absolute bottom-64"
+              src={`/progressbar.gif`}
+              width={400}
+              height={100}
+              alt="loading"
+            />
+          </div>
+          <p className="w-full flex mt-8 justify-center items-center text-xl font-bold text-white">
+            Đang tải...
+          </p>
+        </div>
       </div>
     </div>
   );

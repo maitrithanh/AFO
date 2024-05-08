@@ -97,6 +97,7 @@ const DetailChildrenPage = ({ params }: any) => {
       <div>
         {child && (
           <ChildrenPutForm
+            editMode
             data={child}
             setData={(x) => setChild(x)}
             editable={editChild}

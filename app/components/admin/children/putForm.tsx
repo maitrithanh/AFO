@@ -21,9 +21,10 @@ interface Props {
   data?: DetailChildReq;
   setData: (data: DetailChildReq) => void;
   editable: boolean;
+  editMode?: boolean;
 }
 
-const ChildrenPutForm = ({ data, setData, editable }: Props) => {
+const ChildrenPutForm = ({ data, setData, editable, editMode }: Props) => {
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -31,13 +32,16 @@ const ChildrenPutForm = ({ data, setData, editable }: Props) => {
     setData({ ...data, [name]: value });
   };
 
-  const setAddress = (addr: string) => { 
+  const setAddress = (addr: string) => {
     setData({ ...data, encodedAddress: addr });
-  }
+  };
 
   const decodeAddress = (encoded: string): string => {
-    return encoded.split('&').filter(x => x.length).join(', ');
-  }
+    return encoded
+      .split("&")
+      .filter((x) => x.length)
+      .join(", ");
+  };
 
   return (
     <>
@@ -47,7 +51,9 @@ const ChildrenPutForm = ({ data, setData, editable }: Props) => {
             <div
               className={`flex justify-center items-center mb-4 ${font_asap_condensed.className}`}
             >
-              <h1 className="text-3xl uppercase flex items-center">Thêm trẻ</h1>
+              <h1 className="text-3xl uppercase flex items-center">
+                {editMode ? "Chỉnh sửa thông tin" : "Thêm"} trẻ
+              </h1>
             </div>
             <h5 className="text-2xl uppercase">Thông tin trẻ</h5>
 
@@ -187,10 +193,12 @@ const ChildrenPutForm = ({ data, setData, editable }: Props) => {
                     Địa chỉ
                     <span className={`text-rose-600 `}>*</span>
                   </label>
-                  <SelectAddress setAddress={setAddress} address={data?.encodedAddress ?? ''} disable={!editable} />
-                  <p>
-                    {decodeAddress(data?.encodedAddress ?? '')}
-                  </p>
+                  <SelectAddress
+                    setAddress={setAddress}
+                    address={data?.encodedAddress ?? ""}
+                    disable={!editable}
+                  />
+                  <p>{decodeAddress(data?.encodedAddress ?? "")}</p>
                 </div>
                 {/* /test */}
 
