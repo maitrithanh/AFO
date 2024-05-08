@@ -7,6 +7,7 @@ import { Baloo_Bhaijaan_2 } from "next/font/google";
 import GlobalContextProvider from "./contexts/GlobalContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Asap_Condensed } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const font_asap_condensed = Asap_Condensed({
   weight: "400", // if single weight, otherwise you use array like [400, 500, 700],
@@ -40,6 +41,7 @@ export default function RootLayout({
           <Provider>{children}</Provider>
         </GlobalContextProvider>
       </body>
+      <GoogleAnalytics gaId="G-554L9CP7D0" />
     </html>
   );
 }
