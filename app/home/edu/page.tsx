@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 const EduPage = () => {
   const { t } = useTranslation();
   return (
-    <div className="relative h-screen grid xl:grid-cols-2 grid-cols-1 bg-[url(/banner-homepage.webp)] bg-no-repeat bg-cover">
+    <div className="relative min-h-screen grid xl:grid-cols-2 grid-cols-1 bg-[url(/banner-homepage.webp)] bg-no-repeat bg-cover">
       <div className="md:mx-24 mx-8">
         <div className="h-full flex md:items-center items-start mt-20 xl:mt-0">
           <div>

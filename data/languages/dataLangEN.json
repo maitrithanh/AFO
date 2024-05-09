@@ -93,7 +93,7 @@
     "suggestions": "Suggestions",
     "bannerTitle": "Web App Digital Conversion Of Preschools",
     "bannerLogan": "Bringing value to the community, contributing to socio-economic development.",
-    "exploreNow" : "Explore now",
+    "enrollNow" : "Enroll Now",
     "atAFO": "At AFO",
     "rapidProgress": "Rapid progress",
     "rapidProgressDes": "Children will experience hands-on and learning activities every day.",
@@ -152,5 +152,6 @@
     "This month there are": "This month there are",
     "new": "new",
     "School year": "School year",
-    "Or": "Or"
+    "Or": "Or",
+    "Enroll": "Enroll"
 }

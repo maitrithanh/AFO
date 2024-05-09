@@ -93,7 +93,7 @@
     "suggestions": "Gợi ý",
     "bannerTitle": "Web App Chuyển Đổi Số Trường Mầm Non",
     "bannerLogan": "Mang đến giá trị cho cộng đồng, góp phần phát triển kinh tế - xã hội.",
-    "exploreNow" : "Khám phá ngay",
+    "enrollNow" : "Đăng ký trực tuyến",
     "atAFO": "Tại AFO",
     "rapidProgress": "Tiến bộ nhanh chóng",
     "rapidProgressDes": "Các bé sẽ được trải nghiệm các hoạt động thực tế và việc học mỗi ngày.",
@@ -153,5 +153,7 @@
     "This month there are": "Tháng này có",
     "new": "mới",
     "School year": "Năm học",
-    "Or": "Hoặc"
+    "Or": "Hoặc",
+    "Enroll": "Tuyển sinh"
+
 }

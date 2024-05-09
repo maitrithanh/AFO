@@ -28,11 +28,11 @@ const Banner = () => {
               </button>
               <button
                 onClick={() => {
-                  router.push("/login");
+                  router.push("/home/enroll");
                 }}
                 className="transition-all duration-500  m-2 border-main hover:scale-105 border-[2px] p-4 rounded-full text-main font-bold uppercase flex items-center justify-center"
               >
-                {t("exploreNow")}
+                {t("enrollNow")}
                 <span className="mx-2 transition-all duration-500">
                   <SiAzuredataexplorer />
                 </span>

@@ -13,7 +13,7 @@ const NewsPage = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="h-full mt-14">
+    <div className="min-h-full mt-14">
       <div className=" w-full flex justify-center pt-8">
         <h1 className="text-3xl font-bold uppercase text-main">
           {t("news")} AFO

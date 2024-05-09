@@ -16,6 +16,12 @@ export const  menu = [
         img: "analysis.webp"
     },
     {
+        text: 'Enroll',
+        icon: LuLayoutDashboard,
+        pathname: '/admin/enroll',
+        img: "enroll.webp"
+    },
+    {
         text: 'accountManagement',
         icon: IoAnalyticsSharp,
         pathname: '#',
