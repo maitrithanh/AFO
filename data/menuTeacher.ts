@@ -44,7 +44,7 @@ export const menuTeacher = [
     {
       name: "pickup",
       image: "pickupChild.webp",
-      path: "/parent/pickup",
+      path: "/teacher/pickup",
       color: "#fef7ec"
     },
     {

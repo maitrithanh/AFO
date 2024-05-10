@@ -148,7 +148,7 @@ user-select: none!important;
 }
 
 .titleNews {
-  height: 40px;
+  height: fit-content;
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;

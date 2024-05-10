@@ -53,12 +53,10 @@ const Columns: TableTemplateColumn[] = [
     getData: (x) =>
       x.status ? (
         <span className="bg-green-500 px-2 text-white rounded-full">
-          Đã liên hệ
+          Đã duyệt
         </span>
       ) : (
-        <span className="bg-main px-2 text-white rounded-full">
-          Chờ liên hệ
-        </span>
+        <span className="bg-main px-2 text-white rounded-full">Chờ duyệt</span>
       ),
   },
 ];

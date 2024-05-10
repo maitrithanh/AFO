@@ -335,7 +335,7 @@ const AttendancePage = () => {
                             })}
                             type="checkbox"
                             defaultChecked={dataStudent.started}
-                            className="scale-150"
+                            className="scale-150 w-4 h-4"
                           />
                         </td>
                         <td className="px-6 py-4">
@@ -346,7 +346,7 @@ const AttendancePage = () => {
                             })}
                             type="checkbox"
                             defaultChecked={dataStudent.ended}
-                            className="scale-150"
+                            className="scale-150 w-4 h-4"
                           />
                         </td>
                         <td className="px-6 py-4">

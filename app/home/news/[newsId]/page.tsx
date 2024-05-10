@@ -14,24 +14,35 @@ const DetailNewsPage = (params: any) => {
   return (
     <div className="h-full mt-14">
       <div className="flex items-center w-full justify-center pt-8">
-        <div className="w-2/3 px-4">
-          <BackAction />
-          <h1 className="text-3xl font-bold uppercase text-main">
-            {detailNews?.title}
-          </h1>
-          <div>
-            <img
-              src={getImageUrl(detailNews?.image)}
-              alt={detailNews?.title}
-              className="object-cover w-full h-80"
-            />
+        <div className="w-full ">
+          <div className="px-4">
+            <BackAction />
           </div>
-          <p
-            className="text-lg my-4 text-justify"
-            dangerouslySetInnerHTML={{
-              __html: detailNews?.content,
-            }}
-          ></p>
+
+          <div>
+            <div className="relative">
+              <div className="absolute flex justify-center items-center w-full h-full bg-[#00000095]">
+                <h1 className="text-4xl font-bold uppercase text-white">
+                  {detailNews?.title}
+                </h1>
+              </div>
+              <img
+                src={getImageUrl(detailNews?.image)}
+                alt={detailNews?.title}
+                className="object-cover w-full h-40"
+              />
+            </div>
+            <div className="w-full flex items-center justify-center">
+              <div className="w-2/3">
+                <p
+                  className="text-lg my-4 text-justify"
+                  dangerouslySetInnerHTML={{
+                    __html: detailNews?.content,
+                  }}
+                ></p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

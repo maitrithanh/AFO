@@ -51,7 +51,7 @@ const TraCuuTuyenSinhPage = () => {
                         item.status ? "bg-green-500" : "bg-main"
                       } text-white px-2 rounded-full font-thin text-lg`}
                     >
-                      {item.status ? "Đã liên hệ" : "Chưa liên hệ"}
+                      {item.status ? "Đã duyệt" : "Chưa duyệt"}
                     </span>
                   </p>
                 </div>
