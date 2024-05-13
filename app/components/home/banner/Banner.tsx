@@ -50,7 +50,7 @@ const Banner = () => {
             alt="banner"
             width={800}
             height={640}
-            className="transition-all duration-5000 "
+            className="transition-all duration-5000"
           />
           <Image
             src={"/plane.gif"}
@@ -63,9 +63,16 @@ const Banner = () => {
       </div>
       <Link
         href={"#atAFO"}
-        className="absolute flex justify-center items-center w-full bottom-8 text-main animate-pulse"
+        className="absolute flex justify-center items-center w-full bottom-8 text-main animate-bounceLoop"
       >
-        <FaLongArrowAltDown size={34} />
+        <Image
+          src={"/icons/arrowd.webp"}
+          width={40}
+          height={40}
+          alt="arrow"
+          className="rotate-90 "
+        />
+        {/* <FaLongArrowAltDown size={34} /> */}
       </Link>
     </div>
   );

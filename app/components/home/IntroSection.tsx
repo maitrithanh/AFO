@@ -1,13 +1,44 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const IntroSection = () => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    const atAFO = document.getElementById("introSec1");
+    const atAFO2 = document.getElementById("introSec2");
+
+    const isIntoView = (element: any) => {
+      const rect = element.getBoundingClientRect();
+      return rect.bottom <= window.innerHeight;
+    };
+    isIntoView(atAFO);
+    isIntoView(atAFO2);
+    window.addEventListener("scroll", () => {
+      if (isIntoView(atAFO)) {
+        atAFO?.classList.add("translate-y-0");
+        atAFO?.classList.add("opacity-100");
+        atAFO?.classList.add("visible");
+        atAFO?.classList.remove("translate-y-14");
+        atAFO?.classList.remove("invisible");
+        atAFO?.classList.add("opacity-0");
+      }
+      if (isIntoView(atAFO2)) {
+        atAFO2?.classList.add("translate-y-0");
+        atAFO2?.classList.add("opacity-100");
+        atAFO2?.classList.add("visible");
+        atAFO2?.classList.remove("translate-y-14");
+        atAFO2?.classList.remove("invisible");
+        atAFO2?.classList.add("opacity-0");
+      }
+    });
+  }, []);
+
   return (
     <div className="my-2">
-      <div className="relative flex justify-center w-full py-8 ">
+      <div className="relative flex justify-center w-full py-8">
         <Image
           src={"/icons/cloud.webp"}
           width={200}
@@ -80,11 +111,12 @@ const IntroSection = () => {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-1 container gap-4 justify-center">
+      <div
+        className="grid md:grid-cols-3 grid-cols-1 container gap-4 justify-center invisible translate-y-14 opacity-0 transition-all duration-1000"
+        id="introSec1"
+      >
         <div
-          style={{
-            clipPath: "polygon(0 0, 100% 5%, 100% 100%, 0% 100%)",
-          }}
+          style={{}}
           className="p-[15px] pt-[30px] rounded-sm max-w-[370px] bg-[#ec1460cd] backdrop-blur-xl"
         >
           <h4 className="text-2xl text-white font-bold">
@@ -105,7 +137,6 @@ const IntroSection = () => {
         <div
           style={{
             background: "#2e68a0",
-            clipPath: "polygon(0 0, 100% 5%, 100% 100%, 0% 100%)",
           }}
           className="p-[15px] pt-[30px] rounded-sm max-w-[370px]"
         >
@@ -123,7 +154,6 @@ const IntroSection = () => {
         <div
           style={{
             background: "#5f2f99",
-            clipPath: "polygon(0 0, 100% 5%, 100% 100%, 0% 100%)",
           }}
           className="p-[15px] pt-[30px] rounded-sm max-w-[370px] relative"
         >
@@ -140,11 +170,13 @@ const IntroSection = () => {
         </div>
       </div>
       {/* section 2 */}
-      <div className="grid md:grid-cols-3 grid-cols-1 container gap-4 justify-center my-4">
+      <div
+        className="grid md:grid-cols-3 grid-cols-1 container gap-4 justify-center my-4 invisible translate-y-14 opacity-0 transition-all duration-1000"
+        id="introSec2"
+      >
         <div
           style={{
             background: "#5f2f99",
-            clipPath: "polygon(0 5%, 100% 0, 100% 100%, 0% 100%)",
           }}
           className="p-[15px] md:ml-8 ml-0 pt-[30px] rounded-sm max-w-[370px]"
         >
@@ -161,7 +193,6 @@ const IntroSection = () => {
         <div
           style={{
             background: "#2e68a0",
-            clipPath: "polygon(0 5%, 100% 0, 100% 100%, 0% 100%)",
           }}
           className="p-[15px] md:ml-8 ml-0 pt-[30px] rounded-sm max-w-[370px]"
         >
@@ -182,7 +213,6 @@ const IntroSection = () => {
         <div
           style={{
             background: "#ec1460",
-            clipPath: "polygon(0 5%, 100% 0, 100% 100%, 0% 100%)",
           }}
           className="p-[15px] md:ml-8 ml-0 pt-[30px] rounded-sm max-w-[370px]"
         >

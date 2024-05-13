@@ -120,7 +120,7 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
       className="fixed z-50 top-0 left-0 w-full h-full flex items-center bg-black bg-opacity-40 justify-center"
     >
       <form
-        className="space-y-6 p-10 bg-white md:rounded-lg h-[90vh] w-[640px] mx-2 overflow-auto"
+        className="space-y-6 p-10 bg-white md:rounded-lg h-fit w-[640px] mx-2 overflow-auto"
         action="#"
         method="POST"
       >
@@ -132,9 +132,11 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
             : "???"}
         </h3>
 
-        <div className="mt-2 border-slate-300 border-2 rounded-md p-4">
-          <div className="flex items-center mb-4">
-            <span className="mr-4 text-slate-500">Avatar: </span>
+        <div className="mt-2 border-slate-300 border-2 rounded-md p-4 flex items-center">
+          <div className="flex items-center">
+            <span className="mr-4 text-slate-500 text-lg flex items-center">
+              Hình:
+            </span>
             {!currAvatar && defaultData?.avatar && mode === "edt" && (
               <img
                 src={getImageUrl(defaultData.avatar)}
@@ -147,17 +149,25 @@ const PutPickupDialog = ({ onSuccess, onClose, mode, defaultData }: Prop) => {
               <img
                 src={URL.createObjectURL(currAvatar)}
                 alt="Current Avatar"
-                className="w-14 h-14 rounded-full"
+                className="w-14 h-14 rounded-full mr-2"
               />
             )}
           </div>
 
           <input
             id={"avatar"}
+            // hidden
             {...register("avatar", { required: mode === "add" })}
             type={"file"}
+            className="ml-2"
             onChange={(e) => setCurrAvatar(e.target.files![0])}
           />
+          {/* <label
+            htmlFor="avatar"
+            className=" bg-main p-1 px-2 text-white rounded-full cursor-pointer"
+          >
+            Tải hình lên
+          </label> */}
         </div>
 
         <div>

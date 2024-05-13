@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import ChangePwDialog from "../profile/changePwDialog";
 
 interface MenuSectionProps {
   dataMenu: any;
@@ -11,13 +12,24 @@ interface MenuSectionProps {
 const MenuSection: React.FC<MenuSectionProps> = ({ dataMenu }) => {
   const router = useRouter();
   const { t } = useTranslation();
+  const [openChangePassword, setOpenChangePassword] = useState(false);
+
   return (
     <div className="mt-14 grid md:grid-cols-4 grid-cols-3 gap-6 h-full">
+      {openChangePassword && (
+        <ChangePwDialog
+          onClose={() => {
+            setOpenChangePassword(false);
+          }}
+        />
+      )}
       {dataMenu.map((item: any) => {
         return (
           <div
             onClick={() => {
-              router.push(`${item.path}`);
+              item.onclick == "changPass"
+                ? setOpenChangePassword(true)
+                : router.push(`${item.path}`);
             }}
             key={item.name}
             style={{ backgroundColor: item.color }}

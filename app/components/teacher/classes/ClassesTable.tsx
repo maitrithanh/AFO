@@ -49,13 +49,18 @@ const ClassesTable = () => {
 
   const Columns: TableTemplateColumn[] = [
     {
+      title: "Mã trẻ",
+      getData: (x) => x.id,
+      width: "180",
+    },
+    {
       title: "Hình",
       getData: (x) => (
         <div className=" scale-125 w-[50px] h-[50px]">
           <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
         </div>
       ),
-      width: "60",
+      width: "80",
     },
     {
       title: "Họ tên",

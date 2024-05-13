@@ -29,7 +29,7 @@ const Sidebar = () => {
         setExpanded(true);
       }
     });
-  });
+  }, []);
 
   //handle expanded for mobile when click auto close menu
   const handleExpanedMobile = () => {

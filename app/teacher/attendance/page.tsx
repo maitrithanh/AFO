@@ -21,6 +21,18 @@ import {
 import GetClass from "@/utils/classes/getClass";
 import { IoCalendarOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
+import { PiUserListDuotone } from "react-icons/pi";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const AttendancePage = () => {
   const { t } = useTranslation();
@@ -157,6 +169,7 @@ const AttendancePage = () => {
         )
         .then((response) => {
           setRefresh(true);
+          handleRefresh();
         })
         .catch((error) => {
           toast.error("Có lỗi");
@@ -164,10 +177,17 @@ const AttendancePage = () => {
     }
   };
 
-  setTimeout(() => {
-    setRefresh(false);
-  }, 2000);
+  const handleRefresh = () => {
+    setTimeout(() => {
+      setRefresh(false);
+    }, 2000);
+  };
+
   const [ojbData, setOjbData] = useState([] as object[]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [childIDChoose, setChildIDChoose] = useState("");
+
+  const { data: dataPickup } = useFetch(`/Child/getPickups/${childIDChoose}`);
 
   return (
     <>
@@ -180,6 +200,102 @@ const AttendancePage = () => {
       ) : (
         ""
       )}
+
+      <AlertDialog
+        onOpenChange={() => {
+          setOpenDialog((curr) => !curr);
+        }}
+        open={openDialog}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl">
+              Danh sách đưa đón
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-lg text-black">
+              <div>
+                <ul
+                  role="list"
+                  className="divide-y divide-gray max-h-[400px] overflow-auto"
+                >
+                  {dataPickup.length == 0 ? "Không có dữ liệu" : null}
+                  {dataPickup &&
+                    dataPickup.map((x: any) => (
+                      <>
+                        <li
+                          className="flex md:gap-x-6 py-5 group w-full"
+                          key={x.id}
+                        >
+                          <div className="md:w-5/12 flex min-w-0 gap-x-2">
+                            <DefaultImage
+                              key={x?.avatar}
+                              img={getImageUrl(x?.avatar)}
+                              fallback="/avatar.webp"
+                              className={`h-24 w-24 flex-none rounded-full bg-gray-50`}
+                              custom="w-[60px] h-[60px]"
+                            />
+                            {/* <img className="h-24 w-24 flex-none rounded-full bg-gray-50" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" /> */}
+                            <div className="min-w-0 flex-auto flex flex-col justify-evenly">
+                              <p className="text-xl font-semibold leading-6 text-gray-900">
+                                {x.fullName}
+                              </p>
+                              <p className="mt-1 truncate text-l leading-5 text-gray-500">
+                                {x.phoneNumber}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="md:w-6/12 hidden shrink-0 sm:flex sm:flex-col sm:items-end justify-evenly">
+                            <p className="text-xl leading-6 text-gray-900">
+                              {t("address")}: {x.address}
+                            </p>
+                            <div className="mt-1 flex items-center gap-x-1.5">
+                              {x.status ? (
+                                <>
+                                  <div
+                                    className="cursor-pointer flex-none rounded-full bg-emerald-500/20 p-1"
+                                    title={t("cancel")}
+                                  >
+                                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+                                  </div>
+                                  <p className="text-l leading-5 text-gray-500">
+                                    {t("allowedToPickUp")}
+                                  </p>
+                                </>
+                              ) : (
+                                <>
+                                  <div
+                                    className="cursor-pointer flex-none rounded-full bg-red-500/20 p-1"
+                                    title={t("allow")}
+                                  >
+                                    <div className="h-1.5 w-1.5 rounded-full bg-red-500"></div>
+                                  </div>
+                                  <p className="text-l leading-5 text-gray-500">
+                                    <del> {t("allowedToPickUp")}</del>
+                                  </p>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </li>
+                      </>
+                    ))}
+                </ul>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Đóng</AlertDialogCancel>
+            {/* <AlertDialogAction
+              className="bg-green-500 hover:bg-green-900"
+              onClick={() => {}}
+            >
+              Xác nhận duyệt
+            </AlertDialogAction> */}
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="h-[88vh] bg-white md:w-full m-auto rounded-xl">
         <div className="relative overflow-x-auto shadow-sm bg-white pt-2 sm:rounded-lg">
           <div className="p-4">
@@ -299,7 +415,7 @@ const AttendancePage = () => {
                   <th scope="col" className="px-6 py-3">
                     Ghi chú
                   </th>
-                  {/* <th scope="col" className="px-6 py-3"></th> */}
+                  <th scope="col" className="px-6 py-3"></th>
                 </tr>
               </thead>
               <tbody>
@@ -376,8 +492,8 @@ const AttendancePage = () => {
                             defaultValue={dataStudent.note}
                           />
                         </td>
-                        {/* <td
-                          className="md:px-6 md:py-4 hover hover:text-main"
+                        <td
+                          className="md:px-6 md:py-4 hover hover:text-main cursor-pointer"
                           // onClick={() => {
                           //   setDataStudentDetail({
                           //     avatar: dataStudent.avatar,
@@ -385,9 +501,18 @@ const AttendancePage = () => {
                           //   });
                           //   setCloseDialog(true);
                           // }}
+                          onClick={() => {
+                            setOpenDialog((curr) => !curr);
+                            setChildIDChoose(dataStudent.childId);
+                            handleRefresh();
+                          }}
                         >
-                          <CiCircleMore size={24} />
-                        </td> */}
+                          <span className="flex justify-center items-center gap-2">
+                            <PiUserListDuotone />
+                            Danh sách đón
+                          </span>
+                          {/* <CiCircleMore size={24} /> */}
+                        </td>
                       </tr>
                     );
                   })}

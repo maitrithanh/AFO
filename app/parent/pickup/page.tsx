@@ -12,6 +12,7 @@ import { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import { PiCloudWarningDuotone } from "react-icons/pi";
 
 const PickUpPage = () => {
   const [openDialog, SetOpenDialog] = useState("");
@@ -88,7 +89,13 @@ const PickUpPage = () => {
       >
         + {t("addNew")}
       </button>
-
+      <div
+        className={`w-full flex justify-center items-center text-2xl p-8 ${
+          pickups?.length == 0 ? "block" : "hidden"
+        }`}
+      >
+        <PiCloudWarningDuotone /> Không có dữ liệu
+      </div>
       <ul role="list" className="divide-y divide-gray">
         {pickups &&
           pickups.map((x) => (

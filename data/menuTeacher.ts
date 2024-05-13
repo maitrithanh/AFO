@@ -41,12 +41,7 @@ export const menuTeacher = [
       path: "/teacher/classes",
       color: "#fff0eb"
     },
-    {
-      name: "pickup",
-      image: "pickupChild.webp",
-      path: "/teacher/pickup",
-      color: "#fef7ec"
-    },
+    
     {
       name: "learningOutcomes",
       image: "learningOutcomes.webp",
@@ -58,6 +53,13 @@ export const menuTeacher = [
       image: "menu.webp",
       path: "/teacher/menu",
       color: "#e3f0fd"
+    },
+     {
+      name: "changePass",
+      image: "reset-password.webp",
+      path: "#",
+      onclick: "changPass",
+      color: "#fef7ec"
     },
     {
       name: "support",
