@@ -218,7 +218,7 @@ const AttendancePage = () => {
                   role="list"
                   className="divide-y divide-gray max-h-[400px] overflow-auto"
                 >
-                  {dataPickup.length == 0 ? "Không có dữ liệu" : null}
+                  {dataPickup?.length == 0 ? "Không có dữ liệu" : null}
                   {dataPickup &&
                     dataPickup.map((x: any) => (
                       <>
