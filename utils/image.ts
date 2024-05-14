@@ -1,5 +1,6 @@
 import { baseURL } from "./callApi"
 
 export const getImageUrl = (filename: string = '') => { 
-    return `${baseURL}File/GetFile/${filename}`
+    //tạm thời k gọi ảnh từ server, demo mới mở ra
+    return `${baseURL}File/GetFile/hehehe${filename}`
 }
