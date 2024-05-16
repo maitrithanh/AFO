@@ -490,8 +490,8 @@ function TableTemplate<T extends IObject = any>({
             // } text-md text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]`}
             className={`table w-full table-auto text-md text-left rtl:text-right text-gray-500 dark:text-gray-400 max-h-[600px]`}
           >
-            <thead className="text-md md:block w-full text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
-              <tr className="md:table md:table-fixed md:w-full">
+            <thead className="text-md lg:block w-full text-white uppercase bg-main text-md font-normal dark:bg-gray-700">
+              <tr className="lg:table lg:table-fixed md:w-full">
                 {!hideIndex && (
                   <th scope="col" className="px-6 py-3 p-3 w-[80px]">
                     STT
@@ -518,13 +518,13 @@ function TableTemplate<T extends IObject = any>({
                 )}
               </tr>
             </thead>
-            <tbody className="md:block w-full overflow-auto max-h-[570px] rounded-lg">
+            <tbody className="lg:block w-full overflow-auto max-h-[570px] rounded-lg">
               {filteredData
                 .slice((page - 1) * rowPerPage!, page * rowPerPage!)
                 .map((row, i) => (
                   <tr
                     key={getKey!(row) ?? i}
-                    className="odd:bg-white md:table md:table-fixed w-full odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    className="odd:bg-white lg:table lg:table-fixed w-full odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                   >
                     <td className={`px-6 py-3 p-3 w-[80px]`}>
                       {i + 1 + (page - 1) * rowPerPage!}
@@ -533,8 +533,8 @@ function TableTemplate<T extends IObject = any>({
                     {columns.map((col, j) => (
                       <td
                         key={i + "-" + j}
-                        className={`max-w-[200px] p-3 font-medium text-gray-900 ${`w-${
-                          col.width ? `[${col.width}px]` : "fit"
+                        className={`p-3 font-medium text-gray-900 ${`${
+                          col.width ? `w-[${col.width}px]` : "w-fit"
                         }`}`}
                         // className={`${
                         //   col.maxWidth ? `max-w-[${col.maxWidth}]` : ""

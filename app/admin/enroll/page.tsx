@@ -24,7 +24,7 @@ const Columns: TableTemplateColumn[] = [
   {
     title: "Mã đăng ký",
     getData: (x) => x._id,
-    width: "200",
+    width: "300",
   },
   {
     title: "Họ tên phụ huynh",
@@ -39,14 +39,17 @@ const Columns: TableTemplateColumn[] = [
   {
     title: "Khối lớp",
     getData: (x) => x.level,
+    width: "100",
   },
   {
     title: "Số điện thoại",
     getData: (x) => x.phoneNumber,
+    width: "200",
   },
   {
     title: "Email",
     getData: (x) => x.email,
+    width: "200",
   },
   {
     title: "Trạng thái",
@@ -58,6 +61,7 @@ const Columns: TableTemplateColumn[] = [
       ) : (
         <span className="bg-main px-2 text-white rounded-full">Chờ duyệt</span>
       ),
+    width: "110",
   },
 ];
 
