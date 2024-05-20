@@ -19,6 +19,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import Loading from "@/app/components/shared/Loading";
 
 const Columns: TableTemplateColumn[] = [
   {
@@ -115,6 +116,7 @@ const EnrollPage = () => {
   };
   return (
     <>
+      {dataEnroll.length == 0 ? <Loading /> : null}
       <AlertDialog
         onOpenChange={() => {
           setOpenDialog((curr) => !curr);

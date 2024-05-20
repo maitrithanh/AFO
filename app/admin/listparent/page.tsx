@@ -50,8 +50,9 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
       <div>
         {x.children.map((y, i) => (
           <div key={i}>
-            {(false && y.relationship != null ? `(${y.relationship} của) ` : "") +
-              y.fullName}
+            {(false && y.relationship != null
+              ? `(${y.relationship} của) `
+              : "") + y.fullName}
             {i < x.children.length - 1 ? "," : ""}
           </div>
         ))}
@@ -81,7 +82,7 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
   {
     title: "Địa chỉ",
     getData: (x) => x.address,
-    maxWidth: '200px'
+    maxWidth: "200px",
   },
   {
     title: "Trạng thái",
@@ -98,8 +99,6 @@ const Columns: TableTemplateColumn<ParentListRes>[] = [
     width: "120",
   },
 ];
-
-const searchCols = [Columns[0], Columns[2]];
 
 const Action: TableTemplateAction<ParentListRes> = {
   getLink: (x) => `/admin/listparent/${x.id}`,
@@ -349,7 +348,7 @@ const ParentPage = () => {
           },
           Action,
         ]}
-        searchColumns={searchCols}
+        searchColumns={[Columns[1], Columns[2]]}
         searchPlaceHolder="Nhập tên hoặc số điện thoại phụ huynh"
         sortOptions={sorts}
         filters={[filterGender]}
