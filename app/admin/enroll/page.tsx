@@ -23,9 +23,18 @@ import Loading from "@/app/components/shared/Loading";
 
 const Columns: TableTemplateColumn[] = [
   {
-    title: "Mã đăng ký",
-    getData: (x) => x._id,
-    width: "300",
+    title: "Ngày đăng ký",
+    getData: (x) =>
+      (new Date(x.createdAt).getDate() < 10
+        ? `0${new Date(x.createdAt).getDate()}`
+        : new Date(x.createdAt).getDate()) +
+      "-" +
+      (new Date(x.createdAt).getMonth() + 1 < 10
+        ? `0${new Date(x.createdAt).getMonth() + 1}`
+        : new Date(x.createdAt).getMonth() + 1) +
+      "-" +
+      new Date(x.createdAt).getFullYear(),
+    width: "150",
   },
   {
     title: "Họ tên phụ huynh",
@@ -45,7 +54,7 @@ const Columns: TableTemplateColumn[] = [
   {
     title: "Số điện thoại",
     getData: (x) => x.phoneNumber,
-    width: "200",
+    width: "150",
   },
   {
     title: "Email",
@@ -62,7 +71,7 @@ const Columns: TableTemplateColumn[] = [
       ) : (
         <span className="bg-main px-2 text-white rounded-full">Chờ duyệt</span>
       ),
-    width: "110",
+    width: "120",
   },
 ];
 

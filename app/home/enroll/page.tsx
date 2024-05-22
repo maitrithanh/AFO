@@ -49,10 +49,11 @@ const EnrollPage = () => {
     Swal.fire({
       title: "Đăng ký thành công",
       icon: "success",
-      confirmButtonText: "Đóng",
+      text: "Cảm ơn quý phụ huynh đã đăng ký tuyển sinh, nhà trường sẽ liên hệ với quý phụ huynh trong vòng 7 ngày làm việc.",
+      confirmButtonText: "Xác nhận",
       confirmButtonColor: "#F8853E",
-      showConfirmButton: false,
-      timer: 1500,
+      // showConfirmButton: false,
+      // timer: 1500,
     });
   };
 
@@ -72,7 +73,7 @@ const EnrollPage = () => {
         <div className="h-full flex md:items-center items-start mt-20 xl:mt-0">
           <div className="w-full bg-white p-6 rounded-xl">
             <h2 className="text-3xl font-bold text-main w-full flex justify-center pb-8">
-              ĐĂNG KÝ TUYỂN SINH TRỰC TUYẾN
+              ĐĂNG KÝ TUYỂN SINH
             </h2>
             <Input
               required
@@ -94,6 +95,13 @@ const EnrollPage = () => {
               register={register}
               errors={errors}
               label="Số điện thoại"
+            />
+            <Input
+              required
+              id="email"
+              register={register}
+              errors={errors}
+              label="Email"
             />
             <div>
               <p className="text-lg">
@@ -168,13 +176,7 @@ const EnrollPage = () => {
                 </div>
               </div>
             </div>
-            <Input
-              required
-              id="email"
-              register={register}
-              errors={errors}
-              label="Địa chỉ Email"
-            />
+
             <p className="float-right pt-2 text-lg">
               Bạn đã đăng ký?{" "}
               <Link

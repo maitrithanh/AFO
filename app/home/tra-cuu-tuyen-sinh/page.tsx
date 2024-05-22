@@ -1,12 +1,9 @@
 "use client";
 import { searchEnroll } from "@/utils/handleAPI";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const TraCuuTuyenSinhPage = () => {
-  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [dataSearch, setDataSearch] = useState<any>([]);
 
@@ -15,9 +12,9 @@ const TraCuuTuyenSinhPage = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex justify-center items-center w-full bg-[url(/banner-homepage.webp)] bg-no-repeat bg-cover">
-      <div className="flex justify-center items-center w-full">
-        <div className="w-full h-full mx-96">
+    <div className="relative min-h-screen flex justify-center w-full bg-[url(/banner-homepage.webp)] bg-no-repeat bg-cover">
+      <div className="flex justify-center items-center w-full mt-24">
+        <div className="w-full h-full lg:mx-96 mx-8">
           <h1 className="text-3xl font-bold w-full flex justify-center items-center p-4 text-main">
             Tra cứu tuyển sinh
           </h1>
@@ -28,7 +25,7 @@ const TraCuuTuyenSinhPage = () => {
               type="text"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Nhập số điện thoại để tra cứu"
+              placeholder="Quý phụ huynh vui lòng nhập số điện thoại để tra cứu"
             />
             <button
               onClick={() => handleSearch()}
@@ -43,9 +40,31 @@ const TraCuuTuyenSinhPage = () => {
                 key={item._id}
                 className="my-6 bg-white p-4 rounded-lg shadow-3xl"
               >
-                <div>
-                  <p className="text-3xl font-semibold flex justify-between items-center">
-                    Mã đăng ký: {item._id}
+                <div className="flex xl:flex-row flex-col justify-between gap-2">
+                  <div>
+                    <div className="text-3xl">
+                      <p className="font-bold text-4xl">
+                        Số điện thoại: {item.phoneNumber}
+                      </p>
+                      <p>Email: {item.email}</p>
+                      <p>Họ tên trẻ: {item.fullNameChild}</p>
+                      <p>Khối lớp: {item.level}</p>
+                      <p>
+                        Ngày đăng ký:
+                        {" " +
+                          (new Date(item.createdAt).getDate() < 10
+                            ? `0${new Date(item.createdAt).getDate()}`
+                            : new Date(item.createdAt).getDate()) +
+                          "-" +
+                          (new Date(item.createdAt).getMonth() + 1 < 10
+                            ? `0${new Date(item.createdAt).getMonth() + 1}`
+                            : new Date(item.createdAt).getMonth() + 1) +
+                          "-" +
+                          new Date(item.createdAt).getFullYear()}
+                      </p>
+                    </div>
+                  </div>
+                  <div className=" w-24">
                     <span
                       className={`${
                         item.status ? "bg-green-500" : "bg-main"
@@ -53,12 +72,7 @@ const TraCuuTuyenSinhPage = () => {
                     >
                       {item.status ? "Đã duyệt" : "Chưa duyệt"}
                     </span>
-                  </p>
-                </div>
-                <div className="text-xl">
-                  <p>Số điện thoại: {item.phoneNumber}</p>
-                  <p>Họ tên trẻ: {item.fullNameChild}</p>
-                  <p>Khối lớp: {item.level}</p>
+                  </div>
                 </div>
               </div>
             );
