@@ -348,7 +348,7 @@ const ParentPage = () => {
           },
           Action,
         ]}
-        searchColumns={[Columns[1], Columns[2]]}
+        searchColumns={[Columns[1], Columns[3]]}
         searchPlaceHolder="Nhập tên hoặc số điện thoại phụ huynh"
         sortOptions={sorts}
         filters={[filterGender]}
