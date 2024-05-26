@@ -20,6 +20,10 @@ import { getImageUrl } from "@/utils/image";
 
 const Columns: TableTemplateColumn[] = [
   {
+    title: "Mã trẻ",
+    getData: (x) => x.childId,
+  },
+  {
     title: "Hình",
     getData: (x) => (
       <DefaultImage img={getImageUrl(x.avatar)} fallback="/avatar.webp" />
@@ -88,7 +92,7 @@ const DetailAttendancePage = ({ params }: any) => {
         title={`Lớp ${detailAttendance?.classOfDay}`}
         dataSource={attendanceByID || []}
         columns={Columns}
-        searchColumns={[Columns[0]]}
+        searchColumns={[Columns[1]]}
         searchPlaceHolder="Nhập tên trẻ..."
         //   actions={[{ getLink: (x) => `/admin/attendance/${x.id}` }]}
       />

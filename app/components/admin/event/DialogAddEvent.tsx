@@ -42,6 +42,10 @@ const DialogAddEvent = ({
   }, [reset, editMode]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (new Date(data.start) > new Date(data.end)) {
+      alert("Ngày kết thúc phải lớn hơn ngày bắt đầu thúc!");
+      return;
+    }
     if (editMode) {
       callApiWithToken()
         .put(

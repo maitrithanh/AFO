@@ -2,14 +2,14 @@
 import React from "react";
 
 import useFetch from "@/utils/useFetch";
-import { getMonth } from "@/utils/formatDate/getMonth";
+import { getMonth, getDay } from "@/utils/formatDate/getMonth";
+import { formatDate } from "@/utils/formatDate/formatDate";
 
 const EventPageC = () => {
   const day = new Date();
+  const toDay = day.getDay();
   const year = day.getFullYear();
   const month = day.getMonth() + 1;
-
-  console.log(day);
 
   const { data: eventData } = useFetch(`Events/getList?year=${year}`);
 
@@ -34,8 +34,8 @@ const EventPageC = () => {
             <div
               key={event?.id}
               className={`relative p-4 w-full shadow-lg my-4 rounded-lg ${
-                getMonth(event?.startDate) == month ||
-                getMonth(event?.endDate) == month
+                new Date(formatDate(event?.startDate)) <= day &&
+                new Date(formatDate(event?.endDate)) >= day
                   ? "bg-main text-white"
                   : "bg-white"
               }`}
@@ -44,7 +44,9 @@ const EventPageC = () => {
                 <div className="flex items-center md:flex-row flex-col">
                   <p
                     className={`font-bold ${
-                      getMonth(event?.endDate) < month ? "line-through" : ""
+                      new Date(formatDate(event?.endDate)) < day
+                        ? "line-through"
+                        : ""
                     }`}
                   >
                     {event?.title}
@@ -52,15 +54,13 @@ const EventPageC = () => {
                   <p
                     className={`text-sm font-normal ml-4 w-fit px-2 h-8 flex justify-center items-center
                     ${
-                      getMonth(event?.endDate) < month &&
-                      getMonth(event?.startDate) < month
+                      new Date(formatDate(event?.endDate)) < day
                         ? "bg-gray-400"
                         : "bg-green-500"
                     }  text-white p-1 rounded-full`}
                   >
                     {" "}
-                    {getMonth(event?.endDate) < month &&
-                    getMonth(event?.startDate) < month ? (
+                    {new Date(formatDate(event?.endDate)) < day ? (
                       "Đã diễn ra"
                     ) : (
                       <p>
