@@ -4,7 +4,7 @@ import TableTemplate, {
   TableTemplateColumn,
   TableTemplateFilter,
 } from "@/app/components/shared/TableTemplate";
-import { getAllEnroll, updateStatusEnroll } from "@/utils/handleAPI";
+import { getAllEnroll, sendConfirmationEmail, updateStatusEnroll } from "@/utils/handleAPI";
 import React, { useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
@@ -98,7 +98,7 @@ const EnrollPage = () => {
   const [dataEnroll, setDataEnroll] = useState<any>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [onUpdate, setOnUpdate] = useState(false);
-  const [idRequest, setIdRequest] = useState("");
+  const [selectedRequest, setSelectedRequest] = useState<any>();
 
   useEffect(() => {
     getAllEnroll(setDataEnroll);
@@ -111,7 +111,8 @@ const EnrollPage = () => {
   };
 
   const handleUpdateStatusEnroll = () => {
-    updateStatusEnroll(idRequest);
+    updateStatusEnroll(selectedRequest?.idRequest ?? '');
+    sendConfirmationEmail(selectedRequest);
     setOnUpdate(true);
     handleRefresh();
     Swal.fire({
@@ -138,7 +139,8 @@ const EnrollPage = () => {
               Xác nhận duyệt đơn tuyển sinh
             </AlertDialogTitle>
             <AlertDialogDescription className="text-lg text-black">
-              <span className="font-bold">Mã đơn:</span> {idRequest}
+              <div>Tên trẻ: {selectedRequest?.fullNameChild}</div>
+              <div>Lớp: {selectedRequest?.level}</div>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -167,7 +169,7 @@ const EnrollPage = () => {
               </span>
             ),
             onClick: (x) => {
-              setIdRequest(x._id);
+              setSelectedRequest(x);
               setOpenDialog(true);
             },
           },

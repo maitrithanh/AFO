@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { callApiWithToken } from './callApi'
 
 const baseUrl = "https://afo-enroll-backend.onrender.com/enroll"
 
@@ -10,6 +11,10 @@ const addEnroll = (data:any) => {
         
     })
     .catch((err) => console.log(err))
+
+    callApiWithToken()
+        .post('mail/sendNewRegister', data)
+    
 }
 
 const searchEnroll = (search:any, setDataSearch: any) => {
@@ -44,6 +49,12 @@ const updateStatusEnroll = (_id: string) => {
         
     })
     .catch((err) => console.log(err))
+    
 }
 
-export {addEnroll, searchEnroll, getAllEnroll, updateStatusEnroll}
+const sendConfirmationEmail = (data: any) => {
+    callApiWithToken()
+        .post('mail/sendConfirmation', data)
+}
+
+export { addEnroll, searchEnroll, getAllEnroll, updateStatusEnroll, sendConfirmationEmail }
