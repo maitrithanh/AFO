@@ -3,7 +3,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import callApi from "@/utils/callApi";
 import Input from "@/app/components/shared/Input";
 import { addEnroll } from "@/utils/handleAPI";
 import Swal from "sweetalert2";
@@ -12,11 +11,13 @@ import Link from "next/link";
 const EnrollPage = () => {
   const { t } = useTranslation();
   const [level, setLevel] = useState("");
+  const [error, setError] = useState<string[]>([]);
+  const [submit, setSubmit] = useState(false);
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitSuccessful, isSubmitted },
+    formState: { errors, isSubmitSuccessful },
   } = useForm<FieldValues>({
     defaultValues: {
       fullNameParent: "",
@@ -29,7 +30,7 @@ const EnrollPage = () => {
 
   //reset form sau khi submit
   useEffect(() => {
-    if (isSubmitted && isSubmitSuccessful) {
+    if (submit) {
       reset({
         fullNameParent: "",
         fullNameChild: "",
@@ -39,10 +40,35 @@ const EnrollPage = () => {
       });
       setLevel("");
     }
-  }, [reset, isSubmitSuccessful, isSubmitted]);
+  }, [reset, submit]);
 
   //xử lý dữ liệu  xuống backend
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    setError([]);
+    if (data.phoneNumber.length < 10 || data.phoneNumber.length > 10) {
+      error.push("Số điện thoại phải đủ 10 số");
+    }
+    if (!data.email.includes("@")) {
+      error.push("Email sai định dạng");
+    }
+
+    const contentError = error.map((error, i) => error).join("<br>");
+
+    if (error.length > 0) {
+      Swal.fire({
+        title: "Đăng ký không thành công",
+        icon: "error",
+        html: contentError,
+        text: "",
+        confirmButtonText: "Đóng",
+        confirmButtonColor: "#F8853E",
+        // showConfirmButton: false,
+        // timer: 1500,
+      });
+      return;
+    } else {
+      setSubmit(true);
+    }
     //chèn thêm field level vào object data
     const formData = { ...data, level };
     addEnroll(formData);

@@ -10,6 +10,7 @@ import Button from "@/app/components/shared/Button";
 import GetAttendanceClass from "@/utils/attendance/getAttendance";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { callApiWithToken } from "@/utils/callApi";
+import { addAttendanceHistory } from "@/utils/handleAPI";
 import toast from "react-hot-toast";
 import {
   Select,
@@ -33,6 +34,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toDMY } from "@/utils/dateTime";
+import { getCookie, setCookie } from "cookies-next";
 
 const AttendancePage = () => {
   const { t } = useTranslation();
@@ -63,6 +66,12 @@ const AttendancePage = () => {
 
   const day = new Date();
   const year = day.getFullYear();
+
+  // useEffect(() => {
+  //   if (day) {
+  //     setAttendance(toDMY(day.toString()));
+  //   }
+  // }, [day]);
 
   //lấy thông tin lớp học
   const { data: detailClassData } = useFetch(
@@ -138,12 +147,14 @@ const AttendancePage = () => {
       showConfirmButton: false,
       timer: 1500,
     });
+
     location.reload();
 
     callApiWithToken()
       .put(`CheckIn/save?id=${attendance}`)
       .then((response) => {
         setRefresh(true);
+        handleRefresh();
       })
       .catch((errors) => {
         Swal.fire({
@@ -155,6 +166,15 @@ const AttendancePage = () => {
           timer: 1500,
         });
       });
+
+    const historyData = {
+      idClass: currentUserTeacher?.classId,
+      nameClass: detailClassData?.name,
+      history: ojbData,
+      idDate: attendance,
+    };
+
+    addAttendanceHistory(historyData);
 
     for (let i = 0; i < attendanceClassData.length; i++) {
       callApiWithToken()
