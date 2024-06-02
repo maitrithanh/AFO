@@ -111,7 +111,7 @@ const EnrollPage = () => {
   };
 
   const handleUpdateStatusEnroll = () => {
-    updateStatusEnroll(selectedRequest?.idRequest ?? '');
+    updateStatusEnroll(selectedRequest?._id ?? '');
     sendConfirmationEmail(selectedRequest);
     setOnUpdate(true);
     handleRefresh();
