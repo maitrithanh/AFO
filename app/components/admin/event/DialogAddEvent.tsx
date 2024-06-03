@@ -7,6 +7,9 @@ import { IoMdClose } from "react-icons/io";
 import callApi, { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
 import { formatDate, reformatDateString } from "@/utils/formatDate/formatDate";
+import useFetch from "@/utils/useFetch";
+import { toYMD } from "@/utils/dateTime";
+import Swal from "sweetalert2";
 
 interface DialogAddEventProps {
   onClose: () => void;
@@ -41,10 +44,36 @@ const DialogAddEvent = ({
     }
   }, [reset, editMode]);
 
+  const year = new Date().getFullYear();
+  const { data: eventData } = useFetch(`Events/getList?year=${year}`);
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (new Date(data.start) > new Date(data.end)) {
       alert("Ngày kết thúc phải lớn hơn ngày bắt đầu thúc!");
       return;
+    }
+
+    if (!editMode) {
+      if (
+        eventData.filter(
+          (x: any) =>
+            toYMD(x.startDate) <= data.start && toYMD(x.endDate) >= data.start
+        ).length > 0 ||
+        eventData.filter(
+          (x: any) =>
+            toYMD(x.startDate) <= data.end && toYMD(x.endDate) >= data.end
+        ).length > 0
+      ) {
+        Swal.fire({
+          title: "Ngày sự kiện bị trùng!",
+          icon: "error",
+          confirmButtonText: "Đóng",
+          confirmButtonColor: "#F8853E",
+          // showConfirmButton: false,
+          // timer: 1500,
+        });
+        return;
+      }
     }
     if (editMode) {
       callApiWithToken()
@@ -53,7 +82,6 @@ const DialogAddEvent = ({
         )
         .then((res) => {
           toast.success("Đã lưu");
-          console.log(res);
           onClose();
           // location.reload();
         })
@@ -67,7 +95,6 @@ const DialogAddEvent = ({
         )
         .then((res) => {
           toast.success("Đã thêm");
-          console.log(res);
           onClose();
           // location.reload();
         })

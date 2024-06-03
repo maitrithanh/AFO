@@ -12,8 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toYMD } from "@/utils/dateTime";
+import { toDMY, toYMD } from "@/utils/dateTime";
 import { IoIosWarning } from "react-icons/io";
+import { formatDate } from "@/utils/formatDate/formatDate";
 
 const Columns: TableTemplateColumn[] = [
   {
@@ -33,7 +34,10 @@ const Columns: TableTemplateColumn[] = [
 
 const AttendancePage = () => {
   const [dateDefault, setDateDefault] = useState("");
-  const [valueDate, setValueDate] = useState("");
+  const toDay = new Date();
+  const [valueDate, setValueDate] = useState(
+    formatDate(toYMD(toDay.toLocaleDateString()))
+  );
 
   const { data: attendanceData } = useFetch(`CheckIn/getToDay`);
   const { data: attendanceByDate } = useFetch(
@@ -46,8 +50,6 @@ const AttendancePage = () => {
       setValueDate(toYMD(attendanceData[0].classOfDay.split("-")[1].trim()));
     }
   }, [attendanceData]);
-
-  console.log("attendanceByDate", attendanceByDate);
 
   const selectYear = (
     <div className="bg-gray-100 shadow-sm rounded-lg">
@@ -77,7 +79,7 @@ const AttendancePage = () => {
       {attendanceByDate?.length <= 0 || attendanceByDate == null ? (
         <p className="flex justify-center items-center">
           {valueDate ? (
-            `Ngày ${valueDate} chưa có dữ liệu điểm danh nào`
+            `Ngày ${toDMY(valueDate)} chưa có dữ liệu điểm danh nào`
           ) : (
             <span className="flex justify-center items-center gap-2">
               <IoIosWarning size={24} className="text-yellow-600" />

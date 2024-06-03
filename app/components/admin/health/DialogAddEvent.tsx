@@ -6,26 +6,55 @@ import Button from "../../shared/Button";
 import { IoMdClose } from "react-icons/io";
 import callApi, { callApiWithToken } from "@/utils/callApi";
 import toast from "react-hot-toast";
+import useFetch from "@/utils/useFetch";
+import { toYMD } from "@/utils/dateTime";
+import Swal from "sweetalert2";
 
 interface DialogAddEventProps {
   onClose: () => void;
 }
 
 const DialogAddEvent = ({ onClose }: DialogAddEventProps) => {
+  const [refresh, setRefresh] = useState(false);
+
+  const handleRefresh = () => {
+    setRefresh(true);
+    setTimeout(() => {
+      setRefresh(false);
+    }, 1000);
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({ defaultValues: { content: "", dateTime: "" } });
 
+  const { data: healthEvent } = useFetch("Healthy/getListEvent", refresh);
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (
+      healthEvent.filter((x: any) => {
+        return toYMD(x.examDate) === data.dateTime;
+      }).length > 0
+    ) {
+      Swal.fire({
+        title: "Lịch khám bị trùng!",
+        icon: "error",
+        confirmButtonText: "Đóng",
+        confirmButtonColor: "#F8853E",
+        // showConfirmButton: false,
+        // timer: 1500,
+      });
+      return;
+    }
     callApiWithToken()
       .post(
         `/Healthy/addEvent?content=${data.content}&dateTime=${data.dateTime}`
       )
       .then((res) => {
         toast.success("Đã thêm");
-        console.log(res);
+        handleRefresh();
         onClose();
         // location.reload();
       })
@@ -41,7 +70,7 @@ const DialogAddEvent = ({ onClose }: DialogAddEventProps) => {
       <div className="bg-white p-4 rounded-xl md:w-1/3 mx-4 w-full h-fit">
         <div className="flex justify-between items-center mb-8 py-2 border-b">
           <h3 className="text-2xl ">Thêm lịch khám sức khoẻ</h3>
-          <button className="text-gray-600" onClick={onClose} title="Đóng"> 
+          <button className="text-gray-600" onClick={onClose} title="Đóng">
             <IoMdClose size={28} />
           </button>
         </div>

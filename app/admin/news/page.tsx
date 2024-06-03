@@ -22,27 +22,20 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { MdEditNote } from "react-icons/md";
+import DefaultThumb from "@/app/components/shared/defaultThumb";
 
 const Columns: TableTemplateColumn[] = [
   {
     title: "Hình thu nhỏ",
-    getData: (x) =>
-      x.image ? (
-        <Image
-          src={getImageUrl(x.image)}
-          alt={x.title}
-          width={200}
-          height={150}
-          className=" object-cover rounded-sm"
-        />
-      ) : (
-        <Image
-          src={"/news/default-thumb.webp"}
-          alt={"Default Thumbnails"}
-          width={200}
-          height={150}
-        />
-      ),
+    getData: (x) => (
+      <DefaultThumb
+        img={getImageUrl(x.image)}
+        fallback="/news/default-thumb.webp"
+        width={200}
+        height={150}
+        alt={x.title}
+      />
+    ),
   },
   {
     title: "Tiêu đề",
