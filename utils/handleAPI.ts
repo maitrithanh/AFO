@@ -1,7 +1,8 @@
 import axios from "axios";
 import { callApiWithToken } from "./callApi";
 
-const baseUrl = "https://afo-enroll-backend.onrender.com/enroll";
+// const baseUrl = "https://afo-enroll-backend.onrender.com/enroll";
+const baseUrl = "https://afo-enroll-backend.onrender.com";
 // const baseUrl = "http://localhost:5005";
 
 const addEnroll = (data: any) => {
