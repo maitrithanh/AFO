@@ -18,6 +18,8 @@ const Slider: React.FC<SliderProps> = ({ showThumbs = false, data }) => {
         infiniteLoop={true}
         showThumbs={showThumbs}
         interval={2000}
+        centerMode
+        thumbWidth={100}
         dynamicHeight
         className="h-fit"
       >
