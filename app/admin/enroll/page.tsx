@@ -175,8 +175,8 @@ const EnrollPage = () => {
           },
         ]}
         filters={[filterStatus]}
-        searchColumns={[Columns[0], Columns[1], Columns[2], Columns[4]]}
-        searchPlaceHolder="Nhập mã hoặc số điện thoại để tìm kiếm"
+        searchColumns={[Columns[4]]}
+        searchPlaceHolder="Nhập số điện thoại để tìm kiếm"
       />
     </>
   );

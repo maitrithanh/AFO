@@ -425,14 +425,14 @@ const ScheduleTable = ({ dataSrc, setData, edit, isCurrWeek }: Props) => {
                             >
                                 <span className="hidden lg:block"> {t(x)} </span>
                                 <span className="block lg:hidden"> {"T" + (i + 2)} </span>
-                                <CellActions
+                                {edit && <CellActions
                                     day={i} time={undefined} timeEnd={undefined}
                                     onDelete={onCellDelete}
                                     copyItem={copyItem}
                                     onCopy={onCellCopy}
                                     onPaste={onCellPaste}
                                     onCancel={onCellCancel}
-                                />
+                                />}
                             </th>
                         </>
                     ))}

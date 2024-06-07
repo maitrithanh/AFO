@@ -24,12 +24,11 @@ const Message = () => {
 
   const [chatLogs, setChatLogs] = useState<GetMessagesRes[]>([]);
   const { data: chatData } = useFetch<GetMessagesRes[]>(
-    "Chat/getChatLog/" + receiver?.userId,
+    `Chat/getChatLog/${receiver?.userId}?take=1000`,
     null,
     receiver?.userId
   );
   const [msg, setMsg] = useState("");
-  const [loadingMsg, setLoadingMsg] = useState(false);
   const [reachedTop, setReachedTop] = useState(false); //đã đọc hết tin nhắn
   const [scrollPosition, setScrollPosition] = useState(0); //scroll distance from bottom
 
@@ -94,12 +93,10 @@ const Message = () => {
     var container = chatContainerRef.current;
     if (!container) return;
 
-    //alert(scrollPosition);
     container.scrollTop = container.scrollHeight - scrollPosition;
   }, [
     chatContainerRef.current?.scrollHeight,
     currChat,
-    loadingMsg,
     scrollPosition,
   ]);
 
@@ -107,53 +104,31 @@ const Message = () => {
   useEffect(() => {});
 
   //loading more message
-  useEffect(() => {
-    const element = chatContainerRef.current;
+  // useEffect(() => {
+  //   const element = chatContainerRef.current;
 
-    var timer: any;
-    const onScroll = () => {
-      if (!element || loadingMsg) return;
+  //   const onScroll = () => {
+  //     if (!element) return;
 
-      if (reachedTop) {
-        element.removeEventListener("scroll", onScroll);
-        return;
-      }
+  //     if (reachedTop) {
+  //       element.removeEventListener("scroll", onScroll);
+  //       return;
+  //     }
 
-      const scrollHeight = element.scrollHeight;
-      //const clientHeight = element.clientHeight;
-      const scrollTop = element.scrollTop;
+  //     const scrollHeight = element.scrollHeight;
+  //     //const clientHeight = element.clientHeight;
+  //     const scrollTop = element.scrollTop;
 
-      setScrollPosition(scrollHeight - scrollTop);
+  //     setScrollPosition(scrollHeight - scrollTop);
+  //   };
 
-      if ((scrollTop / scrollHeight) * 100 <= 20) {
-        clearTimeout(timer);
+  //   if (element) {
+  //     element.addEventListener("scroll", onScroll);
 
-        timer = setTimeout(() => {
-          setLoadingMsg(true);
-          callApiWithToken()
-            .get(`chat/getChatLog/${receiverId.current}`, {
-              params: { skip: chatLogs.length },
-            })
-            .then((res) => {
-              var data = res.data.data as GetMessagesRes[];
-              if (!data.length) {
-                setReachedTop(true);
-              } else {
-                setChatLogs((x) => [...data, ...x]);
-              }
-              setLoadingMsg(false);
-            });
-        }, 200);
-      }
-    };
-
-    if (element) {
-      element.addEventListener("scroll", onScroll);
-
-      // Cleanup function to remove event listener on unmount
-      return () => element.removeEventListener("scroll", onScroll);
-    }
-  }, [chatContainerRef, chatLogs, loadingMsg, receiverId, setReachedTop]);
+  //     // Cleanup function to remove event listener on unmount
+  //     return () => element.removeEventListener("scroll", onScroll);
+  //   }
+  // }, [chatContainerRef, chatLogs, receiverId, setReachedTop]);
 
   const getTime = (s: string) => {
     var h = s.split("T")[1];
@@ -236,7 +211,7 @@ const Message = () => {
       </div>
       <hr className="my-4" />
       <div className="flex-1 overflow-y-auto px-3 mb-3" ref={chatContainerRef}>
-        {chatLogs?.length > 0 && !loadingMsg && (
+        {chatLogs?.length > 0 && (
           <div className="text-center bg-gray-200 rounded-[999px] py-1  my-2 text-gray-500">
             Bạn đã xem hết tin nhắn
           </div>
@@ -316,12 +291,13 @@ const Message = () => {
                           y == x.reaction ? "bg-slate-300" : ""
                         } p-[2px] rounded-md me-1`}
                       >
-                        <DefaultImage
-                          img={getImageUrl(y)}
-                          fallback="/avatar.webp"
-                          custom={"w-[28px] h-[28px] cursor-pointer"}
-                          onClick={() => onReact(x.msgId, y, x.reaction)}
-                        />
+                        <div onClick={() => onReact(x.msgId, y, x.reaction)}>
+                          <DefaultImage
+                            img={getImageUrl(y)}
+                            fallback="/avatar.webp"
+                            custom={"w-[28px] h-[28px] cursor-pointer"}
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>

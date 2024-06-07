@@ -336,7 +336,7 @@ function TableTemplate<T extends IObject = any>({
     <>
       <div className="">
         <h2
-          className={`text-2xl font-bold mb-2 ${font_asap_condensed.className}`}
+          className={`text-2xl font-bold mb-2 ${font_asap_condensed.className} px-5`}
         >
           {title}
         </h2>

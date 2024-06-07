@@ -4,6 +4,7 @@ import React from "react";
 import useFetch from "@/utils/useFetch";
 import { getMonth, getDay } from "@/utils/formatDate/getMonth";
 import { formatDate } from "@/utils/formatDate/formatDate";
+import { toYMD } from "@/utils/dateTime";
 
 const EventPageC = () => {
   const day = new Date();
@@ -12,6 +13,10 @@ const EventPageC = () => {
   const month = day.getMonth() + 1;
 
   const { data: eventData } = useFetch(`Events/getList?year=${year}`);
+
+  const sortEvent = (a: any, b: any) => { 
+    return toYMD(a.startDate) < toYMD(b.startDate) ? 1 : -1
+  }
 
   return (
     <div className="w-full h-[88vh] overflow-auto m-auto rounded-lg bg-white p-4 md:p-10">
@@ -29,7 +34,7 @@ const EventPageC = () => {
       </div>
 
       <div className="">
-        {eventData?.map((event: any) => {
+        {eventData?.sort(sortEvent).map((event: any) => {
           return (
             <div
               key={event?.id}

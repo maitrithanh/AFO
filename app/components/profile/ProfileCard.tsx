@@ -343,6 +343,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   />
 
                   <CardInfoLine
+                    lineName={'Lớp'}
+                    contentLine={infoChild?.classRoom?.className ?? 'Chưa có lớp'}
+                  />
+
+                  <CardInfoLine
                     lineName={t("address")}
                     contentLine={infoChild?.address}
                   />

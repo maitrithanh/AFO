@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toDMY } from "@/utils/dateTime";
 import { getCookie, setCookie } from "cookies-next";
+import removeVietnameseTones from "@/utils/removeTones";
 
 const AttendancePage = () => {
   const { t } = useTranslation();
@@ -89,7 +90,7 @@ const AttendancePage = () => {
   };
 
   const searchChildInClass = (c: any): boolean => {
-    const matchName: boolean = c.childName.toLowerCase().includes(search);
+    const matchName: boolean = removeVietnameseTones(c.childName.toLowerCase()).includes(search);
     return matchName;
   };
 
@@ -390,10 +391,10 @@ const AttendancePage = () => {
                 <div className=" shadow-lg rounded-lg md:w-[480px] w-full flex">
                   <Input
                     type="email"
-                    placeholder="Tìm kiếm..."
+                    placeholder="Nhập họ tên để tìm kiếm"
                     className="p-4 "
                     onChange={(event) => {
-                      setSearch(event.target.value.toLowerCase());
+                      setSearch(removeVietnameseTones(event.target.value.toLowerCase()));
                     }}
                   />
                 </div>
@@ -486,7 +487,7 @@ const AttendancePage = () => {
                           />
                         </td>
                         <td className="px-6 py-4">
-                          {dataStudent.reason ? dataStudent.reason : "''"}
+                          {dataStudent.reason ? dataStudent.reason : ""}
                         </td>
                         <td className="px-6 py-4 scale-125">
                           <input

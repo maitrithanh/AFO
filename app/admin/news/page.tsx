@@ -42,15 +42,6 @@ const Columns: TableTemplateColumn[] = [
     getData: (x) => <p className="max-w-[250px]">{x.title}</p>,
   },
   {
-    title: "Nội dung",
-    getData: (x) => (
-      <p
-        className="descriptNewsTable text-justify max-w-[290px]"
-        dangerouslySetInnerHTML={{ __html: x.content }}
-      ></p>
-    ),
-  },
-  {
     title: "Ngày đăng",
     getData: (x) => x.dateCreated,
   },
@@ -125,8 +116,13 @@ const NewsPage = () => {
         title="Tin tức"
         dataSource={newsData || []}
         columns={Columns}
-        searchColumns={[Columns[0]]}
-        searchPlaceHolder="Tìm kiếm..."
+        searchColumns={[
+          {
+            title: '',
+            getData: x => x.title
+          }
+        ]}
+        searchPlaceHolder="Tìm kiếm theo tiêu đề"
         addButton={{ link: "/admin/news/add-news" }}
         actions={[
           {

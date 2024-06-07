@@ -28,53 +28,53 @@ import { useTranslation } from "react-i18next";
 const data = [
   {
     name: "Tháng 1",
-    "Doanh thu": 0,
+    "Số tiền": 0,
     // pv: 2400,
     // amt: 2400,
   },
   {
     name: "Tháng 2",
-    "Doanh thu": 0,
+    "Số tiền": 0,
   },
   {
     name: "Tháng 3",
-    "Doanh thu": 100000,
+    "Số tiền": 100000,
   },
   {
     name: "Tháng 4",
-    "Doanh thu": 1200000,
+    "Số tiền": 1200000,
   },
   {
     name: "Tháng 5",
-    "Doanh thu": 2000000,
+    "Số tiền": 2000000,
   },
   {
     name: "Tháng 6",
-    "Doanh thu": 1500000,
+    "Số tiền": 1500000,
   },
   {
     name: "Tháng 7",
-    "Doanh thu": 2200000,
+    "Số tiền": 2200000,
   },
   {
     name: "Tháng 8",
-    "Doanh thu": 3100000,
+    "Số tiền": 3100000,
   },
   {
     name: "Tháng 9",
-    "Doanh thu": 8000000,
+    "Số tiền": 8000000,
   },
   {
     name: "Tháng 10",
-    "Doanh thu": 9000000,
+    "Số tiền": 9000000,
   },
   {
     name: "Tháng 11",
-    "Doanh thu": 12000000,
+    "Số tiền": 12000000,
   },
   {
     name: "Tháng 12",
-    "Doanh thu": 10000000,
+    "Số tiền": 10000000,
   },
 ];
 
@@ -333,7 +333,7 @@ const Chart: React.FC<ChartProps> = ({
               <Tooltip content={<CustomTooltipContent payload={data} />} />
               <Area
                 type="monotone"
-                dataKey="Doanh thu"
+                dataKey="Số tiền"
                 stroke="#F8853E"
                 fillOpacity={1}
                 fill="url(#colorUv)"
@@ -456,7 +456,7 @@ const Chart: React.FC<ChartProps> = ({
               {t("Total number of students")}
             </span>
             <span className=" bg-[#FFBB28] p-1 rounded-sm text-white">
-              {t("Total number of classes")}
+              {t("Total number of parents")}
             </span>
           </div>
         </div>

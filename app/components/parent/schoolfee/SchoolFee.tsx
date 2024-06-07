@@ -89,24 +89,24 @@ const SchoolFeeItem = ({ data }: { data: PaymentModel }) => {
                       <div className="flex justify-between text-lg text-black">
                         <p className="mr-2">{t("studyFee")}:</p>
                         <p className="font-bold">
-                          {data.total.toLocaleString("en")}
+                          {data.total.toLocaleString("en")} đ
                         </p>
                       </div>
                       <div className="flex justify-between text-lg text-black">
                         <p className="mr-2">{t("discount")}:</p>
-                        <p className="font-bold">0</p>
+                        <p className="font-bold">0 đ</p>
                       </div>
                       <div className="flex justify-between text-lg text-black pt-2 border-t">
                         <p className="mr-2">{t("totalSchoolFee")}:</p>
                         <p className="font-bold text-main">
-                          {data.total.toLocaleString("en")}
+                          {data.total.toLocaleString("en")} đ
                         </p>
                       </div>
 
                       <div className="flex justify-between text-lg text-black pt-2 border-t">
                         <p className="mr-2">Đã đóng:</p>
                         <p className="font-bold">
-                          {data.paid.toLocaleString("en")}
+                          {data.paid.toLocaleString("en")} đ
                         </p>
                       </div>
 

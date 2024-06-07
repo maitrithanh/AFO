@@ -24,10 +24,6 @@ import Swal from "sweetalert2";
 
 const Columns: TableTemplateColumn[] = [
   {
-    title: "Mã yêu cầu",
-    getData: (x) => x.reqId,
-  },
-  {
     title: "Hình",
     getData: (x) => (
       <div className="scale-125">
@@ -39,6 +35,10 @@ const Columns: TableTemplateColumn[] = [
   {
     title: "Họ tên",
     getData: (x) => x.fullName,
+  },
+  {
+    title: "Lớp",
+    getData: (x) => x.className
   },
   {
     title: "Lý do",
@@ -197,10 +197,10 @@ const BurnOutPage = () => {
     <>
       <TableTemplate
         title={`Danh sách xin nghỉ`}
-        dataSource={classData || []}
+        dataSource={classData?.reverse() || []}
         columns={Columns}
-        searchColumns={[Columns[0], Columns[2]]}
-        searchPlaceHolder="Tìm kiếm..."
+        searchColumns={[Columns[1]]}
+        searchPlaceHolder="Tìm kiếm theo tên"
         filters={[filterActive]}
         // addButton={{ link: "#" }}
         actions={[
